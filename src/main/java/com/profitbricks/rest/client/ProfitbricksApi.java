@@ -7,6 +7,8 @@ import net.sf.json.JSONObject;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 /**
@@ -20,13 +22,11 @@ public class ProfitbricksApi {
       try {
 
          DefaultHttpClient httpClient = new DefaultHttpClient();
-         HttpGet getRequest = new HttpGet(
-                 "https://spc.profitbricks.com/rest/datacenters");
 
-         getRequest.addHeader("Authorization", "Basic ZmFyaWQuc2hhaEBwcm9maXRicmlja3MuY29tOnNwYzIwMTU=");
-         getRequest.addHeader("Content-Type", "application/vnd.profitbricks.resource+json");
+         //HttpGet getRequest = (HttpGet) createRequest(Verbs.GET);
 
-         HttpResponse response = httpClient.execute(getRequest);
+         /**/
+         HttpResponse response = null;//= httpClient.execute(createRequest(Verbs.GET));
 
          if (response.getStatusLine().getStatusCode() != 200)
             throw new RuntimeException("Failed : HTTP error code : "
@@ -56,5 +56,21 @@ public class ProfitbricksApi {
          e.printStackTrace();
       }
 
+   }
+
+   private HttpRequestBase createRequest(Verbs verb) {
+      switch (verb) {
+         case GET:
+            HttpGet request = new HttpGet(
+                    "https://spc.profitbricks.com/rest/datacenters");
+            break;
+      }
+      HttpGet request = new HttpGet(
+              "https://spc.profitbricks.com/rest/datacenters");
+
+      request.addHeader("Authorization", "Basic ZmFyaWQuc2hhaEBwcm9maXRicmlja3MuY29tOnNwYzIwMTU=");
+      request.addHeader("Content-Type", "application/vnd.profitbricks.resource+json");
+
+      return request;
    }
 }
