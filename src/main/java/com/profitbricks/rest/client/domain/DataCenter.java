@@ -5,6 +5,8 @@
  */
 package com.profitbricks.rest.client.domain;
 
+import java.util.Date;
+
 /**
  *
  * @author jasmin.gacic
@@ -13,49 +15,37 @@ public class DataCenter {
 
    private String id;
    private String type;
+   Metadata metadata;
+   private String href;
 
+   Properties properties;
+   Entities entities;
+
+   /**
+    * @return the id
+    */
    public String getId() {
       return id;
    }
 
+   /**
+    * @param id the id to set
+    */
    public void setId(String id) {
       this.id = id;
    }
 
+   /**
+    * @return the type
+    */
    public String getType() {
       return type;
    }
 
-   public void setType(String type) {
-      this.id = type;
-   }
-
-   /*
-   
-    {
-    "id": "datacenter-id",
-    "type": "datacenter",
-    "href": "https://api.profitbricks.com/rest/1.0/datacenters/datacenter-id",
-    "metadata": {
-    "lastModifiedDate": "datacenter-last-modified-date",
-    "lastModifiedBy": "datacenter-last-modified-by-user",
-    "createdDate": "datacenter-creation-date",
-    "createdBy": "datacenter-created-by-user",
-    "state": "datacenter-state",
-    "etag": "datacenter-etag"
-    },
-    "properties": {
-    "name": "datacenter-name",
-    "description": "datacenter-description",
-    "location": "datacenter-location",
-    "version": datacenter-version
-    },
-    "entities": {
-    "servers": [],
-    "volumes": [],
-    "loadbalancers": [],
-    "lans": []
-    }
-    }
+   /**
+    * @param type the type to set
     */
+   public void setType(String type) {
+      this.type = type;
+   }
 }
