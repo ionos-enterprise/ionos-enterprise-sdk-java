@@ -5,6 +5,7 @@
  */
 package com.profitbricks.rest.client.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,10 +14,10 @@ import java.util.List;
  */
 public class Entities {
 
-   private List<Server> servers;
-   private List<Volume> volumes;
-   private List<LoadBalancers> loadbalancers;
-   private List<Lans> lans;
+   private List<Server> servers = new ArrayList<Server>();
+   private List<Volume> volumes = new ArrayList<Volume>();
+   private List<LoadBalancers> loadbalancers = new ArrayList<LoadBalancers>();
+   private List<Lans> lans = new ArrayList<Lans>();
 
    /**
     * @return the servers

@@ -5,6 +5,8 @@
  */
 package com.profitbricks.rest.client;
 
+import http.rest.RequestInterceptor;
+import http.rest.RestClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -17,36 +19,22 @@ import org.apache.http.client.methods.HttpRequestBase;
  */
 public abstract class ProfitbricksAPIBase {
 
-   private String urlBase = "https://spc.profitbricks.com/rest/";
-   private String resource;
+   public String urlBase = "https://spc.profitbricks.com/rest/";
+   public String resource;
+   public RequestInterceptor authorize;
+   public RestClient client;
+   String credentials = "ZmFyaWQuc2hhaEBwcm9maXRicmlja3MuY29tOnNwYzIwMTU=";
 
    public ProfitbricksAPIBase(String resource) {
       this.resource = resource;
-   }
 
-   private HttpRequestBase createRequest(Verbs verb) {
-      HttpRequestBase request = null;
+      authorize = new RequestInterceptor() {
+         @Override
+         public void intercept(HttpRequestBase request) {
+            request.addHeader("Authorization", "Basic ".concat(credentials));
+         }
+      };
 
-      switch (verb) {
-         case GET:
-            request = new HttpGet(urlBase.concat(resource));
-            break;
-         case POST:
-            request = new HttpPost(urlBase.concat(resource));
-            break;
-         case PUT:
-            request = new HttpPut(urlBase.concat(resource));
-            break;
-         case DELETE:
-            request = new HttpDelete(urlBase.concat(resource));
-            break;
-      }
-
-      if (request != null) {
-         request.addHeader("Authorization", "Basic ZmFyaWQuc2hhaEBwcm9maXRicmlja3MuY29tOnNwYzIwMTU=");
-         request.addHeader("Content-Type", "application/vnd.profitbricks.resource+json");
-         return request;
-      } else
-         throw new ExceptionInInitializerError("Unknown type");
+      client = RestClient.builder().requestInterceptor(authorize).build();
    }
 }

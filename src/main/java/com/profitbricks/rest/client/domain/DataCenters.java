@@ -5,21 +5,19 @@
  */
 package com.profitbricks.rest.client.domain;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author jasmin.gacic
  */
-public class DataCenter {
+public class DataCenters {
 
    private String id;
    private String type;
-   private Metadata metadata;
    private String href;
-
-   private Properties properties = new Properties();
-   private Entities entities = new Entities();
+   private List<DataCenter> items =  new ArrayList<DataCenter>();
 
    /**
     * @return the id
@@ -50,20 +48,6 @@ public class DataCenter {
    }
 
    /**
-    * @return the metadata
-    */
-   public Metadata getMetadata() {
-      return metadata;
-   }
-
-   /**
-    * @param metadata the metadata to set
-    */
-   public void setMetadata(Metadata metadata) {
-      this.metadata = metadata;
-   }
-
-   /**
     * @return the href
     */
    public String getHref() {
@@ -78,31 +62,17 @@ public class DataCenter {
    }
 
    /**
-    * @return the properties
+    * @return the items
     */
-   public Properties getProperties() {
-      return properties;
+   public List<DataCenter> getItems() {
+      return items;
    }
 
    /**
-    * @param properties the properties to set
+    * @param items the items to set
     */
-   public void setProperties(Properties properties) {
-      this.properties = properties;
-   }
-
-   /**
-    * @return the entities
-    */
-   public Entities getEntities() {
-      return entities;
-   }
-
-   /**
-    * @param entities the entities to set
-    */
-   public void setEntities(Entities entities) {
-      this.entities = entities;
+   public void setItems(List<DataCenter> items) {
+      this.items = items;
    }
 
 }
