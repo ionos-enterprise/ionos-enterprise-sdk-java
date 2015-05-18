@@ -9,6 +9,6 @@ package com.profitbricks.rest.client.domain;
  *
  * @author jasmin.gacic
  */
-public class LoadBalancers {
+public class LoadBalancers  extends ProfitbricksBase{
 
 }

@@ -1,19 +1,5 @@
 package com.profitbricks.rest.client;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import http.rest.RequestInterceptor;
-import http.rest.RestClient;
-import java.util.List;
-import org.apache.http.client.methods.HttpUriRequest;
-import com.profitbricks.rest.client.domain.DataCenter;
-import com.profitbricks.rest.client.domain.DataCenters;
-import http.rest.RestClientException;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.http.client.methods.HttpRequestBase;
-
 /**
  * Hello world!
  *

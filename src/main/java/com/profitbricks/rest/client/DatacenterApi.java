@@ -5,8 +5,8 @@
  */
 package com.profitbricks.rest.client;
 
+import com.profitbricks.rest.client.domain.DataCenter;
 import com.profitbricks.rest.client.domain.DataCenters;
-import http.rest.RestClientException;
 import java.io.IOException;
 
 /**
@@ -20,6 +20,12 @@ public class DatacenterApi extends ProfitbricksAPIBase {
    }
 
    public DataCenters getAllDataCenters() throws RestClientException, IOException {
-      return client.get(urlBase.concat(resource), null, DataCenters.class);
+      return client.get(urlBase.concat(resource).concat("?depth=5"), null, DataCenters.class);
+
+   }
+
+   DataCenter getDataCenter(String id) throws RestClientException, IOException {
+      return client.get(urlBase.concat(resource).concat("/").concat(id), null, DataCenter.class);
+
    }
 }

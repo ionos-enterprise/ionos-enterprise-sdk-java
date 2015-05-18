@@ -5,77 +5,17 @@
  */
 package com.profitbricks.rest.client.domain;
 
-import java.util.Date;
-
 /**
  *
  * @author jasmin.gacic
  */
-public class DataCenter {
+public class DataCenter extends ProfitbricksBase {
 
-   private String id;
-   private String type;
-   private Metadata metadata;
-   private String href;
-
+   public DataCenter() {
+      this.entities = new Entities();
+   }
    private Properties properties = new Properties();
-   private Entities entities = new Entities();
-
-   /**
-    * @return the id
-    */
-   public String getId() {
-      return id;
-   }
-
-   /**
-    * @param id the id to set
-    */
-   public void setId(String id) {
-      this.id = id;
-   }
-
-   /**
-    * @return the type
-    */
-   public String getType() {
-      return type;
-   }
-
-   /**
-    * @param type the type to set
-    */
-   public void setType(String type) {
-      this.type = type;
-   }
-
-   /**
-    * @return the metadata
-    */
-   public Metadata getMetadata() {
-      return metadata;
-   }
-
-   /**
-    * @param metadata the metadata to set
-    */
-   public void setMetadata(Metadata metadata) {
-      this.metadata = metadata;
-   }
-
-   /**
-    * @return the href
-    */
-   public String getHref() {
-      return href;
-   }
-
-   /**
-    * @param href the href to set
-    */
-   public void setHref(String href) {
-      this.href = href;
-   }
+   private Entities entities;
 
    /**
     * @return the properties
@@ -103,6 +43,135 @@ public class DataCenter {
     */
    public void setEntities(Entities entities) {
       this.entities = entities;
+   }
+
+   public class Properties {
+
+      private String name;
+      private String description;
+      private Location location;
+      private String version;
+
+      /**
+       * @return the location
+       */
+      public Location getLocation() {
+         return location;
+      }
+
+      /**
+       * @param location the location to set
+       */
+      public void setLocation(String location) {
+         this.location.fromValue(location);
+      }
+
+      /**
+       * @return the name
+       */
+      public String getName() {
+         return name;
+      }
+
+      /**
+       * @param name the name to set
+       */
+      public void setName(String name) {
+         this.name = name;
+      }
+
+      /**
+       * @return the description
+       */
+      public String getDescription() {
+         return description;
+      }
+
+      /**
+       * @param description the description to set
+       */
+      public void setDescription(String description) {
+         this.description = description;
+      }
+
+      /**
+       * @return the version
+       */
+      public String getVersion() {
+         return version;
+      }
+
+      /**
+       * @param version the version to set
+       */
+      public void setVersion(String version) {
+         this.version = version;
+      }
+   }
+
+   public class Entities {
+
+      private Servers servers = new Servers();
+      private Volumes volumes = new Volumes();
+      private LoadBalancers loadbalancers = new LoadBalancers();
+      private Lans lans = new Lans();
+
+      /**
+       * @return the servers
+       */
+      public Servers getServers() {
+         return servers;
+      }
+
+      /**
+       * @param servers the servers to set
+       */
+      public void setServers(Servers servers) {
+         this.servers = servers;
+      }
+
+      /**
+       * @return the volumes
+       */
+      public Volumes getVolumes() {
+         return volumes;
+      }
+
+      /**
+       * @param volumes the volumes to set
+       */
+      public void setVolumes(Volumes volumes) {
+         this.volumes = volumes;
+      }
+
+      /**
+       * @return the loadbalancers
+       */
+      public LoadBalancers getLoadbalancers() {
+         return loadbalancers;
+      }
+
+      /**
+       * @param loadbalancers the loadbalancers to set
+       */
+      public void setLoadbalancers(LoadBalancers loadbalancers) {
+         this.loadbalancers = loadbalancers;
+      }
+
+      /**
+       * @return the lans
+       */
+      public Lans getLans() {
+         return lans;
+      }
+
+      /**
+       * @param lans the lans to set
+       */
+      public void setLans(Lans lans) {
+         this.lans = lans;
+      }
+
    }
 
 }

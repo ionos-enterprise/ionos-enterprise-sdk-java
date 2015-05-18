@@ -5,12 +5,19 @@
  */
 package com.profitbricks.rest.client.domain;
 
-
 /**
  *
  * @author jasmin.gacic
  */
-public class Entities {
+public enum Protocol {
 
-  
+   TCP, UDP, ICMP, ANY, UNRECOGNIZED;
+
+   public static Protocol fromValue(String value) {
+      try {
+         return valueOf(value);
+      } catch (IllegalArgumentException e) {
+         return UNRECOGNIZED;
+      }
+   }
 }

@@ -5,6 +5,8 @@
  */
 package com.profitbricks.rest.client.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,22 +14,23 @@ import java.util.List;
  *
  * @author jasmin.gacic
  */
-public class DataCenters  extends ProfitbricksBase {
-
-   private List<DataCenter> items =  new ArrayList<DataCenter>();
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Volumes extends ProfitbricksBase{
+   
+   private List<Volume> items = new ArrayList<Volume>();
 
    /**
     * @return the items
     */
-   public List<DataCenter> getItems() {
+   public List<Volume> getItems() {
       return items;
    }
 
    /**
     * @param items the items to set
     */
-   public void setItems(List<DataCenter> items) {
+   public void setItems(List<Volume> items) {
       this.items = items;
    }
-
 }

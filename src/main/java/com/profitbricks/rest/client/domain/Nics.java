@@ -5,12 +5,14 @@
  */
 package com.profitbricks.rest.client.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author jasmin.gacic
  */
-public class Entities {
+public class Nics extends ProfitbricksBase {
 
-  
+   List<Nic> items = new ArrayList<Nic>();
 }

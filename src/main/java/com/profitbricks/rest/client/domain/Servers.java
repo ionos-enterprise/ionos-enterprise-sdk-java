@@ -12,21 +12,23 @@ import java.util.List;
  *
  * @author jasmin.gacic
  */
-public class DataCenters  extends ProfitbricksBase {
 
-   private List<DataCenter> items =  new ArrayList<DataCenter>();
+public class Servers  extends ProfitbricksBase{
+
+   private List<Server> items = new ArrayList<Server>();
+
 
    /**
     * @return the items
     */
-   public List<DataCenter> getItems() {
+   public List<Server> getItems() {
       return items;
    }
 
    /**
     * @param items the items to set
     */
-   public void setItems(List<DataCenter> items) {
+   public void setItems(List<Server> items) {
       this.items = items;
    }
 
