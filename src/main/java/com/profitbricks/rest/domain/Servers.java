@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.profitbricks.rest.client.domain;
+package com.profitbricks.rest.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,23 +12,24 @@ import java.util.List;
  *
  * @author jasmin.gacic
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class Volumes extends ProfitbricksBase{
-   
-   private List<Volume> items = new ArrayList<Volume>();
+
+public class Servers  extends ProfitbricksBase{
+
+   private List<Server> items = new ArrayList<Server>();
+
 
    /**
     * @return the items
     */
-   public List<Volume> getItems() {
+   public List<Server> getItems() {
       return items;
    }
 
    /**
     * @param items the items to set
     */
-   public void setItems(List<Volume> items) {
+   public void setItems(List<Server> items) {
       this.items = items;
    }
+
 }

@@ -3,7 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.profitbricks.rest.client.domain;
+package com.profitbricks.rest.domain;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -25,11 +28,25 @@ public class Nic extends ProfitbricksBase {
       this.properties = properties;
    }
 
+   /**
+    * @return the entities
+    */
+   public Entities getEntities() {
+      return entities;
+   }
+
+   /**
+    * @param entities the entities to set
+    */
+   public void setEntities(Entities entities) {
+      this.entities = entities;
+   }
+
    public class Properties {
 
       private String name;
       private String mac;
-      private String ips;
+      private List<String> ips = new ArrayList<String>();
       private boolean dhcp;
       private String lan;
       private boolean firewallActive;
@@ -65,14 +82,14 @@ public class Nic extends ProfitbricksBase {
       /**
        * @return the ips
        */
-      public String getIps() {
+      public List<String> getIps() {
          return ips;
       }
 
       /**
        * @param ips the ips to set
        */
-      public void setIps(String ips) {
+      public void setIps(List<String> ips) {
          this.ips = ips;
       }
 
@@ -118,7 +135,25 @@ public class Nic extends ProfitbricksBase {
          this.firewallActive = firewallActive;
       }
    }
-   
-   private Properties properties = new Properties();
 
+   public class Entities {
+
+      private FirewallRules firewallrules = new FirewallRules();
+
+      /**
+       * @return the firewallrules
+       */
+      public FirewallRules getFirewallrules() {
+         return firewallrules;
+      }
+
+      /**
+       * @param firewallrules the firewallrules to set
+       */
+      public void setFirewallrules(FirewallRules firewallrules) {
+         this.firewallrules = firewallrules;
+      }
+   }
+   private Properties properties = new Properties();
+   private Entities entities = new Entities();
 }

@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.profitbricks.rest.client.domain;
+package com.profitbricks.rest.domain;
 
 /**
  *
  * @author jasmin.gacic
  */
-public class Server extends ProfitbricksBase {
+public class Volume extends ProfitbricksBase {
 
    /**
     * @return the properties
@@ -32,8 +32,8 @@ public class Server extends ProfitbricksBase {
       private String ram;
       private AvailabilityZone availabilityZone;
       private Status vmState;
-      private boolean bootVolume;
-      private boolean bootCdrom;
+      private String bootVolume;
+      private String bootCdrom;
 
       /**
        * @return the name
@@ -108,53 +108,31 @@ public class Server extends ProfitbricksBase {
       /**
        * @return the bootVolume
        */
-      public boolean isBootVolume() {
+      public String getBootVolume() {
          return bootVolume;
       }
 
       /**
        * @param bootVolume the bootVolume to set
        */
-      public void setBootVolume(boolean bootVolume) {
+      public void setBootVolume(String bootVolume) {
          this.bootVolume = bootVolume;
       }
 
       /**
        * @return the bootCdrom
        */
-      public boolean isBootCdrom() {
+      public String getBootCdrom() {
          return bootCdrom;
       }
 
       /**
        * @param bootCdrom the bootCdrom to set
        */
-      public void setBootCdrom(boolean bootCdrom) {
+      public void setBootCdrom(String bootCdrom) {
          this.bootCdrom = bootCdrom;
       }
    }
-
-   public class Entities {
-
-      Nics nics = new Nics();
-      Volumes volumes = new Volumes();
-   }
-
+   
    private Properties properties = new Properties();
-
-   private Entities entities = new Entities();
-
-   /**
-    * @return the entities
-    */
-   public Entities getEntities() {
-      return entities;
-   }
-
-   /**
-    * @param entities the entities to set
-    */
-   public void setEntities(Entities entities) {
-      this.entities = entities;
-   }
 }

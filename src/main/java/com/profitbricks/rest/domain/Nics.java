@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.profitbricks.rest.client.domain;
+package com.profitbricks.rest.domain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,22 +12,21 @@ import java.util.List;
  *
  * @author jasmin.gacic
  */
-public class DataCenters  extends ProfitbricksBase {
+public class Nics extends ProfitbricksBase {
 
-   private List<DataCenter> items =  new ArrayList<DataCenter>();
+   private List<Nic> items = new ArrayList<Nic>();
 
    /**
     * @return the items
     */
-   public List<DataCenter> getItems() {
+   public List<Nic> getItems() {
       return items;
    }
 
    /**
     * @param items the items to set
     */
-   public void setItems(List<DataCenter> items) {
+   public void setItems(List<Nic> items) {
       this.items = items;
    }
-
 }

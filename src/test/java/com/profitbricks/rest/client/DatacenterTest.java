@@ -1,7 +1,7 @@
 package com.profitbricks.rest.client;
 
-import com.profitbricks.rest.client.domain.DataCenter;
-import com.profitbricks.rest.client.domain.DataCenters;
+import com.profitbricks.rest.domain.DataCenter;
+import com.profitbricks.rest.domain.DataCenters;
 import java.io.IOException;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -34,6 +34,6 @@ public class DatacenterTest {
    @Test
    public void testGetDatacenter() throws RestClientException, IOException {
       DataCenter datacenter = profitbricksApi.dataCenterApi.getDataCenter("659b7137-79d1-4e64-b368-81c038cb30dd");
-      assertNotNull(datacenter);
+      assertNotNull(datacenter);      
    }
 }

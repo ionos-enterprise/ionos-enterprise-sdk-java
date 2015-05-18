@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.profitbricks.rest.client.domain;
-
+package com.profitbricks.rest.domain;
 
 /**
  *
  * @author jasmin.gacic
  */
-public class Entities {
+public class Balancednics extends Nics {
 
-  
 }

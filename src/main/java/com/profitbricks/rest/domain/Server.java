@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.profitbricks.rest.client.domain;
+package com.profitbricks.rest.domain;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  *
  * @author jasmin.gacic
  */
-public class Volume extends ProfitbricksBase {
+public class Server extends ProfitbricksBase {
 
    /**
     * @return the properties
@@ -32,8 +34,8 @@ public class Volume extends ProfitbricksBase {
       private String ram;
       private AvailabilityZone availabilityZone;
       private Status vmState;
-      private String bootVolume;
-      private String bootCdrom;
+      private boolean bootVolume;
+      private boolean bootCdrom;
 
       /**
        * @return the name
@@ -108,31 +110,96 @@ public class Volume extends ProfitbricksBase {
       /**
        * @return the bootVolume
        */
-      public String getBootVolume() {
+      public boolean isBootVolume() {
          return bootVolume;
       }
 
       /**
        * @param bootVolume the bootVolume to set
        */
-      public void setBootVolume(String bootVolume) {
+      public void setBootVolume(boolean bootVolume) {
          this.bootVolume = bootVolume;
       }
 
       /**
        * @return the bootCdrom
        */
-      public String getBootCdrom() {
+      public boolean isBootCdrom() {
          return bootCdrom;
       }
 
       /**
        * @param bootCdrom the bootCdrom to set
        */
-      public void setBootCdrom(String bootCdrom) {
+      public void setBootCdrom(boolean bootCdrom) {
          this.bootCdrom = bootCdrom;
       }
    }
-   
+
+   public class Entities {
+
+      private Nics nics = new Nics();
+      private Volumes volumes = new Volumes();
+      private CDRoms cdroms = new CDRoms();
+
+      /**
+       * @return the nics
+       */
+      public Nics getNics() {
+         return nics;
+      }
+
+      /**
+       * @param nics the nics to set
+       */
+      public void setNics(Nics nics) {
+         this.nics = nics;
+      }
+
+      /**
+       * @return the volumes
+       */
+      public Volumes getVolumes() {
+         return volumes;
+      }
+
+      /**
+       * @param volumes the volumes to set
+       */
+      public void setVolumes(Volumes volumes) {
+         this.volumes = volumes;
+      }
+
+      /**
+       * @return the cdroms
+       */
+      public CDRoms getCdroms() {
+         return cdroms;
+      }
+
+      /**
+       * @param cdroms the cdroms to set
+       */
+      public void setCdroms(CDRoms cdroms) {
+         this.cdroms = cdroms;
+      }
+   }
+
    private Properties properties = new Properties();
+
+   private Entities entities = new Entities();
+
+   /**
+    * @return the entities
+    */
+   public Entities getEntities() {
+      return entities;
+   }
+
+   /**
+    * @param entities the entities to set
+    */
+   public void setEntities(Entities entities) {
+      this.entities = entities;
+   }
 }

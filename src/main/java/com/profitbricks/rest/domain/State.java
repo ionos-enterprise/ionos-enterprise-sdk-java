@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.profitbricks.rest.client.domain;
+package com.profitbricks.rest.domain;
 
 /**
  *
  * @author jasmin.gacic
  */
-public enum Protocol {
+public enum State {
 
-   TCP, UDP, ICMP, ANY, UNRECOGNIZED;
+   BUSY, AVAILABLE, INACTIVE, INPROCESS, DELETED, ERROR, UNRECOGNIZED;
 
-   public static Protocol fromValue(String value) {
+   public static State fromValue(String value) {
       try {
          return valueOf(value);
       } catch (IllegalArgumentException e) {
