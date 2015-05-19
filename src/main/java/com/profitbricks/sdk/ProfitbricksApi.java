@@ -1,4 +1,4 @@
-package com.profitbricks.rest.client;
+package com.profitbricks.sdk;
 
 /**
  * Hello world!

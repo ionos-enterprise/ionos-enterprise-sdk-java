@@ -135,7 +135,7 @@ public abstract class AbstractRestClient {
    }
 
    protected <T extends HttpUriRequest> T contentTypeJson(T request) {
-      request.addHeader("Content-Type", ContentType.APPLICATION_JSON.toString());
+    //  request.addHeader("Content-Type", ContentType.APPLICATION_JSON.toString());
       return request;
    }
 

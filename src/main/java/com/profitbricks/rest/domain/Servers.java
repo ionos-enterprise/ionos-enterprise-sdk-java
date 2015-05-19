@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Servers  extends ProfitbricksBase{
 
-   private List<Server> items = new ArrayList<Server>();
+   public List<Server> items = new ArrayList<Server>();
 
 
    /**

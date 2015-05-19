@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.profitbricks.rest.client;
+package com.profitbricks.sdk;
 
+import com.profitbricks.rest.client.RequestInterceptor;
+import com.profitbricks.rest.client.RestClient;
 import org.apache.http.client.methods.HttpRequestBase;
 
 /**
@@ -26,6 +28,7 @@ public abstract class ProfitbricksAPIBase {
          @Override
          public void intercept(HttpRequestBase request) {
             request.addHeader("Authorization", "Basic ".concat(credentials));
+            request.addHeader("Content-Type", "application/vnd.profitbricks.resource+json");
          }
       };
 
