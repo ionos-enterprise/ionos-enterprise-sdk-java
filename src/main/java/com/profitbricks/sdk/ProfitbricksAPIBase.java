@@ -36,7 +36,7 @@ public abstract class ProfitbricksAPIBase {
             request.addHeader("Authorization", "Basic ".concat(credentials));
             if (request.getClass() == HttpPatch.class)
                request.addHeader("Content-Type", "application/vnd.profitbricks.partial-properties+json");
-            else
+            else 
                request.addHeader("Content-Type", "application/vnd.profitbricks.resource+json");
          }
       };

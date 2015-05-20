@@ -30,7 +30,7 @@ public class DatacenterTest {
 
       DataCenter datacenter = new DataCenter();
 
-      datacenter.properties.name = "SDK TEST DC 1000";
+      datacenter.properties.name = "SDK TEST DC";
       datacenter.properties.location = Location.US_LAS;
       datacenter.properties.description = "SDK TEST Description";
 

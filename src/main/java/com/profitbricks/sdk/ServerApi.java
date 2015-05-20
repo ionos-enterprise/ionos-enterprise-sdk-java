@@ -33,4 +33,9 @@ public class ServerApi extends ProfitbricksAPIBase {
               .concat("/").concat(resource).concat("/").concat(serverId)
               .concat(depth), null, Server.class);
    }
+
+   public Server createServer(String dataCenterId, Server server) throws RestClientException, IOException {
+      return client.create(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+              .concat("/").concat(resource), server, Server.class, 202);
+   }
 }

@@ -13,193 +13,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 public class Server extends ProfitbricksBase {
 
-   /**
-    * @return the properties
-    */
-   public Properties getProperties() {
-      return properties;
-   }
-
-   /**
-    * @param properties the properties to set
-    */
-   public void setProperties(Properties properties) {
-      this.properties = properties;
-   }
-
    public class Properties {
 
-      private String name;
-      private String cores;
-      private String ram;
-      private AvailabilityZone availabilityZone;
-      private Status vmState;
-      private boolean bootVolume;
-      private boolean bootCdrom;
-
-      /**
-       * @return the name
-       */
-      public String getName() {
-         return name;
-      }
-
-      /**
-       * @param name the name to set
-       */
-      public void setName(String name) {
-         this.name = name;
-      }
-
-      /**
-       * @return the cores
-       */
-      public String getCores() {
-         return cores;
-      }
-
-      /**
-       * @param cores the cores to set
-       */
-      public void setCores(String cores) {
-         this.cores = cores;
-      }
-
-      /**
-       * @return the ram
-       */
-      public String getRam() {
-         return ram;
-      }
-
-      /**
-       * @param ram the ram to set
-       */
-      public void setRam(String ram) {
-         this.ram = ram;
-      }
-
-      /**
-       * @return the availabilityZone
-       */
-      public AvailabilityZone getAvailabilityZone() {
-         return availabilityZone;
-      }
-
-      /**
-       * @param availabilityZone the availabilityZone to set
-       */
-      public void setAvailabilityZone(AvailabilityZone availabilityZone) {
-         this.availabilityZone = availabilityZone;
-      }
-
-      /**
-       * @return the vmState
-       */
-      public Status getVmState() {
-         return vmState;
-      }
-
-      /**
-       * @param vmState the vmState to set
-       */
-      public void setVmState(Status vmState) {
-         this.vmState = vmState;
-      }
-
-      /**
-       * @return the bootVolume
-       */
-      public boolean isBootVolume() {
-         return bootVolume;
-      }
-
-      /**
-       * @param bootVolume the bootVolume to set
-       */
-      public void setBootVolume(boolean bootVolume) {
-         this.bootVolume = bootVolume;
-      }
-
-      /**
-       * @return the bootCdrom
-       */
-      public boolean isBootCdrom() {
-         return bootCdrom;
-      }
-
-      /**
-       * @param bootCdrom the bootCdrom to set
-       */
-      public void setBootCdrom(boolean bootCdrom) {
-         this.bootCdrom = bootCdrom;
-      }
+      public String name;
+      public String cores;
+      public String ram;
+      public AvailabilityZone availabilityZone;
+      public Status vmState;
+      public Boolean bootVolume;
+      public Boolean bootCdrom;
    }
 
    public class Entities {
 
-      private Nics nics = new Nics();
-      private Volumes volumes = new Volumes();
-      private CDRoms cdroms = new CDRoms();
-
-      /**
-       * @return the nics
-       */
-      public Nics getNics() {
-         return nics;
-      }
-
-      /**
-       * @param nics the nics to set
-       */
-      public void setNics(Nics nics) {
-         this.nics = nics;
-      }
-
-      /**
-       * @return the volumes
-       */
-      public Volumes getVolumes() {
-         return volumes;
-      }
-
-      /**
-       * @param volumes the volumes to set
-       */
-      public void setVolumes(Volumes volumes) {
-         this.volumes = volumes;
-      }
-
-      /**
-       * @return the cdroms
-       */
-      public CDRoms getCdroms() {
-         return cdroms;
-      }
-
-      /**
-       * @param cdroms the cdroms to set
-       */
-      public void setCdroms(CDRoms cdroms) {
-         this.cdroms = cdroms;
-      }
+      public Nics nics = new Nics();
+      public Volumes volumes = new Volumes();
+      public CDRoms cdroms = new CDRoms();
    }
 
-   private Properties properties = new Properties();
+   public Properties properties = new Properties();
+   public Entities entities = new Entities();
 
-   private Entities entities = new Entities();
-
-   /**
-    * @return the entities
-    */
-   public Entities getEntities() {
-      return entities;
-   }
-
-   /**
-    * @param entities the entities to set
-    */
-   public void setEntities(Entities entities) {
-      this.entities = entities;
-   }
 }
