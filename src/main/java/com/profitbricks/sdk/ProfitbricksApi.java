@@ -7,23 +7,10 @@ package com.profitbricks.sdk;
 public class ProfitbricksApi {
 
    public ProfitbricksApi() {
+      this.serverApi = new ServerApi();
+      this.dataCenterApi = new DatacenterApi();
    }
 
-   public DatacenterApi dataCenterApi = new DatacenterApi();
-
-   //http://spc.profitbricks.com/rest/datacenters
-  /* public static void main(String[] args) {
-
-    String url = "https://spc.profitbricks.com/rest/datacenters";
-    DataCenters node = new DataCenters();
-    try {
-    node = client.get(url, null, DataCenters.class);
-    int nr = 0;
-    } catch (RestClientException ex) {
-    Logger.getLogger(ProfitbricksApi.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (IOException ex) {
-    Logger.getLogger(ProfitbricksApi.class.getName()).log(Level.SEVERE, null, ex);
-    }
-
-    }*/
+   public DatacenterApi dataCenterApi;
+   public ServerApi serverApi;
 }

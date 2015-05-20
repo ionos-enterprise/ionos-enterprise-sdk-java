@@ -18,15 +18,18 @@ public abstract class ProfitbricksAPIBase {
 
    public String urlBase = "https://spc.profitbricks.com/rest/";
    public String resource;
+   public String parentResource;
+
    public RequestInterceptor authorize;
    public RestClient client;
    public String depth = "?depth=".concat("5");
 
    String credentials = "ZmFyaWQuc2hhaEBwcm9maXRicmlja3MuY29tOnNwYzIwMTU=";
 
-   public ProfitbricksAPIBase(String resource) {
+   public ProfitbricksAPIBase(String resource, String parentResource) {
       this.resource = resource;
-
+      this.parentResource = parentResource;
+      
       authorize = new RequestInterceptor() {
          @Override
          public void intercept(HttpRequestBase request) {
