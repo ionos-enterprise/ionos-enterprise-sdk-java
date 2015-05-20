@@ -96,7 +96,7 @@ public abstract class AbstractRestClient {
       else
          logger.error("[" + status + "] Failed to send " + method + " " + path);
       if (expectedStatus != status) {
-         String content;
+         String content = "";
          try {
             content = IOUtils.toString(response.getEntity().getContent(), Charsets.UTF_8);
          } catch (IOException e) {
@@ -104,6 +104,9 @@ public abstract class AbstractRestClient {
          }
          StringBuilder sb = new StringBuilder("Status of " + status);
          sb.append(" not equal to expected value of ").append(expectedStatus);
+         if (!content.isEmpty())
+            sb.append(" not equal to expected value of ").append(expectedStatus).append(" Message: ").append(content);
+
          throw new RestClientException(sb.toString(), response);
       }
       return response;

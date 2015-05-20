@@ -37,4 +37,8 @@ public class DatacenterApi extends ProfitbricksAPIBase {
    public DataCenter updateDataCenter(String id, UpdateObject datacenter) throws RestClientException, IOException {
       return client.update(urlBase.concat(resource).concat("/").concat(id), datacenter, DataCenter.class, 202);
    }
+
+   public void deleteDataCenter(String id) throws RestClientException, IOException {
+      client.delete(urlBase.concat(resource).concat("/").concat(id), 202);
+   }
 }

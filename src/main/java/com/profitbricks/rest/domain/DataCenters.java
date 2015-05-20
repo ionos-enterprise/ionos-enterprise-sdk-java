@@ -14,20 +14,5 @@ import java.util.List;
  */
 public class DataCenters  extends ProfitbricksBase {
 
-   private List<DataCenter> items =  new ArrayList<DataCenter>();
-
-   /**
-    * @return the items
-    */
-   public List<DataCenter> getItems() {
-      return items;
-   }
-
-   /**
-    * @param items the items to set
-    */
-   public void setItems(List<DataCenter> items) {
-      this.items = items;
-   }
-
+   public List<DataCenter> items =  new ArrayList<DataCenter>();
 }
