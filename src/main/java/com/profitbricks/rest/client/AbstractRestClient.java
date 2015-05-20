@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.client.methods.HttpPatch;
 
 public abstract class AbstractRestClient {
 
@@ -95,6 +96,12 @@ public abstract class AbstractRestClient {
       else
          logger.error("[" + status + "] Failed to send " + method + " " + path);
       if (expectedStatus != status) {
+         String content;
+         try {
+            content = IOUtils.toString(response.getEntity().getContent(), Charsets.UTF_8);
+         } catch (IOException e) {
+
+         }
          StringBuilder sb = new StringBuilder("Status of " + status);
          sb.append(" not equal to expected value of ").append(expectedStatus);
          throw new RestClientException(sb.toString(), response);
@@ -135,7 +142,8 @@ public abstract class AbstractRestClient {
    }
 
    protected <T extends HttpUriRequest> T contentTypeJson(T request) {
-    //  request.addHeader("Content-Type", ContentType.APPLICATION_JSON.toString());
+
+      //request.addHeader("Content-Type", "application/vnd.profitbricks.partial-properties+json");
       return request;
    }
 
@@ -149,6 +157,10 @@ public abstract class AbstractRestClient {
 
    protected HttpPut newHttpPut(String url) {
       return new HttpPut(url);
+   }
+
+   protected HttpPatch newHttpPatch(String url) {
+      return new HttpPatch(url);
    }
 
    protected HttpDelete newHttpDelete(String url) {

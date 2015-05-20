@@ -17,6 +17,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.profitbricks.rest.domain.UpdateObject;
+import org.apache.http.client.methods.HttpPatch;
 
 public class RestClient extends AbstractRestClient {
 
@@ -175,6 +177,19 @@ public class RestClient extends AbstractRestClient {
       consume(execute(interceptor, put, expectedStatus));
    }
 
+   public <T> T update(RequestInterceptor interceptor, String path, UpdateObject object, Class<T> entityClass, int expectedStatus)
+           throws RestClientException, IOException {
+      HttpPatch patch = contentTypeJson(newHttpPatch(path));
+      HttpEntity entity = new StringEntity(toJson(object).toString(), Charsets.UTF_8);
+      patch.setEntity(entity);
+      HttpResponse response = execute(interceptor, patch, expectedStatus);
+      String content = contentAsString(response);
+      if (content != null)
+         return bindObject(content, entityClass);
+      else
+         return null;
+   }
+
    public void update(RequestInterceptor interceptor, String path, Object object) throws RestClientException,
            IOException {
       update(interceptor, path, object, 200);
@@ -182,6 +197,10 @@ public class RestClient extends AbstractRestClient {
 
    public void update(String path, Object object) throws RestClientException, IOException {
       update(null, path, object, 200);
+   }
+
+   public <T> T update(String path, UpdateObject object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException {
+      return update(null, path, object, entityClass, expectedStatus);
    }
 
    public void update(String path, Object object, int expectedStatus) throws RestClientException, IOException {

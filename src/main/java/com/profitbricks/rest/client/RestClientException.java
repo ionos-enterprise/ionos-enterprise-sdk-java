@@ -1,6 +1,6 @@
 package com.profitbricks.rest.client;
 
-import org.apache.http.HttpResponse;
+import org.apache .http.HttpResponse;
 
 public class RestClientException extends Exception {
     private static final long serialVersionUID = -785745983831601722L;

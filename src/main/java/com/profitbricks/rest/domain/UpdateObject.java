@@ -9,14 +9,7 @@ package com.profitbricks.rest.domain;
  *
  * @author jasmin.gacic
  */
-public class ProfitbricksBase {
-
-   public ProfitbricksBase() {
-
-   }
-   
-   public String id;
-   public String type;
-   public String href;
-   public Metadata metadata = new Metadata();
+public class UpdateObject {
+   public String name;
+   public String description;
 }

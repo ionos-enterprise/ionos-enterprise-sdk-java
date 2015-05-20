@@ -15,7 +15,7 @@ public class DataCenter extends ProfitbricksBase {
       this.entities = new Entities();
       this.properties = new Properties();
    }
-   
+
    public Properties properties;
    public Entities entities;
 
@@ -32,9 +32,9 @@ public class DataCenter extends ProfitbricksBase {
       public void setLocation(String location) {
          this.location.fromValue(location);
       }
-      
-      public String getLocation(){
-         return this.location.value();
+
+      public String getLocation() {
+         return this.location != null ? this.location.value() : null;
       }
    }
 

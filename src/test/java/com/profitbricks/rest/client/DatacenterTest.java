@@ -5,6 +5,7 @@ import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.DataCenter.Properties;
 import com.profitbricks.rest.domain.DataCenters;
 import com.profitbricks.rest.domain.Location;
+import com.profitbricks.rest.domain.UpdateObject;
 import java.io.IOException;
 import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
@@ -59,9 +60,14 @@ public class DatacenterTest {
       dcId = newDatacenter.id;
       assertEquals(newDatacenter.properties.name, datacenter.properties.name);
    }
-   
+
    @Test
-   public void updateDataCenter()throws RestClientException, IOException{
-      
+   public void updateDataCenter() throws RestClientException, IOException {
+      String newName = "SDK TEST DC CHANGED";
+      UpdateObject object = new UpdateObject();
+      object.name = newName;
+
+      DataCenter updatedDataCenter = profitbricksApi.dataCenterApi.updateDataCenter(dcId, object);
+      assertEquals(newName, updatedDataCenter.properties.name);
    }
 }
