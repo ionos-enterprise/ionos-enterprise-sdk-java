@@ -3,12 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.profitbricks.rest.client.domain;
+package com.profitbricks.rest.domain;
 
 /**
  *
  * @author jasmin.gacic
  */
-public class Server {
+public class ProfitbricksBase {
 
+   public ProfitbricksBase() {
+
+   }
+   
+   public String id;
+   public String type;
+   public String href;
+   public Metadata metadata = new Metadata();
 }

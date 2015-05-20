@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.profitbricks.rest.client;
+package com.profitbricks.rest.domain;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author jasmin.gacic
  */
-public class DatacenterApi extends ProfitbricksAPIBase {
+public class DataCenters  extends ProfitbricksBase {
 
-   public DatacenterApi(String resource) {
-      super(resource);
-   }
-   
+   public List<DataCenter> items =  new ArrayList<DataCenter>();
 }
