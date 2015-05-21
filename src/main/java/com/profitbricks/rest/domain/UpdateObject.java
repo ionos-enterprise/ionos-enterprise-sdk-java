@@ -10,6 +10,14 @@ package com.profitbricks.rest.domain;
  * @author jasmin.gacic
  */
 public class UpdateObject {
+
    public String name;
+   public Status vmState;
    public String description;
+   public String cores;
+   public String ram;
+   public AvailabilityZone availabilityZone;
+   public Boolean bootVolume;
+   public Boolean bootCdrom;
+   public String licencetype;
 }

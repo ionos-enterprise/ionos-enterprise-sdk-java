@@ -7,16 +7,21 @@ package com.profitbricks.rest.client;
 
 import com.profitbricks.rest.domain.BusType;
 import com.profitbricks.rest.domain.DataCenter;
+import com.profitbricks.rest.domain.LicenceType;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.Server;
 import com.profitbricks.rest.domain.Servers;
+import com.profitbricks.rest.domain.UpdateObject;
 import com.profitbricks.rest.domain.Volume;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import org.junit.After;
+import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -25,16 +30,12 @@ import org.junit.Test;
  */
 public class ServerTest {
 
-   ProfitbricksApi profitbricksApi;
-   String dcId;//= "67b49555-692a-4dfa-abb9-eba9349e074b";
-   String serverId;// = "ec71996c-0e0c-4b5b-b71b-474a89e29e56";
+   static ProfitbricksApi profitbricksApi = new ProfitbricksApi();
+   static String dcId;//= "67b49555-692a-4dfa-abb9-eba9349e074b";
+   static String serverId;// = "ec71996c-0e0c-4b5b-b71b-474a89e29e56";
 
-   public ServerTest() {
-      this.profitbricksApi = new ProfitbricksApi();
-   }
-
-   @Before
-   public void testCreateServer() throws RestClientException, IOException, InterruptedException {
+   @BeforeClass
+   public static void testCreateServer() throws RestClientException, IOException, InterruptedException {
 
       DataCenter datacenter = new DataCenter();
 
@@ -71,20 +72,29 @@ public class ServerTest {
       System.out.println("Getting All Servers");
       Servers servers = profitbricksApi.serverApi.getAllServers(dcId);
       assertNotNull(servers);
-      assertTrue(servers.items.size() > 0);
    }
 
    @Test
-   public void testGetServer() throws RestClientException, IOException {
+   public void testGetServer() throws RestClientException, IOException, InterruptedException {
       System.out.println("Getting One Server");
+      Thread.sleep(2000);
       Server server = profitbricksApi.serverApi.getServer(dcId, serverId);
       assertNotNull(server);
+   }
+
+   @Test
+   public void updateServer() throws RestClientException, IOException {
+      String newName = "SDK TEST SERVER CHANGED";
+      UpdateObject object = new UpdateObject();
+      object.name = newName;
+
+      Server updatedServer = profitbricksApi.serverApi.updateServer(dcId, serverId, object);
+      assertEquals(newName, updatedServer.properties.name);
 
    }
 
-   @After
-   public void testDeleteServer() throws RestClientException, IOException {
+   @AfterClass
+   public static void testDeleteServer() throws RestClientException, IOException {
       profitbricksApi.dataCenterApi.deleteDataCenter(dcId);
-      //profitbricksApi.serverApi.deleteServer(dcId, serverId);
    }
 }

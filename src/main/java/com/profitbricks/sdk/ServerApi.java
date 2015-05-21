@@ -6,9 +6,11 @@
 package com.profitbricks.sdk;
 
 import com.profitbricks.rest.client.RestClientException;
+import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.DataCenters;
 import com.profitbricks.rest.domain.Server;
 import com.profitbricks.rest.domain.Servers;
+import com.profitbricks.rest.domain.UpdateObject;
 import java.io.IOException;
 import org.junit.Test;
 
@@ -42,6 +44,12 @@ public class ServerApi extends ProfitbricksAPIBase {
    public void deleteServer(String dataCenterId, String serverId) throws RestClientException, IOException {
       client.delete(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource).concat("/").concat(serverId), 202);
+
+   }
+
+   public Server updateServer(String dataCenterId, String serverId, UpdateObject server) throws RestClientException, IOException {
+      return client.update(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+              .concat("/").concat(resource).concat("/").concat(serverId), server, Server.class, 202);
 
    }
 }

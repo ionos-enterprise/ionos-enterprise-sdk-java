@@ -22,6 +22,22 @@ public class Server extends ProfitbricksBase {
       public Status vmState;
       public Boolean bootVolume;
       public Boolean bootCdrom;
+      public LicenceType licencetype;
+
+      /**
+       * @return the licencetype
+       */
+      public LicenceType getLicencetype() {
+         return licencetype;
+      }
+
+      /**
+       * @param licencetype the licencetype to set
+       */
+      public void setLicencetype(String licencetype) {
+         this.licencetype.fromValue(licencetype);
+      }
+      
    }
 
    public class Entities {
