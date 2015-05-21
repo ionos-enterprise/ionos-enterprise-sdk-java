@@ -38,4 +38,10 @@ public class ServerApi extends ProfitbricksAPIBase {
       return client.create(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource), server, Server.class, 202);
    }
+
+   public void deleteServer(String dataCenterId, String serverId) throws RestClientException, IOException {
+      client.delete(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+              .concat("/").concat(resource).concat("/").concat(serverId), 202);
+
+   }
 }

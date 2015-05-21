@@ -28,17 +28,19 @@ public class DatacenterTest {
    @Before
    public void createDataCenter() throws RestClientException, IOException {
 
-      DataCenter datacenter = new DataCenter();
+      if (dcId != "") {
+         DataCenter datacenter = new DataCenter();
 
-      datacenter.properties.name = "SDK TEST DC";
-      datacenter.properties.location = Location.US_LAS;
-      datacenter.properties.description = "SDK TEST Description";
+         datacenter.properties.name = "SDK TEST DC";
+         datacenter.properties.location = Location.US_LAS;
+         datacenter.properties.description = "SDK TEST Description";
 
-      datacenter.entities = null;
-      datacenter.metadata = null;
-      DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
-      dcId = newDatacenter.id;
-      assertEquals(newDatacenter.properties.name, datacenter.properties.name);
+         datacenter.entities = null;
+         datacenter.metadata = null;
+         DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
+         dcId = newDatacenter.id;
+         assertEquals(newDatacenter.properties.name, datacenter.properties.name);
+      }
    }
 
    @Test
