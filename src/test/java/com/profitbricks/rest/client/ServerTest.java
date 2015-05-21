@@ -67,21 +67,28 @@ public class ServerTest {
    }
 
    @Test
+   public void testInOrder() throws RestClientException, IOException, InterruptedException {
+      testGetAllServers();
+      testGetServer();
+      testUpdateServer();
+      testRebootServer();
+      testStartServer();
+      testStopServer();
+   }
+
    public void testGetAllServers() throws RestClientException, IOException {
       System.out.println("Getting All Servers");
       Servers servers = profitbricksApi.serverApi.getAllServers(dcId);
       assertNotNull(servers);
    }
 
-   @Test
    public void testGetServer() throws RestClientException, IOException, InterruptedException {
       System.out.println("Getting One Server");
-      Thread.sleep(2000);
+      Thread.sleep(5000);
       Server server = profitbricksApi.serverApi.getServer(dcId, serverId);
       assertNotNull(server);
    }
 
-   @Test
    public void testUpdateServer() throws RestClientException, IOException {
       String newName = "SDK TEST SERVER CHANGED";
       UpdateObject object = new UpdateObject();
@@ -92,18 +99,16 @@ public class ServerTest {
 
    }
 
-   @Test
    public void testStartServer() throws RestClientException, IOException {
-      throw new UnsupportedOperationException();
+      profitbricksApi.serverApi.startServer(dcId, serverId);
    }
 
-   @Test
    public void testStopServer() throws RestClientException, IOException {
-      throw new UnsupportedOperationException();
+      profitbricksApi.serverApi.stopServer(dcId, serverId);
+
    }
 
-   @Test
    public void testRebootServer() throws RestClientException, IOException {
-      throw new UnsupportedOperationException();
+      profitbricksApi.serverApi.rebootServer(dcId, serverId);
    }
 }

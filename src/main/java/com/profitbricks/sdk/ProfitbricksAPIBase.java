@@ -29,15 +29,19 @@ public abstract class ProfitbricksAPIBase {
    public ProfitbricksAPIBase(String resource, String parentResource) {
       this.resource = resource;
       this.parentResource = parentResource;
-      
+
       authorize = new RequestInterceptor() {
          @Override
          public void intercept(HttpRequestBase request) {
+
             request.addHeader("Authorization", "Basic ".concat(credentials));
-            if (request.getClass() == HttpPatch.class)
-               request.addHeader("Content-Type", "application/vnd.profitbricks.partial-properties+json");
-            else 
-               request.addHeader("Content-Type", "application/vnd.profitbricks.resource+json");
+            if (!request.getURI().getRawPath().endsWith("reboot"))
+               if (!request.getURI().getRawPath().endsWith("start"))
+                  if (!request.getURI().getRawPath().endsWith("stop"))
+                     if (request.getClass() == HttpPatch.class)
+                        request.addHeader("Content-Type", "application/vnd.profitbricks.partial-properties+json");
+                     else
+                        request.addHeader("Content-Type", "application/vnd.profitbricks.resource+json");
          }
       };
 

@@ -52,4 +52,19 @@ public class ServerApi extends ProfitbricksAPIBase {
               .concat("/").concat(resource).concat("/").concat(serverId), server, Server.class, 202);
 
    }
+
+   public void rebootServer(String dataCenterId, String serverId) throws RestClientException, IOException {
+      client.execute(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+              .concat("/").concat(resource).concat("/").concat(serverId).concat("/").concat("reboot"), 202);
+   }
+
+   public void startServer(String dataCenterId, String serverId) throws RestClientException, IOException {
+      client.execute(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+              .concat("/").concat(resource).concat("/").concat(serverId).concat("/").concat("start"), 202);
+   }
+
+   public void stopServer(String dataCenterId, String serverId) throws RestClientException, IOException {
+      client.execute(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+              .concat("/").concat(resource).concat("/").concat(serverId).concat("/").concat("stop"), 202);
+   }
 }
