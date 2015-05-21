@@ -26,6 +26,8 @@ public class Volume extends ProfitbricksBase {
       public String bootCdrom;
       public String size;
       public BusType bus;
+      public String image;
+      public String licenceType;
    }
 
    public Properties properties = new Properties();

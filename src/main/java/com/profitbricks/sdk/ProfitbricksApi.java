@@ -1,16 +1,15 @@
 package com.profitbricks.sdk;
 
-/**
- * Hello world!
- *
- */
 public class ProfitbricksApi {
 
    public ProfitbricksApi() {
-      this.serverApi = new ServerApi();
       this.dataCenterApi = new DatacenterApi();
+      this.serverApi = new ServerApi();
+      this.volumeApi = new VolumeApi();
    }
 
    public DatacenterApi dataCenterApi;
    public ServerApi serverApi;
+   public VolumeApi volumeApi;
+
 }

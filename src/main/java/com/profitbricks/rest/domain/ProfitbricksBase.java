@@ -18,5 +18,5 @@ public class ProfitbricksBase {
    public String id;
    public String type;
    public String href;
-   public Metadata metadata = new Metadata();
+   public Metadata metadata;
 }

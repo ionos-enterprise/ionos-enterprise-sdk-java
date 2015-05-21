@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.profitbricks.rest.client;
+package com.profitbricks.rest.test;
 
+import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.Server;

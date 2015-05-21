@@ -1,5 +1,6 @@
-package com.profitbricks.rest.client;
+package com.profitbricks.rest.test;
 
+import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.DataCenters;
 import com.profitbricks.rest.domain.Location;
@@ -21,24 +22,23 @@ import org.junit.Test;
 public class DatacenterTest {
 
    static String dcId;
-   static ProfitbricksApi profitbricksApi= new ProfitbricksApi();
+   static ProfitbricksApi profitbricksApi = new ProfitbricksApi();
 
    @BeforeClass
    public static void createDataCenter() throws RestClientException, IOException {
 
-      if (dcId != "") {
-         DataCenter datacenter = new DataCenter();
+      DataCenter datacenter = new DataCenter();
 
-         datacenter.properties.name = "SDK TEST DC";
-         datacenter.properties.location = Location.US_LAS;
-         datacenter.properties.description = "SDK TEST Description";
+      datacenter.properties.name = "SDK TEST DC";
+      datacenter.properties.location = Location.US_LAS;
+      datacenter.properties.description = "SDK TEST Description";
 
-         datacenter.entities = null;
-         datacenter.metadata = null;
-         DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
-         dcId = newDatacenter.id;
-         assertEquals(newDatacenter.properties.name, datacenter.properties.name);
-      }
+      datacenter.entities = null;
+      datacenter.metadata = null;
+      DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
+      dcId = newDatacenter.id;
+      assertEquals(newDatacenter.properties.name, datacenter.properties.name);
+
    }
 
    @Test
