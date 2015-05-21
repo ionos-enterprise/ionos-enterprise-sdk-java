@@ -18,23 +18,30 @@ public abstract class ProfitbricksAPIBase {
 
    public String urlBase = "https://spc.profitbricks.com/rest/";
    public String resource;
+   public String parentResource;
+
    public RequestInterceptor authorize;
    public RestClient client;
    public String depth = "?depth=".concat("5");
 
    String credentials = "ZmFyaWQuc2hhaEBwcm9maXRicmlja3MuY29tOnNwYzIwMTU=";
 
-   public ProfitbricksAPIBase(String resource) {
+   public ProfitbricksAPIBase(String resource, String parentResource) {
       this.resource = resource;
+      this.parentResource = parentResource;
 
       authorize = new RequestInterceptor() {
          @Override
          public void intercept(HttpRequestBase request) {
+
             request.addHeader("Authorization", "Basic ".concat(credentials));
-            if (request.getClass() == HttpPatch.class)
-               request.addHeader("Content-Type", "application/vnd.profitbricks.partial-properties+json");
-            else
-               request.addHeader("Content-Type", "application/vnd.profitbricks.resource+json");
+            if (!request.getURI().getRawPath().endsWith("reboot"))
+               if (!request.getURI().getRawPath().endsWith("start"))
+                  if (!request.getURI().getRawPath().endsWith("stop"))
+                     if (request.getClass() == HttpPatch.class)
+                        request.addHeader("Content-Type", "application/vnd.profitbricks.partial-properties+json");
+                     else
+                        request.addHeader("Content-Type", "application/vnd.profitbricks.resource+json");
          }
       };
 

@@ -137,6 +137,16 @@ public class RestClient extends AbstractRestClient {
       return response.getFirstHeader("Location");
    }
 
+   public void execute(RequestInterceptor interceptor, String path, int expectedStatus) throws RestClientException, IOException {
+      HttpPost post = newHttpPost(path);
+      HttpResponse response = execute(interceptor, post, expectedStatus);
+      consume(response);
+   }
+
+   public void execute(String path, int expectedStatus) throws RestClientException, IOException {
+      execute(null, path, expectedStatus);
+   }
+
    public Header create(String path, List<?> data, int expectedStatus) throws RestClientException, IOException {
       return create(null, path, data, expectedStatus);
    }

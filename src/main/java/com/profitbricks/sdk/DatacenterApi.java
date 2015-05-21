@@ -19,7 +19,7 @@ import org.apache.http.Header;
 public class DatacenterApi extends ProfitbricksAPIBase {
 
    public DatacenterApi() {
-      super("datacenters");
+      super("datacenters", "");
    }
 
    public DataCenters getAllDataCenters() throws RestClientException, IOException {

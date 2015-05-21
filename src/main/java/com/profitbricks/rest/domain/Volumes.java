@@ -18,19 +18,5 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Volumes extends ProfitbricksBase{
    
-   private List<Volume> items = new ArrayList<Volume>();
-
-   /**
-    * @return the items
-    */
-   public List<Volume> getItems() {
-      return items;
-   }
-
-   /**
-    * @param items the items to set
-    */
-   public void setItems(List<Volume> items) {
-      this.items = items;
-   }
+   public List<Volume> items = new ArrayList<Volume>();
 }

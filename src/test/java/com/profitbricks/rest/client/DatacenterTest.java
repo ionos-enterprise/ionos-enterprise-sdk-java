@@ -7,10 +7,12 @@ import com.profitbricks.rest.domain.UpdateObject;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import org.junit.After;
+import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -18,27 +20,25 @@ import org.junit.Test;
  */
 public class DatacenterTest {
 
-   String dcId;
-   ProfitbricksApi profitbricksApi;
+   static String dcId;
+   static ProfitbricksApi profitbricksApi= new ProfitbricksApi();
 
-   public DatacenterTest() {
-      profitbricksApi = new ProfitbricksApi();
-   }
+   @BeforeClass
+   public static void createDataCenter() throws RestClientException, IOException {
 
-   @Before
-   public void createDataCenter() throws RestClientException, IOException {
+      if (dcId != "") {
+         DataCenter datacenter = new DataCenter();
 
-      DataCenter datacenter = new DataCenter();
+         datacenter.properties.name = "SDK TEST DC";
+         datacenter.properties.location = Location.US_LAS;
+         datacenter.properties.description = "SDK TEST Description";
 
-      datacenter.properties.name = "SDK TEST DC 1000";
-      datacenter.properties.location = Location.US_LAS;
-      datacenter.properties.description = "SDK TEST Description";
-
-      datacenter.entities = null;
-      datacenter.metadata = null;
-      DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
-      dcId = newDatacenter.id;
-      assertEquals(newDatacenter.properties.name, datacenter.properties.name);
+         datacenter.entities = null;
+         datacenter.metadata = null;
+         DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
+         dcId = newDatacenter.id;
+         assertEquals(newDatacenter.properties.name, datacenter.properties.name);
+      }
    }
 
    @Test
@@ -64,8 +64,8 @@ public class DatacenterTest {
       assertEquals(newName, updatedDataCenter.properties.name);
    }
 
-   @After
-   public void deleteDataCenter() throws RestClientException, IOException {
+   @AfterClass
+   public static void deleteDataCenter() throws RestClientException, IOException {
       profitbricksApi.dataCenterApi.deleteDataCenter(dcId);
    }
 }
