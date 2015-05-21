@@ -5,22 +5,16 @@
  */
 package com.profitbricks.rest.client;
 
-import com.profitbricks.rest.domain.BusType;
 import com.profitbricks.rest.domain.DataCenter;
-import com.profitbricks.rest.domain.LicenceType;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.Server;
 import com.profitbricks.rest.domain.Servers;
 import com.profitbricks.rest.domain.UpdateObject;
-import com.profitbricks.rest.domain.Volume;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
-import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -67,6 +61,11 @@ public class ServerTest {
 
    }
 
+   @AfterClass
+   public static void testDeleteServer() throws RestClientException, IOException {
+      profitbricksApi.dataCenterApi.deleteDataCenter(dcId);
+   }
+
    @Test
    public void testGetAllServers() throws RestClientException, IOException {
       System.out.println("Getting All Servers");
@@ -83,7 +82,7 @@ public class ServerTest {
    }
 
    @Test
-   public void updateServer() throws RestClientException, IOException {
+   public void testUpdateServer() throws RestClientException, IOException {
       String newName = "SDK TEST SERVER CHANGED";
       UpdateObject object = new UpdateObject();
       object.name = newName;
@@ -93,8 +92,18 @@ public class ServerTest {
 
    }
 
-   @AfterClass
-   public static void testDeleteServer() throws RestClientException, IOException {
-      profitbricksApi.dataCenterApi.deleteDataCenter(dcId);
+   @Test
+   public void testStartServer() throws RestClientException, IOException {
+      throw new UnsupportedOperationException();
+   }
+
+   @Test
+   public void testStopServer() throws RestClientException, IOException {
+      throw new UnsupportedOperationException();
+   }
+
+   @Test
+   public void testRebootServer() throws RestClientException, IOException {
+      throw new UnsupportedOperationException();
    }
 }
