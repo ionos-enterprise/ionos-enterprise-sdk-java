@@ -34,7 +34,7 @@ import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.DataCenters;
 import com.profitbricks.rest.domain.Location;
-import com.profitbricks.rest.domain.UpdateObject;
+import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import org.junit.After;
@@ -85,7 +85,7 @@ public class DatacenterTest {
    @Test
    public void updateDataCenter() throws RestClientException, IOException {
       String newName = "SDK TEST DC CHANGED";
-      UpdateObject object = new UpdateObject();
+      PBObject object = new PBObject();
       object.name = newName;
 
       DataCenter updatedDataCenter = profitbricksApi.dataCenterApi.updateDataCenter(dcId, object);

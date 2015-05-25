@@ -33,8 +33,9 @@ package com.profitbricks.rest.domain;
  *
  * @author jasmin.gacic
  */
-public class UpdateObject {
+public class PBObject {
 
+   public String id;
    public String name;
    public Status vmState;
    public String description;

@@ -80,7 +80,11 @@ public class VolumeTest {
 
       Volume newVolume = profitbricksApi.volumeApi.createVolume(dcId, volume);
       assertNotNull(newVolume);
+
       volumeId = newVolume.id;
+
+      Volume attachedVolume = profitbricksApi.volumeApi.attachVolume(dcId, serverId, volumeId);
+      assertNotNull(attachedVolume);
    }
 
    @AfterClass
@@ -95,10 +99,20 @@ public class VolumeTest {
    }
 
    @Test
+   public void testGetAllAttachedVolumes() throws RestClientException, IOException {
+      Volumes volumes = profitbricksApi.volumeApi.getAllVolumes(dcId, serverId);
+      assertNotNull(volumes);
+   }
+
+   @Test
    public void testGetVolume() throws RestClientException, IOException, InterruptedException {
       Thread.sleep(10000);
       Volume volume = profitbricksApi.volumeApi.getVolume(dcId, volumeId);
       assertNotNull(volume);
    }
 
+   @Test
+   public void testDetachVolume() throws RestClientException, IOException, InterruptedException {
+      profitbricksApi.volumeApi.detachVolume(dcId, serverId, volumeId);
+   }
 }

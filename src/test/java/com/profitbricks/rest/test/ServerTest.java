@@ -34,7 +34,7 @@ import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.Server;
 import com.profitbricks.rest.domain.Servers;
-import com.profitbricks.rest.domain.UpdateObject;
+import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import org.junit.AfterClass;
@@ -105,7 +105,7 @@ public class ServerTest {
 
    public void testUpdateServer() throws RestClientException, IOException {
       String newName = "SDK TEST SERVER CHANGED";
-      UpdateObject object = new UpdateObject();
+      PBObject object = new PBObject();
       object.name = newName;
 
       Server updatedServer = profitbricksApi.serverApi.updateServer(dcId, serverId, object);

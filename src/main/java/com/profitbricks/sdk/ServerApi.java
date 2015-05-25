@@ -34,7 +34,7 @@ import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.DataCenters;
 import com.profitbricks.rest.domain.Server;
 import com.profitbricks.rest.domain.Servers;
-import com.profitbricks.rest.domain.UpdateObject;
+import com.profitbricks.rest.domain.PBObject;
 import java.io.IOException;
 import org.junit.Test;
 
@@ -71,7 +71,7 @@ public class ServerApi extends ProfitbricksAPIBase {
 
    }
 
-   public Server updateServer(String dataCenterId, String serverId, UpdateObject server) throws RestClientException, IOException {
+   public Server updateServer(String dataCenterId, String serverId, PBObject server) throws RestClientException, IOException {
       return client.update(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource).concat("/").concat(serverId), server, Server.class, 202);
 
