@@ -35,7 +35,6 @@ import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.Server;
 import com.profitbricks.rest.domain.Volume;
 import com.profitbricks.rest.domain.Volumes;
-import static com.profitbricks.rest.test.ServerTest.profitbricksApi;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import org.junit.AfterClass;
@@ -55,7 +54,7 @@ public class VolumeTest {
    static String volumeId;
 
    @BeforeClass
-   public static void setUp() throws RestClientException, IOException {
+   public static void setUp() throws RestClientException, IOException, InterruptedException {
       DataCenter datacenter = new DataCenter();
       datacenter.properties.name = "SDK TEST DC";
       datacenter.properties.location = Location.US_LAS;
@@ -82,9 +81,8 @@ public class VolumeTest {
       assertNotNull(newVolume);
 
       volumeId = newVolume.id;
+      Thread.sleep(30000);
 
-      Volume attachedVolume = profitbricksApi.volumeApi.attachVolume(dcId, serverId, volumeId);
-      assertNotNull(attachedVolume);
    }
 
    @AfterClass
@@ -93,25 +91,36 @@ public class VolumeTest {
    }
 
    @Test
+   public void orderedTest() throws RestClientException, IOException, InterruptedException {
+      testGetAllVolumes();
+
+      testGetVolume();
+      testAttachVolume();
+      Thread.sleep(15000);
+      testGetAllAttachedVolumes();
+      testDetachVolume();
+   }
+
    public void testGetAllVolumes() throws RestClientException, IOException {
       Volumes volumes = profitbricksApi.volumeApi.getAllVolumes(dcId);
       assertNotNull(volumes);
    }
 
-   @Test
    public void testGetAllAttachedVolumes() throws RestClientException, IOException {
       Volumes volumes = profitbricksApi.volumeApi.getAllVolumes(dcId, serverId);
       assertNotNull(volumes);
    }
 
-   @Test
    public void testGetVolume() throws RestClientException, IOException, InterruptedException {
-      Thread.sleep(10000);
       Volume volume = profitbricksApi.volumeApi.getVolume(dcId, volumeId);
       assertNotNull(volume);
    }
 
-   @Test
+   public void testAttachVolume() throws RestClientException, IOException, InterruptedException {
+      Volume attachedVolume = profitbricksApi.volumeApi.attachVolume(dcId, serverId, volumeId);
+      assertNotNull(attachedVolume);
+   }
+
    public void testDetachVolume() throws RestClientException, IOException, InterruptedException {
       profitbricksApi.volumeApi.detachVolume(dcId, serverId, volumeId);
    }

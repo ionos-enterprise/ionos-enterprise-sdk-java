@@ -40,7 +40,7 @@ import org.apache.http.client.methods.HttpRequestBase;
  */
 public abstract class ProfitbricksAPIBase {
 
-   public String urlBase = "https://spc.profitbricks.com/rest/";
+   public String urlBase = "https://api.profitbricks.com/rest/";
    public String resource;
    public String parentResource;
 
@@ -48,7 +48,7 @@ public abstract class ProfitbricksAPIBase {
    public RestClient client;
    public String depth = "?depth=".concat("5");
 
-   String credentials = "ZmFyaWQuc2hhaEBwcm9maXRicmlja3MuY29tOnNwYzIwMTU=";
+   String credentials = "amFzbWluQHN0YWNrcG9pbnRjbG91ZC5jb206TEB4dTZFZjh6dw==";
 
    public ProfitbricksAPIBase(String resource, String parentResource) {
       this.resource = resource;
