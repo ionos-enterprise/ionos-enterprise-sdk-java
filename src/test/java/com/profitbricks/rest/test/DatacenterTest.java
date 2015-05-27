@@ -27,7 +27,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
@@ -62,7 +61,7 @@ public class DatacenterTest {
       datacenter.properties.name = "SDK TEST DC";
       datacenter.properties.location = Location.US_LAS;
       datacenter.properties.description = "SDK TEST Description";
-      
+
       DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
       dcId = newDatacenter.id;
       assertEquals(newDatacenter.properties.name, datacenter.properties.name);
@@ -93,7 +92,7 @@ public class DatacenterTest {
    }
 
    @AfterClass
-   public static void deleteDataCenter() throws RestClientException, IOException {
+   public static void cleanup() throws RestClientException, IOException {
       profitbricksApi.dataCenterApi.deleteDataCenter(dcId);
    }
 }

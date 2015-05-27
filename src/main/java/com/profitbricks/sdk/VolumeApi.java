@@ -123,18 +123,23 @@ public class VolumeApi extends ProfitbricksAPIBase {
 
    /**
     * Detaches a pre-existing storage volume to the server.
-    * 
+    *
     * @param dataCenterId
     * @param serverId
     * @param volumeId
     * @throws RestClientException
-    * @throws IOException 
+    * @throws IOException
     */
    public void detachVolume(String dataCenterId, String serverId, String volumeId) throws RestClientException, IOException {
       PBObject object = new PBObject();
       object.id = volumeId;
       client.delete(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat("servers").concat("/").concat(serverId).concat("/").concat(resource).concat("/").concat(volumeId), 202);
+   }
+
+   public void deleteVolume(String dataCenterId, String volumeId) throws RestClientException, IOException {
+      client.delete(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+              .concat("/").concat(resource).concat("/").concat(volumeId), 202);
    }
 
 }

@@ -59,13 +59,6 @@ public abstract class ProfitbricksAPIBase {
          public void intercept(HttpRequestBase request) {
 
             request.addHeader("Authorization", "Basic ".concat(credentials));
-            if (!request.getURI().getRawPath().endsWith("reboot") && 
-               !request.getURI().getRawPath().endsWith("start") &&
-                  !request.getURI().getRawPath().endsWith("stop"))
-                     if (request.getClass() == HttpPatch.class)
-                        request.addHeader("Content-Type", "application/vnd.profitbricks.partial-properties+json");
-                     else
-                        request.addHeader("Content-Type", "application/vnd.profitbricks.resource+json");
          }
       };
 

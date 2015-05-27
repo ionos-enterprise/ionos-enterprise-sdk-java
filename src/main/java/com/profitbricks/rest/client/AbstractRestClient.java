@@ -174,8 +174,17 @@ public abstract class AbstractRestClient {
    }
 
    protected <T extends HttpUriRequest> T contentTypeJson(T request) {
+      request.addHeader("Content-Type", "application/vnd.profitbricks.resource+json");
+      return request;
+   }
 
-      //request.addHeader("Content-Type", "application/vnd.profitbricks.partial-properties+json");
+   protected <T extends HttpUriRequest> T contentTypePartialJson(T request) {
+      request.addHeader("Content-Type", "application/vnd.profitbricks.partial-properties+json");
+      return request;
+   }
+
+   protected <T extends HttpUriRequest> T contentTypeUrlEncoded(T request) {
+      request.addHeader("Content-Type", "application/x-www-form-urlencoded");
       return request;
    }
 

@@ -76,7 +76,8 @@ public class ServerTest {
    }
 
    @AfterClass
-   public static void testDeleteServer() throws RestClientException, IOException {
+   public static void cleanup() throws RestClientException, IOException {
+      profitbricksApi.serverApi.deleteServer(dcId, serverId);
       profitbricksApi.dataCenterApi.deleteDataCenter(dcId);
    }
 

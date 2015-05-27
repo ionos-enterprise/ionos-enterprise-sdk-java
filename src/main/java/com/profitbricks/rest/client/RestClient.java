@@ -117,6 +117,28 @@ public class RestClient extends AbstractRestClient {
       return get(null, path, params, type, 200);
    }
 
+   public void create(String path, Map<String, String> params, int expectedStatus) throws IOException, RestClientException {
+      HttpPost post = contentTypeUrlEncoded(newHttpPost(path));
+      HttpEntity entity = new StringEntity(queryString(params).substring(1), Charsets.UTF_8);
+      post.setEntity(entity);
+
+      HttpResponse response = execute(interceptor, post, expectedStatus);
+      consume(response);
+   }
+
+   public <T> T create(String path, Map<String, String> params, Class<T> entityClass, int expectedStatus) throws IOException, RestClientException {
+      HttpPost post = contentTypeUrlEncoded(newHttpPost(path));
+      HttpEntity entity = new StringEntity(queryString(params).substring(1), Charsets.UTF_8);
+      post.setEntity(entity);
+
+      HttpResponse response = execute(interceptor, post, expectedStatus);
+      String content = contentAsString(response);
+      if (content != null)
+         return bindObject(content, entityClass);
+      else
+         return null;
+   }
+   
    public Header create(RequestInterceptor interceptor, String path, PBObject object, int expectedStatus)
            throws RestClientException, IOException {
       HttpPost post = contentTypeJson(newHttpPost(path));
@@ -152,24 +174,24 @@ public class RestClient extends AbstractRestClient {
    }
 
    public <T> T create(String path, T object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException {
-      return create(null, path, object, entityClass, expectedStatus);
+      return RestClient.this.create(null, path, object, entityClass, expectedStatus);
    }
 
    public <T> T create(String path, PBObject object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException {
-      return create(null, path, object, entityClass, expectedStatus);
+      return RestClient.this.create(null, path, object, entityClass, expectedStatus);
    }
 
    public Header create(String path, PBObject object, int expectedStatus) throws RestClientException, IOException {
-      return create(null, path, object, expectedStatus);
+      return RestClient.this.create(null, path, object, expectedStatus);
    }
 
    public Header create(RequestInterceptor interceptor, String path, PBObject object) throws RestClientException,
            IOException {
-      return create(interceptor, path, object, 201);
+      return RestClient.this.create(interceptor, path, object, 201);
    }
 
    public Header create(String path, PBObject object) throws RestClientException, IOException {
-      return create(null, path, object, 201);
+      return RestClient.this.create(null, path, object, 201);
    }
 
    public Header create(RequestInterceptor interceptor, String path, List<?> data, int expectedStatus)
@@ -193,16 +215,16 @@ public class RestClient extends AbstractRestClient {
    }
 
    public Header create(String path, List<?> data, int expectedStatus) throws RestClientException, IOException {
-      return create(null, path, data, expectedStatus);
+      return RestClient.this.create(null, path, data, expectedStatus);
    }
 
    public Header create(RequestInterceptor interceptor, String path, List<?> data) throws RestClientException,
            IOException {
-      return create(interceptor, path, data, 201);
+      return RestClient.this.create(interceptor, path, data, 201);
    }
 
    public Header create(String path, List<?> data) throws RestClientException, IOException {
-      return create(null, path, data, 201);
+      return RestClient.this.create(null, path, data, 201);
    }
 
    public void delete(RequestInterceptor interceptor, String path, int expectedStatus) throws RestClientException,
@@ -234,7 +256,7 @@ public class RestClient extends AbstractRestClient {
 
    public <T> T update(RequestInterceptor interceptor, String path, PBObject object, Class<T> entityClass, int expectedStatus)
            throws RestClientException, IOException {
-      HttpPatch patch = contentTypeJson(newHttpPatch(path));
+      HttpPatch patch = contentTypePartialJson(newHttpPatch(path));
       HttpEntity entity = new StringEntity(toJson(object).toString(), Charsets.UTF_8);
       patch.setEntity(entity);
       HttpResponse response = execute(interceptor, patch, expectedStatus);

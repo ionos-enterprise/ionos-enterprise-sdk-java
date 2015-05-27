@@ -30,8 +30,11 @@
 package com.profitbricks.sdk;
 
 import com.profitbricks.rest.client.RestClientException;
+import com.profitbricks.rest.domain.Snapshot;
 import com.profitbricks.rest.domain.Snapshots;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -43,7 +46,30 @@ public class SnapshotApi extends ProfitbricksAPIBase {
       super("snapshots", "");
    }
 
-    public Snapshots getAllSnapshots() throws RestClientException, IOException {
+   public Snapshots getAllSnapshots() throws RestClientException, IOException {
       return client.get(urlBase.concat(resource).concat(depth), null, Snapshots.class);
+   }
+
+   public Snapshot createSnapshot(String dataCenterId, String serverId, String name, String description) throws RestClientException, IOException {
+      Map<String, String> params = new HashMap<String, String>();
+      params.put("name", name);
+      params.put("description", description);
+      return client.create(urlBase.concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+              .concat("volumes").concat("/").concat(serverId).concat("/").concat("create-snapshot"), params, Snapshot.class, 202);
+   }
+
+   public void restoreSnapshot(String dataCenterId, String serverId, String snapshotId) throws RestClientException, IOException {
+      Map<String, String> params = new HashMap<String, String>();
+      params.put("snapshotId", snapshotId);
+      client.create(urlBase.concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+              .concat("volumes").concat("/").concat(serverId).concat("/").concat("restore-snapshot"), params, 202);
+   }
+
+   public Snapshot getSnapshot(String snapshotId) throws RestClientException, IOException {
+      return client.get(urlBase.concat(resource).concat("/").concat(snapshotId).concat(depth), null, Snapshot.class);
+   }
+
+   public void deleteSnapshot(String snapshotId) throws RestClientException, IOException {
+      client.delete(urlBase.concat(resource).concat("/").concat(snapshotId), 202);
    }
 }
