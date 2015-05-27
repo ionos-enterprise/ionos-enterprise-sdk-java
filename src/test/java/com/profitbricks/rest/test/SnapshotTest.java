@@ -62,7 +62,7 @@ public class SnapshotTest {
    public static void setUp() throws RestClientException, IOException, InterruptedException {
       DataCenter datacenter = new DataCenter();
       datacenter.properties.name = "SDK TEST SNAPSHOT";
-      datacenter.properties.location = Location.US_LAS;
+      datacenter.properties.location = Location.US_LAS_DEV;
       datacenter.properties.description = "SDK TEST Description";
 
       DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
