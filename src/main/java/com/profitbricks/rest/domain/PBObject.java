@@ -33,19 +33,16 @@ package com.profitbricks.rest.domain;
  *
  * @author jasmin.gacic
  */
-public enum Status {
+public class PBObject {
 
-      NOSTATE, RUNNING, BLOCKED, PAUSED, SHUTDOWN, SHUTOFF, CRASHED, UNRECOGNIZED;
-
-      public String value() {
-         return name();
-      }
-
-      public static Status fromValue(String v) {
-         try {
-            return valueOf(v);
-         } catch (IllegalArgumentException ex) {
-            return UNRECOGNIZED;
-         }
-      }
-   }  
+   public String id;
+   public String name;
+   public Status vmState;
+   public String description;
+   public String cores;
+   public String ram;
+   public AvailabilityZone availabilityZone;
+   public Boolean bootVolume;
+   public Boolean bootCdrom;
+   public String licencetype;
+}

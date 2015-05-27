@@ -8,7 +8,7 @@ package com.profitbricks.sdk;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.DataCenters;
-import com.profitbricks.rest.domain.UpdateObject;
+import com.profitbricks.rest.domain.PBObject;
 import java.io.IOException;
 import org.apache.http.Header;
 
@@ -34,7 +34,7 @@ public class DatacenterApi extends ProfitbricksAPIBase {
       return client.create(urlBase.concat(resource), datacenter, DataCenter.class, 202);
    }
 
-   public DataCenter updateDataCenter(String id, UpdateObject datacenter) throws RestClientException, IOException {
+   public DataCenter updateDataCenter(String id, PBObject datacenter) throws RestClientException, IOException {
       return client.update(urlBase.concat(resource).concat("/").concat(id), datacenter, DataCenter.class, 202);
    }
 
