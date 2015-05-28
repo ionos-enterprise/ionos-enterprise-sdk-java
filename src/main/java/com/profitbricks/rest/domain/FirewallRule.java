@@ -71,8 +71,8 @@ public class FirewallRule extends ProfitbricksBase {
       /**
        * @param protocol the protocol to set
        */
-      public void setProtocol(Protocol protocol) {
-         this.protocol = protocol;
+      public void setProtocol(String protocol) {
+         this.protocol.fromValue(protocol);
       }
 
       /**

@@ -44,13 +44,13 @@ public class LoadBalancerTest {
 
       DataCenter datacenter = new DataCenter();
 
-      datacenter.properties.name = "SDK TEST LOADBALANCER - Data center";
-      datacenter.properties.location = Location.US_LAS_DEV;
-      datacenter.properties.description = "SDK TEST Description";
+      datacenter.getProperties().setName("SDK TEST LOADBALANCER - Data center");
+      datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
+      datacenter.getProperties().setDescription("SDK TEST Description");
 
       DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
       dataCenterId = newDatacenter.id;
-      assertEquals(newDatacenter.properties.name, datacenter.properties.name);
+      assertEquals(newDatacenter.getProperties().getName(), datacenter.getProperties().getName());
 
       LoadBalancer loadBalancer = new LoadBalancer();
       LoadBalancer.Properties properties = new LoadBalancer.Properties();

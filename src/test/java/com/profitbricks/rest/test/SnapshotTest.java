@@ -47,17 +47,17 @@ public class SnapshotTest {
    @BeforeClass
    public static void setUp() throws RestClientException, IOException, InterruptedException {
       DataCenter datacenter = new DataCenter();
-      datacenter.properties.name = "SDK TEST SNAPSHOT - Data Center";
-      datacenter.properties.location = Location.US_LAS_DEV;
-      datacenter.properties.description = "SDK TEST Description";
+      datacenter.getProperties().setName("SDK TEST SNAPSHOT - Data Center");
+      datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
+      datacenter.getProperties().setDescription("SDK TEST Description");
 
       DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
       dataCenterId = newDatacenter.id;
 
       Server server = new Server();
-      server.properties.name = "SDK TEST SNAPSHOT - Server";
-      server.properties.ram = "1024";
-      server.properties.cores = "4";
+      server.getProperties().setName("SDK TEST SNAPSHOT - Server");
+      server.getProperties().setRam("1024");
+      server.getProperties().setCores("4");
 
       Server newServer = profitbricksApi.serverApi.createServer(dataCenterId, server);
 
@@ -65,7 +65,7 @@ public class SnapshotTest {
       serverId = newServer.id;
 
       Volume volume = new Volume();
-      
+
       volume.getProperties().setName("SDK TEST SNAPSHOT - Volume");
       volume.getProperties().setSize("1024");
       volume.getProperties().setLicenceType("LINUX");

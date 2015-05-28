@@ -42,17 +42,17 @@ public class ServerTest {
    @BeforeClass
    public static void testCreateServer() throws RestClientException, IOException, InterruptedException {
       DataCenter datacenter = new DataCenter();
-      datacenter.properties.name = "SDK TEST DC - Server";
-      datacenter.properties.location = Location.US_LAS_DEV;
-      datacenter.properties.description = "SDK TEST Description";
+      datacenter.getProperties().setName("SDK TEST DC - Server");
+      datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
+      datacenter.getProperties().setDescription("SDK TEST Description");
 
       DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
       dataCenterId = newDatacenter.id;
 
       Server server = new Server();
-      server.properties.name = "SDK TEST SERVER - Server";
-      server.properties.ram = "1024";
-      server.properties.cores = "4";
+      server.getProperties().setName("SDK TEST SERVER - Server");
+      server.getProperties().setRam("1024");
+      server.getProperties().setCores("4");
 
       Server newServer = profitbricksApi.serverApi.createServer(dataCenterId, server);
 
@@ -96,7 +96,7 @@ public class ServerTest {
       object.name = newName;
 
       Server updatedServer = profitbricksApi.serverApi.updateServer(dataCenterId, serverId, object);
-      assertEquals(newName, updatedServer.properties.name);
+      assertEquals(newName, updatedServer.getProperties().getName());
 
    }
 
