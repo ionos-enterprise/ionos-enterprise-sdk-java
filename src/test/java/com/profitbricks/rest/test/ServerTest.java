@@ -56,7 +56,7 @@ public class ServerTest {
    @BeforeClass
    public static void testCreateServer() throws RestClientException, IOException, InterruptedException {
       DataCenter datacenter = new DataCenter();
-      datacenter.properties.name = "SDK TEST DC";
+      datacenter.properties.name = "SDK TEST DC - Server";
       datacenter.properties.location = Location.US_LAS_DEV;
       datacenter.properties.description = "SDK TEST Description";
 
@@ -64,7 +64,7 @@ public class ServerTest {
       dcId = newDatacenter.id;
 
       Server server = new Server();
-      server.properties.name = "SDK TEST SERVER";
+      server.properties.name = "SDK TEST SERVER - Server";
       server.properties.ram = "1024";
       server.properties.cores = "4";
 
