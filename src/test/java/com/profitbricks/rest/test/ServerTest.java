@@ -57,7 +57,7 @@ public class ServerTest {
    public static void testCreateServer() throws RestClientException, IOException, InterruptedException {
       DataCenter datacenter = new DataCenter();
       datacenter.properties.name = "SDK TEST DC";
-      datacenter.properties.location = Location.US_LAS;
+      datacenter.properties.location = Location.US_LAS_DEV;
       datacenter.properties.description = "SDK TEST Description";
 
       DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
@@ -76,7 +76,8 @@ public class ServerTest {
    }
 
    @AfterClass
-   public static void testDeleteServer() throws RestClientException, IOException {
+   public static void cleanup() throws RestClientException, IOException {
+      profitbricksApi.serverApi.deleteServer(dcId, serverId);
       profitbricksApi.dataCenterApi.deleteDataCenter(dcId);
    }
 

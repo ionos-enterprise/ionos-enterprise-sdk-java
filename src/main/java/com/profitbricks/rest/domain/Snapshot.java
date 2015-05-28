@@ -27,41 +27,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.profitbricks.sdk;
-
-import com.profitbricks.rest.client.RequestInterceptor;
-import com.profitbricks.rest.client.RestClient;
-import org.apache.http.client.methods.HttpPatch;
-import org.apache.http.client.methods.HttpRequestBase;
+package com.profitbricks.rest.domain;
 
 /**
  *
  * @author jasmin.gacic
  */
-public abstract class ProfitbricksAPIBase {
+public class Snapshot extends ProfitbricksBase {
 
-   public String urlBase = "https://api.profitbricks.com/rest/";
-   public String resource;
-   public String parentResource;
+   public class Properties {
 
-   public RequestInterceptor authorize;
-   public RestClient client;
-   public String depth = "?depth=".concat("5");
+      public String name;
+      public String description;
+      public Location location;
+      public String size;
+      public LicenceType licenceType;
+      public Boolean cpuHotPlug;
+      public Boolean cpuHotUnplug;
+      public Boolean ramHotPlug;
+      public Boolean ramHotUnplug;
+      public Boolean nicHotPlug;
+      public Boolean nicHotUnplug;
+      public Boolean discVirtioHotPlug;
+      public Boolean discVirtioHotUnplug;
+      public Boolean discScsiHotPlug;
+      public Boolean discScsiHotUnplug;
 
-   String credentials = "amFzbWluQHN0YWNrcG9pbnRjbG91ZC5jb206TEB4dTZFZjh6dw==";
+      public void setLocation(String location) {
+         this.location.fromValue(location);
+      }
 
-   public ProfitbricksAPIBase(String resource, String parentResource) {
-      this.resource = resource;
-      this.parentResource = parentResource;
-
-      authorize = new RequestInterceptor() {
-         @Override
-         public void intercept(HttpRequestBase request) {
-
-            request.addHeader("Authorization", "Basic ".concat(credentials));
-         }
-      };
-
-      client = RestClient.builder().requestInterceptor(authorize).build();
+      public String getLocation() {
+         return this.location != null ? this.location.value() : null;
+      }
    }
+   public Properties properties = new Properties();
 }

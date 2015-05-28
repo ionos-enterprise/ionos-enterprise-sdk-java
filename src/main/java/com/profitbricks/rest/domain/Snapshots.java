@@ -27,41 +27,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.profitbricks.sdk;
+package com.profitbricks.rest.domain;
 
-import com.profitbricks.rest.client.RequestInterceptor;
-import com.profitbricks.rest.client.RestClient;
-import org.apache.http.client.methods.HttpPatch;
-import org.apache.http.client.methods.HttpRequestBase;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author jasmin.gacic
  */
-public abstract class ProfitbricksAPIBase {
+public class Snapshots extends ProfitbricksBase{
+   
+      public List<Snapshot> items = new ArrayList<Snapshot>();
 
-   public String urlBase = "https://api.profitbricks.com/rest/";
-   public String resource;
-   public String parentResource;
-
-   public RequestInterceptor authorize;
-   public RestClient client;
-   public String depth = "?depth=".concat("5");
-
-   String credentials = "amFzbWluQHN0YWNrcG9pbnRjbG91ZC5jb206TEB4dTZFZjh6dw==";
-
-   public ProfitbricksAPIBase(String resource, String parentResource) {
-      this.resource = resource;
-      this.parentResource = parentResource;
-
-      authorize = new RequestInterceptor() {
-         @Override
-         public void intercept(HttpRequestBase request) {
-
-            request.addHeader("Authorization", "Basic ".concat(credentials));
-         }
-      };
-
-      client = RestClient.builder().requestInterceptor(authorize).build();
-   }
 }
