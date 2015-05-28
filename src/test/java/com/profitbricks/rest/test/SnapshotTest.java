@@ -31,16 +31,16 @@ package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
-import com.profitbricks.rest.domain.DataCenters;
 import com.profitbricks.rest.domain.Location;
+import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.Server;
 import com.profitbricks.rest.domain.Snapshot;
 import com.profitbricks.rest.domain.Snapshots;
 import com.profitbricks.rest.domain.Volume;
-import static com.profitbricks.rest.test.VolumeTest.profitbricksApi;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -61,7 +61,7 @@ public class SnapshotTest {
    @BeforeClass
    public static void setUp() throws RestClientException, IOException, InterruptedException {
       DataCenter datacenter = new DataCenter();
-      datacenter.properties.name = "SDK TEST SNAPSHOT";
+      datacenter.properties.name = "SDK TEST SNAPSHOT - Data Center";
       datacenter.properties.location = Location.US_LAS_DEV;
       datacenter.properties.description = "SDK TEST Description";
 
@@ -69,7 +69,7 @@ public class SnapshotTest {
       dcId = newDatacenter.id;
 
       Server server = new Server();
-      server.properties.name = "SDK TEST SNAPSHOT";
+      server.properties.name = "SDK TEST SNAPSHOT - Server";
       server.properties.ram = "1024";
       server.properties.cores = "4";
 
@@ -79,6 +79,7 @@ public class SnapshotTest {
       serverId = newServer.id;
 
       Volume volume = new Volume();
+      volume.properties.name = "SDK TEST SNAPSHOT - Volume";
       volume.properties.size = "1024";
       volume.properties.licenceType = "LINUX";
 
@@ -88,7 +89,7 @@ public class SnapshotTest {
       volumeId = newVolume.id;
       Thread.sleep(15000);
 
-      Snapshot snapshot = profitbricksApi.snapshotApi.createSnapshot(dcId, volumeId, "SDK TEST Snapshot", "DESCRIPTION");
+      Snapshot snapshot = profitbricksApi.snapshotApi.createSnapshot(dcId, volumeId, "SDK TEST SNAPSHOT - Snapshot", "SDK TEST Description");
       snapshotId = snapshot.id;
    }
 
@@ -104,6 +105,21 @@ public class SnapshotTest {
       assertNotNull(snapshots);
    }
 
+   @Test
+   public void restoreSnapshot() throws RestClientException, IOException {
+      profitbricksApi.snapshotApi.restoreSnapshot(dcId, volumeId, snapshotId);
+   }
+
+   @Test
+   public void updateSnapshot() throws RestClientException, IOException {
+      PBObject object = new PBObject();
+      object.name = "SDK TEST SNAPSHOT - Snapshot - changed";
+
+      Snapshot snapshot = profitbricksApi.snapshotApi.updateSnapshot(dcId, snapshotId, object);
+
+      assertEquals(snapshot.properties.name, object.name);
+   }
+
    @AfterClass
    public static void cleanUp() throws RestClientException, IOException {
       profitbricksApi.snapshotApi.deleteSnapshot(snapshotId);
@@ -111,12 +127,4 @@ public class SnapshotTest {
       profitbricksApi.volumeApi.deleteVolume(dcId, volumeId);
       profitbricksApi.dataCenterApi.deleteDataCenter(dcId);
    }
-   
-   /* @Test
-    public void cleanUp() throws RestClientException, IOException {
-    DataCenters datacenters = profitbricksApi.dataCenterApi.getAllDataCenters();
-
-    for (DataCenter dc : datacenters.items)
-    profitbricksApi.dataCenterApi.deleteDataCenter(dc.id);
-    }*/
 }

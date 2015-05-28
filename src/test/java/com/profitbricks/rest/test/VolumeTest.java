@@ -47,82 +47,82 @@ import org.junit.Test;
  * @author jasmin.gacic
  */
 public class VolumeTest {
-   
+
    static ProfitbricksApi profitbricksApi = new ProfitbricksApi();
    static String dcId;
    static String serverId;
    static String volumeId;
-   
+
    @BeforeClass
    public static void setUp() throws RestClientException, IOException, InterruptedException {
       DataCenter datacenter = new DataCenter();
       datacenter.properties.name = "SDK TEST VOLUME";
-      datacenter.properties.location = Location.US_LAS;
+      datacenter.properties.location = Location.US_LAS_DEV;
       datacenter.properties.description = "SDK TEST Description";
-      
+
       DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
       dcId = newDatacenter.id;
-      
+
       Server server = new Server();
       server.properties.name = "SDK TEST VOLUME";
       server.properties.ram = "1024";
       server.properties.cores = "4";
-      
+
       Server newServer = profitbricksApi.serverApi.createServer(dcId, server);
-      
+
       assertNotNull(newServer);
       serverId = newServer.id;
-      
+
       Volume volume = new Volume();
       volume.properties.size = "1024";
       volume.properties.licenceType = "LINUX";
-      
+
       Volume newVolume = profitbricksApi.volumeApi.createVolume(dcId, volume);
       assertNotNull(newVolume);
-      
+
       volumeId = newVolume.id;
       Thread.sleep(1000);
-      
+
    }
-   
+
    @AfterClass
    public static void cleanUp() throws RestClientException, IOException {
-      profitbricksApi.serverApi.deleteServer(dcId, serverId);
       profitbricksApi.volumeApi.deleteVolume(dcId, volumeId);
+      profitbricksApi.serverApi.deleteServer(dcId, serverId);
       profitbricksApi.dataCenterApi.deleteDataCenter(dcId);
    }
-   
+
    @Test
    public void orderedTest() throws RestClientException, IOException, InterruptedException {
       testGetAllVolumes();
-      
+      Thread.sleep(15000);
       testGetVolume();
       testAttachVolume();
       Thread.sleep(15000);
       testGetAllAttachedVolumes();
       testDetachVolume();
    }
-   
+
    public void testGetAllVolumes() throws RestClientException, IOException {
       Volumes volumes = profitbricksApi.volumeApi.getAllVolumes(dcId);
       assertNotNull(volumes);
    }
-   
+
    public void testGetAllAttachedVolumes() throws RestClientException, IOException {
       Volumes volumes = profitbricksApi.volumeApi.getAllVolumes(dcId, serverId);
       assertNotNull(volumes);
    }
-   
+
    public void testGetVolume() throws RestClientException, IOException, InterruptedException {
       Volume volume = profitbricksApi.volumeApi.getVolume(dcId, volumeId);
       assertNotNull(volume);
    }
-   
+
    public void testAttachVolume() throws RestClientException, IOException, InterruptedException {
       Volume attachedVolume = profitbricksApi.volumeApi.attachVolume(dcId, serverId, volumeId);
       assertNotNull(attachedVolume);
    }
-   
+
    public void testDetachVolume() throws RestClientException, IOException, InterruptedException {
       profitbricksApi.volumeApi.detachVolume(dcId, serverId, volumeId);
    }

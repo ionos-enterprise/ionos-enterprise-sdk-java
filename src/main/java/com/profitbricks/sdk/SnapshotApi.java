@@ -30,6 +30,7 @@
 package com.profitbricks.sdk;
 
 import com.profitbricks.rest.client.RestClientException;
+import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.Snapshot;
 import com.profitbricks.rest.domain.Snapshots;
 import java.io.IOException;
@@ -67,6 +68,10 @@ public class SnapshotApi extends ProfitbricksAPIBase {
 
    public Snapshot getSnapshot(String snapshotId) throws RestClientException, IOException {
       return client.get(urlBase.concat(resource).concat("/").concat(snapshotId).concat(depth), null, Snapshot.class);
+   }
+
+   public Snapshot updateSnapshot(String dataCenterId, String snapshotId, PBObject snapshot) throws RestClientException, IOException {
+      return client.update(urlBase.concat(resource).concat("/").concat(snapshotId), snapshot, Snapshot.class, 202);
    }
 
    public void deleteSnapshot(String snapshotId) throws RestClientException, IOException {
