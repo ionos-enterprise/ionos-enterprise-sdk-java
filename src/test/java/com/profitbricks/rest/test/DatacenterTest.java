@@ -42,13 +42,13 @@ public class DatacenterTest {
 
       DataCenter datacenter = new DataCenter();
 
-      datacenter.properties.name = "SDK TEST DC - Data center";
-      datacenter.properties.location = Location.US_LAS_DEV;
-      datacenter.properties.description = "SDK TEST Description";
+      datacenter.getProperties().setName("SDK TEST DC - Data center");
+      datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
+      datacenter.getProperties().setDescription("SDK TEST Description");
 
       DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
-      dataCenterId = newDatacenter.id;
-      assertEquals(newDatacenter.properties.name, datacenter.properties.name);
+      dataCenterId = newDatacenter.getId();
+      assertEquals(newDatacenter.getProperties().getName(), datacenter.getProperties().getName());
    }
 
    @Test
@@ -68,10 +68,10 @@ public class DatacenterTest {
    public void updateDataCenter() throws RestClientException, IOException {
       String newName = "SDK TEST DC CHANGED";
       PBObject object = new PBObject();
-      object.name = newName;
+      object.setName(newName);
 
       DataCenter updatedDataCenter = profitbricksApi.dataCenterApi.updateDataCenter(dataCenterId, object);
-      assertEquals(newName, updatedDataCenter.properties.name);
+      assertEquals(newName, updatedDataCenter.getProperties().getName());
    }
 
    @AfterClass

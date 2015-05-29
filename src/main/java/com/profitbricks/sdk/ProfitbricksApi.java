@@ -23,6 +23,8 @@ public class ProfitbricksApi {
       this.volumeApi = new VolumeApi();
       this.snapshotApi = new SnapshotApi();
       this.loadbalancerApi = new LoadbalancerApi();
+      this.nicApi = new NicApi();
+      this.firewallRuleApi = new FirewallRuleApi();
    }
 
    public DatacenterApi dataCenterApi;
@@ -30,5 +32,7 @@ public class ProfitbricksApi {
    public VolumeApi volumeApi;
    public SnapshotApi snapshotApi;
    public LoadbalancerApi loadbalancerApi;
+   public NicApi nicApi;
+   public FirewallRuleApi firewallRuleApi;
 
 }

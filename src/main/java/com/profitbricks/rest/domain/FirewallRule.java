@@ -38,7 +38,7 @@ public class FirewallRule extends ProfitbricksBase {
    public class Properties {
 
       private String name;
-      private Protocol protocol;
+      private String protocol;
       private String sourceMac;
       private String sourceIp;
       private String targetIp;
@@ -64,14 +64,14 @@ public class FirewallRule extends ProfitbricksBase {
       /**
        * @return the protocol
        */
-      public Protocol getProtocol() {
+      public String getProtocol() {
          return protocol;
       }
 
       /**
        * @param protocol the protocol to set
        */
-      public void setProtocol(Protocol protocol) {
+      public void setProtocol(String protocol) {
          this.protocol = protocol;
       }
 

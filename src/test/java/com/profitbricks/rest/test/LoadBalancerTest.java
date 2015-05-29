@@ -40,17 +40,17 @@ public class LoadBalancerTest {
    static String loadBalancerId;
 
    @BeforeClass
-   public static void createDataCenter() throws RestClientException, IOException {
+   public static void setUp() throws RestClientException, IOException {
 
       DataCenter datacenter = new DataCenter();
 
-      datacenter.properties.name = "SDK TEST LOADBALANCER - Data center";
-      datacenter.properties.location = Location.US_LAS_DEV;
-      datacenter.properties.description = "SDK TEST Description";
+      datacenter.getProperties().setName("SDK TEST LOADBALANCER - Data center");
+      datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
+      datacenter.getProperties().setDescription("SDK TEST Description");
 
       DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
-      dataCenterId = newDatacenter.id;
-      assertEquals(newDatacenter.properties.name, datacenter.properties.name);
+      dataCenterId = newDatacenter.getId();
+      assertEquals(newDatacenter.getProperties().getName(), datacenter.getProperties().getName());
 
       LoadBalancer loadBalancer = new LoadBalancer();
       LoadBalancer.Properties properties = new LoadBalancer.Properties();
@@ -61,7 +61,7 @@ public class LoadBalancerTest {
       LoadBalancer newLoadBalancer = profitbricksApi.loadbalancerApi.createLoadBalancer(dataCenterId, loadBalancer);
       assertNotNull(newLoadBalancer);
 
-      loadBalancerId = newLoadBalancer.id;
+      loadBalancerId = newLoadBalancer.getId();
    }
 
    @Test
@@ -81,15 +81,15 @@ public class LoadBalancerTest {
    public void getLoadBalancer() throws RestClientException, IOException {
       LoadBalancer loadBalancer = profitbricksApi.loadbalancerApi.getLoadBalancer(dataCenterId, loadBalancerId);
       assertNotNull(loadBalancer);
-      assertEquals(loadBalancerId, loadBalancer.id);
+      assertEquals(loadBalancerId, loadBalancer.getId());
    }
 
    private void updateLoadBalancer() throws RestClientException, IOException {
       PBObject object = new PBObject();
-      object.name = "SDK TEST LOADBALANCER - LoadBalancer - Changed";
+      object.setName("SDK TEST LOADBALANCER - LoadBalancer - Changed");
       LoadBalancer loadBalancer = profitbricksApi.loadbalancerApi.updateLoadBalancer(dataCenterId, loadBalancerId, object);
       assertNotNull(loadBalancer);
-      assertEquals(object.name, loadBalancer.getProperties().getName());
+      assertEquals(object.getName(), loadBalancer.getProperties().getName());
 
    }
 

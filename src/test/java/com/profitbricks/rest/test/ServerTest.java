@@ -40,24 +40,24 @@ public class ServerTest {
    static String serverId;
 
    @BeforeClass
-   public static void testCreateServer() throws RestClientException, IOException, InterruptedException {
+   public static void setUp() throws RestClientException, IOException, InterruptedException {
       DataCenter datacenter = new DataCenter();
-      datacenter.properties.name = "SDK TEST DC - Server";
-      datacenter.properties.location = Location.US_LAS_DEV;
-      datacenter.properties.description = "SDK TEST Description";
+      datacenter.getProperties().setName("SDK TEST SERVER - Server");
+      datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
+      datacenter.getProperties().setDescription("SDK TEST Description");
 
       DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
-      dataCenterId = newDatacenter.id;
+      dataCenterId = newDatacenter.getId();
 
       Server server = new Server();
-      server.properties.name = "SDK TEST SERVER - Server";
-      server.properties.ram = "1024";
-      server.properties.cores = "4";
+      server.getProperties().setName("SDK TEST SERVER - Server");
+      server.getProperties().setRam("1024");
+      server.getProperties().setCores("4");
 
       Server newServer = profitbricksApi.serverApi.createServer(dataCenterId, server);
 
       assertNotNull(newServer);
-      serverId = newServer.id;
+      serverId = newServer.getId();
 
    }
 
@@ -93,10 +93,10 @@ public class ServerTest {
    public void testUpdateServer() throws RestClientException, IOException {
       String newName = "SDK TEST SERVER CHANGED";
       PBObject object = new PBObject();
-      object.name = newName;
+      object.setName(newName);
 
       Server updatedServer = profitbricksApi.serverApi.updateServer(dataCenterId, serverId, object);
-      assertEquals(newName, updatedServer.properties.name);
+      assertEquals(newName, updatedServer.getProperties().getName());
 
    }
 
