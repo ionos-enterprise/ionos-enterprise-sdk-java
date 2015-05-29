@@ -18,11 +18,15 @@ package com.profitbricks.rest.test;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.LoadBalancer;
-import com.profitbricks.rest.domain.LoadBalancers;
 import com.profitbricks.rest.domain.Location;
+import com.profitbricks.rest.domain.Nic;
+import com.profitbricks.rest.domain.Nics;
 import com.profitbricks.rest.domain.PBObject;
+import com.profitbricks.rest.domain.Server;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -33,24 +37,23 @@ import org.junit.Test;
  *
  * @author jasmin.gacic
  */
-public class LoadBalancerTest {
+public class NicTest {
 
-   static String dataCenterId;
    static ProfitbricksApi profitbricksApi = new ProfitbricksApi();
-   static String loadBalancerId;
+   static String dataCenterId;
+   static String serverId;
+   private static String nicId;
+   private static String loadBalancerId;
 
    @BeforeClass
-   public static void setUp() throws RestClientException, IOException {
-
+   public static void setUp() throws RestClientException, IOException, InterruptedException {
       DataCenter datacenter = new DataCenter();
-
-      datacenter.getProperties().setName("SDK TEST LOADBALANCER - Data center");
+      datacenter.getProperties().setName("SDK TEST SERVER - Server");
       datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
       datacenter.getProperties().setDescription("SDK TEST Description");
 
       DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
       dataCenterId = newDatacenter.getId();
-      assertEquals(newDatacenter.getProperties().getName(), datacenter.getProperties().getName());
 
       LoadBalancer loadBalancer = new LoadBalancer();
       LoadBalancer.Properties properties = new LoadBalancer.Properties();
@@ -62,39 +65,61 @@ public class LoadBalancerTest {
       assertNotNull(newLoadBalancer);
 
       loadBalancerId = newLoadBalancer.getId();
+
+      Server server = new Server();
+      server.getProperties().setName("SDK TEST SERVER - Server");
+      server.getProperties().setRam("1024");
+      server.getProperties().setCores("4");
+
+      Server newServer = profitbricksApi.serverApi.createServer(dataCenterId, server);
+
+      assertNotNull(newServer);
+      serverId = newServer.getId();
+
+      Nic nic = new Nic();
+
+      nic.getProperties().setName("SDK TEST FIREWALLRULES - Nic");
+      nic.getProperties().setLan("1");
+
+      nic.getEntities().setFirewallrules(null);
+
+      Thread.sleep(5000);
+      Nic newNic = profitbricksApi.nicApi.createNic(dataCenterId, serverId, nic);
+
+      assertNotNull(newNic);
+      nicId = newNic.getId();
    }
 
    @Test
-   public void orderedTest() throws RestClientException, IOException, InterruptedException {
-      getAllLoadBalancers();
-      Thread.sleep(5000);
-      getLoadBalancer();
-      updateLoadBalancer();
-      deleteLoadBalancer();
+   public void orderedTests() throws RestClientException, IOException, InterruptedException {
+      getAllNics();
+      Thread.sleep(35000);
+      getNic();
+      updateNic();
    }
 
-   public void getAllLoadBalancers() throws RestClientException, IOException {
-      LoadBalancers loadbalancers = profitbricksApi.loadbalancerApi.getAllLoadBalancers(dataCenterId);
-      assertNotNull(loadbalancers);
-   }
-
-   public void getLoadBalancer() throws RestClientException, IOException {
-      LoadBalancer loadBalancer = profitbricksApi.loadbalancerApi.getLoadBalancer(dataCenterId, loadBalancerId);
-      assertNotNull(loadBalancer);
-      assertEquals(loadBalancerId, loadBalancer.getId());
-   }
-
-   private void updateLoadBalancer() throws RestClientException, IOException {
+   public void updateNic() throws RestClientException, IOException{
       PBObject object = new PBObject();
-      object.setName("SDK TEST LOADBALANCER - LoadBalancer - Changed");
-      LoadBalancer loadBalancer = profitbricksApi.loadbalancerApi.updateLoadBalancer(dataCenterId, loadBalancerId, object);
-      assertNotNull(loadBalancer);
-      assertEquals(object.getName(), loadBalancer.getProperties().getName());
-
+      object.setName("SDK TEST FIREWALLRULES - Nic - changed");
+      List<String> ips = new ArrayList<String>();
+      ips.add("123.123.123.123");
+      object.setIps(ips);
+      Nic nic = profitbricksApi.nicApi.updateNic(dataCenterId, serverId, nicId, object);
+      
+      assertNotNull(nic);
+      assertEquals(object.getName(), nic.getProperties().getName());
+      
+      
+   }
+   public void getNic() throws RestClientException, IOException {
+      Nic nic = profitbricksApi.nicApi.getNic(dataCenterId, serverId, nicId);
+      assertNotNull(nic);
+      assertEquals(nicId, nic.getId());
    }
 
-   private void deleteLoadBalancer() throws RestClientException, IOException {
-      profitbricksApi.loadbalancerApi.deleteLoadBalaner(dataCenterId, loadBalancerId);
+   public void getAllNics() throws RestClientException, IOException {
+      Nics nics = profitbricksApi.nicApi.getAllNics(dataCenterId, serverId);
+      assertNotNull(nics);
    }
 
    @AfterClass

@@ -47,7 +47,7 @@ public class ServerTest {
       datacenter.getProperties().setDescription("SDK TEST Description");
 
       DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
-      dataCenterId = newDatacenter.id;
+      dataCenterId = newDatacenter.getId();
 
       Server server = new Server();
       server.getProperties().setName("SDK TEST SERVER - Server");
@@ -57,7 +57,7 @@ public class ServerTest {
       Server newServer = profitbricksApi.serverApi.createServer(dataCenterId, server);
 
       assertNotNull(newServer);
-      serverId = newServer.id;
+      serverId = newServer.getId();
 
    }
 
@@ -93,7 +93,7 @@ public class ServerTest {
    public void testUpdateServer() throws RestClientException, IOException {
       String newName = "SDK TEST SERVER CHANGED";
       PBObject object = new PBObject();
-      object.name = newName;
+      object.setName(newName);
 
       Server updatedServer = profitbricksApi.serverApi.updateServer(dataCenterId, serverId, object);
       assertEquals(newName, updatedServer.getProperties().getName());

@@ -47,7 +47,7 @@ public class VolumeTest {
       datacenter.getProperties().setDescription("SDK TEST Description");
 
       DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
-      dataCenterId = newDatacenter.id;
+      dataCenterId = newDatacenter.getId();
 
       Server server = new Server();
       server.getProperties().setName("SDK TEST VOLUME - Server");
@@ -57,7 +57,7 @@ public class VolumeTest {
       Server newServer = profitbricksApi.serverApi.createServer(dataCenterId, server);
 
       assertNotNull(newServer);
-      serverId = newServer.id;
+      serverId = newServer.getId();
 
       Volume volume = new Volume();
       volume.getProperties().setName("SDK TEST VOLUME - Volume");
@@ -67,7 +67,7 @@ public class VolumeTest {
       Volume newVolume = profitbricksApi.volumeApi.createVolume(dataCenterId, volume);
       assertNotNull(newVolume);
 
-      volumeId = newVolume.id;
+      volumeId = newVolume.getId();
       Thread.sleep(1000);
 
    }

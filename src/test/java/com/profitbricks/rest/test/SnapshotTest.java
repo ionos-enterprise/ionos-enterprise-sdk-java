@@ -52,7 +52,7 @@ public class SnapshotTest {
       datacenter.getProperties().setDescription("SDK TEST Description");
 
       DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
-      dataCenterId = newDatacenter.id;
+      dataCenterId = newDatacenter.getId();
 
       Server server = new Server();
       server.getProperties().setName("SDK TEST SNAPSHOT - Server");
@@ -62,7 +62,7 @@ public class SnapshotTest {
       Server newServer = profitbricksApi.serverApi.createServer(dataCenterId, server);
 
       assertNotNull(newServer);
-      serverId = newServer.id;
+      serverId = newServer.getId();
 
       Volume volume = new Volume();
 
@@ -73,11 +73,11 @@ public class SnapshotTest {
       Volume newVolume = profitbricksApi.volumeApi.createVolume(dataCenterId, volume);
       assertNotNull(newVolume);
 
-      volumeId = newVolume.id;
+      volumeId = newVolume.getId();
       Thread.sleep(15000);
 
       Snapshot snapshot = profitbricksApi.snapshotApi.createSnapshot(dataCenterId, volumeId, "SDK TEST SNAPSHOT - Snapshot", "SDK TEST Description");
-      snapshotId = snapshot.id;
+      snapshotId = snapshot.getId();
    }
 
    @Test
@@ -100,11 +100,11 @@ public class SnapshotTest {
    @Test
    public void updateSnapshot() throws RestClientException, IOException {
       PBObject object = new PBObject();
-      object.name = "SDK TEST SNAPSHOT - Snapshot - changed";
+      object.setName("SDK TEST SNAPSHOT - Snapshot - changed");
 
       Snapshot snapshot = profitbricksApi.snapshotApi.updateSnapshot(dataCenterId, snapshotId, object);
 
-      assertEquals(snapshot.properties.name, object.name);
+      assertEquals(snapshot.properties.name, object.getName());
    }
 
    @AfterClass

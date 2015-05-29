@@ -101,7 +101,7 @@ public class VolumeApi extends ProfitbricksAPIBase {
     */
    public Volume attachVolume(String dataCenterId, String serverId, String volumeId) throws RestClientException, IOException {
       PBObject object = new PBObject();
-      object.id = volumeId;
+      object.setId(volumeId);
       return client.create(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat("servers").concat("/").concat(serverId).concat("/").concat(resource), object, Volume.class, 202);
    }
@@ -117,7 +117,7 @@ public class VolumeApi extends ProfitbricksAPIBase {
     */
    public void detachVolume(String dataCenterId, String serverId, String volumeId) throws RestClientException, IOException {
       PBObject object = new PBObject();
-      object.id = volumeId;
+      object.setId(volumeId);
       client.delete(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat("servers").concat("/").concat(serverId).concat("/").concat(resource).concat("/").concat(volumeId), 202);
    }
