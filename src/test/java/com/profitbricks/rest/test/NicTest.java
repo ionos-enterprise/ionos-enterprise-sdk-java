@@ -48,7 +48,7 @@ public class NicTest {
    @BeforeClass
    public static void setUp() throws RestClientException, IOException, InterruptedException {
       DataCenter datacenter = new DataCenter();
-      datacenter.getProperties().setName("SDK TEST SERVER - Server");
+      datacenter.getProperties().setName("SDK TEST NIC - Server");
       datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
       datacenter.getProperties().setDescription("SDK TEST Description");
 
@@ -57,7 +57,7 @@ public class NicTest {
 
       LoadBalancer loadBalancer = new LoadBalancer();
       LoadBalancer.Properties properties = new LoadBalancer.Properties();
-      properties.setName("SDK TEST LOADBALANCER - LoadBalancer");
+      properties.setName("SDK TEST NIC - LoadBalancer");
       properties.setIp("123.123.123.123");
       loadBalancer.setProperties(properties);
 
@@ -67,7 +67,7 @@ public class NicTest {
       loadBalancerId = newLoadBalancer.getId();
 
       Server server = new Server();
-      server.getProperties().setName("SDK TEST SERVER - Server");
+      server.getProperties().setName("SDK TEST NIC - Server");
       server.getProperties().setRam("1024");
       server.getProperties().setCores("4");
 
@@ -78,7 +78,7 @@ public class NicTest {
 
       Nic nic = new Nic();
 
-      nic.getProperties().setName("SDK TEST FIREWALLRULES - Nic");
+      nic.getProperties().setName("SDK TEST NIC - Nic");
       nic.getProperties().setLan("1");
 
       nic.getEntities().setFirewallrules(null);
@@ -96,21 +96,28 @@ public class NicTest {
       Thread.sleep(35000);
       getNic();
       updateNic();
+
+      assignNicToLoadBalancer();
+
+      Thread.sleep(35000);
+      listAssignedNics();
+      listAssignedNic();
+      unassignNicToLoadBalancer();
+
    }
 
-   public void updateNic() throws RestClientException, IOException{
+   public void updateNic() throws RestClientException, IOException {
       PBObject object = new PBObject();
-      object.setName("SDK TEST FIREWALLRULES - Nic - changed");
+      object.setName("SDK TEST NIC - Nic - changed");
       List<String> ips = new ArrayList<String>();
       ips.add("123.123.123.123");
       object.setIps(ips);
       Nic nic = profitbricksApi.nicApi.updateNic(dataCenterId, serverId, nicId, object);
-      
+
       assertNotNull(nic);
       assertEquals(object.getName(), nic.getProperties().getName());
-      
-      
    }
+
    public void getNic() throws RestClientException, IOException {
       Nic nic = profitbricksApi.nicApi.getNic(dataCenterId, serverId, nicId);
       assertNotNull(nic);
@@ -122,8 +129,30 @@ public class NicTest {
       assertNotNull(nics);
    }
 
+   private void assignNicToLoadBalancer() throws RestClientException, IOException {
+      Nic nic = profitbricksApi.nicApi.assignNicToLoadBalancer(dataCenterId, loadBalancerId, nicId);
+      assertNotNull(nic);
+      assertEquals(nic.getId(), nicId);
+   }
+
+   private void unassignNicToLoadBalancer() throws RestClientException, IOException {
+      profitbricksApi.nicApi.unassignNicFromLoadBalancer(dataCenterId, loadBalancerId, nicId);
+   }
+
+   private void listAssignedNics() throws RestClientException, IOException {
+      Nics nics = profitbricksApi.nicApi.getAllBalancedNics(dataCenterId, loadBalancerId, serverId);
+      assertNotNull(nics);
+   }
+
+   private void listAssignedNic() throws RestClientException, IOException {
+      Nic nic = profitbricksApi.nicApi.getBalancedNic(dataCenterId, loadBalancerId, serverId, nicId);
+      assertNotNull(nic);
+   }
+
    @AfterClass
    public static void cleanup() throws RestClientException, IOException {
+      profitbricksApi.nicApi.deleteNic(dataCenterId, serverId, nicId);
       profitbricksApi.dataCenterApi.deleteDataCenter(dataCenterId);
    }
+
 }

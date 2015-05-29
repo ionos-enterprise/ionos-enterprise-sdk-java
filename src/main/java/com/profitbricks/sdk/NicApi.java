@@ -55,9 +55,31 @@ public class NicApi extends ProfitbricksAPIBase {
               .concat(resource).concat("/").concat(nicId), nic, Nic.class, 202);
    }
 
-   public void deleteNic(String dataCenterId, String serverId, String nicId, Nic nic) throws RestClientException, IOException {
+   public void deleteNic(String dataCenterId, String serverId, String nicId) throws RestClientException, IOException {
       client.delete(urlBase.concat("datacenters").concat("/").concat(dataCenterId).concat("/")
               .concat(parentResource).concat("/").concat(serverId).concat("/")
               .concat(resource).concat("/").concat(nicId), 202);
+   }
+
+   public Nic assignNicToLoadBalancer(String dataCenterId, String loadBalancerId, String nicId) throws RestClientException, IOException {
+      PBObject object = new PBObject();
+      object.setId(nicId);
+      return client.create(urlBase.concat("datacenters").concat("/").concat(dataCenterId).concat("/").concat("loadbalancers").concat("/").concat(loadBalancerId).concat("/").
+              concat("balancednics"), object, Nic.class, 202);
+   }
+
+   public void unassignNicFromLoadBalancer(String dataCenterId, String loadBalancerId, String nicId) throws RestClientException, IOException {
+      client.delete(urlBase.concat("datacenters").concat("/").concat(dataCenterId).concat("/").concat("loadbalancers").concat("/").concat(loadBalancerId).concat("/").
+              concat("balancednics").concat("/").concat(nicId), 202);
+   }
+
+   public Nics getAllBalancedNics(String dataCenterId, String loadBalancerId, String serverId) throws RestClientException, IOException {
+      return client.get(urlBase.concat("datacenters").concat("/").concat(dataCenterId).concat("/").concat("loadbalancers").concat("/").concat(loadBalancerId).concat("/").
+              concat("balancednics").concat(depth), null, Nics.class);
+   }
+
+   public Nic getBalancedNic(String dataCenterId, String loadBalancerId, String serverId, String nicId) throws RestClientException, IOException {
+      return client.get(urlBase.concat("datacenters").concat("/").concat(dataCenterId).concat("/").concat("loadbalancers").concat("/").concat(loadBalancerId).concat("/").
+              concat("balancednics").concat("/").concat(nicId).concat(depth), null, Nic.class);
    }
 }
