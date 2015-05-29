@@ -25,9 +25,9 @@ import java.io.IOException;
  *
  * @author jasmin.gacic
  */
-public class FirewallRulesApi extends ProfitbricksAPIBase {
+public class FirewallRuleApi extends ProfitbricksAPIBase {
 
-   public FirewallRulesApi(String resource, String parentResource) {
+   public FirewallRuleApi() {
       super("firewallrules", "nics");
    }
 

@@ -40,7 +40,7 @@ public class LoadBalancerTest {
    static String loadBalancerId;
 
    @BeforeClass
-   public static void createDataCenter() throws RestClientException, IOException {
+   public static void setUp() throws RestClientException, IOException {
 
       DataCenter datacenter = new DataCenter();
 

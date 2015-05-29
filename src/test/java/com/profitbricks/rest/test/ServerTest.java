@@ -40,9 +40,9 @@ public class ServerTest {
    static String serverId;
 
    @BeforeClass
-   public static void testCreateServer() throws RestClientException, IOException, InterruptedException {
+   public static void setUp() throws RestClientException, IOException, InterruptedException {
       DataCenter datacenter = new DataCenter();
-      datacenter.getProperties().setName("SDK TEST DC - Server");
+      datacenter.getProperties().setName("SDK TEST SERVER - Server");
       datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
       datacenter.getProperties().setDescription("SDK TEST Description");
 
