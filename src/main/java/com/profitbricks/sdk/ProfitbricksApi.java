@@ -25,14 +25,128 @@ public class ProfitbricksApi {
       this.loadbalancerApi = new LoadbalancerApi();
       this.nicApi = new NicApi();
       this.firewallRuleApi = new FirewallRuleApi();
+      this. imageApi = new ImageApi();
    }
 
-   public DatacenterApi dataCenterApi;
-   public ServerApi serverApi;
-   public VolumeApi volumeApi;
-   public SnapshotApi snapshotApi;
-   public LoadbalancerApi loadbalancerApi;
-   public NicApi nicApi;
-   public FirewallRuleApi firewallRuleApi;
+   private DatacenterApi dataCenterApi;
+   private ServerApi serverApi;
+   private VolumeApi volumeApi;
+   private SnapshotApi snapshotApi;
+   private LoadbalancerApi loadbalancerApi;
+   private NicApi nicApi;
+   private FirewallRuleApi firewallRuleApi;
+   private ImageApi imageApi; 
+
+   /**
+    * @return the dataCenterApi
+    */
+   public DatacenterApi getDataCenterApi() {
+      return dataCenterApi;
+   }
+
+   /**
+    * @param dataCenterApi the dataCenterApi to set
+    */
+   public void setDataCenterApi(DatacenterApi dataCenterApi) {
+      this.dataCenterApi = dataCenterApi;
+   }
+
+   /**
+    * @return the serverApi
+    */
+   public ServerApi getServerApi() {
+      return serverApi;
+   }
+
+   /**
+    * @param serverApi the serverApi to set
+    */
+   public void setServerApi(ServerApi serverApi) {
+      this.serverApi = serverApi;
+   }
+
+   /**
+    * @return the volumeApi
+    */
+   public VolumeApi getVolumeApi() {
+      return volumeApi;
+   }
+
+   /**
+    * @param volumeApi the volumeApi to set
+    */
+   public void setVolumeApi(VolumeApi volumeApi) {
+      this.volumeApi = volumeApi;
+   }
+
+   /**
+    * @return the snapshotApi
+    */
+   public SnapshotApi getSnapshotApi() {
+      return snapshotApi;
+   }
+
+   /**
+    * @param snapshotApi the snapshotApi to set
+    */
+   public void setSnapshotApi(SnapshotApi snapshotApi) {
+      this.snapshotApi = snapshotApi;
+   }
+
+   /**
+    * @return the loadbalancerApi
+    */
+   public LoadbalancerApi getLoadbalancerApi() {
+      return loadbalancerApi;
+   }
+
+   /**
+    * @param loadbalancerApi the loadbalancerApi to set
+    */
+   public void setLoadbalancerApi(LoadbalancerApi loadbalancerApi) {
+      this.loadbalancerApi = loadbalancerApi;
+   }
+
+   /**
+    * @return the nicApi
+    */
+   public NicApi getNicApi() {
+      return nicApi;
+   }
+
+   /**
+    * @param nicApi the nicApi to set
+    */
+   public void setNicApi(NicApi nicApi) {
+      this.nicApi = nicApi;
+   }
+
+   /**
+    * @return the firewallRuleApi
+    */
+   public FirewallRuleApi getFirewallRuleApi() {
+      return firewallRuleApi;
+   }
+
+   /**
+    * @param firewallRuleApi the firewallRuleApi to set
+    */
+   public void setFirewallRuleApi(FirewallRuleApi firewallRuleApi) {
+      this.firewallRuleApi = firewallRuleApi;
+   }
+
+   /**
+    * @return the imageApi
+    */
+   public ImageApi getImageApi() {
+      return imageApi;
+   }
+
+   /**
+    * @param imageApi the imageApi to set
+    */
+   public void setImageApi(ImageApi imageApi) {
+      this.imageApi = imageApi;
+   }
 
 }

@@ -48,7 +48,7 @@ public class LoadBalancerTest {
       datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
       datacenter.getProperties().setDescription("SDK TEST Description");
 
-      DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
+      DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
       dataCenterId = newDatacenter.getId();
       assertEquals(newDatacenter.getProperties().getName(), datacenter.getProperties().getName());
 
@@ -58,7 +58,7 @@ public class LoadBalancerTest {
       properties.setIp("123.123.123.123");
       loadBalancer.setProperties(properties);
 
-      LoadBalancer newLoadBalancer = profitbricksApi.loadbalancerApi.createLoadBalancer(dataCenterId, loadBalancer);
+      LoadBalancer newLoadBalancer = profitbricksApi.getLoadbalancerApi().createLoadBalancer(dataCenterId, loadBalancer);
       assertNotNull(newLoadBalancer);
 
       loadBalancerId = newLoadBalancer.getId();
@@ -74,12 +74,12 @@ public class LoadBalancerTest {
    }
 
    public void getAllLoadBalancers() throws RestClientException, IOException {
-      LoadBalancers loadbalancers = profitbricksApi.loadbalancerApi.getAllLoadBalancers(dataCenterId);
+      LoadBalancers loadbalancers = profitbricksApi.getLoadbalancerApi().getAllLoadBalancers(dataCenterId);
       assertNotNull(loadbalancers);
    }
 
    public void getLoadBalancer() throws RestClientException, IOException {
-      LoadBalancer loadBalancer = profitbricksApi.loadbalancerApi.getLoadBalancer(dataCenterId, loadBalancerId);
+      LoadBalancer loadBalancer = profitbricksApi.getLoadbalancerApi().getLoadBalancer(dataCenterId, loadBalancerId);
       assertNotNull(loadBalancer);
       assertEquals(loadBalancerId, loadBalancer.getId());
    }
@@ -87,18 +87,18 @@ public class LoadBalancerTest {
    private void updateLoadBalancer() throws RestClientException, IOException {
       PBObject object = new PBObject();
       object.setName("SDK TEST LOADBALANCER - LoadBalancer - Changed");
-      LoadBalancer loadBalancer = profitbricksApi.loadbalancerApi.updateLoadBalancer(dataCenterId, loadBalancerId, object);
+      LoadBalancer loadBalancer = profitbricksApi.getLoadbalancerApi().updateLoadBalancer(dataCenterId, loadBalancerId, object);
       assertNotNull(loadBalancer);
       assertEquals(object.getName(), loadBalancer.getProperties().getName());
 
    }
 
    private void deleteLoadBalancer() throws RestClientException, IOException {
-      profitbricksApi.loadbalancerApi.deleteLoadBalaner(dataCenterId, loadBalancerId);
+      profitbricksApi.getLoadbalancerApi().deleteLoadBalaner(dataCenterId, loadBalancerId);
    }
 
    @AfterClass
    public static void cleanup() throws RestClientException, IOException {
-      profitbricksApi.dataCenterApi.deleteDataCenter(dataCenterId);
+      profitbricksApi.getDataCenterApi().deleteDataCenter(dataCenterId);
    }
 }

@@ -52,7 +52,7 @@ public class NicTest {
       datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
       datacenter.getProperties().setDescription("SDK TEST Description");
 
-      DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
+      DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
       dataCenterId = newDatacenter.getId();
 
       LoadBalancer loadBalancer = new LoadBalancer();
@@ -61,7 +61,7 @@ public class NicTest {
       properties.setIp("123.123.123.123");
       loadBalancer.setProperties(properties);
 
-      LoadBalancer newLoadBalancer = profitbricksApi.loadbalancerApi.createLoadBalancer(dataCenterId, loadBalancer);
+      LoadBalancer newLoadBalancer = profitbricksApi.getLoadbalancerApi().createLoadBalancer(dataCenterId, loadBalancer);
       assertNotNull(newLoadBalancer);
 
       loadBalancerId = newLoadBalancer.getId();
@@ -71,7 +71,7 @@ public class NicTest {
       server.getProperties().setRam("1024");
       server.getProperties().setCores("4");
 
-      Server newServer = profitbricksApi.serverApi.createServer(dataCenterId, server);
+      Server newServer = profitbricksApi.getServerApi().createServer(dataCenterId, server);
 
       assertNotNull(newServer);
       serverId = newServer.getId();
@@ -84,7 +84,7 @@ public class NicTest {
       nic.getEntities().setFirewallrules(null);
 
       Thread.sleep(5000);
-      Nic newNic = profitbricksApi.nicApi.createNic(dataCenterId, serverId, nic);
+      Nic newNic = profitbricksApi.getNicApi().createNic(dataCenterId, serverId, nic);
 
       assertNotNull(newNic);
       nicId = newNic.getId();
@@ -112,47 +112,47 @@ public class NicTest {
       List<String> ips = new ArrayList<String>();
       ips.add("123.123.123.123");
       object.setIps(ips);
-      Nic nic = profitbricksApi.nicApi.updateNic(dataCenterId, serverId, nicId, object);
+      Nic nic = profitbricksApi.getNicApi().updateNic(dataCenterId, serverId, nicId, object);
 
       assertNotNull(nic);
       assertEquals(object.getName(), nic.getProperties().getName());
    }
 
    public void getNic() throws RestClientException, IOException {
-      Nic nic = profitbricksApi.nicApi.getNic(dataCenterId, serverId, nicId);
+      Nic nic = profitbricksApi.getNicApi().getNic(dataCenterId, serverId, nicId);
       assertNotNull(nic);
       assertEquals(nicId, nic.getId());
    }
 
    public void getAllNics() throws RestClientException, IOException {
-      Nics nics = profitbricksApi.nicApi.getAllNics(dataCenterId, serverId);
+      Nics nics = profitbricksApi.getNicApi().getAllNics(dataCenterId, serverId);
       assertNotNull(nics);
    }
 
    private void assignNicToLoadBalancer() throws RestClientException, IOException {
-      Nic nic = profitbricksApi.nicApi.assignNicToLoadBalancer(dataCenterId, loadBalancerId, nicId);
+      Nic nic = profitbricksApi.getNicApi().assignNicToLoadBalancer(dataCenterId, loadBalancerId, nicId);
       assertNotNull(nic);
       assertEquals(nic.getId(), nicId);
    }
 
    private void unassignNicToLoadBalancer() throws RestClientException, IOException {
-      profitbricksApi.nicApi.unassignNicFromLoadBalancer(dataCenterId, loadBalancerId, nicId);
+      profitbricksApi.getNicApi().unassignNicFromLoadBalancer(dataCenterId, loadBalancerId, nicId);
    }
 
    private void listAssignedNics() throws RestClientException, IOException {
-      Nics nics = profitbricksApi.nicApi.getAllBalancedNics(dataCenterId, loadBalancerId, serverId);
+      Nics nics = profitbricksApi.getNicApi().getAllBalancedNics(dataCenterId, loadBalancerId, serverId);
       assertNotNull(nics);
    }
 
    private void listAssignedNic() throws RestClientException, IOException {
-      Nic nic = profitbricksApi.nicApi.getBalancedNic(dataCenterId, loadBalancerId, serverId, nicId);
+      Nic nic = profitbricksApi.getNicApi().getBalancedNic(dataCenterId, loadBalancerId, serverId, nicId);
       assertNotNull(nic);
    }
 
    @AfterClass
    public static void cleanup() throws RestClientException, IOException {
-      profitbricksApi.nicApi.deleteNic(dataCenterId, serverId, nicId);
-      profitbricksApi.dataCenterApi.deleteDataCenter(dataCenterId);
+      profitbricksApi.getNicApi().deleteNic(dataCenterId, serverId, nicId);
+      profitbricksApi.getDataCenterApi().deleteDataCenter(dataCenterId);
    }
 
 }

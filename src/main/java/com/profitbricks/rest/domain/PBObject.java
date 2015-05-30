@@ -33,7 +33,7 @@ public class PBObject {
    private AvailabilityZone availabilityZone;
    private Boolean bootVolume;
    private Boolean bootCdrom;
-   private String licencetype;
+   private String licenceType;
    private String sourceMac;
    private String sourceIp;
    private String targetIp;
@@ -44,6 +44,16 @@ public class PBObject {
    private List<String> ips;
    private Boolean dhcp;
    private String lan;
+   private Boolean cpuHotPlug;
+   private Boolean cpuHotUnplug;
+   private Boolean ramHotPlug;
+   private Boolean ramHotUnplug;
+   private Boolean nicHotPlug;
+   private Boolean nicHotUnplug;
+   private Boolean discVirtioHotPlug;
+   private Boolean discVirtioHotUnplug;
+   private Boolean discScsiHotPlug;
+   private Boolean discScsiHotUnplug;
 
    /**
     * @return the id
@@ -172,17 +182,17 @@ public class PBObject {
    }
 
    /**
-    * @return the licencetype
+    * @return the licenceType
     */
-   public String getLicencetype() {
-      return licencetype;
+   public String getLicenceType() {
+      return licenceType;
    }
 
    /**
-    * @param licencetype the licencetype to set
+    * @param licencetype the licenceType to set
     */
-   public void setLicencetype(String licencetype) {
-      this.licencetype = licencetype;
+   public void setLicenceType(String licencetype) {
+      this.licenceType = licencetype;
    }
 
    /**
@@ -325,5 +335,145 @@ public class PBObject {
     */
    public void setLan(String lan) {
       this.lan = lan;
+   }
+
+   /**
+    * @return the cpuHotPlug
+    */
+   public Boolean getCpuHotPlug() {
+      return cpuHotPlug;
+   }
+
+   /**
+    * @param cpuHotPlug the cpuHotPlug to set
+    */
+   public void setCpuHotPlug(Boolean cpuHotPlug) {
+      this.cpuHotPlug = cpuHotPlug;
+   }
+
+   /**
+    * @return the cpuHotUnplug
+    */
+   public Boolean getCpuHotUnplug() {
+      return cpuHotUnplug;
+   }
+
+   /**
+    * @param cpuHotUnplug the cpuHotUnplug to set
+    */
+   public void setCpuHotUnplug(Boolean cpuHotUnplug) {
+      this.cpuHotUnplug = cpuHotUnplug;
+   }
+
+   /**
+    * @return the ramHotPlug
+    */
+   public Boolean getRamHotPlug() {
+      return ramHotPlug;
+   }
+
+   /**
+    * @param ramHotPlug the ramHotPlug to set
+    */
+   public void setRamHotPlug(Boolean ramHotPlug) {
+      this.ramHotPlug = ramHotPlug;
+   }
+
+   /**
+    * @return the ramHotUnplug
+    */
+   public Boolean getRamHotUnplug() {
+      return ramHotUnplug;
+   }
+
+   /**
+    * @param ramHotUnplug the ramHotUnplug to set
+    */
+   public void setRamHotUnplug(Boolean ramHotUnplug) {
+      this.ramHotUnplug = ramHotUnplug;
+   }
+
+   /**
+    * @return the nicHotPlug
+    */
+   public Boolean getNicHotPlug() {
+      return nicHotPlug;
+   }
+
+   /**
+    * @param nicHotPlug the nicHotPlug to set
+    */
+   public void setNicHotPlug(Boolean nicHotPlug) {
+      this.nicHotPlug = nicHotPlug;
+   }
+
+   /**
+    * @return the nicHotUnplug
+    */
+   public Boolean getNicHotUnplug() {
+      return nicHotUnplug;
+   }
+
+   /**
+    * @param nicHotUnplug the nicHotUnplug to set
+    */
+   public void setNicHotUnplug(Boolean nicHotUnplug) {
+      this.nicHotUnplug = nicHotUnplug;
+   }
+
+   /**
+    * @return the discVirtioHotPlug
+    */
+   public Boolean getDiscVirtioHotPlug() {
+      return discVirtioHotPlug;
+   }
+
+   /**
+    * @param discVirtioHotPlug the discVirtioHotPlug to set
+    */
+   public void setDiscVirtioHotPlug(Boolean discVirtioHotPlug) {
+      this.discVirtioHotPlug = discVirtioHotPlug;
+   }
+
+   /**
+    * @return the discVirtioHotUnplug
+    */
+   public Boolean getDiscVirtioHotUnplug() {
+      return discVirtioHotUnplug;
+   }
+
+   /**
+    * @param discVirtioHotUnplug the discVirtioHotUnplug to set
+    */
+   public void setDiscVirtioHotUnplug(Boolean discVirtioHotUnplug) {
+      this.discVirtioHotUnplug = discVirtioHotUnplug;
+   }
+
+   /**
+    * @return the discScsiHotPlug
+    */
+   public Boolean getDiscScsiHotPlug() {
+      return discScsiHotPlug;
+   }
+
+   /**
+    * @param discScsiHotPlug the discScsiHotPlug to set
+    */
+   public void setDiscScsiHotPlug(Boolean discScsiHotPlug) {
+      this.discScsiHotPlug = discScsiHotPlug;
+   }
+
+   /**
+    * @return the discScsiHotUnplug
+    */
+   public Boolean getDiscScsiHotUnplug() {
+      return discScsiHotUnplug;
+   }
+
+   /**
+    * @param discScsiHotUnplug the discScsiHotUnplug to set
+    */
+   public void setDiscScsiHotUnplug(Boolean discScsiHotUnplug) {
+      this.discScsiHotUnplug = discScsiHotUnplug;
    }
 }
