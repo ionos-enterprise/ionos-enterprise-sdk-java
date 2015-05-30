@@ -17,6 +17,8 @@ package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
+import com.profitbricks.rest.domain.Image;
+import com.profitbricks.rest.domain.Images;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.Server;
 import com.profitbricks.rest.domain.Volume;
@@ -38,6 +40,7 @@ public class VolumeTest {
    static String dataCenterId;
    static String serverId;
    static String volumeId;
+   private static String imageId;
 
    @BeforeClass
    public static void setUp() throws RestClientException, IOException, InterruptedException {
@@ -46,7 +49,7 @@ public class VolumeTest {
       datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
       datacenter.getProperties().setDescription("SDK TEST Description");
 
-      DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
+      DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
       dataCenterId = newDatacenter.getId();
 
       Server server = new Server();
@@ -54,7 +57,7 @@ public class VolumeTest {
       server.getProperties().setRam("1024");
       server.getProperties().setCores("4");
 
-      Server newServer = profitbricksApi.serverApi.createServer(dataCenterId, server);
+      Server newServer = profitbricksApi.getServerApi().createServer(dataCenterId, server);
 
       assertNotNull(newServer);
       serverId = newServer.getId();
@@ -64,7 +67,7 @@ public class VolumeTest {
       volume.getProperties().setSize("1024");
       volume.getProperties().setLicenceType("LINUX");
 
-      Volume newVolume = profitbricksApi.volumeApi.createVolume(dataCenterId, volume);
+      Volume newVolume = profitbricksApi.getVolumeApi().createVolume(dataCenterId, volume);
       assertNotNull(newVolume);
 
       volumeId = newVolume.getId();
@@ -74,9 +77,9 @@ public class VolumeTest {
 
    @AfterClass
    public static void cleanUp() throws RestClientException, IOException {
-      profitbricksApi.volumeApi.deleteVolume(dataCenterId, volumeId);
-      profitbricksApi.serverApi.deleteServer(dataCenterId, serverId);
-      profitbricksApi.dataCenterApi.deleteDataCenter(dataCenterId);
+      profitbricksApi.getVolumeApi().deleteVolume(dataCenterId, volumeId);
+      profitbricksApi.getServerApi().deleteServer(dataCenterId, serverId);
+      profitbricksApi.getDataCenterApi().deleteDataCenter(dataCenterId);
    }
 
    @Test
@@ -91,26 +94,26 @@ public class VolumeTest {
    }
 
    public void testGetAllVolumes() throws RestClientException, IOException {
-      Volumes volumes = profitbricksApi.volumeApi.getAllVolumes(dataCenterId);
+      Volumes volumes = profitbricksApi.getVolumeApi().getAllVolumes(dataCenterId);
       assertNotNull(volumes);
    }
 
    public void testGetAllAttachedVolumes() throws RestClientException, IOException {
-      Volumes volumes = profitbricksApi.volumeApi.getAllVolumes(dataCenterId, serverId);
+      Volumes volumes = profitbricksApi.getVolumeApi().getAllVolumes(dataCenterId, serverId);
       assertNotNull(volumes);
    }
 
    public void testGetVolume() throws RestClientException, IOException, InterruptedException {
-      Volume volume = profitbricksApi.volumeApi.getVolume(dataCenterId, volumeId);
+      Volume volume = profitbricksApi.getVolumeApi().getVolume(dataCenterId, volumeId);
       assertNotNull(volume);
    }
 
    public void testAttachVolume() throws RestClientException, IOException, InterruptedException {
-      Volume attachedVolume = profitbricksApi.volumeApi.attachVolume(dataCenterId, serverId, volumeId);
+      Volume attachedVolume = profitbricksApi.getVolumeApi().attachVolume(dataCenterId, serverId, volumeId);
       assertNotNull(attachedVolume);
    }
 
    public void testDetachVolume() throws RestClientException, IOException, InterruptedException {
-      profitbricksApi.volumeApi.detachVolume(dataCenterId, serverId, volumeId);
+      profitbricksApi.getVolumeApi().detachVolume(dataCenterId, serverId, volumeId);
    }
 }

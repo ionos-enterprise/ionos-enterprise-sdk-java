@@ -46,7 +46,7 @@ public class ServerTest {
       datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
       datacenter.getProperties().setDescription("SDK TEST Description");
 
-      DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
+      DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
       dataCenterId = newDatacenter.getId();
 
       Server server = new Server();
@@ -54,7 +54,7 @@ public class ServerTest {
       server.getProperties().setRam("1024");
       server.getProperties().setCores("4");
 
-      Server newServer = profitbricksApi.serverApi.createServer(dataCenterId, server);
+      Server newServer = profitbricksApi.getServerApi().createServer(dataCenterId, server);
 
       assertNotNull(newServer);
       serverId = newServer.getId();
@@ -63,8 +63,8 @@ public class ServerTest {
 
    @AfterClass
    public static void cleanup() throws RestClientException, IOException {
-      profitbricksApi.serverApi.deleteServer(dataCenterId, serverId);
-      profitbricksApi.dataCenterApi.deleteDataCenter(dataCenterId);
+      profitbricksApi.getServerApi().deleteServer(dataCenterId, serverId);
+      profitbricksApi.getDataCenterApi().deleteDataCenter(dataCenterId);
    }
 
    @Test
@@ -79,14 +79,14 @@ public class ServerTest {
 
    public void testGetAllServers() throws RestClientException, IOException {
       System.out.println("Getting All Servers");
-      Servers servers = profitbricksApi.serverApi.getAllServers(dataCenterId);
+      Servers servers = profitbricksApi.getServerApi().getAllServers(dataCenterId);
       assertNotNull(servers);
    }
 
    public void testGetServer() throws RestClientException, IOException, InterruptedException {
       System.out.println("Getting One Server");
       Thread.sleep(5000);
-      Server server = profitbricksApi.serverApi.getServer(dataCenterId, serverId);
+      Server server = profitbricksApi.getServerApi().getServer(dataCenterId, serverId);
       assertNotNull(server);
    }
 
@@ -95,21 +95,21 @@ public class ServerTest {
       PBObject object = new PBObject();
       object.setName(newName);
 
-      Server updatedServer = profitbricksApi.serverApi.updateServer(dataCenterId, serverId, object);
+      Server updatedServer = profitbricksApi.getServerApi().updateServer(dataCenterId, serverId, object);
       assertEquals(newName, updatedServer.getProperties().getName());
 
    }
 
    public void testStartServer() throws RestClientException, IOException {
-      profitbricksApi.serverApi.startServer(dataCenterId, serverId);
+      profitbricksApi.getServerApi().startServer(dataCenterId, serverId);
    }
 
    public void testStopServer() throws RestClientException, IOException {
-      profitbricksApi.serverApi.stopServer(dataCenterId, serverId);
+      profitbricksApi.getServerApi().stopServer(dataCenterId, serverId);
 
    }
 
    public void testRebootServer() throws RestClientException, IOException {
-      profitbricksApi.serverApi.rebootServer(dataCenterId, serverId);
+      profitbricksApi.getServerApi().rebootServer(dataCenterId, serverId);
    }
 }

@@ -46,21 +46,21 @@ public class DatacenterTest {
       datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
       datacenter.getProperties().setDescription("SDK TEST Description");
 
-      DataCenter newDatacenter = profitbricksApi.dataCenterApi.createDataCenter(datacenter);
+      DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
       dataCenterId = newDatacenter.getId();
       assertEquals(newDatacenter.getProperties().getName(), datacenter.getProperties().getName());
    }
 
    @Test
    public void testGetAllDatacenters() throws RestClientException, IOException {
-      DataCenters datacenters = profitbricksApi.dataCenterApi.getAllDataCenters();
+      DataCenters datacenters = profitbricksApi.getDataCenterApi().getAllDataCenters();
       assertNotNull(datacenters);
       assertTrue(datacenters.items.size() > 0);
    }
 
    @Test
    public void testGetDatacenter() throws RestClientException, IOException {
-      DataCenter datacenter = profitbricksApi.dataCenterApi.getDataCenter(dataCenterId);
+      DataCenter datacenter = profitbricksApi.getDataCenterApi().getDataCenter(dataCenterId);
       assertNotNull(datacenter);
    }
 
@@ -70,12 +70,12 @@ public class DatacenterTest {
       PBObject object = new PBObject();
       object.setName(newName);
 
-      DataCenter updatedDataCenter = profitbricksApi.dataCenterApi.updateDataCenter(dataCenterId, object);
+      DataCenter updatedDataCenter = profitbricksApi.getDataCenterApi().updateDataCenter(dataCenterId, object);
       assertEquals(newName, updatedDataCenter.getProperties().getName());
    }
 
    @AfterClass
    public static void cleanup() throws RestClientException, IOException {
-      profitbricksApi.dataCenterApi.deleteDataCenter(dataCenterId);
+      profitbricksApi.getDataCenterApi().deleteDataCenter(dataCenterId);
    }
 }
