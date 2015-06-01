@@ -25,6 +25,7 @@ public class ProfitbricksBase {
    private String type;
    private String href;
    private Metadata metadata;
+   private String requestId;
 
    /**
     * @return the id
@@ -80,5 +81,19 @@ public class ProfitbricksBase {
     */
    public void setMetadata(Metadata metadata) {
       this.metadata = metadata;
+   }
+
+   /**
+    * @return the requestId
+    */
+   public String getRequestId() {
+      return requestId;
+   }
+
+   /**
+    * @param requestId the requestId to set
+    */
+   public void setRequestId(String requestId) {
+      this.requestId = requestId;
    }
 }

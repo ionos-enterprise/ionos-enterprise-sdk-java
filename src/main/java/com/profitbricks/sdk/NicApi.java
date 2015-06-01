@@ -20,6 +20,7 @@ import com.profitbricks.rest.domain.Nic;
 import com.profitbricks.rest.domain.Nics;
 import com.profitbricks.rest.domain.PBObject;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  *
@@ -43,7 +44,7 @@ public class NicApi extends ProfitbricksAPIBase {
               .concat(resource).concat("/").concat(nicId).concat(depth), null, Nic.class);
    }
 
-   public Nic createNic(String dataCenterId, String serverId, Nic nic) throws RestClientException, IOException {
+   public Nic createNic(String dataCenterId, String serverId, Nic nic) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       return client.create(urlBase.concat("datacenters").concat("/").concat(dataCenterId).concat("/")
               .concat(parentResource).concat("/").concat(serverId).concat("/")
               .concat(resource), nic, Nic.class, 202);

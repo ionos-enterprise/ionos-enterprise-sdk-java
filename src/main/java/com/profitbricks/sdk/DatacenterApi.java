@@ -20,6 +20,7 @@ import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.DataCenters;
 import com.profitbricks.rest.domain.PBObject;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  *
@@ -39,7 +40,7 @@ public class DatacenterApi extends ProfitbricksAPIBase {
       return client.get(urlBase.concat(resource).concat("/").concat(id).concat(depth), null, DataCenter.class);
    }
 
-   public DataCenter createDataCenter(DataCenter datacenter) throws RestClientException, IOException {
+   public DataCenter createDataCenter(DataCenter datacenter) throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
       return client.create(urlBase.concat(resource), datacenter, DataCenter.class, 202);
    }
 

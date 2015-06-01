@@ -23,6 +23,7 @@ import com.profitbricks.rest.domain.Servers;
 import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -40,7 +41,7 @@ public class ServerTest {
    static String serverId;
 
    @BeforeClass
-   public static void setUp() throws RestClientException, IOException, InterruptedException {
+   public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
       DataCenter datacenter = new DataCenter();
       datacenter.getProperties().setName("SDK TEST SERVER - Server");
       datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());

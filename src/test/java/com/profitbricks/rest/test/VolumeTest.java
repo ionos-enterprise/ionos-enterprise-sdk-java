@@ -25,6 +25,7 @@ import com.profitbricks.rest.domain.Volume;
 import com.profitbricks.rest.domain.Volumes;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertNotNull;
 import org.junit.BeforeClass;
@@ -43,7 +44,7 @@ public class VolumeTest {
    private static String imageId;
 
    @BeforeClass
-   public static void setUp() throws RestClientException, IOException, InterruptedException {
+   public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
       DataCenter datacenter = new DataCenter();
       datacenter.getProperties().setName("SDK TEST VOLUME - Data Center");
       datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());

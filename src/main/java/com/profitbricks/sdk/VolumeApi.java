@@ -20,6 +20,7 @@ import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.Volume;
 import com.profitbricks.rest.domain.Volumes;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  *
@@ -84,7 +85,7 @@ public class VolumeApi extends ProfitbricksAPIBase {
     * @throws RestClientException
     * @throws IOException
     */
-   public Volume createVolume(String dataCenterId, Volume volume) throws RestClientException, IOException {
+   public Volume createVolume(String dataCenterId, Volume volume) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       return client.create(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource), volume, Volume.class, 202);
    }

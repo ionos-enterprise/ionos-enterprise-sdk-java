@@ -47,6 +47,7 @@ import org.apache.http.util.EntityUtils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.profitbricks.rest.domain.PBObject;
+import java.lang.reflect.InvocationTargetException;
 import org.apache.http.client.methods.HttpPatch;
 
 public class RestClient extends AbstractRestClient {
@@ -138,7 +139,7 @@ public class RestClient extends AbstractRestClient {
       else
          return null;
    }
-   
+
    public Header create(RequestInterceptor interceptor, String path, PBObject object, int expectedStatus)
            throws RestClientException, IOException {
       HttpPost post = contentTypeJson(newHttpPost(path));
@@ -149,16 +150,13 @@ public class RestClient extends AbstractRestClient {
       return response.getFirstHeader("Location");
    }
 
-   public <T> T create(RequestInterceptor interceptor, String path, T object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException {
+   public <T> T create(RequestInterceptor interceptor, String path, T object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       HttpPost post = contentTypeJson(newHttpPost(path));
       HttpEntity entity = new StringEntity(toJson(object).toString(), Charsets.UTF_8);
       post.setEntity(entity);
       HttpResponse response = execute(interceptor, post, expectedStatus);
-      String content = contentAsString(response);
-      if (content != null)
-         return bindObject(content, entityClass);
-      else
-         return null;
+      
+      return bindObject(response, entityClass);
    }
 
    public <T> T create(RequestInterceptor interceptor, String path, PBObject object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException {
@@ -173,7 +171,7 @@ public class RestClient extends AbstractRestClient {
          return null;
    }
 
-   public <T> T create(String path, T object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException {
+   public <T> T create(String path, T object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       return RestClient.this.create(null, path, object, entityClass, expectedStatus);
    }
 
@@ -311,9 +309,9 @@ public class RestClient extends AbstractRestClient {
          EntityUtils.consume(response.getEntity());
    }
 
-   public String contentAsString(HttpResponse response) throws IOException {
-      if (response != null && response.getEntity() != null)
-         return IOUtils.toString(response.getEntity().getContent(), Charsets.UTF_8);
-      return null;
-   }
+   /*public String contentAsString(HttpResponse response) throws IOException {
+    if (response != null && response.getEntity() != null)
+    return IOUtils.toString(response.getEntity().getContent(), Charsets.UTF_8);
+    return null;
+    }*/
 }

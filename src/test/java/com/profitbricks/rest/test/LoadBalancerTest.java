@@ -23,6 +23,7 @@ import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -40,7 +41,7 @@ public class LoadBalancerTest {
    static String loadBalancerId;
 
    @BeforeClass
-   public static void setUp() throws RestClientException, IOException {
+   public static void setUp() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException { 
 
       DataCenter datacenter = new DataCenter();
 

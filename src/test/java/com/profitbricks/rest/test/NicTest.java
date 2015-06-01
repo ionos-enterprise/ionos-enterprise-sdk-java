@@ -25,6 +25,7 @@ import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.Server;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.AfterClass;
@@ -46,7 +47,7 @@ public class NicTest {
    private static String loadBalancerId;
 
    @BeforeClass
-   public static void setUp() throws RestClientException, IOException, InterruptedException {
+   public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
       DataCenter datacenter = new DataCenter();
       datacenter.getProperties().setName("SDK TEST NIC - Server");
       datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
