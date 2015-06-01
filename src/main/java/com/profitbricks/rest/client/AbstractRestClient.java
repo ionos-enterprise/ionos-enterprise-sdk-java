@@ -53,6 +53,8 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import org.apache.http.client.methods.HttpPatch;
 
 public abstract class AbstractRestClient {
@@ -73,6 +75,22 @@ public abstract class AbstractRestClient {
 
    public static RestClientBuilder builder() {
       return new RestClientBuilder();
+   }
+
+   protected <T> T bindObject(HttpResponse response, Class<T> entityClass) throws IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+      String source = contentAsString(response);
+      if (source == null)
+         return null;
+
+      T toReturn = mapper.readValue(source, entityClass);
+      String location = response.getFirstHeader("Location").getValue();
+      Method m = toReturn.getClass().getMethod("setRequestId", String.class);
+      if (m == null)
+         return null;
+
+      m.invoke(toReturn, location);
+
+      return toReturn;
    }
 
    protected <T> T bindObject(String source, Class<T> entityClass) throws IOException {
@@ -206,5 +224,11 @@ public abstract class AbstractRestClient {
 
    protected HttpDelete newHttpDelete(String url) {
       return new HttpDelete(url);
+   }
+
+   public String contentAsString(HttpResponse response) throws IOException {
+      if (response != null && response.getEntity() != null)
+         return IOUtils.toString(response.getEntity().getContent(), Charsets.UTF_8);
+      return null;
    }
 }

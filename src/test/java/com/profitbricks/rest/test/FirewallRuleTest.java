@@ -26,6 +26,7 @@ import com.profitbricks.rest.domain.Protocol;
 import com.profitbricks.rest.domain.Server;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -45,7 +46,7 @@ public class FirewallRuleTest {
    private static String firewallRuleId;
 
    @BeforeClass
-   public static void setUp() throws RestClientException, IOException, InterruptedException {
+   public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
       DataCenter datacenter = new DataCenter();
       datacenter.getProperties().setName("SDK TEST FIREWALLRULES - Data Center");
       datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());

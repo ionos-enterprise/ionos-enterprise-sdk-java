@@ -21,6 +21,7 @@ import com.profitbricks.rest.domain.IPBlocks;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.AfterClass;
@@ -38,7 +39,7 @@ public class IPBlockTest {
    static String ipBlockId;
 
    @BeforeClass
-   public static void setUp() throws RestClientException, IOException {
+   public static void setUp() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
       IPBlock ipb = new IPBlock();
 

@@ -20,6 +20,7 @@ import com.profitbricks.rest.domain.FirewallRule;
 import com.profitbricks.rest.domain.FirewallRules;
 import com.profitbricks.rest.domain.PBObject;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  *
@@ -46,7 +47,7 @@ public class FirewallRuleApi extends ProfitbricksAPIBase {
               .concat(depth), null, FirewallRule.class);
    }
 
-   public FirewallRule createFirewallRule(String dataCenterId, String serverId, String nicId, FirewallRule firewallRule) throws RestClientException, IOException {
+   public FirewallRule createFirewallRule(String dataCenterId, String serverId, String nicId, FirewallRule firewallRule) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       return client.create(urlBase.concat("datacenters").concat("/").concat(dataCenterId).concat("/")
               .concat("servers").concat("/").concat(serverId).concat("/")
               .concat(parentResource).concat("/").concat(nicId).concat("/")

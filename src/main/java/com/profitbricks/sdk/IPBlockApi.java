@@ -19,6 +19,7 @@ import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.IPBlock;
 import com.profitbricks.rest.domain.IPBlocks;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  *
@@ -38,7 +39,7 @@ public class IPBlockApi extends ProfitbricksAPIBase {
       return client.get(urlBase.concat(resource).concat("/").concat(ipBlockId).concat(depth), null, IPBlock.class);
    }
 
-   public IPBlock createIPBlock(String location, String size, IPBlock ipBlock) throws RestClientException, IOException {
+   public IPBlock createIPBlock(String location, String size, IPBlock ipBlock) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       return client.create(urlBase.concat(resource), ipBlock, IPBlock.class, 202);
    }
 
