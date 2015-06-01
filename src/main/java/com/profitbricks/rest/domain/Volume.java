@@ -1,9 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2015.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.profitbricks.rest.domain;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  *
@@ -25,6 +37,7 @@ public class Volume extends ProfitbricksBase {
       this.properties = properties;
    }
 
+   @JsonIgnoreProperties(ignoreUnknown = true)
    public class Properties {
 
       private String name;
@@ -34,6 +47,10 @@ public class Volume extends ProfitbricksBase {
       private Status vmState;
       private String bootVolume;
       private String bootCdrom;
+      private String size;
+      private BusType bus;
+      private String image;
+      private String licenceType;
 
       /**
        * @return the name
@@ -132,7 +149,63 @@ public class Volume extends ProfitbricksBase {
       public void setBootCdrom(String bootCdrom) {
          this.bootCdrom = bootCdrom;
       }
+
+      /**
+       * @return the size
+       */
+      public String getSize() {
+         return size;
+      }
+
+      /**
+       * @param size the size to set
+       */
+      public void setSize(String size) {
+         this.size = size;
+      }
+
+      /**
+       * @return the bus
+       */
+      public BusType getBus() {
+         return bus;
+      }
+
+      /**
+       * @param bus the bus to set
+       */
+      public void setBus(BusType bus) {
+         this.bus = bus;
+      }
+
+      /**
+       * @return the image
+       */
+      public String getImage() {
+         return image;
+      }
+
+      /**
+       * @param image the image to set
+       */
+      public void setImage(String image) {
+         this.image = image;
+      }
+
+      /**
+       * @return the licenceType
+       */
+      public String getLicenceType() {
+         return licenceType;
+      }
+
+      /**
+       * @param licenceType the licenceType to set
+       */
+      public void setLicenceType(String licenceType) {
+         this.licenceType = licenceType;
+      }
    }
-   
+
    private Properties properties = new Properties();
 }

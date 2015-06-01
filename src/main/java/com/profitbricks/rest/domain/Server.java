@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2015.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.profitbricks.rest.domain;
 
@@ -27,6 +37,20 @@ public class Server extends ProfitbricksBase {
       this.properties = properties;
    }
 
+   /**
+    * @return the entities
+    */
+   public Entities getEntities() {
+      return entities;
+   }
+
+   /**
+    * @param entities the entities to set
+    */
+   public void setEntities(Entities entities) {
+      this.entities = entities;
+   }
+
    public class Properties {
 
       private String name;
@@ -34,8 +58,37 @@ public class Server extends ProfitbricksBase {
       private String ram;
       private AvailabilityZone availabilityZone;
       private Status vmState;
-      private boolean bootVolume;
-      private boolean bootCdrom;
+      private Boolean bootVolume;
+      private Boolean bootCdrom;
+      private LicenceType licencetype;
+
+      /**
+       * @return the licencetype
+       */
+      public LicenceType getLicencetype() {
+         return licencetype;
+      }
+
+      /**
+       * @param licencetype the licencetype to set
+       */
+      public void setLicencetype(String licencetype) {
+         this.licencetype.fromValue(licencetype);
+      }
+
+      /**
+       * @return the availabilityZone
+       */
+      public AvailabilityZone getAvailabilityZone() {
+         return availabilityZone;
+      }
+
+      /**
+       * @param availabilityZone the availabilityZone to set
+       */
+      public void setAvailabilityZone(String availabilityZone) {
+         this.availabilityZone.fromValue(availabilityZone);
+      }
 
       /**
        * @return the name
@@ -80,20 +133,6 @@ public class Server extends ProfitbricksBase {
       }
 
       /**
-       * @return the availabilityZone
-       */
-      public AvailabilityZone getAvailabilityZone() {
-         return availabilityZone;
-      }
-
-      /**
-       * @param availabilityZone the availabilityZone to set
-       */
-      public void setAvailabilityZone(AvailabilityZone availabilityZone) {
-         this.availabilityZone = availabilityZone;
-      }
-
-      /**
        * @return the vmState
        */
       public Status getVmState() {
@@ -110,96 +149,41 @@ public class Server extends ProfitbricksBase {
       /**
        * @return the bootVolume
        */
-      public boolean isBootVolume() {
+      public Boolean getBootVolume() {
          return bootVolume;
       }
 
       /**
        * @param bootVolume the bootVolume to set
        */
-      public void setBootVolume(boolean bootVolume) {
+      public void setBootVolume(Boolean bootVolume) {
          this.bootVolume = bootVolume;
       }
 
       /**
        * @return the bootCdrom
        */
-      public boolean isBootCdrom() {
+      public Boolean getBootCdrom() {
          return bootCdrom;
       }
 
       /**
        * @param bootCdrom the bootCdrom to set
        */
-      public void setBootCdrom(boolean bootCdrom) {
+      public void setBootCdrom(Boolean bootCdrom) {
          this.bootCdrom = bootCdrom;
       }
+
    }
 
    public class Entities {
 
-      private Nics nics = new Nics();
-      private Volumes volumes = new Volumes();
-      private CDRoms cdroms = new CDRoms();
-
-      /**
-       * @return the nics
-       */
-      public Nics getNics() {
-         return nics;
-      }
-
-      /**
-       * @param nics the nics to set
-       */
-      public void setNics(Nics nics) {
-         this.nics = nics;
-      }
-
-      /**
-       * @return the volumes
-       */
-      public Volumes getVolumes() {
-         return volumes;
-      }
-
-      /**
-       * @param volumes the volumes to set
-       */
-      public void setVolumes(Volumes volumes) {
-         this.volumes = volumes;
-      }
-
-      /**
-       * @return the cdroms
-       */
-      public CDRoms getCdroms() {
-         return cdroms;
-      }
-
-      /**
-       * @param cdroms the cdroms to set
-       */
-      public void setCdroms(CDRoms cdroms) {
-         this.cdroms = cdroms;
-      }
+      public Nics nics = new Nics();
+      public Volumes volumes = new Volumes();
+      public CDRoms cdroms = new CDRoms();
    }
 
    private Properties properties = new Properties();
+   private Entities entities;
 
-   private Entities entities = new Entities();
-
-   /**
-    * @return the entities
-    */
-   public Entities getEntities() {
-      return entities;
-   }
-
-   /**
-    * @param entities the entities to set
-    */
-   public void setEntities(Entities entities) {
-      this.entities = entities;
-   }
 }
