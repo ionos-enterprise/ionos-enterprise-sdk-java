@@ -27,6 +27,7 @@ public class ProfitbricksApi {
       this.firewallRuleApi = new FirewallRuleApi();
       this.imageApi = new ImageApi();
       this.ipBlockApi = new IPBlockApi();
+      this.requestApi = new RequestApi();
    }
 
    private DatacenterApi dataCenterApi;
@@ -38,6 +39,7 @@ public class ProfitbricksApi {
    private FirewallRuleApi firewallRuleApi;
    private ImageApi imageApi;
    private IPBlockApi ipBlockApi;
+   private RequestApi requestApi;
 
    /**
     * @return the dataCenterApi
@@ -163,6 +165,20 @@ public class ProfitbricksApi {
     */
    public void setIpBlockApi(IPBlockApi ipBlockApi) {
       this.ipBlockApi = ipBlockApi;
+   }
+
+   /**
+    * @return the requestApi
+    */
+   public RequestApi getRequestApi() {
+      return requestApi;
+   }
+
+   /**
+    * @param requestApi the requestApi to set
+    */
+   public void setRequestApi(RequestApi requestApi) {
+      this.requestApi = requestApi;
    }
 
 }

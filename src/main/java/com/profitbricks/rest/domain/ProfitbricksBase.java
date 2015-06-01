@@ -15,12 +15,16 @@
  */
 package com.profitbricks.rest.domain;
 
+import com.profitbricks.rest.client.RestClientException;
+import com.profitbricks.sdk.ProfitbricksApi;
+import java.io.IOException;
+
 /**
  *
  * @author jasmin.gacic
  */
 public class ProfitbricksBase {
-   
+
    private String id;
    private String type;
    private String href;
@@ -95,5 +99,13 @@ public class ProfitbricksBase {
     */
    public void setRequestId(String requestId) {
       this.requestId = requestId;
+   }
+
+   public Request getStatus() throws IOException, RestClientException {
+      if (requestId == null)
+         return null;
+      
+      ProfitbricksApi profitbricksApi = new ProfitbricksApi();
+      return profitbricksApi.getRequestApi().getRequest(requestId);
    }
 }
