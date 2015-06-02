@@ -33,14 +33,14 @@ public class FirewallRuleApi extends ProfitbricksAPIBase {
    }
 
    public FirewallRules getAllFirewallRules(String dataCenterId, String serverId, String nicId) throws RestClientException, IOException {
-      return client.get(urlBase.concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+      return client.get(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
               .concat("servers").concat("/").concat(serverId).concat("/")
               .concat(parentResource).concat("/").concat(nicId).concat("/")
               .concat(resource).concat(depth), null, FirewallRules.class);
    }
 
    public FirewallRule getFirewallRule(String dataCenterId, String serverId, String nicId, String firewallRuleId) throws RestClientException, IOException {
-      return client.get(urlBase.concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+      return client.get(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
               .concat("servers").concat("/").concat(serverId).concat("/")
               .concat(parentResource).concat("/").concat(nicId).concat("/")
               .concat(resource).concat("/").concat(firewallRuleId)
@@ -48,7 +48,7 @@ public class FirewallRuleApi extends ProfitbricksAPIBase {
    }
 
    public FirewallRule createFirewallRule(String dataCenterId, String serverId, String nicId, FirewallRule firewallRule) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      return client.create(urlBase.concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+      return client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
               .concat("servers").concat("/").concat(serverId).concat("/")
               .concat(parentResource).concat("/").concat(nicId).concat("/")
               .concat(resource),
@@ -56,7 +56,7 @@ public class FirewallRuleApi extends ProfitbricksAPIBase {
    }
 
    public void deleteFirewallRule(String dataCenterId, String serverId, String nicId, String firewallRuleId) throws RestClientException, IOException {
-      client.delete(urlBase.concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+      client.delete(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
               .concat("servers").concat("/").concat(serverId).concat("/")
               .concat(parentResource).concat("/").concat(nicId).concat("/")
               .concat(resource).concat("/").concat(firewallRuleId), 
@@ -64,7 +64,7 @@ public class FirewallRuleApi extends ProfitbricksAPIBase {
    }
    
    public FirewallRule updateFirewWallRule(String dataCenterId, String serverId, String nicId, String firewallRuleId, PBObject firewallRule) throws RestClientException, IOException {
-      return client.update(urlBase.concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+      return client.update(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
               .concat("servers").concat("/").concat(serverId).concat("/")
               .concat(parentResource).concat("/").concat(nicId).concat("/")
               .concat(resource).concat("/").concat(firewallRuleId), 

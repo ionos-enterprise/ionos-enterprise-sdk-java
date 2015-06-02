@@ -41,7 +41,7 @@ public class VolumeApi extends ProfitbricksAPIBase {
     * @throws IOException
     */
    public Volumes getAllVolumes(String dataCenterId) throws RestClientException, IOException {
-      return client.get(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+      return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource)
               .concat(depth), null, Volumes.class);
    }
@@ -56,7 +56,7 @@ public class VolumeApi extends ProfitbricksAPIBase {
     * @throws IOException
     */
    public Volumes getAllVolumes(String dataCenterId, String serverId) throws RestClientException, IOException {
-      return client.get(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+      return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat("servers").concat("/").concat(serverId).concat("/").concat(resource)
               .concat(depth), null, Volumes.class);
    }
@@ -71,7 +71,7 @@ public class VolumeApi extends ProfitbricksAPIBase {
     * @throws IOException
     */
    public Volume getVolume(String dataCenterId, String volumeId) throws RestClientException, IOException {
-      return client.get(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+      return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource).concat("/").concat(volumeId)
               .concat(depth), null, Volume.class);
    }
@@ -86,7 +86,7 @@ public class VolumeApi extends ProfitbricksAPIBase {
     * @throws IOException
     */
    public Volume createVolume(String dataCenterId, Volume volume) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      return client.create(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+      return client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource), volume, Volume.class, 202);
    }
 
@@ -103,7 +103,7 @@ public class VolumeApi extends ProfitbricksAPIBase {
    public Volume attachVolume(String dataCenterId, String serverId, String volumeId) throws RestClientException, IOException {
       PBObject object = new PBObject();
       object.setId(volumeId);
-      return client.create(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+      return client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat("servers").concat("/").concat(serverId).concat("/").concat(resource), object, Volume.class, 202);
    }
 
@@ -119,12 +119,12 @@ public class VolumeApi extends ProfitbricksAPIBase {
    public void detachVolume(String dataCenterId, String serverId, String volumeId) throws RestClientException, IOException {
       PBObject object = new PBObject();
       object.setId(volumeId);
-      client.delete(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+      client.delete(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat("servers").concat("/").concat(serverId).concat("/").concat(resource).concat("/").concat(volumeId), 202);
    }
 
    public void deleteVolume(String dataCenterId, String volumeId) throws RestClientException, IOException {
-      client.delete(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+      client.delete(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource).concat("/").concat(volumeId), 202);
    }
 

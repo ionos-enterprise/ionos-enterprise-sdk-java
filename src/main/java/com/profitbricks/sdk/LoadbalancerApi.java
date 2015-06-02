@@ -33,29 +33,29 @@ public class LoadbalancerApi extends ProfitbricksAPIBase {
    }
 
    public LoadBalancers getAllLoadBalancers(String dataCenterId) throws RestClientException, IOException {
-      return client.get(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+      return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource)
               .concat(depth), null, LoadBalancers.class);
    }
 
    public LoadBalancer getLoadBalancer(String dataCenterId, String loadBalancerId) throws RestClientException, IOException {
-      return client.get(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+      return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource).concat("/").concat(loadBalancerId)
               .concat(depth), null, LoadBalancer.class);
    }
 
    public LoadBalancer createLoadBalancer(String dataCenterId, LoadBalancer loadBalancer) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      return client.create(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+      return client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource), loadBalancer, LoadBalancer.class, 202);
    }
 
    public LoadBalancer updateLoadBalancer(String dataCenterId, String loadBalancerId, PBObject loadBalancer) throws RestClientException, IOException {
-      return client.update(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+      return client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource).concat("/").concat(loadBalancerId), loadBalancer, LoadBalancer.class, 202);
    }
 
    public void deleteLoadBalaner(String dataCenterId, String loadBalancerId) throws RestClientException, IOException {
-      client.delete(urlBase.concat(parentResource).concat("/").concat(dataCenterId)
+      client.delete(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource).concat("/").concat(loadBalancerId), 202);
    }
 }

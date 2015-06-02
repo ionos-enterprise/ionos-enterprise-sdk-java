@@ -20,6 +20,7 @@ import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.Snapshot;
 import com.profitbricks.rest.domain.Snapshots;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,33 +35,33 @@ public class SnapshotApi extends ProfitbricksAPIBase {
    }
 
    public Snapshots getAllSnapshots() throws RestClientException, IOException {
-      return client.get(urlBase.concat(resource).concat(depth), null, Snapshots.class);
+      return client.get(getUrlBase().concat(resource).concat(depth), null, Snapshots.class);
    }
 
-   public Snapshot createSnapshot(String dataCenterId, String serverId, String name, String description) throws RestClientException, IOException {
+   public Snapshot createSnapshot(String dataCenterId, String serverId, String name, String description) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       Map<String, String> params = new HashMap<String, String>();
       params.put("name", name);
       params.put("description", description);
-      return client.create(urlBase.concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+      return client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
               .concat("volumes").concat("/").concat(serverId).concat("/").concat("create-snapshot"), params, Snapshot.class, 202);
    }
 
    public void restoreSnapshot(String dataCenterId, String serverId, String snapshotId) throws RestClientException, IOException {
       Map<String, String> params = new HashMap<String, String>();
       params.put("snapshotId", snapshotId);
-      client.create(urlBase.concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+      client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
               .concat("volumes").concat("/").concat(serverId).concat("/").concat("restore-snapshot"), params, 202);
    }
 
    public Snapshot getSnapshot(String snapshotId) throws RestClientException, IOException {
-      return client.get(urlBase.concat(resource).concat("/").concat(snapshotId).concat(depth), null, Snapshot.class);
+      return client.get(getUrlBase().concat(resource).concat("/").concat(snapshotId).concat(depth), null, Snapshot.class);
    }
 
    public Snapshot updateSnapshot(String dataCenterId, String snapshotId, PBObject snapshot) throws RestClientException, IOException {
-      return client.update(urlBase.concat(resource).concat("/").concat(snapshotId), snapshot, Snapshot.class, 202);
+      return client.update(getUrlBase().concat(resource).concat("/").concat(snapshotId), snapshot, Snapshot.class, 202);
    }
 
    public void deleteSnapshot(String snapshotId) throws RestClientException, IOException {
-      client.delete(urlBase.concat(resource).concat("/").concat(snapshotId), 202);
+      client.delete(getUrlBase().concat(resource).concat("/").concat(snapshotId), 202);
    }
 }

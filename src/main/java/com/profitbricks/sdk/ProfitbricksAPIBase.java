@@ -25,7 +25,6 @@ import org.apache.http.client.methods.HttpRequestBase;
  */
 public abstract class ProfitbricksAPIBase {
 
-   public String urlBase = "https://api.profitbricks.com/rest/";
    public String resource;
    public String parentResource;
 
@@ -33,7 +32,8 @@ public abstract class ProfitbricksAPIBase {
    public RestClient client;
    public String depth = "?depth=".concat("5");
 
-   String credentials = "amFzbWluQHN0YWNrcG9pbnRjbG91ZC5jb206TEB4dTZFZjh6dw==";
+   private String credentials = "amFzbWluQHN0YWNrcG9pbnRjbG91ZC5jb206TEB4dTZFZjh6dw==";
+   private String urlBase = "https://api.profitbricks.com/rest/";
 
    public ProfitbricksAPIBase(String resource, String parentResource) {
       this.resource = resource;
@@ -48,5 +48,19 @@ public abstract class ProfitbricksAPIBase {
       };
 
       client = RestClient.builder().requestInterceptor(authorize).build();
+   }
+
+   /**
+    * @return the urlBase
+    */
+   public String getUrlBase() {
+      return urlBase;
+   }
+
+   /**
+    * @param urlBase the urlBase to set
+    */
+   public void setUrlBase(String urlBase) {
+      this.urlBase = urlBase;
    }
 }

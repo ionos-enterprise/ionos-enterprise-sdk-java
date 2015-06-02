@@ -19,6 +19,7 @@ import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.PBObject;
+import com.profitbricks.rest.domain.Request;
 import com.profitbricks.rest.domain.Server;
 import com.profitbricks.rest.domain.Snapshot;
 import com.profitbricks.rest.domain.Snapshots;
@@ -76,10 +77,20 @@ public class SnapshotTest {
       assertNotNull(newVolume);
 
       volumeId = newVolume.getId();
-      Thread.sleep(15000);
+      //Thread.sleep(15000);
+      Request volumeStatus = newVolume.getStatus();
+      if (volumeStatus != null)
+         do
+            Thread.sleep(5000);
+         while (volumeStatus.getMetadata().getStatus() != "DONE");
 
       Snapshot snapshot = profitbricksApi.getSnapshotApi().createSnapshot(dataCenterId, volumeId, "SDK TEST SNAPSHOT - Snapshot", "SDK TEST Description");
       snapshotId = snapshot.getId();
+
+      Request request = snapshot.getStatus();
+      assertNotNull(request);
+      System.out.println(request);
+
    }
 
    @Test

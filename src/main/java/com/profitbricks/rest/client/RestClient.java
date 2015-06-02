@@ -127,17 +127,12 @@ public class RestClient extends AbstractRestClient {
       consume(response);
    }
 
-   public <T> T create(String path, Map<String, String> params, Class<T> entityClass, int expectedStatus) throws IOException, RestClientException {
+   public <T> T create(String path, Map<String, String> params, Class<T> entityClass, int expectedStatus) throws IOException, RestClientException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       HttpPost post = contentTypeUrlEncoded(newHttpPost(path));
       HttpEntity entity = new StringEntity(queryString(params).substring(1), Charsets.UTF_8);
       post.setEntity(entity);
-
       HttpResponse response = execute(interceptor, post, expectedStatus);
-      String content = contentAsString(response);
-      if (content != null)
-         return bindObject(content, entityClass);
-      else
-         return null;
+      return bindObject(response, entityClass);
    }
 
    public Header create(RequestInterceptor interceptor, String path, PBObject object, int expectedStatus)
@@ -155,7 +150,6 @@ public class RestClient extends AbstractRestClient {
       HttpEntity entity = new StringEntity(toJson(object).toString(), Charsets.UTF_8);
       post.setEntity(entity);
       HttpResponse response = execute(interceptor, post, expectedStatus);
-      
       return bindObject(response, entityClass);
    }
 

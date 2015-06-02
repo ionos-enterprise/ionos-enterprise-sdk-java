@@ -32,18 +32,18 @@ public class IPBlockApi extends ProfitbricksAPIBase {
    }
 
    public IPBlocks getAllIPBlocks() throws RestClientException, IOException {
-      return client.get(urlBase.concat(resource).concat(depth), null, IPBlocks.class);
+      return client.get(getUrlBase().concat(resource).concat(depth), null, IPBlocks.class);
    }
 
    public IPBlock getIPBlock(String ipBlockId) throws RestClientException, IOException {
-      return client.get(urlBase.concat(resource).concat("/").concat(ipBlockId).concat(depth), null, IPBlock.class);
+      return client.get(getUrlBase().concat(resource).concat("/").concat(ipBlockId).concat(depth), null, IPBlock.class);
    }
 
    public IPBlock createIPBlock(String location, String size, IPBlock ipBlock) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      return client.create(urlBase.concat(resource), ipBlock, IPBlock.class, 202);
+      return client.create(getUrlBase().concat(resource), ipBlock, IPBlock.class, 202);
    }
 
    public void deleteIPBlock(String ipBlockId) throws RestClientException, IOException {
-      client.delete(urlBase.concat(resource).concat("/").concat(ipBlockId), 202);
+      client.delete(getUrlBase().concat(resource).concat("/").concat(ipBlockId), 202);
    }
 }

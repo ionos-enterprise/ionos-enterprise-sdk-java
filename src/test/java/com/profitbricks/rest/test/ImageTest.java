@@ -21,6 +21,7 @@ import com.profitbricks.rest.domain.Images;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import static org.junit.Assert.assertNotNull;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -32,12 +33,17 @@ public class ImageTest {
    static ProfitbricksApi profitbricksApi = new ProfitbricksApi();
    private static String imageId;
 
-   @Test
-   public void getAllImages() throws RestClientException, IOException {
+   @BeforeClass
+   public static void getAllImages() throws RestClientException, IOException {
       Images images = profitbricksApi.getImageApi().getAllImages();
       assertNotNull(images);
       imageId = images.getItems().get(0).getId();
    }
 
+   @Test
+   public void getImage() throws RestClientException, IOException {
+      Image image = profitbricksApi.getImageApi().getImage(imageId);
+      assertNotNull(image);
+   }
 
 }

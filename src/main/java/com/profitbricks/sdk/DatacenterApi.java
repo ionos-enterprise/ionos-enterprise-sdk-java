@@ -33,22 +33,22 @@ public class DatacenterApi extends ProfitbricksAPIBase {
    }
 
    public DataCenters getAllDataCenters() throws RestClientException, IOException {
-      return client.get(urlBase.concat(resource).concat(depth), null, DataCenters.class);
+      return client.get(getUrlBase().concat(resource).concat(depth), null, DataCenters.class);
    }
 
    public DataCenter getDataCenter(String id) throws RestClientException, IOException {
-      return client.get(urlBase.concat(resource).concat("/").concat(id).concat(depth), null, DataCenter.class);
+      return client.get(getUrlBase().concat(resource).concat("/").concat(id).concat(depth), null, DataCenter.class);
    }
 
    public DataCenter createDataCenter(DataCenter datacenter) throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-      return client.create(urlBase.concat(resource), datacenter, DataCenter.class, 202);
+      return client.create(getUrlBase().concat(resource), datacenter, DataCenter.class, 202);
    }
 
    public DataCenter updateDataCenter(String id, PBObject datacenter) throws RestClientException, IOException {
-      return client.update(urlBase.concat(resource).concat("/").concat(id), datacenter, DataCenter.class, 202);
+      return client.update(getUrlBase().concat(resource).concat("/").concat(id), datacenter, DataCenter.class, 202);
    }
 
    public void deleteDataCenter(String id) throws RestClientException, IOException {
-      client.delete(urlBase.concat(resource).concat("/").concat(id), 202);
+      client.delete(getUrlBase().concat(resource).concat("/").concat(id), 202);
    }
 }

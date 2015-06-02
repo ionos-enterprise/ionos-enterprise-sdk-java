@@ -32,19 +32,19 @@ public class ImageApi extends ProfitbricksAPIBase {
    }
 
    public Images getAllImages() throws RestClientException, IOException {
-      return client.get(urlBase.concat(resource).concat(depth), null, Images.class);
+      return client.get(getUrlBase().concat(resource).concat(depth), null, Images.class);
    }
 
    public Image getImage(String imageId) throws RestClientException, IOException {
-      return client.get(urlBase.concat(resource).concat("/").concat(imageId).concat(depth), null, Image.class);
+      return client.get(getUrlBase().concat(resource).concat("/").concat(imageId).concat(depth), null, Image.class);
    }
 
    public void deleteImage(String imageId) throws RestClientException, IOException {
-      client.delete(urlBase.concat(resource).concat("/").concat(imageId));
+      client.delete(getUrlBase().concat(resource).concat("/").concat(imageId));
    }
 
    public Image updateImage(String imageId, PBObject object) throws RestClientException, IOException {
-      return client.update(urlBase.concat(resource).concat("/").concat(imageId), object, Image.class, 202);
+      return client.update(getUrlBase().concat(resource).concat("/").concat(imageId), object, Image.class, 202);
    }
 
 }

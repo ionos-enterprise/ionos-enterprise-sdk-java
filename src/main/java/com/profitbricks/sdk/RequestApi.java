@@ -17,7 +17,6 @@ package com.profitbricks.sdk;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.Request;
-import com.profitbricks.sdk.ProfitbricksAPIBase;
 import java.io.IOException;
 
 /**
