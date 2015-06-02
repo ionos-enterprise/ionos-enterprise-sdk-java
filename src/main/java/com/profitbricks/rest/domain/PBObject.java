@@ -15,6 +15,7 @@
  */
 package com.profitbricks.rest.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +55,8 @@ public class PBObject {
    private Boolean discVirtioHotUnplug;
    private Boolean discScsiHotPlug;
    private Boolean discScsiHotUnplug;
+   @JsonProperty("public")
+   private Boolean isPublic;
 
    /**
     * @return the id
@@ -475,5 +478,19 @@ public class PBObject {
     */
    public void setDiscScsiHotUnplug(Boolean discScsiHotUnplug) {
       this.discScsiHotUnplug = discScsiHotUnplug;
+   }
+
+   /**
+    * @return the isPublic
+    */
+   public Boolean getIsPublic() {
+      return isPublic;
+   }
+
+   /**
+    * @param isPublic the isPublic to set
+    */
+   public void setIsPublic(Boolean isPublic) {
+      this.isPublic = isPublic;
    }
 }

@@ -40,7 +40,7 @@ public class Lan extends ProfitbricksBase {
    public class Properties {
 
       @JsonProperty("public")
-      private boolean isPublic;
+      private Boolean isPublic;
       private String name;
 
       /**

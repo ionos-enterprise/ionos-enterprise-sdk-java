@@ -28,6 +28,7 @@ public class ProfitbricksApi {
       this.imageApi = new ImageApi();
       this.ipBlockApi = new IPBlockApi();
       this.requestApi = new RequestApi();
+      this.lanApi = new LanApi();
    }
 
    private DatacenterApi dataCenterApi;
@@ -40,6 +41,7 @@ public class ProfitbricksApi {
    private ImageApi imageApi;
    private IPBlockApi ipBlockApi;
    private RequestApi requestApi;
+   private LanApi lanApi;
 
    /**
     * @return the dataCenterApi
@@ -181,4 +183,17 @@ public class ProfitbricksApi {
       this.requestApi = requestApi;
    }
 
+   /**
+    * @return the lanApi
+    */
+   public LanApi getLanApi() {
+      return lanApi;
+   }
+
+   /**
+    * @param lanApi the lanApi to set
+    */
+   public void setLanApi(LanApi lanApi) {
+      this.lanApi = lanApi;
+   }
 }
