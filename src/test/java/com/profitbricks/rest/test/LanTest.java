@@ -60,7 +60,7 @@ public class LanTest {
       Lan newLan = profitbricksApi.getLanApi().createLan(dataCenterId, lan);
       lanId = newLan.getId();
       assertNotNull(newLan);
-      
+
       Thread.sleep(15000);
    }
 
@@ -83,7 +83,7 @@ public class LanTest {
       assertEquals(updatedLan.getProperties().isIsPublic(), true);
    }
 
-  // @AfterClass
+   @AfterClass
    public static void cleanup() throws RestClientException, IOException {
       profitbricksApi.getLanApi().deleteLan(dataCenterId, lanId);
       profitbricksApi.getDataCenterApi().deleteDataCenter(dataCenterId);
