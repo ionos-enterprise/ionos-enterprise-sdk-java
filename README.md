@@ -125,7 +125,7 @@ The following illustrates how you would attach a volume and then detach it from 
 
 ## <a name="ListServersVolumesDataCenters"></a>How to: List Servers, Volumes, and Data Centers
 
-You can pull various resource lists from your data centers using the .NET library. The three most common resources are data centers, Servers, and Volumes.
+You can pull various resource lists from your data centers using the JAVA library. The three most common resources are data centers, Servers, and Volumes.
 
 The following code illustrates how to pull these three list types: 
 
