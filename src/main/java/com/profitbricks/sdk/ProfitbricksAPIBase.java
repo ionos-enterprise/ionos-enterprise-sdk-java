@@ -32,7 +32,7 @@ public abstract class ProfitbricksAPIBase {
    public RestClient client;
    public String depth = "?depth=".concat("5");
 
-   private String credentials = "amFzbWluQHN0YWNrcG9pbnRjbG91ZC5jb206TEB4dTZFZjh6dw==";
+   private String credentials;
    private String urlBase = "https://api.profitbricks.com/rest/";
 
    public ProfitbricksAPIBase(String resource, String parentResource) {
@@ -62,5 +62,12 @@ public abstract class ProfitbricksAPIBase {
     */
    public void setUrlBase(String urlBase) {
       this.urlBase = urlBase;
+   }
+
+   /**
+    * @param credentials the credentials to set
+    */
+   public void setCredentials(String credentials) {
+      this.credentials = credentials;
    }
 }

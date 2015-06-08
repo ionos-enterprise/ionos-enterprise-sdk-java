@@ -41,6 +41,8 @@ public class IPBlockTest {
    @BeforeClass
    public static void setUp() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
+      profitbricksApi.setCredentials("amFzbWluQHN0YWNrcG9pbnRjbG91ZC5jb206TEB4dTZFZjh6dw==");
+
       IPBlock ipb = new IPBlock();
 
       ipb.getProperties().setLocation(Location.US_LAS_DEV.value());

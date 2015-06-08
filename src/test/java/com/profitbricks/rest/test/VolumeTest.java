@@ -17,8 +17,6 @@ package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
-import com.profitbricks.rest.domain.Image;
-import com.profitbricks.rest.domain.Images;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.Server;
 import com.profitbricks.rest.domain.Volume;
@@ -45,6 +43,7 @@ public class VolumeTest {
 
    @BeforeClass
    public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+      profitbricksApi.setCredentials("amFzbWluQHN0YWNrcG9pbnRjbG91ZC5jb206TEB4dTZFZjh6dw==");
       DataCenter datacenter = new DataCenter();
       datacenter.getProperties().setName("SDK TEST VOLUME - Data Center");
       datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());

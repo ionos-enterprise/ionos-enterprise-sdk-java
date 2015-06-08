@@ -35,6 +35,7 @@ public class ImageTest {
 
    @BeforeClass
    public static void getAllImages() throws RestClientException, IOException {
+      profitbricksApi.setCredentials("amFzbWluQHN0YWNrcG9pbnRjbG91ZC5jb206TEB4dTZFZjh6dw==");
       Images images = profitbricksApi.getImageApi().getAllImages();
       assertNotNull(images);
       imageId = images.getItems().get(0).getId();

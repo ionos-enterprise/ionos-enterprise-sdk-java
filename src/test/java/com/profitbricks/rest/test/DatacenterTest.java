@@ -41,6 +41,7 @@ public class DatacenterTest {
    @BeforeClass
    public static void createDataCenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 
+      profitbricksApi.setCredentials("amFzbWluQHN0YWNrcG9pbnRjbG91ZC5jb206TEB4dTZFZjh6dw==");
       DataCenter datacenter = new DataCenter();
 
       datacenter.getProperties().setName("SDK TEST DC - Data center");
@@ -55,6 +56,7 @@ public class DatacenterTest {
    @Test
    public void testGetAllDatacenters() throws RestClientException, IOException {
       DataCenters datacenters = profitbricksApi.getDataCenterApi().getAllDataCenters();
+
       assertNotNull(datacenters);
       assertTrue(datacenters.items.size() > 0);
    }

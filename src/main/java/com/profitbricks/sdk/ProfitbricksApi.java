@@ -17,6 +17,8 @@ package com.profitbricks.sdk;
 
 public class ProfitbricksApi {
 
+   private String credentials;
+
    public ProfitbricksApi() {
       this.dataCenterApi = new DatacenterApi();
       this.serverApi = new ServerApi();
@@ -47,6 +49,7 @@ public class ProfitbricksApi {
     * @return the dataCenterApi
     */
    public DatacenterApi getDataCenterApi() {
+      this.dataCenterApi.setCredentials(credentials);
       return dataCenterApi;
    }
 
@@ -61,6 +64,7 @@ public class ProfitbricksApi {
     * @return the serverApi
     */
    public ServerApi getServerApi() {
+      this.serverApi.setCredentials(credentials);
       return serverApi;
    }
 
@@ -75,6 +79,7 @@ public class ProfitbricksApi {
     * @return the volumeApi
     */
    public VolumeApi getVolumeApi() {
+      this.volumeApi.setCredentials(credentials);
       return volumeApi;
    }
 
@@ -89,6 +94,7 @@ public class ProfitbricksApi {
     * @return the snapshotApi
     */
    public SnapshotApi getSnapshotApi() {
+      this.snapshotApi.setCredentials(credentials);
       return snapshotApi;
    }
 
@@ -103,6 +109,7 @@ public class ProfitbricksApi {
     * @return the loadbalancerApi
     */
    public LoadbalancerApi getLoadbalancerApi() {
+      this.loadbalancerApi.setCredentials(credentials);
       return loadbalancerApi;
    }
 
@@ -117,6 +124,7 @@ public class ProfitbricksApi {
     * @return the nicApi
     */
    public NicApi getNicApi() {
+      this.nicApi.setCredentials(credentials);
       return nicApi;
    }
 
@@ -131,6 +139,7 @@ public class ProfitbricksApi {
     * @return the firewallRuleApi
     */
    public FirewallRuleApi getFirewallRuleApi() {
+      this.firewallRuleApi.setCredentials(credentials);
       return firewallRuleApi;
    }
 
@@ -145,6 +154,7 @@ public class ProfitbricksApi {
     * @return the imageApi
     */
    public ImageApi getImageApi() {
+      this.imageApi.setCredentials(credentials);
       return imageApi;
    }
 
@@ -159,6 +169,7 @@ public class ProfitbricksApi {
     * @return the ipBlockApi
     */
    public IPBlockApi getIpBlockApi() {
+      this.ipBlockApi.setCredentials(credentials);
       return ipBlockApi;
    }
 
@@ -173,6 +184,7 @@ public class ProfitbricksApi {
     * @return the requestApi
     */
    public RequestApi getRequestApi() {
+      this.requestApi.setCredentials(credentials);
       return requestApi;
    }
 
@@ -194,6 +206,14 @@ public class ProfitbricksApi {
     * @param lanApi the lanApi to set
     */
    public void setLanApi(LanApi lanApi) {
+      this.lanApi.setCredentials(credentials);
       this.lanApi = lanApi;
+   }
+
+   /**
+    * @param credentials the credentials to set
+    */
+   public void setCredentials(String credentials) {
+      this.credentials = credentials;
    }
 }
