@@ -15,8 +15,6 @@
  */
 package com.profitbricks.rest.domain.raw;
 
-import com.profitbricks.rest.domain.raw.ProfitbricksBaseRaw;
-import com.profitbricks.rest.domain.raw.DataCenterRaw;
 import java.util.ArrayList;
 import java.util.List;
 

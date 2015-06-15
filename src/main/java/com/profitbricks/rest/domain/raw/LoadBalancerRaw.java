@@ -15,8 +15,6 @@
  */
 package com.profitbricks.rest.domain.raw;
 
-import com.profitbricks.rest.domain.Balancednics;
-
 /**
  *
  * @author jasmin.gacic
@@ -105,19 +103,19 @@ public class LoadBalancerRaw extends ProfitbricksBaseRaw {
 
    public class Entities {
 
-      private Balancednics balancednics = new Balancednics();
+      private BalancednicsRaw balancednics = new BalancednicsRaw();
 
       /**
        * @return the balancednics
        */
-      public Balancednics getBalancednics() {
+      public BalancednicsRaw getBalancednics() {
          return balancednics;
       }
 
       /**
        * @param balancednics the balancednics to set
        */
-      public void setBalancednics(Balancednics balancednics) {
+      public void setBalancednics(BalancednicsRaw balancednics) {
          this.balancednics = balancednics;
       }
    }

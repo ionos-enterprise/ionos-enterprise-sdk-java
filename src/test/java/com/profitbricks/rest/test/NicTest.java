@@ -23,7 +23,6 @@ import com.profitbricks.rest.domain.raw.LoadBalancerRaw;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.Nic;
 import com.profitbricks.rest.domain.raw.NicRaw;
-import com.profitbricks.rest.domain.raw.NicsRaw;
 import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.Server;
 import com.profitbricks.rest.domain.raw.ServerRaw;

@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.profitbricks.rest.domain;
-
-import com.profitbricks.rest.domain.raw.NicsRaw;
+package com.profitbricks.rest.domain.raw;
 
 /**
  *
  * @author jasmin.gacic
  */
-public class Balancednics extends NicsRaw {
+public class BalancednicsRaw extends NicsRaw {
 
 }

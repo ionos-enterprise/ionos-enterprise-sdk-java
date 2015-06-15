@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright 2015.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,80 +15,57 @@
  */
 package com.profitbricks.rest.domain;
 
-import com.profitbricks.rest.domain.raw.ProfitbricksBaseRaw;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  * @author jasmin.gacic
  */
-public class IPBlock extends ProfitbricksBaseRaw {
+public class IPBlock extends ProfitbricksBase {
 
-   private Properties properties = new Properties();
+   private List<String> ips;
+   private String location;
+   private String size;
 
    /**
-    * @return the properties
+    * @return the ips
     */
-   public Properties getProperties() {
-      return properties;
+   public List<String> getIps() {
+      return ips;
    }
 
    /**
-    * @param properties the properties to set
+    * @param ips the ips to set
     */
-   public void setProperties(Properties properties) {
-      this.properties = properties;
+   public void setIps(List<String> ips) {
+      this.ips = ips;
    }
 
-   public static class Properties {
+   /**
+    * @return the location
+    */
+   public String getLocation() {
+      return location;
+   }
 
-      private List<String> ips;
-      private String location;
-      private String size;
+   /**
+    * @param location the location to set
+    */
+   public void setLocation(String location) {
+      this.location = location;
+   }
 
-      /**
-       * @return the ips
-       */
-      public List<String> getIps() {
-         return ips;
-      }
+   /**
+    * @return the size
+    */
+   public String getSize() {
+      return size;
+   }
 
-      /**
-       * @param ips the ips to set
-       */
-      public void setIps(List<String> ips) {
-         if (ips == null)
-            ips = new ArrayList<String>();
-         this.ips = ips;
-      }
-
-      /**
-       * @return the location
-       */
-      public String getLocation() {
-         return location;
-      }
-
-      /**
-       * @param location the location to set
-       */
-      public void setLocation(String location) {
-         this.location = location;
-      }
-
-      /**
-       * @return the size
-       */
-      public String getSize() {
-         return size;
-      }
-
-      /**
-       * @param size the size to set
-       */
-      public void setSize(String size) {
-         this.size = size;
-      }
+   /**
+    * @param size the size to set
+    */
+   public void setSize(String size) {
+      this.size = size;
    }
 }

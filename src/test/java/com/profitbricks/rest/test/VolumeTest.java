@@ -23,7 +23,6 @@ import com.profitbricks.rest.domain.Server;
 import com.profitbricks.rest.domain.raw.ServerRaw;
 import com.profitbricks.rest.domain.Volume;
 import com.profitbricks.rest.domain.raw.VolumeRaw;
-import com.profitbricks.rest.domain.raw.VolumesRaw;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

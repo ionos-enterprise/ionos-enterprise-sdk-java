@@ -15,14 +15,16 @@
  */
 package com.profitbricks.rest.domain.raw;
 
-import com.profitbricks.rest.domain.LicenceType;
-import com.profitbricks.rest.domain.Location;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  *
  * @author jasmin.gacic
  */
-public class SnapshotRaw extends ProfitbricksBaseRaw {
+//@JsonIgnoreProperties(ignoreUnknown = true)
+public class ImageRaw extends ProfitbricksBaseRaw {
+
+   private Properties properties = new Properties();
 
    /**
     * @return the properties
@@ -38,13 +40,16 @@ public class SnapshotRaw extends ProfitbricksBaseRaw {
       this.properties = properties;
    }
 
-   public class Properties {
+   public static class Properties {
 
       private String name;
       private String description;
-      public Location location;
+      private String location;
       private String size;
-      private LicenceType licenceType;
+      private Boolean isPublic;
+      private String licenceType;
+      private String imageType;
+
       private Boolean cpuHotPlug;
       private Boolean cpuHotUnplug;
       private Boolean ramHotPlug;
@@ -55,14 +60,6 @@ public class SnapshotRaw extends ProfitbricksBaseRaw {
       private Boolean discVirtioHotUnplug;
       private Boolean discScsiHotPlug;
       private Boolean discScsiHotUnplug;
-
-      public void setLocation(String location) {
-         this.location.fromValue(location);
-      }
-
-      public String getLocation() {
-         return this.location != null ? this.location.value() : null;
-      }
 
       /**
        * @return the name
@@ -93,6 +90,20 @@ public class SnapshotRaw extends ProfitbricksBaseRaw {
       }
 
       /**
+       * @return the location
+       */
+      public String getLocation() {
+         return location;
+      }
+
+      /**
+       * @param location the location to set
+       */
+      public void setLocation(String location) {
+         this.location = location;
+      }
+
+      /**
        * @return the size
        */
       public String getSize() {
@@ -107,16 +118,32 @@ public class SnapshotRaw extends ProfitbricksBaseRaw {
       }
 
       /**
+       * @return the isPublic
+       */
+      @JsonProperty("public")
+      public Boolean getIsPublic() {
+         return isPublic;
+      }
+
+      /**
+       * @param isPublic the isPublic to set
+       */
+      @JsonProperty("public")
+      public void setIsPublic(Boolean isPublic) {
+         this.isPublic = isPublic;
+      }
+
+      /**
        * @return the licenceType
        */
-      public LicenceType getLicenceType() {
+      public String getLicenceType() {
          return licenceType;
       }
 
       /**
        * @param licenceType the licenceType to set
        */
-      public void setLicenceType(LicenceType licenceType) {
+      public void setLicenceType(String licenceType) {
          this.licenceType = licenceType;
       }
 
@@ -259,6 +286,20 @@ public class SnapshotRaw extends ProfitbricksBaseRaw {
       public void setDiscScsiHotUnplug(Boolean discScsiHotUnplug) {
          this.discScsiHotUnplug = discScsiHotUnplug;
       }
+
+      /**
+       * @return the imageType
+       */
+      public String getImageType() {
+         return imageType;
+      }
+
+      /**
+       * @param imageType the imageType to set
+       */
+      public void setImageType(String imageType) {
+         this.imageType = imageType;
+      }
    }
-   private Properties properties = new Properties();
+
 }

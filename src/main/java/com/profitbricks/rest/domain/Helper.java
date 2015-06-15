@@ -15,6 +15,7 @@
  */
 package com.profitbricks.rest.domain;
 
+import com.profitbricks.rest.domain.raw.LansRaw;
 import com.profitbricks.rest.domain.raw.DataCentersRaw;
 import com.profitbricks.rest.domain.raw.FirewallRulesRaw;
 import com.profitbricks.rest.domain.raw.NicsRaw;
@@ -30,6 +31,10 @@ import com.profitbricks.rest.domain.raw.VolumesRaw;
 import com.profitbricks.rest.domain.raw.VolumeRaw;
 import com.profitbricks.rest.domain.raw.FirewallRuleRaw;
 import com.profitbricks.rest.domain.raw.DataCenterRaw;
+import com.profitbricks.rest.domain.raw.IPBlockRaw;
+import com.profitbricks.rest.domain.raw.IPBlocksRaw;
+import com.profitbricks.rest.domain.raw.ImageRaw;
+import com.profitbricks.rest.domain.raw.ImagesRaw;
 import com.profitbricks.rest.domain.raw.SnapshotRaw;
 import com.profitbricks.rest.domain.raw.SnapshotsRaw;
 import java.util.ArrayList;
@@ -95,10 +100,11 @@ public class Helper {
       toReturn.setRam(server.getProperties().getRam());
       toReturn.setVmState(server.getProperties().getVmState());
 
-      toReturn.setNics(convertNics(server.getEntities().getNics()));
-      toReturn.setVolumes(convertVolumes(server.getEntities().getVolumes()));
-      toReturn.setCdroms(convertCDRoms(server.getEntities().getCdroms()));
-
+      if (server.getEntities() != null) {
+         toReturn.setNics(convertNics(server.getEntities().getNics()));
+         toReturn.setVolumes(convertVolumes(server.getEntities().getVolumes()));
+         toReturn.setCdroms(convertCDRoms(server.getEntities().getCdroms()));
+      }
       return toReturn;
    }
 
@@ -216,12 +222,12 @@ public class Helper {
       toReturn.setRequestId(c.getRequestId());
       toReturn.setMetadata(c.getMetadata());
       toReturn.setName(c.getProperties().getName());
-      toReturn.setImage(convertImage(c.getProperties().getImage()));
+      toReturn.setImage(convertCDImage(c.getProperties().getImage()));
 
       return toReturn;
    }
 
-   public static CDRom.Image convertImage(CDRomRaw.Properties.Image image) {
+   public static CDRom.Image convertCDImage(CDRomRaw.Properties.Image image) {
       CDRom.Image toReturn = new CDRom.Image();
 
       toReturn.setId(image.getId());
@@ -245,7 +251,7 @@ public class Helper {
       return toReturn;
    }
 
-   public static List<Lan> convertLans(Lans lans) {
+   public static List<Lan> convertLans(LansRaw lans) {
       List<Lan> toReturn = new ArrayList<Lan>();
 
       for (LanRaw l : lans.getItems())
@@ -305,4 +311,66 @@ public class Helper {
       return toReturn;
    }
 
+   public static List<IPBlock> convertIPBlocks(IPBlocksRaw ipblocks) {
+      List<IPBlock> toReturn = new ArrayList<IPBlock>();
+
+      for (IPBlockRaw i : ipblocks.getItems())
+         toReturn.add(convertIPBlock(i));
+
+      return toReturn;
+   }
+
+   public static IPBlock convertIPBlock(IPBlockRaw i) {
+      IPBlock toReturn = new IPBlock();
+
+      toReturn.setId(i.getId());
+      toReturn.setType(i.getType());
+      toReturn.setHref(i.getHref());
+      toReturn.setRequestId(i.getRequestId());
+      toReturn.setMetadata(i.getMetadata());
+      toReturn.setIps(i.getProperties().getIps());
+      toReturn.setLocation(i.getProperties().getLocation());
+      toReturn.setSize(i.getProperties().getSize());
+
+      return toReturn;
+   }
+
+   public static List<Image> convertImages(ImagesRaw images) {
+      List<Image> toReturn = new ArrayList<Image>();
+
+      for (ImageRaw i : images.getItems())
+         toReturn.add(convertImage(i));
+
+      return toReturn;
+   }
+
+   public static Image convertImage(ImageRaw i) {
+      Image toReturn = new Image();
+
+      toReturn.setId(i.getId());
+      toReturn.setType(i.getType());
+      toReturn.setHref(i.getHref());
+      toReturn.setRequestId(i.getRequestId());
+      toReturn.setMetadata(i.getMetadata());
+      toReturn.setName(i.getProperties().getName());
+
+      toReturn.setDescription(i.getProperties().getDescription());
+      toReturn.setLocation(i.getProperties().getLocation());
+      toReturn.setIsPublic(i.getProperties().getIsPublic());
+      toReturn.setImageType(i.getProperties().getImageType());
+      toReturn.setSize(i.getProperties().getSize());
+      toReturn.setLicenceType(i.getProperties().getLicenceType());
+      toReturn.setCpuHotPlug(i.getProperties().getCpuHotPlug());
+      toReturn.setCpuHotUnplug(i.getProperties().getCpuHotUnplug());
+      toReturn.setRamHotPlug(i.getProperties().getRamHotPlug());
+      toReturn.setRamHotUnplug(i.getProperties().getRamHotUnplug());
+      toReturn.setNicHotPlug(i.getProperties().getNicHotPlug());
+      toReturn.setNicHotUnplug(i.getProperties().getNicHotUnplug());
+      toReturn.setDiscScsiHotPlug(i.getProperties().getDiscScsiHotPlug());
+      toReturn.setDiscScsiHotUnplug(i.getProperties().getDiscScsiHotUnplug());
+      toReturn.setDiscVirtioHotPlug(i.getProperties().getDiscVirtioHotPlug());
+      toReturn.setDiscVirtioHotUnplug(i.getProperties().getDiscVirtioHotUnplug());
+
+      return toReturn;
+   }
 }

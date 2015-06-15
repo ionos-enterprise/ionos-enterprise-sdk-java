@@ -20,7 +20,6 @@ import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.Lan;
 import com.profitbricks.rest.domain.raw.DataCenterRaw;
 import com.profitbricks.rest.domain.raw.LanRaw;
-import com.profitbricks.rest.domain.Lans;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;

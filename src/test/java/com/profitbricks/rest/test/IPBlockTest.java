@@ -17,7 +17,7 @@ package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.IPBlock;
-import com.profitbricks.rest.domain.IPBlocks;
+import com.profitbricks.rest.domain.raw.IPBlockRaw;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class IPBlockTest {
 
       profitbricksApi.setCredentials("amFzbWluQHN0YWNrcG9pbnRjbG91ZC5jb206TEB4dTZFZjh6dw==");
 
-      IPBlock ipb = new IPBlock();
+      IPBlockRaw ipb = new IPBlockRaw();
 
       ipb.getProperties().setLocation(Location.US_LAS_DEV.value());
       List<String> ips = new ArrayList<String>();
@@ -67,7 +67,7 @@ public class IPBlockTest {
    }
 
    public void getAllIpBlocks() throws RestClientException, IOException {
-      IPBlocks iPBlocks = profitbricksApi.getIpBlockApi().getAllIPBlocks();
+      List<IPBlock> iPBlocks = profitbricksApi.getIpBlockApi().getAllIPBlocks();
       assertNotNull(iPBlocks);
    }
 

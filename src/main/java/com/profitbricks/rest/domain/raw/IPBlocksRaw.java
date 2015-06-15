@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.profitbricks.rest.domain;
+package com.profitbricks.rest.domain.raw;
 
-import com.profitbricks.rest.domain.raw.LanRaw;
-import com.profitbricks.rest.domain.raw.ProfitbricksBaseRaw;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,22 +22,21 @@ import java.util.List;
  *
  * @author jasmin.gacic
  */
-public class Lans extends ProfitbricksBaseRaw {
+public class IPBlocksRaw extends ProfitbricksBaseRaw {
 
-   private List<LanRaw> items = new ArrayList<LanRaw>();
+   private List<IPBlockRaw> items = new ArrayList<IPBlockRaw>();
 
    /**
     * @return the items
     */
-   public List<LanRaw> getItems() {
+   public List<IPBlockRaw> getItems() {
       return items;
    }
 
    /**
     * @param items the items to set
     */
-   public void setItems(List<LanRaw> items) {
+   public void setItems(List<IPBlockRaw> items) {
       this.items = items;
    }
-
 }

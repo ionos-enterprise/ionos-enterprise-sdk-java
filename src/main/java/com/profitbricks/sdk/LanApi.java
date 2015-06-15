@@ -19,7 +19,7 @@ import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.Helper;
 import com.profitbricks.rest.domain.Lan;
 import com.profitbricks.rest.domain.raw.LanRaw;
-import com.profitbricks.rest.domain.Lans;
+import com.profitbricks.rest.domain.raw.LansRaw;
 import com.profitbricks.rest.domain.PBObject;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -36,7 +36,7 @@ public class LanApi extends ProfitbricksAPIBase {
    }
 
    public List<Lan> getAllLans(String dataCenterId) throws RestClientException, IOException {
-      return Helper.convertLans(client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource).concat(depth), null, Lans.class));
+      return Helper.convertLans(client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource).concat(depth), null, LansRaw.class));
    }
 
    public Lan getLan(String dataCenterId, String lanId) throws RestClientException, IOException {

@@ -24,8 +24,6 @@ import com.profitbricks.rest.domain.Request;
 import com.profitbricks.rest.domain.Server;
 import com.profitbricks.rest.domain.Snapshot;
 import com.profitbricks.rest.domain.raw.ServerRaw;
-import com.profitbricks.rest.domain.raw.SnapshotRaw;
-import com.profitbricks.rest.domain.raw.SnapshotsRaw;
 import com.profitbricks.rest.domain.Volume;
 import com.profitbricks.rest.domain.raw.VolumeRaw;
 import com.profitbricks.sdk.ProfitbricksApi;

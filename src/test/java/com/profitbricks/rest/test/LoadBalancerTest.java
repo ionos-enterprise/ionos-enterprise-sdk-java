@@ -20,7 +20,6 @@ import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.LoadBalancer;
 import com.profitbricks.rest.domain.raw.DataCenterRaw;
 import com.profitbricks.rest.domain.raw.LoadBalancerRaw;
-import com.profitbricks.rest.domain.raw.LoadBalancersRaw;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.sdk.ProfitbricksApi;

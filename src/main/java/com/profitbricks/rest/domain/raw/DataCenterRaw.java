@@ -15,8 +15,6 @@
  */
 package com.profitbricks.rest.domain.raw;
 
-import com.profitbricks.rest.domain.Lans;
-
 /**
  *
  * @author jasmin.gacic
@@ -122,7 +120,7 @@ public class DataCenterRaw extends ProfitbricksBaseRaw {
       private ServersRaw servers = new ServersRaw();
       private VolumesRaw volumes = new VolumesRaw();
       private LoadBalancersRaw loadbalancers = new LoadBalancersRaw();
-      private Lans lans = new Lans();
+      private LansRaw lans = new LansRaw();
 
       /**
        * @return the servers
@@ -169,14 +167,14 @@ public class DataCenterRaw extends ProfitbricksBaseRaw {
       /**
        * @return the lans
        */
-      public Lans getLans() {
+      public LansRaw getLans() {
          return lans;
       }
 
       /**
        * @param lans the lans to set
        */
-      public void setLans(Lans lans) {
+      public void setLans(LansRaw lans) {
          this.lans = lans;
       }
    }
