@@ -18,15 +18,19 @@ package com.profitbricks.rest.test;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.FirewallRule;
-import com.profitbricks.rest.domain.FirewallRules;
+import com.profitbricks.rest.domain.raw.DataCenterRaw;
+import com.profitbricks.rest.domain.raw.FirewallRuleRaw;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.Nic;
+import com.profitbricks.rest.domain.raw.NicRaw;
 import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.Protocol;
 import com.profitbricks.rest.domain.Server;
+import com.profitbricks.rest.domain.raw.ServerRaw;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -48,8 +52,8 @@ public class FirewallRuleTest {
    @BeforeClass
    public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
       profitbricksApi.setCredentials("amFzbWluQHN0YWNrcG9pbnRjbG91ZC5jb206TEB4dTZFZjh6dw==");
-      
-      DataCenter datacenter = new DataCenter();
+
+      DataCenterRaw datacenter = new DataCenterRaw();
       datacenter.getProperties().setName("SDK TEST FIREWALLRULES - Data Center");
       datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
       datacenter.getProperties().setDescription("SDK TEST Description");
@@ -57,7 +61,7 @@ public class FirewallRuleTest {
       DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
       dataCenterId = newDatacenter.getId();
 
-      Server server = new Server();
+      ServerRaw server = new ServerRaw();
       server.getProperties().setName("SDK TEST FIREWALLRULES - Server");
       server.getProperties().setRam("1024");
       server.getProperties().setCores("4");
@@ -67,7 +71,7 @@ public class FirewallRuleTest {
       assertNotNull(newServer);
       serverId = newServer.getId();
 
-      Nic nic = new Nic();
+      NicRaw nic = new NicRaw();
 
       nic.getProperties().setName("SDK TEST FIREWALLRULES - Nic");
       nic.getProperties().setLan("1");
@@ -80,7 +84,7 @@ public class FirewallRuleTest {
       assertNotNull(newNic);
       nicId = newNic.getId();
 
-      FirewallRule firewallRule = new FirewallRule();
+      FirewallRuleRaw firewallRule = new FirewallRuleRaw();
 
       firewallRule.getProperties().setProtocol(Protocol.ICMP.toString());
       firewallRule.getProperties().setIcmpType("8");
@@ -103,7 +107,7 @@ public class FirewallRuleTest {
    }
 
    public void getAllFirewallRules() throws RestClientException, IOException {
-      FirewallRules fireWallRules = profitbricksApi.getFirewallRuleApi().getAllFirewallRules(dataCenterId, serverId, nicId);
+      List<FirewallRule> fireWallRules = profitbricksApi.getFirewallRuleApi().getAllFirewallRules(dataCenterId, serverId, nicId);
       assertNotNull(fireWallRules);
    }
 
@@ -118,7 +122,7 @@ public class FirewallRuleTest {
 
       FirewallRule firewallRule = profitbricksApi.getFirewallRuleApi().updateFirewWallRule(dataCenterId, serverId, nicId, firewallRuleId, object);
 
-      assertEquals(object.getName(), firewallRule.getProperties().getName());
+      assertEquals(object.getName(), firewallRule.getName());
    }
 
    @AfterClass

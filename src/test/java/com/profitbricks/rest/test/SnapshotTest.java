@@ -17,16 +17,21 @@ package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
+import com.profitbricks.rest.domain.raw.DataCenterRaw;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.Request;
 import com.profitbricks.rest.domain.Server;
 import com.profitbricks.rest.domain.Snapshot;
-import com.profitbricks.rest.domain.Snapshots;
+import com.profitbricks.rest.domain.raw.ServerRaw;
+import com.profitbricks.rest.domain.raw.SnapshotRaw;
+import com.profitbricks.rest.domain.raw.SnapshotsRaw;
 import com.profitbricks.rest.domain.Volume;
+import com.profitbricks.rest.domain.raw.VolumeRaw;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -50,7 +55,7 @@ public class SnapshotTest {
    public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 
       profitbricksApi.setCredentials("amFzbWluQHN0YWNrcG9pbnRjbG91ZC5jb206TEB4dTZFZjh6dw==");
-      DataCenter datacenter = new DataCenter();
+      DataCenterRaw datacenter = new DataCenterRaw();
       datacenter.getProperties().setName("SDK TEST SNAPSHOT - Data Center");
       datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
       datacenter.getProperties().setDescription("SDK TEST Description");
@@ -58,7 +63,7 @@ public class SnapshotTest {
       DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
       dataCenterId = newDatacenter.getId();
 
-      Server server = new Server();
+      ServerRaw server = new ServerRaw();
       server.getProperties().setName("SDK TEST SNAPSHOT - Server");
       server.getProperties().setRam("1024");
       server.getProperties().setCores("4");
@@ -68,7 +73,7 @@ public class SnapshotTest {
       assertNotNull(newServer);
       serverId = newServer.getId();
 
-      Volume volume = new Volume();
+      VolumeRaw volume = new VolumeRaw();
 
       volume.getProperties().setName("SDK TEST SNAPSHOT - Volume");
       volume.getProperties().setSize("1024");
@@ -102,7 +107,7 @@ public class SnapshotTest {
 
    @Test
    public void getAllSnapshots() throws RestClientException, IOException {
-      Snapshots snapshots = profitbricksApi.getSnapshotApi().getAllSnapshots();
+      List<Snapshot> snapshots = profitbricksApi.getSnapshotApi().getAllSnapshots();
       assertNotNull(snapshots);
    }
 
@@ -118,7 +123,7 @@ public class SnapshotTest {
 
       Snapshot snapshot = profitbricksApi.getSnapshotApi().updateSnapshot(dataCenterId, snapshotId, object);
 
-      assertEquals(snapshot.properties.name, object.getName());
+      assertEquals(snapshot.getName(), object.getName());
    }
 
    @AfterClass

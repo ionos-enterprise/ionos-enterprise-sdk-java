@@ -16,11 +16,14 @@
 package com.profitbricks.sdk;
 
 import com.profitbricks.rest.client.RestClientException;
+import com.profitbricks.rest.domain.Helper;
 import com.profitbricks.rest.domain.Server;
-import com.profitbricks.rest.domain.Servers;
+import com.profitbricks.rest.domain.raw.ServersRaw;
 import com.profitbricks.rest.domain.PBObject;
+import com.profitbricks.rest.domain.raw.ServerRaw;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 /**
  *
@@ -32,21 +35,21 @@ public class ServerApi extends ProfitbricksAPIBase {
       super("servers", "datacenters");
    }
 
-   public Servers getAllServers(String dataCenterId) throws RestClientException, IOException {
-      return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
+   public List<Server> getAllServers(String dataCenterId) throws RestClientException, IOException {
+      return Helper.convertServers(client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource)
-              .concat(depth), null, Servers.class);
+              .concat(depth), null, ServersRaw.class));
    }
 
    public Server getServer(String dataCenterId, String serverId) throws RestClientException, IOException {
-      return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
+      return Helper.convertServer(client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource).concat("/").concat(serverId)
-              .concat(depth), null, Server.class);
+              .concat(depth), null, ServerRaw.class));
    }
 
-   public Server createServer(String dataCenterId, Server server) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      return client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat(resource), server, Server.class, 202);
+   public Server createServer(String dataCenterId, ServerRaw server) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+      return Helper.convertServer(client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
+              .concat("/").concat(resource), server, ServerRaw.class, 202));
    }
 
    public void deleteServer(String dataCenterId, String serverId) throws RestClientException, IOException {
@@ -56,8 +59,8 @@ public class ServerApi extends ProfitbricksAPIBase {
    }
 
    public Server updateServer(String dataCenterId, String serverId, PBObject server) throws RestClientException, IOException {
-      return client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat(resource).concat("/").concat(serverId), server, Server.class, 202);
+      return Helper.convertServer(client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
+              .concat("/").concat(resource).concat("/").concat(serverId), server, ServerRaw.class, 202));
 
    }
 

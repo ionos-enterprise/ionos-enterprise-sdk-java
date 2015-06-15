@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.profitbricks.rest.domain;
+package com.profitbricks.rest.domain.raw;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,21 +22,21 @@ import java.util.List;
  *
  * @author jasmin.gacic
  */
-public class LoadBalancers extends ProfitbricksBase {
+public class CDRomsRaw extends ProfitbricksBaseRaw {
 
-   private List<LoadBalancer> items = new ArrayList<LoadBalancer>();
+   private List<CDRomRaw> items = new ArrayList<CDRomRaw>();
 
    /**
     * @return the items
     */
-   public List<LoadBalancer> getItems() {
+   public List<CDRomRaw> getItems() {
       return items;
    }
 
    /**
     * @param items the items to set
     */
-   public void setItems(List<LoadBalancer> items) {
+   public void setItems(List<CDRomRaw> items) {
       this.items = items;
    }
 }

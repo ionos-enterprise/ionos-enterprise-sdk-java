@@ -16,12 +16,15 @@
 package com.profitbricks.sdk;
 
 import com.profitbricks.rest.client.RestClientException;
+import com.profitbricks.rest.domain.Helper;
 import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.Snapshot;
-import com.profitbricks.rest.domain.Snapshots;
+import com.profitbricks.rest.domain.raw.SnapshotRaw;
+import com.profitbricks.rest.domain.raw.SnapshotsRaw;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,16 +37,16 @@ public class SnapshotApi extends ProfitbricksAPIBase {
       super("snapshots", "");
    }
 
-   public Snapshots getAllSnapshots() throws RestClientException, IOException {
-      return client.get(getUrlBase().concat(resource).concat(depth), null, Snapshots.class);
+   public List<Snapshot> getAllSnapshots() throws RestClientException, IOException {
+      return Helper.convertSnapshots(client.get(getUrlBase().concat(resource).concat(depth), null, SnapshotsRaw.class));
    }
 
    public Snapshot createSnapshot(String dataCenterId, String serverId, String name, String description) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       Map<String, String> params = new HashMap<String, String>();
       params.put("name", name);
       params.put("description", description);
-      return client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
-              .concat("volumes").concat("/").concat(serverId).concat("/").concat("create-snapshot"), params, Snapshot.class, 202);
+      return Helper.convertSnapshot(client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+              .concat("volumes").concat("/").concat(serverId).concat("/").concat("create-snapshot"), params, SnapshotRaw.class, 202));
    }
 
    public void restoreSnapshot(String dataCenterId, String serverId, String snapshotId) throws RestClientException, IOException {
@@ -54,11 +57,11 @@ public class SnapshotApi extends ProfitbricksAPIBase {
    }
 
    public Snapshot getSnapshot(String snapshotId) throws RestClientException, IOException {
-      return client.get(getUrlBase().concat(resource).concat("/").concat(snapshotId).concat(depth), null, Snapshot.class);
+      return Helper.convertSnapshot(client.get(getUrlBase().concat(resource).concat("/").concat(snapshotId).concat(depth), null, SnapshotRaw.class));
    }
 
    public Snapshot updateSnapshot(String dataCenterId, String snapshotId, PBObject snapshot) throws RestClientException, IOException {
-      return client.update(getUrlBase().concat(resource).concat("/").concat(snapshotId), snapshot, Snapshot.class, 202);
+      return Helper.convertSnapshot(client.update(getUrlBase().concat(resource).concat("/").concat(snapshotId), snapshot, SnapshotRaw.class, 202));
    }
 
    public void deleteSnapshot(String snapshotId) throws RestClientException, IOException {

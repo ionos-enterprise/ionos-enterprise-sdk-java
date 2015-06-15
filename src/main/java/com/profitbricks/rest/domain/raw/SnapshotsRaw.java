@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.profitbricks.rest.domain;
+package com.profitbricks.rest.domain.raw;
 
+import com.profitbricks.rest.domain.raw.ProfitbricksBaseRaw;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,22 @@ import java.util.List;
  *
  * @author jasmin.gacic
  */
-public class DataCenters  extends ProfitbricksBase {
+public class SnapshotsRaw extends ProfitbricksBaseRaw{
+   
+      private List<SnapshotRaw> items = new ArrayList<SnapshotRaw>();
 
-   public List<DataCenter> items =  new ArrayList<DataCenter>();
+   /**
+    * @return the items
+    */
+   public List<SnapshotRaw> getItems() {
+      return items;
+   }
+
+   /**
+    * @param items the items to set
+    */
+   public void setItems(List<SnapshotRaw> items) {
+      this.items = items;
+   }
+
 }

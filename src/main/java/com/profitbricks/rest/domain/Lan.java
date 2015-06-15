@@ -15,7 +15,8 @@
  */
 package com.profitbricks.rest.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -23,88 +24,34 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Lan extends ProfitbricksBase {
 
-   /**
-    * @return the properties
-    */
-   public Properties getProperties() {
-      return properties;
-   }
+   private Boolean isPublic;
+   private List<Nic> nics = new ArrayList<Nic>();
 
    /**
-    * @param properties the properties to set
+    * @return the isPublic
     */
-   public void setProperties(Properties properties) {
-      this.properties = properties;
-   }
-
-   public class Properties {
-
-      @JsonProperty("public")
-      private Boolean isPublic;
-      private String name;
-
-      /**
-       * @return the isPublic
-       */
-      public boolean isIsPublic() {
-         return isPublic;
-      }
-
-      /**
-       * @param isPublic the isPublic to set
-       */
-      public void setIsPublic(boolean isPublic) {
-         this.isPublic = isPublic;
-      }
-
-      /**
-       * @return the name
-       */
-      public String getName() {
-         return name;
-      }
-
-      /**
-       * @param name the name to set
-       */
-      public void setName(String name) {
-         this.name = name;
-      }
-   }
-
-   public class Entities {
-
-      private Nics nics = new Nics();
-
-      /**
-       * @return the nics
-       */
-      public Nics getNics() {
-         return nics;
-      }
-
-      /**
-       * @param nics the nics to set
-       */
-      public void setNics(Nics nics) {
-         this.nics = nics;
-      }
-   }
-   private Entities entities = new Entities();
-
-   private Properties properties = new Properties();
-
-   /**
-    * @return the entities
-    */
-   public Entities getEntities() {
-      return entities;
+   public Boolean getIsPublic() {
+      return isPublic;
    }
 
    /**
-    * @param entities the entities to set
+    * @param isPublic the isPublic to set
     */
-   public void setEntities(Entities entities) {
-      this.entities = entities;
+   public void setIsPublic(Boolean isPublic) {
+      this.isPublic = isPublic;
+   }
+
+   /**
+    * @return the nics
+    */
+   public List<Nic> getNics() {
+      return nics;
+   }
+
+   /**
+    * @param nics the nics to set
+    */
+   public void setNics(List<Nic> nics) {
+      this.nics = nics;
    }
 }

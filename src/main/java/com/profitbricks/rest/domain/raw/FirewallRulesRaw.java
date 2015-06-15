@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.profitbricks.rest.domain;
+package com.profitbricks.rest.domain.raw;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,21 +22,21 @@ import java.util.List;
  *
  * @author jasmin.gacic
  */
-public class Nics extends ProfitbricksBase {
+public class FirewallRulesRaw extends ProfitbricksBaseRaw {
 
-   private List<Nic> items = new ArrayList<Nic>();
+   private List<FirewallRuleRaw> items = new ArrayList<FirewallRuleRaw>();
 
    /**
     * @return the items
     */
-   public List<Nic> getItems() {
+   public List<FirewallRuleRaw> getItems() {
       return items;
    }
 
    /**
     * @param items the items to set
     */
-   public void setItems(List<Nic> items) {
+   public void setItems(List<FirewallRuleRaw> items) {
       this.items = items;
    }
 }

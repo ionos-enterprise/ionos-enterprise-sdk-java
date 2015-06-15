@@ -21,73 +21,68 @@ package com.profitbricks.rest.domain;
  */
 public class CDRom extends ProfitbricksBase {
 
+   private Image image;
+
    /**
-    * @return the properties
+    * @return the image
     */
-   public Properties getProperties() {
-      return properties;
+   public Image getImage() {
+      return image;
    }
 
    /**
-    * @param properties the properties to set
+    * @param image the image to set
     */
-   public void setProperties(Properties properties) {
-      this.properties = properties;
+   public void setImage(Image image) {
+      this.image = image;
    }
 
-   public class Properties {
+   public static class Image {
 
-      String name;
+      private String id;
+      private String type;
+      private String href;
 
-      public class Image {
+      /**
+       * @return the id
+       */
+      public String getId() {
+         return id;
+      }
 
-         private String id;
-         private String type;
-         private String href;
+      /**
+       * @param id the id to set
+       */
+      public void setId(String id) {
+         this.id = id;
+      }
 
-         /**
-          * @return the id
-          */
-         public String getId() {
-            return id;
-         }
+      /**
+       * @return the type
+       */
+      public String getType() {
+         return type;
+      }
 
-         /**
-          * @param id the id to set
-          */
-         public void setId(String id) {
-            this.id = id;
-         }
+      /**
+       * @param type the type to set
+       */
+      public void setType(String type) {
+         this.type = type;
+      }
 
-         /**
-          * @return the type
-          */
-         public String getType() {
-            return type;
-         }
+      /**
+       * @return the href
+       */
+      public String getHref() {
+         return href;
+      }
 
-         /**
-          * @param type the type to set
-          */
-         public void setType(String type) {
-            this.type = type;
-         }
-
-         /**
-          * @return the href
-          */
-         public String getHref() {
-            return href;
-         }
-
-         /**
-          * @param href the href to set
-          */
-         public void setHref(String href) {
-            this.href = href;
-         }
+      /**
+       * @param href the href to set
+       */
+      public void setHref(String href) {
+         this.href = href;
       }
    }
-
-   private Properties properties = new Properties();
 }

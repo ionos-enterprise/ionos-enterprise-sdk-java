@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.profitbricks.rest.domain;
+package com.profitbricks.rest.domain.raw;
 
 import com.profitbricks.rest.client.RestClientException;
+import com.profitbricks.rest.domain.Metadata;
+import com.profitbricks.rest.domain.Request;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 
@@ -23,14 +25,13 @@ import java.io.IOException;
  *
  * @author jasmin.gacic
  */
-public class ProfitbricksBase {
+public class ProfitbricksBaseRaw {
 
    private String id;
    private String type;
    private String href;
-   private String requestId;
    private Metadata metadata;
-   private String name;
+   private String requestId;
 
    /**
     * @return the id
@@ -75,20 +76,6 @@ public class ProfitbricksBase {
    }
 
    /**
-    * @return the requestId
-    */
-   public String getRequestId() {
-      return requestId;
-   }
-
-   /**
-    * @param requestId the requestId to set
-    */
-   public void setRequestId(String requestId) {
-      this.requestId = requestId;
-   }
-
-   /**
     * @return the metadata
     */
    public Metadata getMetadata() {
@@ -103,17 +90,17 @@ public class ProfitbricksBase {
    }
 
    /**
-    * @return the name
+    * @return the requestId
     */
-   public String getName() {
-      return name;
+   public String getRequestId() {
+      return requestId;
    }
 
    /**
-    * @param name the name to set
+    * @param requestId the requestId to set
     */
-   public void setName(String name) {
-      this.name = name;
+   public void setRequestId(String requestId) {
+      this.requestId = requestId;
    }
 
    public Request getStatus() throws IOException, RestClientException {
@@ -123,5 +110,4 @@ public class ProfitbricksBase {
       ProfitbricksApi profitbricksApi = new ProfitbricksApi();
       return profitbricksApi.getRequestApi().getRequest(requestId);
    }
-
 }

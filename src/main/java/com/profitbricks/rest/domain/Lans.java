@@ -15,6 +15,8 @@
  */
 package com.profitbricks.rest.domain;
 
+import com.profitbricks.rest.domain.raw.LanRaw;
+import com.profitbricks.rest.domain.raw.ProfitbricksBaseRaw;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,21 +24,21 @@ import java.util.List;
  *
  * @author jasmin.gacic
  */
-public class Lans extends ProfitbricksBase {
+public class Lans extends ProfitbricksBaseRaw {
 
-   private List<Lan> items = new ArrayList<Lan>();
+   private List<LanRaw> items = new ArrayList<LanRaw>();
 
    /**
     * @return the items
     */
-   public List<Lan> getItems() {
+   public List<LanRaw> getItems() {
       return items;
    }
 
    /**
     * @param items the items to set
     */
-   public void setItems(List<Lan> items) {
+   public void setItems(List<LanRaw> items) {
       this.items = items;
    }
 

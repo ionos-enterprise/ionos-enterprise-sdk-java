@@ -17,12 +17,13 @@ package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
-import com.profitbricks.rest.domain.DataCenters;
+import com.profitbricks.rest.domain.raw.DataCenterRaw;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -42,7 +43,7 @@ public class DatacenterTest {
    public static void createDataCenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 
       profitbricksApi.setCredentials("amFzbWluQHN0YWNrcG9pbnRjbG91ZC5jb206TEB4dTZFZjh6dw==");
-      DataCenter datacenter = new DataCenter();
+      DataCenterRaw datacenter = new DataCenterRaw();
 
       datacenter.getProperties().setName("SDK TEST DC - Data center");
       datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
@@ -50,15 +51,15 @@ public class DatacenterTest {
 
       DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
       dataCenterId = newDatacenter.getId();
-      assertEquals(newDatacenter.getProperties().getName(), datacenter.getProperties().getName());
+      assertEquals(newDatacenter.getName(), datacenter.getProperties().getName());
    }
 
    @Test
    public void testGetAllDatacenters() throws RestClientException, IOException {
-      DataCenters datacenters = profitbricksApi.getDataCenterApi().getAllDataCenters();
+      List<DataCenter> datacenters = profitbricksApi.getDataCenterApi().getAllDataCenters();
 
       assertNotNull(datacenters);
-      assertTrue(datacenters.items.size() > 0);
+      assertTrue(datacenters.size() > 0);
    }
 
    @Test
@@ -74,7 +75,7 @@ public class DatacenterTest {
       object.setName(newName);
 
       DataCenter updatedDataCenter = profitbricksApi.getDataCenterApi().updateDataCenter(dataCenterId, object);
-      assertEquals(newName, updatedDataCenter.getProperties().getName());
+      assertEquals(newName, updatedDataCenter.getName());
    }
 
    @AfterClass

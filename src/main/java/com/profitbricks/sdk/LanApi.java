@@ -16,11 +16,14 @@
 package com.profitbricks.sdk;
 
 import com.profitbricks.rest.client.RestClientException;
+import com.profitbricks.rest.domain.Helper;
 import com.profitbricks.rest.domain.Lan;
+import com.profitbricks.rest.domain.raw.LanRaw;
 import com.profitbricks.rest.domain.Lans;
 import com.profitbricks.rest.domain.PBObject;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 /**
  *
@@ -32,22 +35,22 @@ public class LanApi extends ProfitbricksAPIBase {
       super("lans", "datacenters");
    }
 
-   public Lans getAllLans(String dataCenterId) throws RestClientException, IOException {
-      return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource).concat(depth), null, Lans.class);
+   public List<Lan> getAllLans(String dataCenterId) throws RestClientException, IOException {
+      return Helper.convertLans(client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource).concat(depth), null, Lans.class));
    }
 
    public Lan getLan(String dataCenterId, String lanId) throws RestClientException, IOException {
-      return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource).concat("/").concat(lanId).concat(depth), null, Lan.class);
+      return Helper.convertLan(client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource).concat("/").concat(lanId).concat(depth), null, LanRaw.class));
    }
 
-   public Lan createLan(String dataCenterId, Lan lan) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      return client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource), lan, Lan.class, 202);
+   public Lan createLan(String dataCenterId, LanRaw lan) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+      return Helper.convertLan(client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource), lan, LanRaw.class, 202));
    }
 
    public Lan updateLan(String dataCenterId, String lanId, Boolean isPublic) throws RestClientException, IOException {
       PBObject pbObject = new PBObject();
       pbObject.setIsPublic(isPublic);
-      return client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource).concat("/").concat(lanId), pbObject, Lan.class, 202);
+      return Helper.convertLan(client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource).concat("/").concat(lanId), pbObject, LanRaw.class, 202));
    }
 
    public void deleteLan(String dataCenterId, String lanId) throws RestClientException, IOException {

@@ -15,10 +15,12 @@
  */
 package com.profitbricks.rest.domain;
 
+import com.profitbricks.rest.domain.raw.NicsRaw;
+
 /**
  *
  * @author jasmin.gacic
  */
-public class Balancednics extends Nics {
+public class Balancednics extends NicsRaw {
 
 }

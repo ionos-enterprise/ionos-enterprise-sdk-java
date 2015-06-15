@@ -15,6 +15,7 @@
  */
 package com.profitbricks.rest.domain;
 
+import com.profitbricks.rest.domain.raw.ProfitbricksBaseRaw;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ import java.util.List;
  *
  * @author jasmin.gacic
  */
-public class IPBlocks extends ProfitbricksBase {
+public class IPBlocks extends ProfitbricksBaseRaw {
 
    private List<IPBlock> items = new ArrayList<IPBlock>();
 

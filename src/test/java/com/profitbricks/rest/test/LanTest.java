@@ -18,11 +18,14 @@ package com.profitbricks.rest.test;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.Lan;
+import com.profitbricks.rest.domain.raw.DataCenterRaw;
+import com.profitbricks.rest.domain.raw.LanRaw;
 import com.profitbricks.rest.domain.Lans;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -43,7 +46,7 @@ public class LanTest {
    public static void createDataCenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
 
       profitbricksApi.setCredentials("amFzbWluQHN0YWNrcG9pbnRjbG91ZC5jb206TEB4dTZFZjh6dw==");
-      DataCenter datacenter = new DataCenter();
+      DataCenterRaw datacenter = new DataCenterRaw();
 
       datacenter.getProperties().setName("SDK TEST Lan - Data center");
       datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
@@ -51,9 +54,9 @@ public class LanTest {
 
       DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
       dataCenterId = newDatacenter.getId();
-      assertEquals(newDatacenter.getProperties().getName(), datacenter.getProperties().getName());
+      assertEquals(newDatacenter.getName(), datacenter.getProperties().getName());
 
-      Lan lan = new Lan();
+      LanRaw lan = new LanRaw();
 
       lan.getProperties().setName("SDK TEST Lan - Lan");
       lan.getProperties().setIsPublic(false);
@@ -67,7 +70,7 @@ public class LanTest {
 
    @Test
    public void getAllLans() throws RestClientException, IOException {
-      Lans lans = profitbricksApi.getLanApi().getAllLans(dataCenterId);
+      List<Lan> lans = profitbricksApi.getLanApi().getAllLans(dataCenterId);
       assertNotNull(lans);
    }
 
@@ -81,7 +84,7 @@ public class LanTest {
    @Test
    public void updateLan() throws RestClientException, IOException {
       Lan updatedLan = profitbricksApi.getLanApi().updateLan(dataCenterId, lanId, Boolean.TRUE);
-      assertEquals(updatedLan.getProperties().isIsPublic(), true);
+      assertEquals(updatedLan.getIsPublic(), true);
    }
 
    @AfterClass

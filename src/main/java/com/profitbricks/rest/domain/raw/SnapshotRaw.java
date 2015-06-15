@@ -13,19 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.profitbricks.rest.domain;
+package com.profitbricks.rest.domain.raw;
 
+import com.profitbricks.rest.domain.LicenceType;
+import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.raw.ProfitbricksBaseRaw;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  *
  * @author jasmin.gacic
  */
-//@JsonIgnoreProperties(ignoreUnknown = true)
-public class Image extends ProfitbricksBaseRaw {
-
-   private Properties properties = new Properties();
+public class SnapshotRaw extends ProfitbricksBaseRaw {
 
    /**
     * @return the properties
@@ -41,16 +39,13 @@ public class Image extends ProfitbricksBaseRaw {
       this.properties = properties;
    }
 
-   public static class Properties {
+   public class Properties {
 
       private String name;
       private String description;
-      private String location;
+      public Location location;
       private String size;
-      private Boolean isPublic;
-      private String licenceType;
-      private String imageType;
-
+      private LicenceType licenceType;
       private Boolean cpuHotPlug;
       private Boolean cpuHotUnplug;
       private Boolean ramHotPlug;
@@ -61,6 +56,14 @@ public class Image extends ProfitbricksBaseRaw {
       private Boolean discVirtioHotUnplug;
       private Boolean discScsiHotPlug;
       private Boolean discScsiHotUnplug;
+
+      public void setLocation(String location) {
+         this.location.fromValue(location);
+      }
+
+      public String getLocation() {
+         return this.location != null ? this.location.value() : null;
+      }
 
       /**
        * @return the name
@@ -91,20 +94,6 @@ public class Image extends ProfitbricksBaseRaw {
       }
 
       /**
-       * @return the location
-       */
-      public String getLocation() {
-         return location;
-      }
-
-      /**
-       * @param location the location to set
-       */
-      public void setLocation(String location) {
-         this.location = location;
-      }
-
-      /**
        * @return the size
        */
       public String getSize() {
@@ -119,32 +108,16 @@ public class Image extends ProfitbricksBaseRaw {
       }
 
       /**
-       * @return the isPublic
-       */
-      @JsonProperty("public")
-      public Boolean getIsPublic() {
-         return isPublic;
-      }
-
-      /**
-       * @param isPublic the isPublic to set
-       */
-      @JsonProperty("public")
-      public void setIsPublic(Boolean isPublic) {
-         this.isPublic = isPublic;
-      }
-
-      /**
        * @return the licenceType
        */
-      public String getLicenceType() {
+      public LicenceType getLicenceType() {
          return licenceType;
       }
 
       /**
        * @param licenceType the licenceType to set
        */
-      public void setLicenceType(String licenceType) {
+      public void setLicenceType(LicenceType licenceType) {
          this.licenceType = licenceType;
       }
 
@@ -287,20 +260,6 @@ public class Image extends ProfitbricksBaseRaw {
       public void setDiscScsiHotUnplug(Boolean discScsiHotUnplug) {
          this.discScsiHotUnplug = discScsiHotUnplug;
       }
-
-      /**
-       * @return the imageType
-       */
-      public String getImageType() {
-         return imageType;
-      }
-
-      /**
-       * @param imageType the imageType to set
-       */
-      public void setImageType(String imageType) {
-         this.imageType = imageType;
-      }
    }
-
+   private Properties properties = new Properties();
 }

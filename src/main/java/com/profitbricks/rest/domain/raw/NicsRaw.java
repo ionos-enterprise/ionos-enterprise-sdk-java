@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.profitbricks.rest.domain;
+package com.profitbricks.rest.domain.raw;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.profitbricks.rest.domain.raw.NicRaw;
+import com.profitbricks.rest.domain.raw.ProfitbricksBaseRaw;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,23 +24,21 @@ import java.util.List;
  *
  * @author jasmin.gacic
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class Volumes extends ProfitbricksBase {
+public class NicsRaw extends ProfitbricksBaseRaw {
 
-   private List<Volume> items = new ArrayList<Volume>();
+   private List<NicRaw> items = new ArrayList<NicRaw>();
 
    /**
     * @return the items
     */
-   public List<Volume> getItems() {
+   public List<NicRaw> getItems() {
       return items;
    }
 
    /**
     * @param items the items to set
     */
-   public void setItems(List<Volume> items) {
+   public void setItems(List<NicRaw> items) {
       this.items = items;
    }
 }

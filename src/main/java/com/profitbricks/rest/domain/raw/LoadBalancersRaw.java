@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.profitbricks.rest.domain;
+package com.profitbricks.rest.domain.raw;
 
+import com.profitbricks.rest.domain.raw.ProfitbricksBaseRaw;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +23,21 @@ import java.util.List;
  *
  * @author jasmin.gacic
  */
-public class Snapshots extends ProfitbricksBase{
-   
-      public List<Snapshot> items = new ArrayList<Snapshot>();
+public class LoadBalancersRaw extends ProfitbricksBaseRaw {
 
+   private List<LoadBalancerRaw> items = new ArrayList<LoadBalancerRaw>();
+
+   /**
+    * @return the items
+    */
+   public List<LoadBalancerRaw> getItems() {
+      return items;
+   }
+
+   /**
+    * @param items the items to set
+    */
+   public void setItems(List<LoadBalancerRaw> items) {
+      this.items = items;
+   }
 }
