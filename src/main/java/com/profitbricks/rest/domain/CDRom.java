@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2015.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.profitbricks.rest.domain;
 
@@ -11,73 +21,68 @@ package com.profitbricks.rest.domain;
  */
 public class CDRom extends ProfitbricksBase {
 
+   private Image image;
+
    /**
-    * @return the properties
+    * @return the image
     */
-   public Properties getProperties() {
-      return properties;
+   public Image getImage() {
+      return image;
    }
 
    /**
-    * @param properties the properties to set
+    * @param image the image to set
     */
-   public void setProperties(Properties properties) {
-      this.properties = properties;
+   public void setImage(Image image) {
+      this.image = image;
    }
 
-   public class Properties {
+   public static class Image {
 
-      String name;
+      private String id;
+      private String type;
+      private String href;
 
-      public class Image {
+      /**
+       * @return the id
+       */
+      public String getId() {
+         return id;
+      }
 
-         private String id;
-         private String type;
-         private String href;
+      /**
+       * @param id the id to set
+       */
+      public void setId(String id) {
+         this.id = id;
+      }
 
-         /**
-          * @return the id
-          */
-         public String getId() {
-            return id;
-         }
+      /**
+       * @return the type
+       */
+      public String getType() {
+         return type;
+      }
 
-         /**
-          * @param id the id to set
-          */
-         public void setId(String id) {
-            this.id = id;
-         }
+      /**
+       * @param type the type to set
+       */
+      public void setType(String type) {
+         this.type = type;
+      }
 
-         /**
-          * @return the type
-          */
-         public String getType() {
-            return type;
-         }
+      /**
+       * @return the href
+       */
+      public String getHref() {
+         return href;
+      }
 
-         /**
-          * @param type the type to set
-          */
-         public void setType(String type) {
-            this.type = type;
-         }
-
-         /**
-          * @return the href
-          */
-         public String getHref() {
-            return href;
-         }
-
-         /**
-          * @param href the href to set
-          */
-         public void setHref(String href) {
-            this.href = href;
-         }
+      /**
+       * @param href the href to set
+       */
+      public void setHref(String href) {
+         this.href = href;
       }
    }
-
-   private Properties properties = new Properties();
 }
