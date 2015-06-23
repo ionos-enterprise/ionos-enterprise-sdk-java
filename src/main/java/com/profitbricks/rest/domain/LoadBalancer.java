@@ -1,9 +1,22 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2015.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.profitbricks.rest.domain;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -11,102 +24,49 @@ package com.profitbricks.rest.domain;
  */
 public class LoadBalancer extends ProfitbricksBase {
 
-   /**
-    * @return the entities
-    */
-   public Entities getEntities() {
-      return entities;
-   }
+   private String ip;
+   private boolean dhcp;
+   private List<Nic> balancednics = new ArrayList<Nic>();
 
    /**
-    * @param entities the entities to set
+    * @return the ip
     */
-   public void setEntities(Entities entities) {
-      this.entities = entities;
+   public String getIp() {
+      return ip;
    }
 
    /**
-    * @return the properties
+    * @param ip the ip to set
     */
-   public Properties getProperties() {
-      return properties;
+   public void setIp(String ip) {
+      this.ip = ip;
    }
 
    /**
-    * @param properties the properties to set
+    * @return the dhcp
     */
-   public void setProperties(Properties properties) {
-      this.properties = properties;
+   public boolean isDhcp() {
+      return dhcp;
    }
 
-   public class Properties {
-
-      private String name;
-      private String ip;
-      private boolean dhcp;
-
-      /**
-       * @return the name
-       */
-      public String getName() {
-         return name;
-      }
-
-      /**
-       * @param name the name to set
-       */
-      public void setName(String name) {
-         this.name = name;
-      }
-
-      /**
-       * @return the ip
-       */
-      public String getIp() {
-         return ip;
-      }
-
-      /**
-       * @param ip the ip to set
-       */
-      public void setIp(String ip) {
-         this.ip = ip;
-      }
-
-      /**
-       * @return the dhcp
-       */
-      public boolean isDhcp() {
-         return dhcp;
-      }
-
-      /**
-       * @param dhcp the dhcp to set
-       */
-      public void setDhcp(boolean dhcp) {
-         this.dhcp = dhcp;
-      }
+   /**
+    * @param dhcp the dhcp to set
+    */
+   public void setDhcp(boolean dhcp) {
+      this.dhcp = dhcp;
    }
 
-   public class Entities {
-
-      private Balancednics balancednics = new Balancednics();
-
-      /**
-       * @return the balancednics
-       */
-      public Balancednics getBalancednics() {
-         return balancednics;
-      }
-
-      /**
-       * @param balancednics the balancednics to set
-       */
-      public void setBalancednics(Balancednics balancednics) {
-         this.balancednics = balancednics;
-      }
+   /**
+    * @return the balancednics
+    */
+   public List<Nic> getBalancednics() {
+      return balancednics;
    }
 
-   private Entities entities = new Entities();
-   private Properties properties = new Properties();
+   /**
+    * @param balancednics the balancednics to set
+    */
+   public void setBalancednics(List<Nic> balancednics) {
+      this.balancednics = balancednics;
+   }
 }
