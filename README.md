@@ -13,7 +13,7 @@ This guide will show you how to programmatically perform common management tasks
 * [How to: Attach and Detach a Volume](#how-to-attach-and-detach-a-volume)
 * [How to: List Data Centers, Servers, and Volumes](#how-to-list-data-centers-servers-and-volumes)
 * [How to: Create Network Interfaces](#how-to-create-network-interfaces)
-* [Documentation and Support](#additional-documentation-and-support)
+* [Additional Documentation and Support](#additional-documentation-and-support)
 
 --------------
 
@@ -29,7 +29,7 @@ Before you begin you will need to have [signed-up](https://www.profitbricks.com/
 ### Installation
 
 The official Java library is available from the ProfitBricks GitHub account found [here](https://github.com/profitbricks/profitbricks-sdk-Java). You can download the latest stable version by cloning the repository and then adding the project to your solution.
-	
+  
 Or you can add the SDK:
 
     <dependency>
@@ -88,14 +88,13 @@ One of the unique features of the ProfitBricks platform when compared with the o
 
 ## How to: Update Cores and Memory
 
-ProfitBricks allows users to dynamically update cores, memory, and disk independently of each other. This removes the restriction of needing to upgrade to the next size up to receive an increase in memory. You can now simply increase the instances memory keeping your costs in-line with your resource needs. 
+ProfitBricks allows users to dynamically update cores and memory independently of each other. This removes the restriction of needing to upgrade to the next size up to receive an increase in memory. You can now simply increase the instances memory keeping your costs in-line with your resource needs. 
 
 The following code illustrates how you can update cores and memory: 
 
-    String newName = "SDK TEST SERVER CHANGED";
     PBObject object = new PBObject();
-    object.setName(newName);
-	object.setRam("1024");
+    object.setName("SDK TEST SERVER CHANGED");
+    object.setRam("1024");
     object.setCores("4");
 
     Server updatedServer = profitbricksApi.getServerApi().updateServer(dataCenterId, serverId, object);
@@ -111,7 +110,7 @@ The following illustrates how you would attach a volume and then detach it from 
     volume.getProperties().setName("SDK TEST VOLUME - Volume");
     volume.getProperties().setSize("1024");
     volume.getProperties().setLicenceType("LINUX");
-	
+  
     Volume newVolume = profitbricksApi.getVolumeApi().createVolume(dataCenterId, volume);
 
     // Then we are going to attach the new volume to a server.
@@ -148,7 +147,7 @@ The sample below shows you how to add a second NIC to an existing server:
 
 One item to note is this function will result in the server being rebooted.
 
-### Documentation and Support
+## Additional Documentation and Support
 
 You can engage with us on the [ProfitBricks DevOps Central](https://devops.profitbricks.com/) site where we will be more than happy to answer any questions you might have. Please review the list below for additional resources.
 
