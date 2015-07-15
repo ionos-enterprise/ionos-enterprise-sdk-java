@@ -86,17 +86,17 @@ The following example illustrates how you would create a server and assign it an
 
 One of the unique features of the ProfitBricks platform when compared with the other providers is that it allows you to define your own settings for cores, memory, and disk size without being tied to a particular instance size.  
 
-## How to: Update Cores, Memory and Volumes
+## How to: Update Cores and Memory
 
-ProfitBricks allows users to dynamically update cores, memory, and disk independently of each other. This removes the restriction of needing to upgrade to the next size up to receive an increase in memory. You can now simply increase the instances memory keeping your costs in-line with your resource needs. 
+ProfitBricks allows users to dynamically update cores and memory independently of each other. This removes the restriction of needing to upgrade to the next size up to receive an increase in memory. You can now simply increase the instances memory keeping your costs in-line with your resource needs. 
 
 The following code illustrates how you can update cores and memory: 
 
-    String newName = "SDK TEST SERVER CHANGED";
     PBObject object = new PBObject();
-    object.setName(newName);
+    object.setName("SDK TEST SERVER CHANGED");
     object.setRam("1024");
     object.setCores("4");
+
     Server updatedServer = profitbricksApi.getServerApi().updateServer(dataCenterId, serverId, object);
 
 ## How to: Attach and Detach a Volume
