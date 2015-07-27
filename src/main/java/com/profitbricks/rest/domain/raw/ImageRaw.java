@@ -49,6 +49,11 @@ public class ImageRaw extends ProfitbricksBaseRaw {
       private Boolean isPublic;
       private String licenceType;
       private String imageType;
+      private String type;
+      private String image;
+      private String imagePassword;
+      private String bus;
+      private String deviceNumber;
 
       private Boolean cpuHotPlug;
       private Boolean cpuHotUnplug;
@@ -299,6 +304,76 @@ public class ImageRaw extends ProfitbricksBaseRaw {
        */
       public void setImageType(String imageType) {
          this.imageType = imageType;
+      }
+
+      /**
+       * @return the type
+       */
+      public String getType() {
+         return type;
+      }
+
+      /**
+       * @param type the type to set
+       */
+      public void setType(String type) {
+         this.type = type;
+      }
+
+      /**
+       * @return the image
+       */
+      public String getImage() {
+         return image;
+      }
+
+      /**
+       * @param image the image to set
+       */
+      public void setImage(String image) {
+         this.image = image;
+      }
+
+      /**
+       * @return the imagePassword
+       */
+      public String getImagePassword() {
+         return imagePassword;
+      }
+
+      /**
+       * @param imagePassword the imagePassword to set
+       */
+      public void setImagePassword(String imagePassword) {
+         this.imagePassword = imagePassword;
+      }
+
+      /**
+       * @return the bus
+       */
+      public String getBus() {
+         return bus;
+      }
+
+      /**
+       * @param bus the bus to set
+       */
+      public void setBus(String bus) {
+         this.bus = bus;
+      }
+
+      /**
+       * @return the deviceNumber
+       */
+      public String getDeviceNumber() {
+         return deviceNumber;
+      }
+
+      /**
+       * @param deviceNumber the deviceNumber to set
+       */
+      public void setDeviceNumber(String deviceNumber) {
+         this.deviceNumber = deviceNumber;
       }
    }
 

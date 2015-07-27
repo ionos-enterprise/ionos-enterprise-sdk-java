@@ -58,7 +58,7 @@ public class VolumeTest {
 
       ServerRaw server = new ServerRaw();
       server.getProperties().setName("SDK TEST VOLUME - Server");
-      server.getProperties().setRam("1024");
+      server.getProperties().setRam("256");
       server.getProperties().setCores("4");
 
       Server newServer = profitbricksApi.getServerApi().createServer(dataCenterId, server);

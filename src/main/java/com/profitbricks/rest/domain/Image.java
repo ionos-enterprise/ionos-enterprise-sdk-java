@@ -27,6 +27,10 @@ public class Image extends ProfitbricksBase {
    private Boolean isPublic;
    private String licenceType;
    private String imageType;
+   private String image;
+   private String imagePassword;
+   private String bus;
+   private String deviceNumber;
    private Boolean cpuHotPlug;
    private Boolean cpuHotUnplug;
    private Boolean ramHotPlug;
@@ -260,5 +264,61 @@ public class Image extends ProfitbricksBase {
     */
    public void setDiscScsiHotUnplug(Boolean discScsiHotUnplug) {
       this.discScsiHotUnplug = discScsiHotUnplug;
+   }
+
+   /**
+    * @return the image
+    */
+   public String getImage() {
+      return image;
+   }
+
+   /**
+    * @param image the image to set
+    */
+   public void setImage(String image) {
+      this.image = image;
+   }
+
+   /**
+    * @return the imagePassword
+    */
+   public String getImagePassword() {
+      return imagePassword;
+   }
+
+   /**
+    * @param imagePassword the imagePassword to set
+    */
+   public void setImagePassword(String imagePassword) {
+      this.imagePassword = imagePassword;
+   }
+
+   /**
+    * @return the bus
+    */
+   public String getBus() {
+      return bus;
+   }
+
+   /**
+    * @param bus the bus to set
+    */
+   public void setBus(String bus) {
+      this.bus = bus;
+   }
+
+   /**
+    * @return the deviceNumber
+    */
+   public String getDeviceNumber() {
+      return deviceNumber;
+   }
+
+   /**
+    * @param deviceNumber the deviceNumber to set
+    */
+   public void setDeviceNumber(String deviceNumber) {
+      this.deviceNumber = deviceNumber;
    }
 }
