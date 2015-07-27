@@ -22,7 +22,7 @@ package com.profitbricks.rest.domain;
 public class Snapshot extends ProfitbricksBase {
 
    private String description;
-   private Location location;
+   private String location;
    private String size;
    private LicenceType licenceType;
    private Boolean cpuHotPlug;
@@ -53,14 +53,14 @@ public class Snapshot extends ProfitbricksBase {
    /**
     * @return the location
     */
-   public Location getLocation() {
+   public String getLocation() {
       return location;
    }
 
    /**
     * @param location the location to set
     */
-   public void setLocation(Location location) {
+   public void setLocation(String location) {
       this.location = location;
    }
 

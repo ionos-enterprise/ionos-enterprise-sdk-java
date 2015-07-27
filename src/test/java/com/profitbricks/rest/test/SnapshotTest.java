@@ -74,27 +74,27 @@ public class SnapshotTest {
       VolumeRaw volume = new VolumeRaw();
 
       volume.getProperties().setName("SDK TEST SNAPSHOT - Volume");
-      volume.getProperties().setSize("1024");
+      volume.getProperties().setSize("1");
       volume.getProperties().setLicenceType("LINUX");
 
       Volume newVolume = profitbricksApi.getVolumeApi().createVolume(dataCenterId, volume);
       assertNotNull(newVolume);
 
       volumeId = newVolume.getId();
-      //Thread.sleep(15000);
-      Request volumeStatus = newVolume.getStatus();
+      Thread.sleep(60000);
+  /*    Request volumeStatus = newVolume.getStatus();
       if (volumeStatus != null)
          do
             Thread.sleep(5000);
          while (volumeStatus.getMetadata().getStatus() != "DONE");
-
+*/
       Snapshot snapshot = profitbricksApi.getSnapshotApi().createSnapshot(dataCenterId, volumeId, "SDK TEST SNAPSHOT - Snapshot", "SDK TEST Description");
       snapshotId = snapshot.getId();
 
-      Request request = snapshot.getStatus();
+/*      Request request = snapshot.getStatus();
       assertNotNull(request);
       System.out.println(request);
-
+*/
    }
 
    @Test
@@ -124,7 +124,7 @@ public class SnapshotTest {
       assertEquals(snapshot.getName(), object.getName());
    }
 
-   @AfterClass
+  // @AfterClass
    public static void cleanUp() throws RestClientException, IOException {
       profitbricksApi.getSnapshotApi().deleteSnapshot(snapshotId);
       profitbricksApi.getServerApi().deleteServer(dataCenterId, serverId);

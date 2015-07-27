@@ -15,6 +15,7 @@
  */
 package com.profitbricks.rest.domain;
 
+import com.profitbricks.rest.domain.raw.ImageRaw;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +29,12 @@ public class Server extends ProfitbricksBase {
    private String ram;
    private AvailabilityZone availabilityZone;
    private Status vmState;
-   private Boolean bootVolume;
-   private Boolean bootCdrom;
+   private ImageRaw bootVolume;
+   private ImageRaw bootCdrom;
    private LicenceType licencetype;
    private List<Nic> nics = new ArrayList<Nic>();
    private List<Volume> volumes = new ArrayList<Volume>();
-   private List<CDRom> cdroms = new ArrayList<CDRom>();
+   private List<Image> cdroms = new ArrayList<Image>();
 
    /**
     * @return the licencetype
@@ -108,28 +109,28 @@ public class Server extends ProfitbricksBase {
    /**
     * @return the bootVolume
     */
-   public Boolean getBootVolume() {
+   public ImageRaw getBootVolume() {
       return bootVolume;
    }
 
    /**
     * @param bootVolume the bootVolume to set
     */
-   public void setBootVolume(Boolean bootVolume) {
+   public void setBootVolume(ImageRaw bootVolume) {
       this.bootVolume = bootVolume;
    }
 
    /**
     * @return the bootCdrom
     */
-   public Boolean getBootCdrom() {
+   public ImageRaw getBootCdrom() {
       return bootCdrom;
    }
 
    /**
     * @param bootCdrom the bootCdrom to set
     */
-   public void setBootCdrom(Boolean bootCdrom) {
+   public void setBootCdrom(ImageRaw bootCdrom) {
       this.bootCdrom = bootCdrom;
    }
 
@@ -164,14 +165,14 @@ public class Server extends ProfitbricksBase {
    /**
     * @return the cdroms
     */
-   public List<CDRom> getCdroms() {
+   public List<Image> getCdroms() {
       return cdroms;
    }
 
    /**
     * @param cdroms the cdroms to set
     */
-   public void setCdroms(List<CDRom> cdroms) {
+   public void setCdroms(List<Image> cdroms) {
       this.cdroms = cdroms;
    }
 }

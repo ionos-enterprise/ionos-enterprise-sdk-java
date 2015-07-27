@@ -60,8 +60,8 @@ public class ServerRaw extends ProfitbricksBaseRaw {
       private String ram;
       private AvailabilityZone availabilityZone;
       private Status vmState;
-      private Boolean bootVolume;
-      private Boolean bootCdrom;
+      private ImageRaw bootVolume;
+      private ImageRaw bootCdrom;
       private LicenceType licencetype;
 
       /**
@@ -151,28 +151,28 @@ public class ServerRaw extends ProfitbricksBaseRaw {
       /**
        * @return the bootVolume
        */
-      public Boolean getBootVolume() {
+      public ImageRaw getBootVolume() {
          return bootVolume;
       }
 
       /**
        * @param bootVolume the bootVolume to set
        */
-      public void setBootVolume(Boolean bootVolume) {
+      public void setBootVolume(ImageRaw bootVolume) {
          this.bootVolume = bootVolume;
       }
 
       /**
        * @return the bootCdrom
        */
-      public Boolean getBootCdrom() {
+      public ImageRaw getBootCdrom() {
          return bootCdrom;
       }
 
       /**
        * @param bootCdrom the bootCdrom to set
        */
-      public void setBootCdrom(Boolean bootCdrom) {
+      public void setBootCdrom(ImageRaw bootCdrom) {
          this.bootCdrom = bootCdrom;
       }
 
@@ -182,7 +182,7 @@ public class ServerRaw extends ProfitbricksBaseRaw {
 
       private NicsRaw nics = new NicsRaw();
       private VolumesRaw volumes = new VolumesRaw();
-      private CDRomsRaw cdroms = new CDRomsRaw();
+      private ImagesRaw cdroms = new ImagesRaw();
 
       /**
        * @return the nics
@@ -215,14 +215,14 @@ public class ServerRaw extends ProfitbricksBaseRaw {
       /**
        * @return the cdroms
        */
-      public CDRomsRaw getCdroms() {
+      public ImagesRaw getCdroms() {
          return cdroms;
       }
 
       /**
        * @param cdroms the cdroms to set
        */
-      public void setCdroms(CDRomsRaw cdroms) {
+      public void setCdroms(ImagesRaw cdroms) {
          this.cdroms = cdroms;
       }
    }

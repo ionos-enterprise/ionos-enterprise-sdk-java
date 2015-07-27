@@ -103,7 +103,7 @@ public class Helper {
       if (server.getEntities() != null) {
          toReturn.setNics(convertNics(server.getEntities().getNics()));
          toReturn.setVolumes(convertVolumes(server.getEntities().getVolumes()));
-         toReturn.setCdroms(convertCDRoms(server.getEntities().getCdroms()));
+         toReturn.setCdroms(convertImages(server.getEntities().getCdroms()));
       }
       return toReturn;
    }
@@ -285,7 +285,7 @@ public class Helper {
       toReturn.setMetadata(s.getMetadata());
       toReturn.setName(s.getProperties().getName());
       toReturn.setDescription(s.getProperties().getDescription());
-      toReturn.setLocation(Location.fromValue(s.getProperties().getLocation()));
+      toReturn.setLocation(s.getProperties().getLocation());
       toReturn.setSize(s.getProperties().getSize());
       toReturn.setLicenceType(s.getProperties().getLicenceType());
       toReturn.setCpuHotPlug(s.getProperties().getCpuHotPlug());
@@ -353,6 +353,9 @@ public class Helper {
       toReturn.setRequestId(i.getRequestId());
       toReturn.setMetadata(i.getMetadata());
       toReturn.setName(i.getProperties().getName());
+      toReturn.setImagePassword(i.getProperties().getImagePassword());
+      toReturn.setBus(i.getProperties().getBus());
+      toReturn.setDeviceNumber(i.getProperties().getDeviceNumber());
 
       toReturn.setDescription(i.getProperties().getDescription());
       toReturn.setLocation(i.getProperties().getLocation());
@@ -370,6 +373,8 @@ public class Helper {
       toReturn.setDiscScsiHotUnplug(i.getProperties().getDiscScsiHotUnplug());
       toReturn.setDiscVirtioHotPlug(i.getProperties().getDiscVirtioHotPlug());
       toReturn.setDiscVirtioHotUnplug(i.getProperties().getDiscVirtioHotUnplug());
+      toReturn.setType(i.getProperties().getType());
+      toReturn.setImage(i.getProperties().getImage());
 
       return toReturn;
    }
