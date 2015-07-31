@@ -30,7 +30,9 @@ public class RequestApi extends ProfitbricksAPIBase {
    }
 
    public Request getRequest(String url) throws RestClientException, IOException {
-      return client.get(url, null, Request.class);
+      if (url != null)
+         return client.get(url, null, Request.class);
+      return null;
    }
 
 }
