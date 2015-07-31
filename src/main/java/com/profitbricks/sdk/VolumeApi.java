@@ -110,6 +110,11 @@ public class VolumeApi extends ProfitbricksAPIBase {
               .concat("/").concat("servers").concat("/").concat(serverId).concat("/").concat(resource), object, VolumeRaw.class, 202));
    }
 
+   public Volume updateVolume(String dataCenterId, String volumeId, PBObject volume) throws RestClientException, IOException {
+      return Helper.convertVolume(client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
+              .concat("/").concat(resource).concat("/").concat(volumeId), volume, VolumeRaw.class, 202));
+   }
+
    /**
     * Detaches a pre-existing storage volume to the server.
     *
