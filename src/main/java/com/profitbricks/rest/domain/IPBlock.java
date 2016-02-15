@@ -26,6 +26,7 @@ public class IPBlock extends ProfitbricksBase {
    private List<String> ips;
    private String location;
    private String size;
+   private String name;
 
    /**
     * @return the ips
@@ -68,4 +69,18 @@ public class IPBlock extends ProfitbricksBase {
    public void setSize(String size) {
       this.size = size;
    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 }
