@@ -19,6 +19,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.profitbricks.rest.domain.AvailabilityZone;
 import com.profitbricks.rest.domain.BusType;
 import com.profitbricks.rest.domain.Status;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -54,6 +56,8 @@ public class VolumeRaw extends ProfitbricksBaseRaw {
       private BusType bus;
       private String image;
       private String licenceType;
+      private String type;
+      private List<String> sshKeys = new ArrayList<String>();
 
       /**
        * @return the name
@@ -208,6 +212,34 @@ public class VolumeRaw extends ProfitbricksBaseRaw {
       public void setLicenceType(String licenceType) {
          this.licenceType = licenceType;
       }
+
+        /**
+         * @return the type
+         */
+        public String getType() {
+            return type;
+        }
+
+        /**
+         * @param type the type to set
+         */
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        /**
+         * @return the sshKeys
+         */
+        public List<String> getSshKeys() {
+            return sshKeys;
+        }
+
+        /**
+         * @param sshKeys the sshKeys to set
+         */
+        public void setSshKeys(List<String> sshKeys) {
+            this.sshKeys = sshKeys;
+        }
    }
 
    private Properties properties = new Properties();

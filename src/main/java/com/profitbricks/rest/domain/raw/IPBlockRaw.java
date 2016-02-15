@@ -15,6 +15,7 @@
  */
 package com.profitbricks.rest.domain.raw;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,70 +25,87 @@ import java.util.List;
  */
 public class IPBlockRaw extends ProfitbricksBaseRaw {
 
-   private Properties properties = new Properties();
+    private Properties properties = new Properties();
 
-   /**
-    * @return the properties
-    */
-   public Properties getProperties() {
-      return properties;
-   }
+    /**
+     * @return the properties
+     */
+    public Properties getProperties() {
+        return properties;
+    }
 
-   /**
-    * @param properties the properties to set
-    */
-   public void setProperties(Properties properties) {
-      this.properties = properties;
-   }
+    /**
+     * @param properties the properties to set
+     */
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
 
-   public static class Properties {
+    //@JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Properties {
 
-      private List<String> ips;
-      private String location;
-      private String size;
+        private List<String> ips;
+        private String location;
+        private String size;
+        private String name;
 
-      /**
-       * @return the ips
-       */
-      public List<String> getIps() {
-         return ips;
-      }
+        /**
+         * @return the ips
+         */
+        public List<String> getIps() {
+            return ips;
+        }
 
-      /**
-       * @param ips the ips to set
-       */
-      public void setIps(List<String> ips) {
-         if (ips == null)
-            ips = new ArrayList<String>();
-         this.ips = ips;
-      }
+        /**
+         * @param ips the ips to set
+         */
+        public void setIps(List<String> ips) {
+            if (ips == null) {
+                ips = new ArrayList<String>();
+            }
+            this.ips = ips;
+        }
 
-      /**
-       * @return the location
-       */
-      public String getLocation() {
-         return location;
-      }
+        /**
+         * @return the location
+         */
+        public String getLocation() {
+            return location;
+        }
 
-      /**
-       * @param location the location to set
-       */
-      public void setLocation(String location) {
-         this.location = location;
-      }
+        /**
+         * @param location the location to set
+         */
+        public void setLocation(String location) {
+            this.location = location;
+        }
 
-      /**
-       * @return the size
-       */
-      public String getSize() {
-         return size;
-      }
+        /**
+         * @return the size
+         */
+        public String getSize() {
+            return size;
+        }
 
-      /**
-       * @param size the size to set
-       */
-      public void setSize(String size) {
-         this.size = size;
-      }
-   }
+        /**
+         * @param size the size to set
+         */
+        public void setSize(String size) {
+            this.size = size;
+        }
+
+        /**
+         * @return the name
+         */
+        public String getName() {
+            return name;
+        }
+
+        /**
+         * @param name the name to set
+         */
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
 }

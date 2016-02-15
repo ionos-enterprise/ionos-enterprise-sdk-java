@@ -44,7 +44,7 @@ public class LanTest {
    @BeforeClass
    public static void createDataCenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
 
-      profitbricksApi.setCredentials("amFzbWluQHN0YWNrcG9pbnRjbG91ZC5jb206TEB4dTZFZjh6dw==");
+      profitbricksApi.setCredentials("bXVoYW1lZEBzdGFja3BvaW50Y2xvdWQuY29tOnRlc3QxMjMh");
       DataCenterRaw datacenter = new DataCenterRaw();
 
       datacenter.getProperties().setName("SDK TEST Lan - Data center");
@@ -88,7 +88,7 @@ public class LanTest {
 
    @AfterClass
    public static void cleanup() throws RestClientException, IOException {
-      profitbricksApi.getLanApi().deleteLan(dataCenterId, lanId);
+      //profitbricksApi.getLanApi().deleteLan(dataCenterId, lanId);
       profitbricksApi.getDataCenterApi().deleteDataCenter(dataCenterId);
    }
 }

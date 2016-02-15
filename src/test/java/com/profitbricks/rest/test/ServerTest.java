@@ -44,7 +44,7 @@ public class ServerTest {
 
    @BeforeClass
    public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-      profitbricksApi.setCredentials("amFzbWluQHN0YWNrcG9pbnRjbG91ZC5jb206TEB4dTZFZjh6dw==");
+      profitbricksApi.setCredentials("bXVoYW1lZEBzdGFja3BvaW50Y2xvdWQuY29tOnRlc3QxMjMh");
 
       DataCenterRaw datacenter = new DataCenterRaw();
       datacenter.getProperties().setName("SDK TEST SERVER - Server");

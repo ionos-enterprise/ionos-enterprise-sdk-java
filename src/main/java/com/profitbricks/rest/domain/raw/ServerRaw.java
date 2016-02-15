@@ -63,6 +63,7 @@ public class ServerRaw extends ProfitbricksBaseRaw {
       private ImageRaw bootVolume;
       private ImageRaw bootCdrom;
       private LicenceType licencetype;
+      private String cpuFamily;
 
       /**
        * @return the licencetype
@@ -175,6 +176,20 @@ public class ServerRaw extends ProfitbricksBaseRaw {
       public void setBootCdrom(ImageRaw bootCdrom) {
          this.bootCdrom = bootCdrom;
       }
+
+        /**
+         * @return the cpuFamily
+         */
+        public String getCpuFamily() {
+            return cpuFamily;
+        }
+
+        /**
+         * @param cpuFamily the cpuFamily to set
+         */
+        public void setCpuFamily(String cpuFamily) {
+            this.cpuFamily = cpuFamily;
+        }
 
    }
 

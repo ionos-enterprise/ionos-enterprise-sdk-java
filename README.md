@@ -110,6 +110,8 @@ The following illustrates how you would attach a volume and then detach it from 
     volume.getProperties().setName("SDK TEST VOLUME - Volume");
     volume.getProperties().setSize("1024");
     volume.getProperties().setLicenceType("LINUX");
+    volume.getProperties().setType("HDD");
+
   
     Volume newVolume = profitbricksApi.getVolumeApi().createVolume(dataCenterId, volume);
 
