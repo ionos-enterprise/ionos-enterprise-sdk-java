@@ -41,7 +41,7 @@ public class IPBlockTest {
    @BeforeClass
    public static void setUp() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-      profitbricksApi.setCredentials("amFzbWluQHN0YWNrcG9pbnRjbG91ZC5jb206TEB4dTZFZjh6dw==");
+      profitbricksApi.setCredentials("bXVoYW1lZEBzdGFja3BvaW50Y2xvdWQuY29tOnRlc3QxMjMh");
 
       IPBlockRaw ipb = new IPBlockRaw();
 
@@ -49,11 +49,12 @@ public class IPBlockTest {
       List<String> ips = new ArrayList<String>();
       ips.add("123.123.123.123");
       ips.add("123.123.123.124");
+      
 
       // ipb.getProperties().setIps(ips);
-      ipb.getProperties().setSize("5");
+      ipb.getProperties().setSize("1");
 
-      IPBlock iPBlock = profitbricksApi.getIpBlockApi().createIPBlock(Location.US_LAS_DEV.value(), "12", ipb);
+      IPBlock iPBlock = profitbricksApi.getIpBlockApi().createIPBlock(Location.US_LAS_DEV.value(), "1", ipb);
 
       assertNotNull(iPBlock);
 
