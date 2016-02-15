@@ -49,8 +49,7 @@ public class IPBlockTest {
       List<String> ips = new ArrayList<String>();
       ips.add("123.123.123.123");
       ips.add("123.123.123.124");
-      
-
+     
       // ipb.getProperties().setIps(ips);
       ipb.getProperties().setSize("1");
 
