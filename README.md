@@ -81,6 +81,7 @@ The following example illustrates how you would create a server and assign it an
     server.getProperties().setName("SDK TEST SERVER - Server");
     server.getProperties().setRam("1024");
     server.getProperties().setCores("4");
+    server.getProperties().setCpuFamily("AMD_OPTERON");
 
     Server newServer = profitbricksApi.getServerApi().createServer(dataCenterId, server);
 
