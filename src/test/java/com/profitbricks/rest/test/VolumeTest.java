@@ -50,12 +50,12 @@ public class VolumeTest {
 
     @BeforeClass
     public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        profitbricksApi.setCredentials("bXVoYW1lZEBzdGFja3BvaW50Y2xvdWQuY29tOnRlc3QxMjMh");
+        profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
 
-        imageId = "fbaae2b2-c899-11e5-aa10-52540005ab80";
+        imageId = "d27ae602-8bc0-11e6-9d61-52540005ab80";
         DataCenterRaw datacenter = new DataCenterRaw();
         datacenter.getProperties().setName("SDK TEST VOLUME - Data Center 28/7 1153");
-        datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
+        datacenter.getProperties().setLocation(Location.US_LAS.value());
         datacenter.getProperties().setDescription("SDK TEST Description");
 
         DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
@@ -85,7 +85,8 @@ public class VolumeTest {
         assertNotNull(newVolume);
 
         volumeId = newVolume.getId();
-        Thread.sleep(1000);
+
+        Thread.sleep(220000);
 
     }
 

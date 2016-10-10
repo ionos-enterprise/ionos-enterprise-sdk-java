@@ -51,10 +51,10 @@ public class NicTest {
 
    @BeforeClass
    public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-      profitbricksApi.setCredentials("bXVoYW1lZEBzdGFja3BvaW50Y2xvdWQuY29tOnRlc3QxMjMh");
+      profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
       DataCenterRaw datacenter = new DataCenterRaw();
       datacenter.getProperties().setName("SDK TEST NIC - Server");
-      datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
+      datacenter.getProperties().setLocation(Location.US_LAS.value());
       datacenter.getProperties().setDescription("SDK TEST Description");
 
       DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
@@ -88,8 +88,9 @@ public class NicTest {
 
       nic.getEntities().setFirewallrules(null);
 
-      Thread.sleep(5000);
+      Thread.sleep(220000);
       Nic newNic = profitbricksApi.getNicApi().createNic(dataCenterId, serverId, nic);
+      Thread.sleep(45000);
 
       assertNotNull(newNic);
       nicId = newNic.getId();

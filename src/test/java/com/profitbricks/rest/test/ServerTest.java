@@ -44,11 +44,11 @@ public class ServerTest {
 
    @BeforeClass
    public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-      profitbricksApi.setCredentials("bXVoYW1lZEBzdGFja3BvaW50Y2xvdWQuY29tOnRlc3QxMjMh");
+      profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
 
       DataCenterRaw datacenter = new DataCenterRaw();
       datacenter.getProperties().setName("SDK TEST SERVER - Server");
-      datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
+      datacenter.getProperties().setLocation(Location.US_LAS.value());
       datacenter.getProperties().setDescription("SDK TEST Description");
 
       DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
@@ -57,12 +57,13 @@ public class ServerTest {
       ServerRaw server = new ServerRaw();
       server.getProperties().setName("SDK TEST SERVER - Server");
       server.getProperties().setRam("1024");
-      server.getProperties().setCores("4");
+      server.getProperties().setCores("1");
 
       Server newServer = profitbricksApi.getServerApi().createServer(dataCenterId, server);
 
       assertNotNull(newServer);
       serverId = newServer.getId();
+      Thread.sleep(120000);
 
    }
 

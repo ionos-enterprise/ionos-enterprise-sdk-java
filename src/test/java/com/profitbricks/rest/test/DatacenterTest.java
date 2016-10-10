@@ -21,13 +21,18 @@ import com.profitbricks.rest.domain.raw.DataCenterRaw;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.sdk.ProfitbricksApi;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+
+import org.apache.commons.codec.binary.Base64;
 import org.junit.AfterClass;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -36,50 +41,53 @@ import org.junit.Test;
  */
 public class DatacenterTest {
 
-   static String dataCenterId;
-   static ProfitbricksApi profitbricksApi = new ProfitbricksApi();
+    static String dataCenterId;
+    static ProfitbricksApi profitbricksApi = new ProfitbricksApi();
 
-   @BeforeClass
-   public static void createDataCenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+    @BeforeClass
+    public static void createDataCenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 
-      profitbricksApi.setCredentials("bXVoYW1lZEBzdGFja3BvaW50Y2xvdWQuY29tOnRlc3QxMjMh");
-      DataCenterRaw datacenter = new DataCenterRaw();
+        System.out.println(System.getenv("PROFITBRICKS_USERNAME"));
+        System.out.println(System.getenv("PROFITBRICKS_PASSWORD"));
 
-      datacenter.getProperties().setName("SDK TEST DC - Data center");
-      datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
-      datacenter.getProperties().setDescription("SDK TEST Description");
+        profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
+        DataCenterRaw datacenter = new DataCenterRaw();
 
-      DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
-      dataCenterId = newDatacenter.getId();
-      assertEquals(newDatacenter.getName(), datacenter.getProperties().getName());
-   }
+        datacenter.getProperties().setName("SDK TEST DC - Data center");
+        datacenter.getProperties().setLocation(Location.US_LAS.value());
+        datacenter.getProperties().setDescription("SDK TEST Description");
 
-   @Test
-   public void testGetAllDatacenters() throws RestClientException, IOException {
-      List<DataCenter> datacenters = profitbricksApi.getDataCenterApi().getAllDataCenters();
+        DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
+        dataCenterId = newDatacenter.getId();
+        assertEquals(newDatacenter.getName(), datacenter.getProperties().getName());
+    }
 
-      assertNotNull(datacenters);
-      assertTrue(datacenters.size() > 0);
-   }
+    @Test
+    public void testGetAllDatacenters() throws RestClientException, IOException {
+        List<DataCenter> datacenters = profitbricksApi.getDataCenterApi().getAllDataCenters();
 
-   @Test
-   public void testGetDatacenter() throws RestClientException, IOException {
-      DataCenter datacenter = profitbricksApi.getDataCenterApi().getDataCenter(dataCenterId);
-      assertNotNull(datacenter);
-   }
+        assertNotNull(datacenters);
+        assertTrue(datacenters.size() > 0);
+    }
 
-   @Test
-   public void updateDataCenter() throws RestClientException, IOException {
-      String newName = "SDK TEST DC CHANGED";
-      PBObject object = new PBObject();
-      object.setName(newName);
+    @Test
+    public void testGetDatacenter() throws RestClientException, IOException {
+        DataCenter datacenter = profitbricksApi.getDataCenterApi().getDataCenter(dataCenterId);
+        assertNotNull(datacenter);
+    }
 
-      DataCenter updatedDataCenter = profitbricksApi.getDataCenterApi().updateDataCenter(dataCenterId, object);
-      assertEquals(newName, updatedDataCenter.getName());
-   }
+    @Test
+    public void updateDataCenter() throws RestClientException, IOException {
+        String newName = "SDK TEST DC CHANGED";
+        PBObject object = new PBObject();
+        object.setName(newName);
 
-   @AfterClass
-   public static void cleanup() throws RestClientException, IOException {
-      profitbricksApi.getDataCenterApi().deleteDataCenter(dataCenterId);
-   }
+        DataCenter updatedDataCenter = profitbricksApi.getDataCenterApi().updateDataCenter(dataCenterId, object);
+        assertEquals(newName, updatedDataCenter.getName());
+    }
+
+    @AfterClass
+    public static void cleanup() throws RestClientException, IOException {
+        profitbricksApi.getDataCenterApi().deleteDataCenter(dataCenterId);
+    }
 }

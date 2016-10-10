@@ -43,6 +43,12 @@ Or you can add the SDK:
 
 Here is a simple example on how to use the library.
 
+First you need to instantiate Profitbricks API and pass the credentials:
+ 
+```
+    ProfitbricksApi profitbricksApi = new ProfitbricksApi();
+    profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
+```
 List all data centers: 
 
     DataCenters datacenters = profitbricksApi.getDataCenterApi().getAllDataCenters();
@@ -60,7 +66,7 @@ The following code example shows you how to programmatically create a data cente
     DataCenter datacenter = new DataCenter();
 
     datacenter.getProperties().setName("SDK TEST DC - Data center");
-    datacenter.getProperties().setLocation(Location.US_LAS_DEV.value());
+    datacenter.getProperties().setLocation(Location.US_LAS.value());
     datacenter.getProperties().setDescription("SDK TEST Description");
 
     DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
@@ -149,6 +155,19 @@ The sample below shows you how to add a second NIC to an existing server:
     Nic newNic = profitbricksApi.getNicApi().createNic(dataCenterId, serverId, nic);
 
 One item to note is this function will result in the server being rebooted.
+
+## Running the Unit tests
+
+To run the unit tests you need to set following environment variables:
+
+```
+PROFITBRICKS_USERNAME
+```
+and 
+
+```
+PROFITBRICKS_PASSWORD
+```
 
 ## Additional Documentation and Support
 
