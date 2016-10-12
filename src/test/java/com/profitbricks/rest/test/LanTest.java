@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import org.junit.AfterClass;
+
+import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.BeforeClass;
@@ -54,6 +56,7 @@ public class LanTest {
       DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
       dataCenterId = newDatacenter.getId();
       assertEquals(newDatacenter.getName(), datacenter.getProperties().getName());
+      waitTillProvisioned(newDatacenter.getRequestId());
 
       LanRaw lan = new LanRaw();
 
@@ -63,8 +66,7 @@ public class LanTest {
       Lan newLan = profitbricksApi.getLanApi().createLan(dataCenterId, lan);
       lanId = newLan.getId();
       assertNotNull(newLan);
-
-      Thread.sleep(15000);
+      waitTillProvisioned(newLan.getRequestId());
    }
 
    @Test
@@ -81,9 +83,11 @@ public class LanTest {
    }
 
    @Test
-   public void updateLan() throws RestClientException, IOException {
+   public void updateLan() throws RestClientException, IOException, InterruptedException {
       Lan updatedLan = profitbricksApi.getLanApi().updateLan(dataCenterId, lanId, Boolean.TRUE);
       assertEquals(updatedLan.getIsPublic(), true);
+      waitTillProvisioned(updatedLan.getRequestId());
+
    }
 
    @AfterClass

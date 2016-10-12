@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import org.junit.AfterClass;
+
+import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.BeforeClass;
@@ -52,6 +54,7 @@ public class ServerTest {
       datacenter.getProperties().setDescription("SDK TEST Description");
 
       DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
+      waitTillProvisioned(newDatacenter.getRequestId());
       dataCenterId = newDatacenter.getId();
 
       ServerRaw server = new ServerRaw();
@@ -60,11 +63,10 @@ public class ServerTest {
       server.getProperties().setCores("1");
 
       Server newServer = profitbricksApi.getServerApi().createServer(dataCenterId, server);
+      waitTillProvisioned(newServer.getRequestId());
 
       assertNotNull(newServer);
       serverId = newServer.getId();
-      Thread.sleep(120000);
-
    }
 
    @AfterClass

@@ -17,6 +17,7 @@ package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
+import com.profitbricks.rest.domain.Request;
 import com.profitbricks.rest.domain.raw.DataCenterRaw;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.PBObject;
@@ -25,6 +26,8 @@ import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.codec.binary.Base64;
 import org.junit.AfterClass;
@@ -45,11 +48,7 @@ public class DatacenterTest {
     static ProfitbricksApi profitbricksApi = new ProfitbricksApi();
 
     @BeforeClass
-    public static void createDataCenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-
-        System.out.println(System.getenv("PROFITBRICKS_USERNAME"));
-        System.out.println(System.getenv("PROFITBRICKS_PASSWORD"));
-
+    public static void createDataCenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
         DataCenterRaw datacenter = new DataCenterRaw();
 
@@ -59,7 +58,25 @@ public class DatacenterTest {
 
         DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
         dataCenterId = newDatacenter.getId();
+
+        waitTillProvisioned(newDatacenter.getRequestId());
+
         assertEquals(newDatacenter.getName(), datacenter.getProperties().getName());
+    }
+
+    public static void waitTillProvisioned(String requestId) throws InterruptedException, RestClientException, IOException {
+        int counter = 120;
+        for (int i = 0; i < counter; i++) {
+            profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
+            Request request = profitbricksApi.getRequestApi().getRequest(requestId);
+            TimeUnit.SECONDS.sleep(1);
+            if (request.getMetadata().getStatus().equals("DONE")) {
+                break;
+            }
+            if (request.getMetadata().getStatus().equals("FAILED")) {
+                throw new IOException("The request execution has failed with following message: " + request.getMetadata().getMessage());
+            }
+        }
     }
 
     @Test

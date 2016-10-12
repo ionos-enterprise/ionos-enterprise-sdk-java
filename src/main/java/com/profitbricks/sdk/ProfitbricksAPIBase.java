@@ -33,7 +33,7 @@ public abstract class ProfitbricksAPIBase {
    public String depth = "?depth=".concat("5");
 
    private String credentials;
-   private String urlBase = "https://api.profitbricks.com/rest/v2/";
+   private String urlBase = "https://api.profitbricks.com/cloudapi/v3/";
 
    public ProfitbricksAPIBase(String resource, String parentResource) {
       this.resource = resource;
