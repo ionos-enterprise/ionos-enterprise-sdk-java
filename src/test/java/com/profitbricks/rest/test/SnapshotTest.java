@@ -20,7 +20,6 @@ import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.raw.DataCenterRaw;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.PBObject;
-import com.profitbricks.rest.domain.Request;
 import com.profitbricks.rest.domain.Server;
 import com.profitbricks.rest.domain.Snapshot;
 import com.profitbricks.rest.domain.raw.ServerRaw;
@@ -32,7 +31,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-import org.junit.AfterClass;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -117,7 +115,7 @@ public class SnapshotTest {
     }
 
     @Test
-    public void updateSnapshot() throws RestClientException, IOException {
+    public void updateSnapshot() throws RestClientException, IOException,NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         PBObject object = new PBObject();
         object.setName("SDK TEST SNAPSHOT - Snapshot - changed");
 

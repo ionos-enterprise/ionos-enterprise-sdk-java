@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright (c) <year>, <copyright holder>
  * All rights reserved.
  * 
@@ -29,26 +29,23 @@
  */
 package com.profitbricks.rest.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.profitbricks.rest.domain.PBObject;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.io.Charsets;
-import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.profitbricks.rest.domain.PBObject;
-import java.lang.reflect.InvocationTargetException;
-import org.apache.http.client.methods.HttpPatch;
 
 public class RestClient extends AbstractRestClient {
 
@@ -73,19 +70,21 @@ public class RestClient extends AbstractRestClient {
    public <T> T get(RequestInterceptor interceptor, String path, Map<String, String> queryParams,
            Class<T> entityClass, int expectedStatus) throws RestClientException, IOException {
       String content = get(interceptor, path, queryParams, expectedStatus);
-      if (content != null)
+      if (content != null) {
          return bindObject(content, entityClass);
-      else
+      } else {
          return null;
+      }
    }
 
    public <T> List<T> get(RequestInterceptor interceptor, String path, Map<String, String> params,
            TypeReference<List<T>> type, int expectedStatus) throws RestClientException, IOException {
       String content = get(interceptor, path, params, expectedStatus);
-      if (content != null)
+      if (content != null) {
          return bindJsonArray(content, type);
-      else
+      } else {
          return null;
+      }
    }
 
    public <T> T get(RequestInterceptor interceptor, String path, Map<String, String> params, Class<T> entityClass)
@@ -153,23 +152,24 @@ public class RestClient extends AbstractRestClient {
       return bindObject(response, entityClass);
    }
 
-   public <T> T create(RequestInterceptor interceptor, String path, PBObject object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException {
+   public <T> T create(RequestInterceptor interceptor, String path, PBObject object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       HttpPost post = contentTypeJson(newHttpPost(path));
       HttpEntity entity = new StringEntity(toJson(object).toString(), Charsets.UTF_8);
       post.setEntity(entity);
       HttpResponse response = execute(interceptor, post, expectedStatus);
-      String content = contentAsString(response);
-      if (content != null)
-         return bindObject(content, entityClass);
-      else
+//      String content = contentAsString(response);
+      if (response != null) {
+         return bindObject(response, entityClass);
+      } else {
          return null;
+      }
    }
 
    public <T> T create(String path, T object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       return RestClient.this.create(null, path, object, entityClass, expectedStatus);
    }
 
-   public <T> T create(String path, PBObject object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException {
+   public <T> T create(String path, PBObject object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       return RestClient.this.create(null, path, object, entityClass, expectedStatus);
    }
 
@@ -247,16 +247,17 @@ public class RestClient extends AbstractRestClient {
    }
 
    public <T> T update(RequestInterceptor interceptor, String path, PBObject object, Class<T> entityClass, int expectedStatus)
-           throws RestClientException, IOException {
+           throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       HttpPatch patch = contentTypePartialJson(newHttpPatch(path));
       HttpEntity entity = new StringEntity(toJson(object).toString(), Charsets.UTF_8);
       patch.setEntity(entity);
       HttpResponse response = execute(interceptor, patch, expectedStatus);
-      String content = contentAsString(response);
-      if (content != null)
-         return bindObject(content, entityClass);
-      else
+//      String content = contentAsString(response);
+      if (response != null) {
+         return bindObject(response, entityClass);
+      } else {
          return null;
+      }
    }
 
    public void update(RequestInterceptor interceptor, String path, PBObject object) throws RestClientException,
@@ -268,7 +269,7 @@ public class RestClient extends AbstractRestClient {
       update(null, path, object, 200);
    }
 
-   public <T> T update(String path, PBObject object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException {
+   public <T> T update(String path, PBObject object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       return update(null, path, object, entityClass, expectedStatus);
    }
 
@@ -299,8 +300,9 @@ public class RestClient extends AbstractRestClient {
    }
 
    public void consume(HttpResponse response) throws IOException {
-      if (response != null && response.getEntity() != null)
+      if (response != null && response.getEntity() != null) {
          EntityUtils.consume(response.getEntity());
+      }
    }
 
    /*public String contentAsString(HttpResponse response) throws IOException {

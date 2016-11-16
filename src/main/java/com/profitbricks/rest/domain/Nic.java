@@ -29,6 +29,7 @@ public class Nic extends ProfitbricksBase {
    private boolean dhcp;
    private String lan;
    private boolean firewallActive;
+   private Boolean nat;
    private List<FirewallRule> firewallrules = new ArrayList<FirewallRule>();
 
    /**
@@ -113,6 +114,20 @@ public class Nic extends ProfitbricksBase {
     */
    public void setFirewallrules(List<FirewallRule> firewallrules) {
       this.firewallrules = firewallrules;
+   }
+
+   /**
+    * @return the nat
+    */
+   public Boolean getNat() {
+      return nat;
+   }
+
+   /**
+    * @param nat the nat to set
+    */
+   public void setNat(Boolean nat) {
+      this.nat = nat;
    }
 
 }

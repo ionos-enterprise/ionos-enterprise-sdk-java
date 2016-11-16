@@ -18,9 +18,9 @@ package com.profitbricks.sdk;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.Helper;
 import com.profitbricks.rest.domain.Nic;
+import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.raw.NicRaw;
 import com.profitbricks.rest.domain.raw.NicsRaw;
-import com.profitbricks.rest.domain.PBObject;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -53,7 +53,7 @@ public class NicApi extends ProfitbricksAPIBase {
               .concat(resource), nic, NicRaw.class, 202));
    }
 
-   public Nic updateNic(String dataCenterId, String serverId, String nicId, PBObject nic) throws RestClientException, IOException {
+   public Nic updateNic(String dataCenterId, String serverId, String nicId, PBObject nic) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       return Helper.convertNic(client.update(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
               .concat(parentResource).concat("/").concat(serverId).concat("/")
               .concat(resource).concat("/").concat(nicId), nic, NicRaw.class, 202));
@@ -65,7 +65,7 @@ public class NicApi extends ProfitbricksAPIBase {
               .concat(resource).concat("/").concat(nicId), 202);
    }
 
-   public Nic assignNicToLoadBalancer(String dataCenterId, String loadBalancerId, String nicId) throws RestClientException, IOException {
+   public Nic assignNicToLoadBalancer(String dataCenterId, String loadBalancerId, String nicId) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       PBObject object = new PBObject();
       object.setId(nicId);
       return Helper.convertNic(client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/").concat("loadbalancers").concat("/").concat(loadBalancerId).concat("/").

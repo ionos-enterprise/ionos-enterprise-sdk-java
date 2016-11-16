@@ -12,216 +12,216 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-*/
+ */
 package com.profitbricks.sdk;
 
 import org.apache.commons.codec.binary.Base64;
 
 public class ProfitbricksApi {
 
-    private String credentials;
+   private String credentials;
 
-    public ProfitbricksApi() {
-        this.dataCenterApi = new DatacenterApi();
-        this.serverApi = new ServerApi();
-        this.volumeApi = new VolumeApi();
-        this.snapshotApi = new SnapshotApi();
-        this.loadbalancerApi = new LoadbalancerApi();
-        this.nicApi = new NicApi();
-        this.firewallRuleApi = new FirewallRuleApi();
-        this.imageApi = new ImageApi();
-        this.ipBlockApi = new IPBlockApi();
-        this.requestApi = new RequestApi();
-        this.lanApi = new LanApi();
-    }
+   public ProfitbricksApi() {
+      this.dataCenterApi = new DatacenterApi();
+      this.serverApi = new ServerApi();
+      this.volumeApi = new VolumeApi();
+      this.snapshotApi = new SnapshotApi();
+      this.loadbalancerApi = new LoadbalancerApi();
+      this.nicApi = new NicApi();
+      this.firewallRuleApi = new FirewallRuleApi();
+      this.imageApi = new ImageApi();
+      this.ipBlockApi = new IPBlockApi();
+      this.requestApi = new RequestApi();
+      this.lanApi = new LanApi();
+   }
 
-    private DatacenterApi dataCenterApi;
-    private ServerApi serverApi;
-    private VolumeApi volumeApi;
-    private SnapshotApi snapshotApi;
-    private LoadbalancerApi loadbalancerApi;
-    private NicApi nicApi;
-    private FirewallRuleApi firewallRuleApi;
-    private ImageApi imageApi;
-    private IPBlockApi ipBlockApi;
-    private RequestApi requestApi;
-    private LanApi lanApi;
+   private DatacenterApi dataCenterApi;
+   private ServerApi serverApi;
+   private VolumeApi volumeApi;
+   private SnapshotApi snapshotApi;
+   private LoadbalancerApi loadbalancerApi;
+   private NicApi nicApi;
+   private FirewallRuleApi firewallRuleApi;
+   private ImageApi imageApi;
+   private IPBlockApi ipBlockApi;
+   private RequestApi requestApi;
+   private LanApi lanApi;
 
-    /**
-     * @return the dataCenterApi
-     */
-    public DatacenterApi getDataCenterApi() {
-        this.dataCenterApi.setCredentials(credentials);
-        return dataCenterApi;
-    }
+   /**
+    * @return the dataCenterApi
+    */
+   public DatacenterApi getDataCenterApi() {
+      this.dataCenterApi.setCredentials(credentials);
+      return dataCenterApi;
+   }
 
-    /**
-     * @param dataCenterApi the dataCenterApi to set
-     */
-    public void setDataCenterApi(DatacenterApi dataCenterApi) {
-        this.dataCenterApi = dataCenterApi;
-    }
+   /**
+    * @param dataCenterApi the dataCenterApi to set
+    */
+   public void setDataCenterApi(DatacenterApi dataCenterApi) {
+      this.dataCenterApi = dataCenterApi;
+   }
 
-    /**
-     * @return the serverApi
-     */
-    public ServerApi getServerApi() {
-        this.serverApi.setCredentials(credentials);
-        return serverApi;
-    }
+   /**
+    * @return the serverApi
+    */
+   public ServerApi getServerApi() {
+      this.serverApi.setCredentials(credentials);
+      return serverApi;
+   }
 
-    /**
-     * @param serverApi the serverApi to set
-     */
-    public void setServerApi(ServerApi serverApi) {
-        this.serverApi = serverApi;
-    }
+   /**
+    * @param serverApi the serverApi to set
+    */
+   public void setServerApi(ServerApi serverApi) {
+      this.serverApi = serverApi;
+   }
 
-    /**
-     * @return the volumeApi
-     */
-    public VolumeApi getVolumeApi() {
-        this.volumeApi.setCredentials(credentials);
-        return volumeApi;
-    }
+   /**
+    * @return the volumeApi
+    */
+   public VolumeApi getVolumeApi() {
+      this.volumeApi.setCredentials(credentials);
+      return volumeApi;
+   }
 
-    /**
-     * @param volumeApi the volumeApi to set
-     */
-    public void setVolumeApi(VolumeApi volumeApi) {
-        this.volumeApi = volumeApi;
-    }
+   /**
+    * @param volumeApi the volumeApi to set
+    */
+   public void setVolumeApi(VolumeApi volumeApi) {
+      this.volumeApi = volumeApi;
+   }
 
-    /**
-     * @return the snapshotApi
-     */
-    public SnapshotApi getSnapshotApi() {
-        this.snapshotApi.setCredentials(credentials);
-        return snapshotApi;
-    }
+   /**
+    * @return the snapshotApi
+    */
+   public SnapshotApi getSnapshotApi() {
+      this.snapshotApi.setCredentials(credentials);
+      return snapshotApi;
+   }
 
-    /**
-     * @param snapshotApi the snapshotApi to set
-     */
-    public void setSnapshotApi(SnapshotApi snapshotApi) {
-        this.snapshotApi = snapshotApi;
-    }
+   /**
+    * @param snapshotApi the snapshotApi to set
+    */
+   public void setSnapshotApi(SnapshotApi snapshotApi) {
+      this.snapshotApi = snapshotApi;
+   }
 
-    /**
-     * @return the loadbalancerApi
-     */
-    public LoadbalancerApi getLoadbalancerApi() {
-        this.loadbalancerApi.setCredentials(credentials);
-        return loadbalancerApi;
-    }
+   /**
+    * @return the loadbalancerApi
+    */
+   public LoadbalancerApi getLoadbalancerApi() {
+      this.loadbalancerApi.setCredentials(credentials);
+      return loadbalancerApi;
+   }
 
-    /**
-     * @param loadbalancerApi the loadbalancerApi to set
-     */
-    public void setLoadbalancerApi(LoadbalancerApi loadbalancerApi) {
-        this.loadbalancerApi = loadbalancerApi;
-    }
+   /**
+    * @param loadbalancerApi the loadbalancerApi to set
+    */
+   public void setLoadbalancerApi(LoadbalancerApi loadbalancerApi) {
+      this.loadbalancerApi = loadbalancerApi;
+   }
 
-    /**
-     * @return the nicApi
-     */
-    public NicApi getNicApi() {
-        this.nicApi.setCredentials(credentials);
-        return nicApi;
-    }
+   /**
+    * @return the nicApi
+    */
+   public NicApi getNicApi() {
+      this.nicApi.setCredentials(credentials);
+      return nicApi;
+   }
 
-    /**
-     * @param nicApi the nicApi to set
-     */
-    public void setNicApi(NicApi nicApi) {
-        this.nicApi = nicApi;
-    }
+   /**
+    * @param nicApi the nicApi to set
+    */
+   public void setNicApi(NicApi nicApi) {
+      this.nicApi = nicApi;
+   }
 
-    /**
-     * @return the firewallRuleApi
-     */
-    public FirewallRuleApi getFirewallRuleApi() {
-        this.firewallRuleApi.setCredentials(credentials);
-        return firewallRuleApi;
-    }
+   /**
+    * @return the firewallRuleApi
+    */
+   public FirewallRuleApi getFirewallRuleApi() {
+      this.firewallRuleApi.setCredentials(credentials);
+      return firewallRuleApi;
+   }
 
-    /**
-     * @param firewallRuleApi the firewallRuleApi to set
-     */
-    public void setFirewallRuleApi(FirewallRuleApi firewallRuleApi) {
-        this.firewallRuleApi = firewallRuleApi;
-    }
+   /**
+    * @param firewallRuleApi the firewallRuleApi to set
+    */
+   public void setFirewallRuleApi(FirewallRuleApi firewallRuleApi) {
+      this.firewallRuleApi = firewallRuleApi;
+   }
 
-    /**
-     * @return the imageApi
-     */
-    public ImageApi getImageApi() {
-        this.imageApi.setCredentials(credentials);
-        return imageApi;
-    }
+   /**
+    * @return the imageApi
+    */
+   public ImageApi getImageApi() {
+      this.imageApi.setCredentials(credentials);
+      return imageApi;
+   }
 
-    /**
-     * @param imageApi the imageApi to set
-     */
-    public void setImageApi(ImageApi imageApi) {
-        this.imageApi = imageApi;
-    }
+   /**
+    * @param imageApi the imageApi to set
+    */
+   public void setImageApi(ImageApi imageApi) {
+      this.imageApi = imageApi;
+   }
 
-    /**
-     * @return the ipBlockApi
-     */
-    public IPBlockApi getIpBlockApi() {
-        this.ipBlockApi.setCredentials(credentials);
-        return ipBlockApi;
-    }
+   /**
+    * @return the ipBlockApi
+    */
+   public IPBlockApi getIpBlockApi() {
+      this.ipBlockApi.setCredentials(credentials);
+      return ipBlockApi;
+   }
 
-    /**
-     * @param ipBlockApi the ipBlockApi to set
-     */
-    public void setIpBlockApi(IPBlockApi ipBlockApi) {
-        this.ipBlockApi = ipBlockApi;
-    }
+   /**
+    * @param ipBlockApi the ipBlockApi to set
+    */
+   public void setIpBlockApi(IPBlockApi ipBlockApi) {
+      this.ipBlockApi = ipBlockApi;
+   }
 
-    /**
-     * @return the requestApi
-     */
-    public RequestApi getRequestApi() {
-        this.requestApi.setCredentials(credentials);
-        return requestApi;
-    }
+   /**
+    * @return the requestApi
+    */
+   public RequestApi getRequestApi() {
+      this.requestApi.setCredentials(credentials);
+      return requestApi;
+   }
 
-    /**
-     * @param requestApi the requestApi to set
-     */
-    public void setRequestApi(RequestApi requestApi) {
-        this.requestApi = requestApi;
-    }
+   /**
+    * @param requestApi the requestApi to set
+    */
+   public void setRequestApi(RequestApi requestApi) {
+      this.requestApi = requestApi;
+   }
 
-    /**
-     * @return the lanApi
-     */
-    public LanApi getLanApi() {
-        return lanApi;
-    }
+   /**
+    * @return the lanApi
+    */
+   public LanApi getLanApi() {
+      this.lanApi.setCredentials(credentials);
+      return lanApi;
+   }
 
-    /**
-     * @param lanApi the lanApi to set
-     */
-    public void setLanApi(LanApi lanApi) {
-        this.lanApi.setCredentials(credentials);
-        this.lanApi = lanApi;
-    }
+   /**
+    * @param lanApi the lanApi to set
+    */
+   public void setLanApi(LanApi lanApi) {
+      this.lanApi = lanApi;
+   }
 
-    /**
-     * @param credentials the credentials to set
-     */
-    public void setCredentials(String credentials) {
-        this.credentials = credentials;
-    }
+   /**
+    * @param credentials the credentials to set
+    */
+   public void setCredentials(String credentials) {
+      this.credentials = credentials;
+   }
 
-    public void setCredentials(String username, String password) {
-        byte[] bytesEncoded = Base64.encodeBase64((username + ":" + password).getBytes());
+   public void setCredentials(String username, String password) {
+      byte[] bytesEncoded = Base64.encodeBase64((username + ":" + password).getBytes());
 
-        this.credentials = new String(bytesEncoded);
-    }
+      this.credentials = new String(bytesEncoded);
+   }
 }

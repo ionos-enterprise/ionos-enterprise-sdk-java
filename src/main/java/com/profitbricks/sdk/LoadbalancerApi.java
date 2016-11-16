@@ -18,9 +18,9 @@ package com.profitbricks.sdk;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.Helper;
 import com.profitbricks.rest.domain.LoadBalancer;
+import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.raw.LoadBalancerRaw;
 import com.profitbricks.rest.domain.raw.LoadBalancersRaw;
-import com.profitbricks.rest.domain.PBObject;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -52,7 +52,7 @@ public class LoadbalancerApi extends ProfitbricksAPIBase {
               .concat("/").concat(resource), loadBalancer, LoadBalancerRaw.class, 202));
    }
 
-   public LoadBalancer updateLoadBalancer(String dataCenterId, String loadBalancerId, PBObject loadBalancer) throws RestClientException, IOException {
+   public LoadBalancer updateLoadBalancer(String dataCenterId, String loadBalancerId, PBObject loadBalancer) throws RestClientException, IOException,NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       return Helper.convertLoadBalancer(client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource).concat("/").concat(loadBalancerId), loadBalancer, LoadBalancerRaw.class, 202));
    }

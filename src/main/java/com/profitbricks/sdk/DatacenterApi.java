@@ -16,11 +16,11 @@
 package com.profitbricks.sdk;
 
 import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.raw.DataCenterRaw;
 import com.profitbricks.rest.domain.DataCenter;
-import com.profitbricks.rest.domain.raw.DataCentersRaw;
 import com.profitbricks.rest.domain.Helper;
 import com.profitbricks.rest.domain.PBObject;
+import com.profitbricks.rest.domain.raw.DataCenterRaw;
+import com.profitbricks.rest.domain.raw.DataCentersRaw;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -47,7 +47,7 @@ public class DatacenterApi extends ProfitbricksAPIBase {
       return Helper.convertDataCenter(client.create(getUrlBase().concat(resource), datacenter, DataCenterRaw.class, 202));
    }
 
-   public DataCenter updateDataCenter(String id, PBObject datacenter) throws RestClientException, IOException {
+   public DataCenter updateDataCenter(String id, PBObject datacenter) throws RestClientException, IOException,NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       return Helper.convertDataCenter(client.update(getUrlBase().concat(resource).concat("/").concat(id), datacenter, DataCenterRaw.class, 202));
    }
 

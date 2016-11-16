@@ -18,9 +18,9 @@ package com.profitbricks.sdk;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.FirewallRule;
 import com.profitbricks.rest.domain.Helper;
+import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.raw.FirewallRuleRaw;
 import com.profitbricks.rest.domain.raw.FirewallRulesRaw;
-import com.profitbricks.rest.domain.PBObject;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -66,7 +66,7 @@ public class FirewallRuleApi extends ProfitbricksAPIBase {
               202);
    }
 
-   public FirewallRule updateFirewWallRule(String dataCenterId, String serverId, String nicId, String firewallRuleId, PBObject firewallRule) throws RestClientException, IOException {
+   public FirewallRule updateFirewWallRule(String dataCenterId, String serverId, String nicId, String firewallRuleId, PBObject firewallRule) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       return Helper.convertFirewallRule(client.update(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
               .concat("servers").concat("/").concat(serverId).concat("/")
               .concat(parentResource).concat("/").concat(nicId).concat("/")

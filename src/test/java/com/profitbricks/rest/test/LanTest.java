@@ -18,16 +18,15 @@ package com.profitbricks.rest.test;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.Lan;
+import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.raw.DataCenterRaw;
 import com.profitbricks.rest.domain.raw.LanRaw;
-import com.profitbricks.rest.domain.Location;
+import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import org.junit.AfterClass;
-
-import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.BeforeClass;
@@ -83,7 +82,7 @@ public class LanTest {
    }
 
    @Test
-   public void updateLan() throws RestClientException, IOException, InterruptedException {
+   public void updateLan() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       Lan updatedLan = profitbricksApi.getLanApi().updateLan(dataCenterId, lanId, Boolean.TRUE);
       assertEquals(updatedLan.getIsPublic(), true);
       waitTillProvisioned(updatedLan.getRequestId());

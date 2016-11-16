@@ -103,14 +103,14 @@ public class VolumeApi extends ProfitbricksAPIBase {
     * @throws RestClientException
     * @throws IOException
     */
-   public Volume attachVolume(String dataCenterId, String serverId, String volumeId) throws RestClientException, IOException {
+   public Volume attachVolume(String dataCenterId, String serverId, String volumeId) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       PBObject object = new PBObject();
       object.setId(volumeId);
       return Helper.convertVolume(client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat("servers").concat("/").concat(serverId).concat("/").concat(resource), object, VolumeRaw.class, 202));
    }
 
-   public Volume updateVolume(String dataCenterId, String volumeId, PBObject volume) throws RestClientException, IOException {
+   public Volume updateVolume(String dataCenterId, String volumeId, PBObject volume) throws RestClientException, IOException,NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       return Helper.convertVolume(client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource).concat("/").concat(volumeId), volume, VolumeRaw.class, 202));
    }

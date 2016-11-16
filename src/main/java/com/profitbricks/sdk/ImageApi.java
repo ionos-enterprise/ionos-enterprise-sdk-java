@@ -18,10 +18,11 @@ package com.profitbricks.sdk;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.Helper;
 import com.profitbricks.rest.domain.Image;
+import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.raw.ImageRaw;
 import com.profitbricks.rest.domain.raw.ImagesRaw;
-import com.profitbricks.rest.domain.PBObject;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -46,7 +47,7 @@ public class ImageApi extends ProfitbricksAPIBase {
       client.delete(getUrlBase().concat(resource).concat("/").concat(imageId));
    }
 
-   public Image updateImage(String imageId, PBObject object) throws RestClientException, IOException {
+   public Image updateImage(String imageId, PBObject object) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       return Helper.convertImage(client.update(getUrlBase().concat(resource).concat("/").concat(imageId), object, ImageRaw.class, 202));
    }
 

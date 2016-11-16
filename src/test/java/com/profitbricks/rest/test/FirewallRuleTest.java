@@ -18,27 +18,23 @@ package com.profitbricks.rest.test;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.FirewallRule;
-import com.profitbricks.rest.domain.raw.DataCenterRaw;
-import com.profitbricks.rest.domain.raw.FirewallRuleRaw;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.Nic;
-import com.profitbricks.rest.domain.raw.NicRaw;
 import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.Protocol;
 import com.profitbricks.rest.domain.Server;
+import com.profitbricks.rest.domain.raw.DataCenterRaw;
+import com.profitbricks.rest.domain.raw.FirewallRuleRaw;
+import com.profitbricks.rest.domain.raw.NicRaw;
 import com.profitbricks.rest.domain.raw.ServerRaw;
+import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 import com.profitbricks.sdk.ProfitbricksApi;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
 import org.junit.AfterClass;
-
-import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -104,7 +100,7 @@ public class FirewallRuleTest {
     }
 
     @Test
-    public void orderedTest() throws RestClientException, IOException, InterruptedException {
+    public void orderedTest() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         getAllFirewallRules();
         getFirewallRule();
         updateFirewallRule();
@@ -122,7 +118,7 @@ public class FirewallRuleTest {
         assertNotNull(firewallRule);
     }
 
-    public void updateFirewallRule() throws RestClientException, IOException, InterruptedException {
+    public void updateFirewallRule() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         System.out.println("updateFirewallRule");
         PBObject object = new PBObject();
         object.setName("SDK TEST FIREWALLRULES - FirewallRule - changed");

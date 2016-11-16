@@ -18,22 +18,18 @@ package com.profitbricks.rest.test;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.LoadBalancer;
-import com.profitbricks.rest.domain.raw.DataCenterRaw;
-import com.profitbricks.rest.domain.raw.LoadBalancerRaw;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.PBObject;
+import com.profitbricks.rest.domain.raw.DataCenterRaw;
+import com.profitbricks.rest.domain.raw.LoadBalancerRaw;
+import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 import com.profitbricks.sdk.ProfitbricksApi;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
 import org.junit.AfterClass;
-
-import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -75,7 +71,7 @@ public class LoadBalancerTest {
     }
 
     @Test
-    public void orderedTest() throws RestClientException, IOException, InterruptedException {
+    public void orderedTest() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         getAllLoadBalancers();
         Thread.sleep(5000);
         getLoadBalancer();
@@ -94,7 +90,7 @@ public class LoadBalancerTest {
         assertEquals(loadBalancerId, loadBalancer.getId());
     }
 
-    private void updateLoadBalancer() throws RestClientException, IOException, InterruptedException {
+    private void updateLoadBalancer() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         PBObject object = new PBObject();
         object.setName("SDK TEST LOADBALANCER - LoadBalancer - Changed");
         LoadBalancer loadBalancer = profitbricksApi.getLoadbalancerApi().updateLoadBalancer(dataCenterId, loadBalancerId, object);

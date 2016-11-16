@@ -17,18 +17,17 @@ package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
-import com.profitbricks.rest.domain.raw.DataCenterRaw;
 import com.profitbricks.rest.domain.Location;
-import com.profitbricks.rest.domain.raw.ServerRaw;
 import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.Server;
+import com.profitbricks.rest.domain.raw.DataCenterRaw;
+import com.profitbricks.rest.domain.raw.ServerRaw;
+import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import org.junit.AfterClass;
-
-import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.BeforeClass;
@@ -76,7 +75,7 @@ public class ServerTest {
    }
 
    @Test
-   public void testInOrder() throws RestClientException, IOException, InterruptedException {
+   public void testInOrder() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       testGetAllServers();
       testGetServer();
       testUpdateServer();
@@ -98,7 +97,7 @@ public class ServerTest {
       assertNotNull(server);
    }
 
-   public void testUpdateServer() throws RestClientException, IOException {
+   public void testUpdateServer() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       String newName = "SDK TEST SERVER CHANGED";
       PBObject object = new PBObject();
       object.setName(newName);
