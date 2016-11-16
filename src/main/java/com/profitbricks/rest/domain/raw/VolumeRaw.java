@@ -213,33 +213,33 @@ public class VolumeRaw extends ProfitbricksBaseRaw {
          this.licenceType = licenceType;
       }
 
-        /**
-         * @return the type
-         */
-        public String getType() {
-            return type;
-        }
+      /**
+       * @return the type
+       */
+      public String getType() {
+         return type;
+      }
 
-        /**
-         * @param type the type to set
-         */
-        public void setType(String type) {
-            this.type = type;
-        }
+      /**
+       * @param type the type to set
+       */
+      public void setType(String type) {
+         this.type = type;
+      }
 
-        /**
-         * @return the sshKeys
-         */
-        public List<String> getSshKeys() {
-            return sshKeys;
-        }
+      /**
+       * @return the sshKeys
+       */
+      public List<String> getSshKeys() {
+         return sshKeys;
+      }
 
-        /**
-         * @param sshKeys the sshKeys to set
-         */
-        public void setSshKeys(List<String> sshKeys) {
-            this.sshKeys = sshKeys;
-        }
+      /**
+       * @param sshKeys the sshKeys to set
+       */
+      public void setSshKeys(List<String> sshKeys) {
+         this.sshKeys = sshKeys;
+      }
    }
 
    private Properties properties = new Properties();

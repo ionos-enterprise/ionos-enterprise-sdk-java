@@ -60,7 +60,7 @@ public class SnapshotApi extends ProfitbricksAPIBase {
       return Helper.convertSnapshot(client.get(getUrlBase().concat(resource).concat("/").concat(snapshotId).concat(depth), null, SnapshotRaw.class));
    }
 
-   public Snapshot updateSnapshot(String dataCenterId, String snapshotId, PBObject snapshot) throws RestClientException, IOException {
+   public Snapshot updateSnapshot(String dataCenterId, String snapshotId, PBObject snapshot) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       return Helper.convertSnapshot(client.update(getUrlBase().concat(resource).concat("/").concat(snapshotId), snapshot, SnapshotRaw.class, 202));
    }
 

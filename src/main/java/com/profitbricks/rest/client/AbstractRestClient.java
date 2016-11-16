@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright (c) <year>, <copyright holder>
  * All rights reserved.
  * 
@@ -29,12 +29,16 @@
  */
 package com.profitbricks.rest.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -42,20 +46,13 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import org.apache.http.client.methods.HttpPatch;
 
 public abstract class AbstractRestClient {
 
@@ -71,6 +68,7 @@ public abstract class AbstractRestClient {
       this.client = builder.client;
       this.mapper = builder.mapper;
       this.interceptor = builder.interceptor;
+
    }
 
    public static RestClientBuilder builder() {
@@ -79,14 +77,16 @@ public abstract class AbstractRestClient {
 
    protected <T> T bindObject(HttpResponse response, Class<T> entityClass) throws IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       String source = contentAsString(response);
-      if (source == null)
+      if (source == null) {
          return null;
+      }
 
       T toReturn = mapper.readValue(source, entityClass);
       String location = response.getFirstHeader("Location").getValue();
       Method m = toReturn.getClass().getMethod("setRequestId", String.class);
-      if (m == null)
+      if (m == null) {
          return null;
+      }
 
       m.invoke(toReturn, location);
 
@@ -102,8 +102,9 @@ public abstract class AbstractRestClient {
    }
 
    protected JsonNode toJson(Object object) throws IOException {
-      if (object instanceof JsonNode)
+      if (object instanceof JsonNode) {
          return (JsonNode) object;
+      }
       return mapper.valueToTree(object);
    }
 
@@ -117,11 +118,12 @@ public abstract class AbstractRestClient {
 
    protected HttpResponse execute(RequestInterceptor interceptor, HttpRequestBase request)
            throws ClientProtocolException, IOException {
-
-      if (interceptor != null)
+      request = userAgentHeader(request);
+      if (interceptor != null) {
          interceptor.intercept(request);
-      else if (this.interceptor != null)
+      } else if (this.interceptor != null) {
          this.interceptor.intercept(request);
+      }
       return client.execute(request);
    }
 
@@ -138,10 +140,11 @@ public abstract class AbstractRestClient {
          throw new RestClientException(e, response);
       }
       int status = response.getStatusLine().getStatusCode();
-      if (status >= 200 && status < 400)
+      if (status >= 200 && status < 400) {
          logger.info("[" + status + "] Successfully sent " + method + " " + path);
-      else
+      } else {
          logger.error("[" + status + "] Failed to send " + method + " " + path);
+      }
       if (expectedStatus != status) {
          String content = "";
          try {
@@ -151,8 +154,9 @@ public abstract class AbstractRestClient {
          }
          StringBuilder sb = new StringBuilder("Status of " + status);
          sb.append(" not equal to expected value of ").append(expectedStatus);
-         if (!content.isEmpty())
+         if (!content.isEmpty()) {
             sb.append(" not equal to expected value of ").append(expectedStatus).append(" Message: ").append(content);
+         }
 
          throw new RestClientException(sb.toString(), response);
       }
@@ -160,27 +164,31 @@ public abstract class AbstractRestClient {
    }
 
    protected int successStatus(String method) {
-      if (method.equalsIgnoreCase("POST"))
+      if (method.equalsIgnoreCase("POST")) {
          return 201;
+      }
       return 200;
    }
 
    protected String appendParams(String path, Map<String, String> params) {
-      if (params != null)
+      if (params != null) {
          return path + queryString(params);
+      }
       return path;
    }
 
    protected String queryString(Map<String, String> params) {
-      if (params == null || params.isEmpty())
+      if (params == null || params.isEmpty()) {
          return "";
+      }
       StringBuilder sb = new StringBuilder("?");
       int i = 0;
       for (Map.Entry<String, String> entry : params.entrySet()) {
          String key = entry.getKey();
          String value = entry.getValue();
-         if (i > 0)
+         if (i > 0) {
             sb.append("&");
+         }
          try {
             sb.append(key).append("=").append(URLEncoder.encode(value, Charsets.UTF_8.toString()));
          } catch (UnsupportedEncodingException e) {
@@ -192,12 +200,17 @@ public abstract class AbstractRestClient {
    }
 
    protected <T extends HttpUriRequest> T contentTypeJson(T request) {
-      request.addHeader("Content-Type", "application/vnd.profitbricks.resource+json");
+      request.addHeader("Content-Type", "application/json");
+      return request;
+   }
+
+   protected <T extends HttpUriRequest> T userAgentHeader(T request) {
+      request.addHeader("User-Agent", "profitbricks-sdk-java/3.0.0");
       return request;
    }
 
    protected <T extends HttpUriRequest> T contentTypePartialJson(T request) {
-      request.addHeader("Content-Type", "application/vnd.profitbricks.partial-properties+json");
+      request.addHeader("Content-Type", "application/json");
       return request;
    }
 
@@ -227,8 +240,9 @@ public abstract class AbstractRestClient {
    }
 
    public String contentAsString(HttpResponse response) throws IOException {
-      if (response != null && response.getEntity() != null)
+      if (response != null && response.getEntity() != null) {
          return IOUtils.toString(response.getEntity().getContent(), Charsets.UTF_8);
+      }
       return null;
    }
 }

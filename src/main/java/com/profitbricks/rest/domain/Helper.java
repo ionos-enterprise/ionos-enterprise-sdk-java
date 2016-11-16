@@ -15,28 +15,28 @@
  */
 package com.profitbricks.rest.domain;
 
-import com.profitbricks.rest.domain.raw.LansRaw;
-import com.profitbricks.rest.domain.raw.DataCentersRaw;
-import com.profitbricks.rest.domain.raw.FirewallRulesRaw;
-import com.profitbricks.rest.domain.raw.NicsRaw;
-import com.profitbricks.rest.domain.raw.CDRomsRaw;
-import com.profitbricks.rest.domain.raw.LanRaw;
 import com.profitbricks.rest.domain.raw.CDRomRaw;
-import com.profitbricks.rest.domain.raw.NicRaw;
-import com.profitbricks.rest.domain.raw.LoadBalancerRaw;
-import com.profitbricks.rest.domain.raw.LoadBalancersRaw;
-import com.profitbricks.rest.domain.raw.ServersRaw;
-import com.profitbricks.rest.domain.raw.ServerRaw;
-import com.profitbricks.rest.domain.raw.VolumesRaw;
-import com.profitbricks.rest.domain.raw.VolumeRaw;
-import com.profitbricks.rest.domain.raw.FirewallRuleRaw;
+import com.profitbricks.rest.domain.raw.CDRomsRaw;
 import com.profitbricks.rest.domain.raw.DataCenterRaw;
+import com.profitbricks.rest.domain.raw.DataCentersRaw;
+import com.profitbricks.rest.domain.raw.FirewallRuleRaw;
+import com.profitbricks.rest.domain.raw.FirewallRulesRaw;
 import com.profitbricks.rest.domain.raw.IPBlockRaw;
 import com.profitbricks.rest.domain.raw.IPBlocksRaw;
 import com.profitbricks.rest.domain.raw.ImageRaw;
 import com.profitbricks.rest.domain.raw.ImagesRaw;
+import com.profitbricks.rest.domain.raw.LanRaw;
+import com.profitbricks.rest.domain.raw.LansRaw;
+import com.profitbricks.rest.domain.raw.LoadBalancerRaw;
+import com.profitbricks.rest.domain.raw.LoadBalancersRaw;
+import com.profitbricks.rest.domain.raw.NicRaw;
+import com.profitbricks.rest.domain.raw.NicsRaw;
+import com.profitbricks.rest.domain.raw.ServerRaw;
+import com.profitbricks.rest.domain.raw.ServersRaw;
 import com.profitbricks.rest.domain.raw.SnapshotRaw;
 import com.profitbricks.rest.domain.raw.SnapshotsRaw;
+import com.profitbricks.rest.domain.raw.VolumeRaw;
+import com.profitbricks.rest.domain.raw.VolumesRaw;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,8 +49,9 @@ public class Helper {
    public static DataCenter convertDataCenter(DataCenterRaw datacenter) {
       DataCenter toReturn = new DataCenter();
 
-      if (datacenter == null)
+      if (datacenter == null) {
          return toReturn;
+      }
 
       toReturn.setId(datacenter.getId());
       toReturn.setType(datacenter.getType());
@@ -72,10 +73,12 @@ public class Helper {
    public static List<DataCenter> convertDataCenters(DataCentersRaw datacenters) {
       List<DataCenter> toReturn = new ArrayList<DataCenter>();
 
-      if (datacenters == null)
+      if (datacenters == null) {
          return toReturn;
-      for (DataCenterRaw dc : datacenters.getItems())
+      }
+      for (DataCenterRaw dc : datacenters.getItems()) {
          toReturn.add(convertDataCenter(dc));
+      }
 
       return toReturn;
    }
@@ -83,19 +86,22 @@ public class Helper {
    public static List<Server> convertServers(ServersRaw servers) {
       List<Server> toReturn = new ArrayList<Server>();
 
-      if (servers == null)
+      if (servers == null) {
          return toReturn;
+      }
 
-      for (ServerRaw s : servers.getItems())
+      for (ServerRaw s : servers.getItems()) {
          toReturn.add(convertServer(s));
+      }
       return toReturn;
    }
 
    public static Server convertServer(ServerRaw server) {
       Server toReturn = new Server();
 
-      if (server == null)
+      if (server == null) {
          return toReturn;
+      }
 
       toReturn.setId(server.getId());
       toReturn.setType(server.getType());
@@ -122,11 +128,13 @@ public class Helper {
    public static List<Nic> convertNics(NicsRaw nics) {
       List<Nic> toReturn = new ArrayList<Nic>();
 
-      if (nics == null)
+      if (nics == null) {
          return toReturn;
+      }
 
-      for (NicRaw n : nics.getItems())
+      for (NicRaw n : nics.getItems()) {
          toReturn.add(convertNic(n));
+      }
 
       return toReturn;
    }
@@ -134,8 +142,9 @@ public class Helper {
    public static Nic convertNic(NicRaw nic) {
       Nic toReturn = new Nic();
 
-      if (nic == null)
+      if (nic == null) {
          return toReturn;
+      }
 
       toReturn.setId(nic.getId());
       toReturn.setType(nic.getType());
@@ -156,11 +165,13 @@ public class Helper {
    public static List<FirewallRule> convertFirewallRules(FirewallRulesRaw firewallrules) {
       List<FirewallRule> toReturn = new ArrayList<FirewallRule>();
 
-      if (firewallrules == null)
+      if (firewallrules == null) {
          return toReturn;
+      }
 
-      for (FirewallRuleRaw r : firewallrules.getItems())
+      for (FirewallRuleRaw r : firewallrules.getItems()) {
          toReturn.add(convertFirewallRule(r));
+      }
 
       return toReturn;
    }
@@ -168,8 +179,9 @@ public class Helper {
    public static FirewallRule convertFirewallRule(FirewallRuleRaw r) {
       FirewallRule toReturn = new FirewallRule();
 
-      if (r == null)
+      if (r == null) {
          return toReturn;
+      }
 
       toReturn.setId(r.getId());
       toReturn.setType(r.getType());
@@ -192,11 +204,13 @@ public class Helper {
    public static List<Volume> convertVolumes(VolumesRaw volumes) {
       List<Volume> toReturn = new ArrayList<Volume>();
 
-      if (volumes == null)
+      if (volumes == null) {
          return toReturn;
+      }
 
-      for (VolumeRaw v : volumes.getItems())
+      for (VolumeRaw v : volumes.getItems()) {
          toReturn.add(convertVolume(v));
+      }
 
       return toReturn;
    }
@@ -204,8 +218,9 @@ public class Helper {
    public static Volume convertVolume(VolumeRaw v) {
       Volume toReturn = new Volume();
 
-      if (v == null)
+      if (v == null) {
          return toReturn;
+      }
 
       toReturn.setId(v.getId());
       toReturn.setType(v.getType());
@@ -230,11 +245,13 @@ public class Helper {
    public static List<LoadBalancer> convertLoadBalancers(LoadBalancersRaw loadbalancers) {
       List<LoadBalancer> toReturn = new ArrayList<LoadBalancer>();
 
-      if (loadbalancers == null)
+      if (loadbalancers == null) {
          return toReturn;
+      }
 
-      for (LoadBalancerRaw l : loadbalancers.getItems())
+      for (LoadBalancerRaw l : loadbalancers.getItems()) {
          toReturn.add(convertLoadBalancer(l));
+      }
 
       return toReturn;
    }
@@ -242,18 +259,21 @@ public class Helper {
    public static List<CDRom> convertCDRoms(CDRomsRaw cdroms) {
       List<CDRom> toReturn = new ArrayList<CDRom>();
 
-      if (cdroms == null)
+      if (cdroms == null) {
          return toReturn;
+      }
 
-      for (CDRomRaw c : cdroms.getItems())
+      for (CDRomRaw c : cdroms.getItems()) {
          toReturn.add(convertCDRom(c));
+      }
       return toReturn;
    }
 
    public static CDRom convertCDRom(CDRomRaw c) {
       CDRom toReturn = new CDRom();
-      if (c == null)
+      if (c == null) {
          return toReturn;
+      }
 
       toReturn.setId(c.getId());
       toReturn.setType(c.getType());
@@ -269,8 +289,9 @@ public class Helper {
    public static CDRom.Image convertCDImage(CDRomRaw.Properties.Image image) {
       CDRom.Image toReturn = new CDRom.Image();
 
-      if (image == null)
+      if (image == null) {
          return toReturn;
+      }
 
       toReturn.setId(image.getId());
       toReturn.setType(image.getType());
@@ -282,8 +303,9 @@ public class Helper {
    public static LoadBalancer convertLoadBalancer(LoadBalancerRaw l) {
       LoadBalancer toReturn = new LoadBalancer();
 
-      if (l == null)
+      if (l == null) {
          return toReturn;
+      }
 
       toReturn.setId(l.getId());
       toReturn.setType(l.getType());
@@ -299,11 +321,13 @@ public class Helper {
    public static List<Lan> convertLans(LansRaw lans) {
       List<Lan> toReturn = new ArrayList<Lan>();
 
-      if (lans == null)
+      if (lans == null) {
          return toReturn;
+      }
 
-      for (LanRaw l : lans.getItems())
+      for (LanRaw l : lans.getItems()) {
          toReturn.add(convertLan(l));
+      }
 
       return toReturn;
    }
@@ -311,8 +335,9 @@ public class Helper {
    public static Lan convertLan(LanRaw l) {
       Lan toReturn = new Lan();
 
-      if (l == null)
+      if (l == null) {
          return toReturn;
+      }
 
       toReturn.setId(l.getId());
       toReturn.setType(l.getType());
@@ -329,8 +354,9 @@ public class Helper {
    public static Snapshot convertSnapshot(SnapshotRaw s) {
       Snapshot toReturn = new Snapshot();
 
-      if (s == null)
+      if (s == null) {
          return toReturn;
+      }
 
       toReturn.setId(s.getId());
       toReturn.setType(s.getType());
@@ -359,11 +385,13 @@ public class Helper {
    public static List<Snapshot> convertSnapshots(SnapshotsRaw snapshots) {
       List<Snapshot> toReturn = new ArrayList<Snapshot>();
 
-      if (snapshots == null)
+      if (snapshots == null) {
          return toReturn;
+      }
 
-      for (SnapshotRaw s : snapshots.getItems())
+      for (SnapshotRaw s : snapshots.getItems()) {
          toReturn.add(convertSnapshot(s));
+      }
 
       return toReturn;
    }
@@ -371,11 +399,13 @@ public class Helper {
    public static List<IPBlock> convertIPBlocks(IPBlocksRaw ipblocks) {
       List<IPBlock> toReturn = new ArrayList<IPBlock>();
 
-      if (ipblocks == null)
+      if (ipblocks == null) {
          return toReturn;
+      }
 
-      for (IPBlockRaw i : ipblocks.getItems())
+      for (IPBlockRaw i : ipblocks.getItems()) {
          toReturn.add(convertIPBlock(i));
+      }
 
       return toReturn;
    }
@@ -383,8 +413,9 @@ public class Helper {
    public static IPBlock convertIPBlock(IPBlockRaw i) {
       IPBlock toReturn = new IPBlock();
 
-      if (i == null)
+      if (i == null) {
          return toReturn;
+      }
 
       toReturn.setId(i.getId());
       toReturn.setType(i.getType());
@@ -401,11 +432,13 @@ public class Helper {
    public static List<Image> convertImages(ImagesRaw images) {
       List<Image> toReturn = new ArrayList<Image>();
 
-      if (images == null)
+      if (images == null) {
          return toReturn;
+      }
 
-      for (ImageRaw i : images.getItems())
+      for (ImageRaw i : images.getItems()) {
          toReturn.add(convertImage(i));
+      }
 
       return toReturn;
    }
@@ -413,8 +446,9 @@ public class Helper {
    public static Image convertImage(ImageRaw i) {
       Image toReturn = new Image();
 
-      if (i == null)
+      if (i == null) {
          return toReturn;
+      }
 
       toReturn.setId(i.getId());
       toReturn.setType(i.getType());

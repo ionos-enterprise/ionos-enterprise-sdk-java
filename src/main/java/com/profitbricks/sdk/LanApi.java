@@ -18,9 +18,9 @@ package com.profitbricks.sdk;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.Helper;
 import com.profitbricks.rest.domain.Lan;
+import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.raw.LanRaw;
 import com.profitbricks.rest.domain.raw.LansRaw;
-import com.profitbricks.rest.domain.PBObject;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -47,7 +47,7 @@ public class LanApi extends ProfitbricksAPIBase {
       return Helper.convertLan(client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource), lan, LanRaw.class, 202));
    }
 
-   public Lan updateLan(String dataCenterId, String lanId, Boolean isPublic) throws RestClientException, IOException {
+   public Lan updateLan(String dataCenterId, String lanId, Boolean isPublic) throws RestClientException, IOException,NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       PBObject pbObject = new PBObject();
       pbObject.setIsPublic(isPublic);
       return Helper.convertLan(client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource).concat("/").concat(lanId), pbObject, LanRaw.class, 202));

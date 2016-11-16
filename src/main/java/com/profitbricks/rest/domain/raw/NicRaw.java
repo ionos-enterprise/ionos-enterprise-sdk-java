@@ -59,6 +59,7 @@ public class NicRaw extends ProfitbricksBaseRaw {
       private List<String> ips = new ArrayList<String>();
       private boolean dhcp;
       private String lan;
+      private Boolean nat;
       private boolean firewallActive;
 
       /**
@@ -143,6 +144,20 @@ public class NicRaw extends ProfitbricksBaseRaw {
        */
       public void setFirewallActive(boolean firewallActive) {
          this.firewallActive = firewallActive;
+      }
+
+      /**
+       * @return the nat
+       */
+      public Boolean getNat() {
+         return nat;
+      }
+
+      /**
+       * @param nat the nat to set
+       */
+      public void setNat(Boolean nat) {
+         this.nat = nat;
       }
    }
 

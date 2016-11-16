@@ -17,10 +17,10 @@ package com.profitbricks.sdk;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.Helper;
-import com.profitbricks.rest.domain.Server;
-import com.profitbricks.rest.domain.raw.ServersRaw;
 import com.profitbricks.rest.domain.PBObject;
+import com.profitbricks.rest.domain.Server;
 import com.profitbricks.rest.domain.raw.ServerRaw;
+import com.profitbricks.rest.domain.raw.ServersRaw;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -58,7 +58,7 @@ public class ServerApi extends ProfitbricksAPIBase {
 
    }
 
-   public Server updateServer(String dataCenterId, String serverId, PBObject server) throws RestClientException, IOException {
+   public Server updateServer(String dataCenterId, String serverId, PBObject server) throws RestClientException, IOException,NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       return Helper.convertServer(client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource).concat("/").concat(serverId), server, ServerRaw.class, 202));
 

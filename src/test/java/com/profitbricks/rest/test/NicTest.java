@@ -18,14 +18,15 @@ package com.profitbricks.rest.test;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.LoadBalancer;
-import com.profitbricks.rest.domain.raw.DataCenterRaw;
-import com.profitbricks.rest.domain.raw.LoadBalancerRaw;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.Nic;
-import com.profitbricks.rest.domain.raw.NicRaw;
 import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.Server;
+import com.profitbricks.rest.domain.raw.DataCenterRaw;
+import com.profitbricks.rest.domain.raw.LoadBalancerRaw;
+import com.profitbricks.rest.domain.raw.NicRaw;
 import com.profitbricks.rest.domain.raw.ServerRaw;
+import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -38,7 +39,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- *
  * @author jasmin.gacic
  */
 public class NicTest {
@@ -63,10 +63,11 @@ public class NicTest {
       LoadBalancerRaw loadBalancer = new LoadBalancerRaw();
       LoadBalancerRaw.Properties properties = new LoadBalancerRaw.Properties();
       properties.setName("SDK TEST NIC - LoadBalancer");
-      properties.setIp("123.123.123.123");
+      properties.setIp("123.123.129.132");
       loadBalancer.setProperties(properties);
 
       LoadBalancer newLoadBalancer = profitbricksApi.getLoadbalancerApi().createLoadBalancer(dataCenterId, loadBalancer);
+      waitTillProvisioned(newLoadBalancer.getRequestId());
       assertNotNull(newLoadBalancer);
 
       loadBalancerId = newLoadBalancer.getId();
@@ -77,51 +78,48 @@ public class NicTest {
       server.getProperties().setCores("4");
 
       Server newServer = profitbricksApi.getServerApi().createServer(dataCenterId, server);
-
       assertNotNull(newServer);
+      waitTillProvisioned(newServer.getRequestId());
+
       serverId = newServer.getId();
 
       NicRaw nic = new NicRaw();
 
       nic.getProperties().setName("SDK TEST NIC - Nic");
       nic.getProperties().setLan("1");
+      nic.getProperties().setNat(Boolean.FALSE);
 
       nic.getEntities().setFirewallrules(null);
 
-      Thread.sleep(220000);
       Nic newNic = profitbricksApi.getNicApi().createNic(dataCenterId, serverId, nic);
-      Thread.sleep(45000);
+      waitTillProvisioned(newNic.getRequestId());
 
       assertNotNull(newNic);
       nicId = newNic.getId();
    }
 
    @Test
-   public void orderedTests() throws RestClientException, IOException, InterruptedException {
+   public void orderedTests() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       getAllNics();
-      Thread.sleep(35000);
       getNic();
       updateNic();
-
       assignNicToLoadBalancer();
-
-      Thread.sleep(35000);
       listAssignedNics();
       listAssignedNic();
       unassignNicToLoadBalancer();
-
    }
 
-   public void updateNic() throws RestClientException, IOException {
+   public void updateNic() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InterruptedException {
       PBObject object = new PBObject();
       object.setName("SDK TEST NIC - Nic - changed");
       List<String> ips = new ArrayList<String>();
-      ips.add("123.123.123.123");
+      ips.add("123.123.121.129");
       object.setIps(ips);
       Nic nic = profitbricksApi.getNicApi().updateNic(dataCenterId, serverId, nicId, object);
 
       assertNotNull(nic);
       assertEquals(object.getName(), nic.getName());
+      waitTillProvisioned(nic.getRequestId());
    }
 
    public void getNic() throws RestClientException, IOException {
@@ -135,10 +133,11 @@ public class NicTest {
       assertNotNull(nics);
    }
 
-   private void assignNicToLoadBalancer() throws RestClientException, IOException {
+   private void assignNicToLoadBalancer() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       Nic nic = profitbricksApi.getNicApi().assignNicToLoadBalancer(dataCenterId, loadBalancerId, nicId);
       assertNotNull(nic);
       assertEquals(nic.getId(), nicId);
+      waitTillProvisioned(nic.getRequestId());
    }
 
    private void unassignNicToLoadBalancer() throws RestClientException, IOException {

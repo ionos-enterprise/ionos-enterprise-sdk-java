@@ -17,11 +17,12 @@ package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
-import com.profitbricks.rest.domain.raw.DataCenterRaw;
 import com.profitbricks.rest.domain.Location;
-import com.profitbricks.rest.domain.raw.ServerRaw;
 import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.Server;
+import com.profitbricks.rest.domain.raw.DataCenterRaw;
+import com.profitbricks.rest.domain.raw.ServerRaw;
+import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -52,6 +53,7 @@ public class ServerTest {
       datacenter.getProperties().setDescription("SDK TEST Description");
 
       DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
+      waitTillProvisioned(newDatacenter.getRequestId());
       dataCenterId = newDatacenter.getId();
 
       ServerRaw server = new ServerRaw();
@@ -60,11 +62,10 @@ public class ServerTest {
       server.getProperties().setCores("1");
 
       Server newServer = profitbricksApi.getServerApi().createServer(dataCenterId, server);
+      waitTillProvisioned(newServer.getRequestId());
 
       assertNotNull(newServer);
       serverId = newServer.getId();
-      Thread.sleep(120000);
-
    }
 
    @AfterClass
@@ -74,7 +75,7 @@ public class ServerTest {
    }
 
    @Test
-   public void testInOrder() throws RestClientException, IOException, InterruptedException {
+   public void testInOrder() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       testGetAllServers();
       testGetServer();
       testUpdateServer();
@@ -96,7 +97,7 @@ public class ServerTest {
       assertNotNull(server);
    }
 
-   public void testUpdateServer() throws RestClientException, IOException {
+   public void testUpdateServer() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       String newName = "SDK TEST SERVER CHANGED";
       PBObject object = new PBObject();
       object.setName(newName);
