@@ -17,24 +17,21 @@ package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
-import com.profitbricks.rest.domain.raw.DataCenterRaw;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.Server;
 import com.profitbricks.rest.domain.Snapshot;
-import com.profitbricks.rest.domain.raw.ServerRaw;
 import com.profitbricks.rest.domain.Volume;
+import com.profitbricks.rest.domain.raw.DataCenterRaw;
+import com.profitbricks.rest.domain.raw.ServerRaw;
 import com.profitbricks.rest.domain.raw.VolumeRaw;
 import com.profitbricks.sdk.ProfitbricksApi;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
-
+import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -124,8 +121,8 @@ public class SnapshotTest {
         assertEquals(snapshot.getName(), object.getName());
     }
 
-    // @AfterClass
-    public static void cleanUp() throws RestClientException, IOException {
+    @AfterClass
+    public static void cleanUp() throws RestClientException, IOException, InterruptedException {
         profitbricksApi.getSnapshotApi().deleteSnapshot(snapshotId);
         profitbricksApi.getServerApi().deleteServer(dataCenterId, serverId);
         profitbricksApi.getVolumeApi().deleteVolume(dataCenterId, volumeId);
