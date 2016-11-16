@@ -17,230 +17,254 @@ package com.profitbricks.rest.domain.raw;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.profitbricks.rest.domain.AvailabilityZone;
-import com.profitbricks.rest.domain.BusType;
+import com.profitbricks.rest.domain.Bus;
 import com.profitbricks.rest.domain.Status;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author jasmin.gacic
  */
 public class VolumeRaw extends ProfitbricksBaseRaw {
 
-   /**
-    * @return the properties
-    */
-   public Properties getProperties() {
-      return properties;
-   }
+    /**
+     * @return the properties
+     */
+    public Properties getProperties() {
+        return properties;
+    }
 
-   /**
-    * @param properties the properties to set
-    */
-   public void setProperties(Properties properties) {
-      this.properties = properties;
-   }
+    /**
+     * @param properties the properties to set
+     */
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
 
-   @JsonIgnoreProperties(ignoreUnknown = true)
-   public class Properties {
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public class Properties {
 
-      private String name;
-      private String cores;
-      private String ram;
-      private AvailabilityZone availabilityZone;
-      private Status vmState;
-      private String bootVolume;
-      private String bootCdrom;
-      private String size;
-      private BusType bus;
-      private String image;
-      private String licenceType;
-      private String type;
-      private List<String> sshKeys = new ArrayList<String>();
+        private String name;
+        private String type;
+        private String size;
+        private AvailabilityZone availabilityZone;
+        private Bus bus;
+        private String licenceType;
+        private String image;
+        private List<String> sshKeys = new ArrayList<String>();
+        private String imagePassword;
+        private Boolean cpuHotPlug;
+        private Boolean cpuHotUnplug;
+        private Boolean ramHotPlug;
+        private Boolean ramHotUnplug;
+        private Boolean nicHotPlug;
+        private Boolean nicHotUnplug;
+        private Boolean discVirtioHotPlug;
+        private Boolean discVirtioHotUnplug;
+        private Boolean discScsiHotPlug;
+        private Boolean discScsiHotUnplug;
 
-      /**
-       * @return the name
-       */
-      public String getName() {
-         return name;
-      }
+        /**
+         * @return the name
+         */
+        public String getName() {
+            return name;
+        }
 
-      /**
-       * @param name the name to set
-       */
-      public void setName(String name) {
-         this.name = name;
-      }
+        /**
+         * @param name the name to set
+         */
+        public void setName(String name) {
+            this.name = name;
+        }
 
-      /**
-       * @return the cores
-       */
-      public String getCores() {
-         return cores;
-      }
+        /**
+         * @return the availabilityZone
+         */
+        public AvailabilityZone getAvailabilityZone() {
+            return availabilityZone;
+        }
 
-      /**
-       * @param cores the cores to set
-       */
-      public void setCores(String cores) {
-         this.cores = cores;
-      }
+        /**
+         * @param availabilityZone the availabilityZone to set
+         */
+        public void setAvailabilityZone(AvailabilityZone availabilityZone) {
+            this.availabilityZone = availabilityZone;
+        }
 
-      /**
-       * @return the ram
-       */
-      public String getRam() {
-         return ram;
-      }
+        /**
+         * @return the size
+         */
+        public String getSize() {
+            return size;
+        }
 
-      /**
-       * @param ram the ram to set
-       */
-      public void setRam(String ram) {
-         this.ram = ram;
-      }
+        /**
+         * @param size the size to set
+         */
+        public void setSize(String size) {
+            this.size = size;
+        }
 
-      /**
-       * @return the availabilityZone
-       */
-      public AvailabilityZone getAvailabilityZone() {
-         return availabilityZone;
-      }
+        /**
+         * @return the bus
+         */
+        public Bus getBus() {
+            return bus;
+        }
 
-      /**
-       * @param availabilityZone the availabilityZone to set
-       */
-      public void setAvailabilityZone(AvailabilityZone availabilityZone) {
-         this.availabilityZone = availabilityZone;
-      }
+        /**
+         * @param bus the bus to set
+         */
+        public void setBus(Bus bus) {
+            this.bus = bus;
+        }
 
-      /**
-       * @return the vmState
-       */
-      public Status getVmState() {
-         return vmState;
-      }
+        /**
+         * @return the image
+         */
+        public String getImage() {
+            return image;
+        }
 
-      /**
-       * @param vmState the vmState to set
-       */
-      public void setVmState(Status vmState) {
-         this.vmState = vmState;
-      }
+        /**
+         * @param image the image to set
+         */
+        public void setImage(String image) {
+            this.image = image;
+        }
 
-      /**
-       * @return the bootVolume
-       */
-      public String getBootVolume() {
-         return bootVolume;
-      }
+        /**
+         * @return the licenceType
+         */
+        public String getLicenceType() {
+            return licenceType;
+        }
 
-      /**
-       * @param bootVolume the bootVolume to set
-       */
-      public void setBootVolume(String bootVolume) {
-         this.bootVolume = bootVolume;
-      }
+        /**
+         * @param licenceType the licenceType to set
+         */
+        public void setLicenceType(String licenceType) {
+            this.licenceType = licenceType;
+        }
 
-      /**
-       * @return the bootCdrom
-       */
-      public String getBootCdrom() {
-         return bootCdrom;
-      }
+        /**
+         * @return the type
+         */
+        public String getType() {
+            return type;
+        }
 
-      /**
-       * @param bootCdrom the bootCdrom to set
-       */
-      public void setBootCdrom(String bootCdrom) {
-         this.bootCdrom = bootCdrom;
-      }
+        /**
+         * @param type the type to set
+         */
+        public void setType(String type) {
+            this.type = type;
+        }
 
-      /**
-       * @return the size
-       */
-      public String getSize() {
-         return size;
-      }
+        /**
+         * @return the sshKeys
+         */
+        public List<String> getSshKeys() {
+            return sshKeys;
+        }
 
-      /**
-       * @param size the size to set
-       */
-      public void setSize(String size) {
-         this.size = size;
-      }
+        /**
+         * @param sshKeys the sshKeys to set
+         */
+        public void setSshKeys(List<String> sshKeys) {
+            this.sshKeys = sshKeys;
+        }
 
-      /**
-       * @return the bus
-       */
-      public BusType getBus() {
-         return bus;
-      }
+        public String getImagePassword() {
+            return imagePassword;
+        }
 
-      /**
-       * @param bus the bus to set
-       */
-      public void setBus(BusType bus) {
-         this.bus = bus;
-      }
+        public void setImagePassword(String imagePassword) {
+            this.imagePassword = imagePassword;
+        }
 
-      /**
-       * @return the image
-       */
-      public String getImage() {
-         return image;
-      }
+        public Boolean getCpuHotPlug() {
+            return cpuHotPlug;
+        }
 
-      /**
-       * @param image the image to set
-       */
-      public void setImage(String image) {
-         this.image = image;
-      }
+        public void setCpuHotPlug(Boolean cpuHotPlug) {
+            this.cpuHotPlug = cpuHotPlug;
+        }
 
-      /**
-       * @return the licenceType
-       */
-      public String getLicenceType() {
-         return licenceType;
-      }
+        public Boolean getCpuHotUnplug() {
+            return cpuHotUnplug;
+        }
 
-      /**
-       * @param licenceType the licenceType to set
-       */
-      public void setLicenceType(String licenceType) {
-         this.licenceType = licenceType;
-      }
+        public void setCpuHotUnplug(Boolean cpuHotUnplug) {
+            this.cpuHotUnplug = cpuHotUnplug;
+        }
 
-      /**
-       * @return the type
-       */
-      public String getType() {
-         return type;
-      }
+        public Boolean getRamHotPlug() {
+            return ramHotPlug;
+        }
 
-      /**
-       * @param type the type to set
-       */
-      public void setType(String type) {
-         this.type = type;
-      }
+        public void setRamHotPlug(Boolean ramHotPlug) {
+            this.ramHotPlug = ramHotPlug;
+        }
 
-      /**
-       * @return the sshKeys
-       */
-      public List<String> getSshKeys() {
-         return sshKeys;
-      }
+        public Boolean getRamHotUnplug() {
+            return ramHotUnplug;
+        }
 
-      /**
-       * @param sshKeys the sshKeys to set
-       */
-      public void setSshKeys(List<String> sshKeys) {
-         this.sshKeys = sshKeys;
-      }
-   }
+        public void setRamHotUnplug(Boolean ramHotUnplug) {
+            this.ramHotUnplug = ramHotUnplug;
+        }
 
-   private Properties properties = new Properties();
+        public Boolean getNicHotPlug() {
+            return nicHotPlug;
+        }
+
+        public void setNicHotPlug(Boolean nicHotPlug) {
+            this.nicHotPlug = nicHotPlug;
+        }
+
+        public Boolean getNicHotUnplug() {
+            return nicHotUnplug;
+        }
+
+        public void setNicHotUnplug(Boolean nicHotUnplug) {
+            this.nicHotUnplug = nicHotUnplug;
+        }
+
+        public Boolean getDiscVirtioHotPlug() {
+            return discVirtioHotPlug;
+        }
+
+        public void setDiscVirtioHotPlug(Boolean discVirtioHotPlug) {
+            this.discVirtioHotPlug = discVirtioHotPlug;
+        }
+
+        public Boolean getDiscVirtioHotUnplug() {
+            return discVirtioHotUnplug;
+        }
+
+        public void setDiscVirtioHotUnplug(Boolean discVirtioHotUnplug) {
+            this.discVirtioHotUnplug = discVirtioHotUnplug;
+        }
+
+        public Boolean getDiscScsiHotPlug() {
+            return discScsiHotPlug;
+        }
+
+        public void setDiscScsiHotPlug(Boolean discScsiHotPlug) {
+            this.discScsiHotPlug = discScsiHotPlug;
+        }
+
+        public Boolean getDiscScsiHotUnplug() {
+            return discScsiHotUnplug;
+        }
+
+        public void setDiscScsiHotUnplug(Boolean discScsiHotUnplug) {
+            this.discScsiHotUnplug = discScsiHotUnplug;
+        }
+    }
+
+    private Properties properties = new Properties();
 }

@@ -17,52 +17,46 @@ package com.profitbricks.rest.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
- *
  * @author jasmin.gacic
  */
 public class Volume extends ProfitbricksBase {
 
-    private String cores;
-    private String ram;
-    private AvailabilityZone availabilityZone;
-    private Status vmState;
-    private String bootVolume;
-    private String bootCdrom;
-    private String size;
-    private BusType bus;
-    private String image;
-    private String licenceType;
+    private String name;
     private String type;
+    private String size;
+    private AvailabilityZone availabilityZone;
+    private Bus bus;
+    private String licenceType;
+    private String image;
     private List<String> sshKeys = new ArrayList<String>();
+    private String imagePassword;
+    private Boolean cpuHotPlug;
+    private Boolean cpuHotUnplug;
+    private Boolean ramHotPlug;
+    private Boolean ramHotUnplug;
+    private Boolean nicHotPlug;
+    private Boolean nicHotUnplug;
+    private Boolean discVirtioHotPlug;
+    private Boolean discVirtioHotUnplug;
+    private Boolean discScsiHotPlug;
+    private Boolean discScsiHotUnplug;
+
 
     /**
      * @return the cores
      */
-    public String getCores() {
-        return cores;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param cores the cores to set
+     * @param name the cores to set
      */
-    public void setCores(String cores) {
-        this.cores = cores;
-    }
-
-    /**
-     * @return the ram
-     */
-    public String getRam() {
-        return ram;
-    }
-
-    /**
-     * @param ram the ram to set
-     */
-    public void setRam(String ram) {
-        this.ram = ram;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -77,48 +71,6 @@ public class Volume extends ProfitbricksBase {
      */
     public void setAvailabilityZone(AvailabilityZone availabilityZone) {
         this.availabilityZone = availabilityZone;
-    }
-
-    /**
-     * @return the vmState
-     */
-    public Status getVmState() {
-        return vmState;
-    }
-
-    /**
-     * @param vmState the vmState to set
-     */
-    public void setVmState(Status vmState) {
-        this.vmState = vmState;
-    }
-
-    /**
-     * @return the bootVolume
-     */
-    public String getBootVolume() {
-        return bootVolume;
-    }
-
-    /**
-     * @param bootVolume the bootVolume to set
-     */
-    public void setBootVolume(String bootVolume) {
-        this.bootVolume = bootVolume;
-    }
-
-    /**
-     * @return the bootCdrom
-     */
-    public String getBootCdrom() {
-        return bootCdrom;
-    }
-
-    /**
-     * @param bootCdrom the bootCdrom to set
-     */
-    public void setBootCdrom(String bootCdrom) {
-        this.bootCdrom = bootCdrom;
     }
 
     /**
@@ -138,14 +90,14 @@ public class Volume extends ProfitbricksBase {
     /**
      * @return the bus
      */
-    public BusType getBus() {
+    public Bus getBus() {
         return bus;
     }
 
     /**
      * @param bus the bus to set
      */
-    public void setBus(BusType bus) {
+    public void setBus(Bus bus) {
         this.bus = bus;
     }
 
@@ -203,5 +155,93 @@ public class Volume extends ProfitbricksBase {
      */
     public void setSshKeys(List<String> sshKeys) {
         this.sshKeys = sshKeys;
+    }
+
+    public String getImagePassword() {
+        return imagePassword;
+    }
+
+    public void setImagePassword(String imagePassword) {
+        this.imagePassword = imagePassword;
+    }
+
+    public Boolean getCpuHotPlug() {
+        return cpuHotPlug;
+    }
+
+    public void setCpuHotPlug(Boolean cpuHotPlug) {
+        this.cpuHotPlug = cpuHotPlug;
+    }
+
+    public Boolean getCpuHotUnplug() {
+        return cpuHotUnplug;
+    }
+
+    public void setCpuHotUnplug(Boolean cpuHotUnplug) {
+        this.cpuHotUnplug = cpuHotUnplug;
+    }
+
+    public Boolean getRamHotPlug() {
+        return ramHotPlug;
+    }
+
+    public void setRamHotPlug(Boolean ramHotPlug) {
+        this.ramHotPlug = ramHotPlug;
+    }
+
+    public Boolean getRamHotUnplug() {
+        return ramHotUnplug;
+    }
+
+    public void setRamHotUnplug(Boolean ramHotUnplug) {
+        this.ramHotUnplug = ramHotUnplug;
+    }
+
+    public Boolean getNicHotPlug() {
+        return nicHotPlug;
+    }
+
+    public void setNicHotPlug(Boolean nicHotPlug) {
+        this.nicHotPlug = nicHotPlug;
+    }
+
+    public Boolean getNicHotUnplug() {
+        return nicHotUnplug;
+    }
+
+    public void setNicHotUnplug(Boolean nicHotUnplug) {
+        this.nicHotUnplug = nicHotUnplug;
+    }
+
+    public Boolean getDiscVirtioHotPlug() {
+        return discVirtioHotPlug;
+    }
+
+    public void setDiscVirtioHotPlug(Boolean discVirtioHotPlug) {
+        this.discVirtioHotPlug = discVirtioHotPlug;
+    }
+
+    public Boolean getDiscVirtioHotUnplug() {
+        return discVirtioHotUnplug;
+    }
+
+    public void setDiscVirtioHotUnplug(Boolean discVirtioHotUnplug) {
+        this.discVirtioHotUnplug = discVirtioHotUnplug;
+    }
+
+    public Boolean getDiscScsiHotPlug() {
+        return discScsiHotPlug;
+    }
+
+    public void setDiscScsiHotPlug(Boolean discScsiHotPlug) {
+        this.discScsiHotPlug = discScsiHotPlug;
+    }
+
+    public Boolean getDiscScsiHotUnplug() {
+        return discScsiHotUnplug;
+    }
+
+    public void setDiscScsiHotUnplug(Boolean discScsiHotUnplug) {
+        this.discScsiHotUnplug = discScsiHotUnplug;
     }
 }
