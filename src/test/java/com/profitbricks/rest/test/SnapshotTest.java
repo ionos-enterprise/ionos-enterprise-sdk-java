@@ -123,6 +123,7 @@ public class SnapshotTest {
 
     @AfterClass
     public static void cleanUp() throws RestClientException, IOException, InterruptedException {
+        Thread.sleep(120000);
         profitbricksApi.getSnapshotApi().deleteSnapshot(snapshotId);
         profitbricksApi.getServerApi().deleteServer(dataCenterId, serverId);
         profitbricksApi.getVolumeApi().deleteVolume(dataCenterId, volumeId);
