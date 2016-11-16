@@ -16,22 +16,21 @@
 package com.profitbricks.rest.domain;
 
 /**
- *
  * @author jasmin.gacic
  */
 public enum AvailabilityZone {
 
-   AUTO, ZONE_1, ZONE_2, UNRECOGNIZED;
+    AUTO, ZONE_1, ZONE_2, ZONE_3, UNRECOGNIZED;
 
-   public String value() {
-      return name();
-   }
+    public String value() {
+        return name();
+    }
 
-   public static AvailabilityZone fromValue(String v) {
-      try {
-         return valueOf(v);
-      } catch (Exception ex) {
-         return UNRECOGNIZED;
-      }
-   }
+    public static AvailabilityZone fromValue(String v) {
+        try {
+            return valueOf(v);
+        } catch (Exception ex) {
+            return UNRECOGNIZED;
+        }
+    }
 }
