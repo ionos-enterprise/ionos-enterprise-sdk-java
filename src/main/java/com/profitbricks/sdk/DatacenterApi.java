@@ -17,13 +17,11 @@ package com.profitbricks.sdk;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
-import com.profitbricks.rest.domain.Helper;
+import com.profitbricks.rest.domain.DataCenters;
 import com.profitbricks.rest.domain.PBObject;
-import com.profitbricks.rest.domain.raw.DataCenterRaw;
-import com.profitbricks.rest.domain.raw.DataCentersRaw;
+import com.profitbricks.rest.domain.DataCenters;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 /**
  *
@@ -35,20 +33,20 @@ public class DatacenterApi extends ProfitbricksAPIBase {
       super("datacenters", "");
    }
 
-   public List<DataCenter> getAllDataCenters() throws RestClientException, IOException {
-      return Helper.convertDataCenters(client.get(getUrlBase().concat(resource).concat(depth), null, DataCentersRaw.class));
+   public DataCenters getAllDataCenters() throws RestClientException, IOException {
+      return client.get(getUrlBase().concat(resource).concat(depth), null, DataCenters.class);
    }
 
    public DataCenter getDataCenter(String id) throws RestClientException, IOException {
-      return Helper.convertDataCenter(client.get(getUrlBase().concat(resource).concat("/").concat(id).concat(depth), null, DataCenterRaw.class));
+      return client.get(getUrlBase().concat(resource).concat("/").concat(id).concat(depth), null, DataCenter.class);
    }
 
-   public DataCenter createDataCenter(DataCenterRaw datacenter) throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-      return Helper.convertDataCenter(client.create(getUrlBase().concat(resource), datacenter, DataCenterRaw.class, 202));
+   public DataCenter createDataCenter(DataCenter datacenter) throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+      return client.create(getUrlBase().concat(resource), datacenter, DataCenter.class, 202);
    }
 
    public DataCenter updateDataCenter(String id, PBObject datacenter) throws RestClientException, IOException,NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      return Helper.convertDataCenter(client.update(getUrlBase().concat(resource).concat("/").concat(id), datacenter, DataCenterRaw.class, 202));
+      return client.update(getUrlBase().concat(resource).concat("/").concat(id), datacenter, DataCenter.class, 202);
    }
 
    public void deleteDataCenter(String id) throws RestClientException, IOException {

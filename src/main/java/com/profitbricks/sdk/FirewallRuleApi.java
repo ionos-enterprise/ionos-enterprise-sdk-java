@@ -17,13 +17,10 @@ package com.profitbricks.sdk;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.FirewallRule;
-import com.profitbricks.rest.domain.Helper;
+import com.profitbricks.rest.domain.FirewallRules;
 import com.profitbricks.rest.domain.PBObject;
-import com.profitbricks.rest.domain.raw.FirewallRuleRaw;
-import com.profitbricks.rest.domain.raw.FirewallRulesRaw;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 /**
  *
@@ -35,27 +32,27 @@ public class FirewallRuleApi extends ProfitbricksAPIBase {
       super("firewallrules", "nics");
    }
 
-   public List<FirewallRule> getAllFirewallRules(String dataCenterId, String serverId, String nicId) throws RestClientException, IOException {
-      return Helper.convertFirewallRules(client.get(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+   public FirewallRules getAllFirewallRules(String dataCenterId, String serverId, String nicId) throws RestClientException, IOException {
+      return client.get(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
               .concat("servers").concat("/").concat(serverId).concat("/")
               .concat(parentResource).concat("/").concat(nicId).concat("/")
-              .concat(resource).concat(depth), null, FirewallRulesRaw.class));
+              .concat(resource).concat(depth), null, FirewallRules.class);
    }
 
    public FirewallRule getFirewallRule(String dataCenterId, String serverId, String nicId, String firewallRuleId) throws RestClientException, IOException {
-      return Helper.convertFirewallRule(client.get(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+      return client.get(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
               .concat("servers").concat("/").concat(serverId).concat("/")
               .concat(parentResource).concat("/").concat(nicId).concat("/")
               .concat(resource).concat("/").concat(firewallRuleId)
-              .concat(depth), null, FirewallRuleRaw.class));
+              .concat(depth), null, FirewallRule.class);
    }
 
-   public FirewallRule createFirewallRule(String dataCenterId, String serverId, String nicId, FirewallRuleRaw firewallRule) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      return Helper.convertFirewallRule(client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+   public FirewallRule createFirewallRule(String dataCenterId, String serverId, String nicId, FirewallRule firewallRule) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+      return client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
               .concat("servers").concat("/").concat(serverId).concat("/")
               .concat(parentResource).concat("/").concat(nicId).concat("/")
               .concat(resource),
-              firewallRule, FirewallRuleRaw.class, 202));
+              firewallRule, FirewallRule.class, 202);
    }
 
    public void deleteFirewallRule(String dataCenterId, String serverId, String nicId, String firewallRuleId) throws RestClientException, IOException {
@@ -67,10 +64,10 @@ public class FirewallRuleApi extends ProfitbricksAPIBase {
    }
 
    public FirewallRule updateFirewWallRule(String dataCenterId, String serverId, String nicId, String firewallRuleId, PBObject firewallRule) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      return Helper.convertFirewallRule(client.update(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+      return client.update(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
               .concat("servers").concat("/").concat(serverId).concat("/")
               .concat(parentResource).concat("/").concat(nicId).concat("/")
               .concat(resource).concat("/").concat(firewallRuleId),
-              firewallRule, FirewallRuleRaw.class, 202));
+              firewallRule, FirewallRule.class, 202);
    }
 }

@@ -16,8 +16,8 @@
 package com.profitbricks.rest.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.profitbricks.rest.domain.raw.ImageRaw;
-import com.profitbricks.rest.domain.raw.VolumeRaw;
+import com.profitbricks.rest.domain.Image;
+import com.profitbricks.rest.domain.Volume;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -15,39 +15,52 @@
  */
 package com.profitbricks.rest.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- *
  * @author jasmin.gacic
  */
-public enum Location {
+public class Location extends ProfitbricksBase {
 
-   DE_FKB("de/fkb"),
-   DE_FRA("de/fra"),
-   US_LAS("us/las"),
-   UNRECOGNIZED("unknown");
+    /**
+     * @return the properties
+     */
+    public Location.Properties getProperties() {
+        return properties;
+    }
 
-   private final String id;
+    /**
+     * @param properties the properties to set
+     */
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
 
-   Location(String id) {
-      this.id = id;
-   }
+    private Location.Properties properties = new Properties();
 
-   public String value() {
-      return id;
-   }
+    public class Properties {
+        private List<String> features;
+        private String name;
 
-   public static Location fromValue(String v) {
-      try {
-         return valueOf(v);
-      } catch (IllegalArgumentException ex) {
-         return UNRECOGNIZED;
-      }
-   }
+        public List<String> getFeatures() {
+            if (features == null) {
+                features = new ArrayList<String>();
+            }
+            return features;
+        }
 
-   public static Location fromId(String id) {
-      for (Location location : values())
-         if (location.id.equals(id))
-            return location;
-      return UNRECOGNIZED;
-   }
+        public void setFeatures(List<String> features) {
+            this.features = features;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
 }

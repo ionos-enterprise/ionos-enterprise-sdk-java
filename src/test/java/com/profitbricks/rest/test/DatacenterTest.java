@@ -16,14 +16,12 @@
 package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
+import com.profitbricks.rest.domain.*;
 import com.profitbricks.rest.domain.DataCenter;
-import com.profitbricks.rest.domain.Location;
-import com.profitbricks.rest.domain.PBObject;
-import com.profitbricks.rest.domain.Request;
-import com.profitbricks.rest.domain.raw.DataCenterRaw;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.junit.AfterClass;
@@ -44,18 +42,29 @@ public class DatacenterTest {
     @BeforeClass
     public static void createDataCenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
-        DataCenterRaw datacenter = new DataCenterRaw();
+        DataCenter datacenter = new DataCenter();
 
         datacenter.getProperties().setName("SDK TEST DC - Data center");
-        datacenter.getProperties().setLocation(Location.US_LAS.value());
+        datacenter.getProperties().setLocation("us/las");
         datacenter.getProperties().setDescription("SDK TEST Description");
 
-        DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
-        dataCenterId = newDatacenter.getId();
+        List<Server> serverList = new ArrayList<Server>();
+        Server server = new Server();
+
+        server.getProperties().setName("comp test");
+        server.getProperties().setCores("1");
+        server.getProperties().setRam("1024");
+        serverList.add(server);
+
+        Servers servers = new Servers();
+        servers.setItems(serverList);
+        datacenter.getEntities().setServers(servers);
+
+        DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);        dataCenterId = newDatacenter.getId();
 
         waitTillProvisioned(newDatacenter.getRequestId());
 
-        assertEquals(newDatacenter.getName(), datacenter.getProperties().getName());
+        assertEquals(newDatacenter.getProperties().getName(), datacenter.getProperties().getName());
     }
 
     public static void waitTillProvisioned(String requestId) throws InterruptedException, RestClientException, IOException {
@@ -75,10 +84,10 @@ public class DatacenterTest {
 
     @Test
     public void testGetAllDatacenters() throws RestClientException, IOException {
-        List<DataCenter> datacenters = profitbricksApi.getDataCenterApi().getAllDataCenters();
+        DataCenters datacenters = profitbricksApi.getDataCenterApi().getAllDataCenters();
 
         assertNotNull(datacenters);
-        assertTrue(datacenters.size() > 0);
+        assertTrue(datacenters.getItems().size() > 0);
     }
 
     @Test
@@ -94,7 +103,7 @@ public class DatacenterTest {
         object.setName(newName);
 
         DataCenter updatedDataCenter = profitbricksApi.getDataCenterApi().updateDataCenter(dataCenterId, object);
-        assertEquals(newName, updatedDataCenter.getName());
+        assertEquals(newName, updatedDataCenter.getProperties().getName());
     }
 
     @AfterClass

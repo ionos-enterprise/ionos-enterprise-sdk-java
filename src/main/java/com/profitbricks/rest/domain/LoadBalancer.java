@@ -15,58 +15,111 @@
  */
 package com.profitbricks.rest.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author jasmin.gacic
  */
 public class LoadBalancer extends ProfitbricksBase {
 
-   private String ip;
-   private boolean dhcp;
-   private List<Nic> balancednics = new ArrayList<Nic>();
-
    /**
-    * @return the ip
+    * @return the entities
     */
-   public String getIp() {
-      return ip;
+   public Entities getEntities() {
+      return entities;
    }
 
    /**
-    * @param ip the ip to set
+    * @param entities the entities to set
     */
-   public void setIp(String ip) {
-      this.ip = ip;
+   public void setEntities(Entities entities) {
+      if (entities == null)
+         this.entities = new Entities();
+
+      this.entities = entities;
    }
 
    /**
-    * @return the dhcp
+    * @return the properties
     */
-   public boolean isDhcp() {
-      return dhcp;
+   public Properties getProperties() {
+      return properties;
    }
 
    /**
-    * @param dhcp the dhcp to set
+    * @param properties the properties to set
     */
-   public void setDhcp(boolean dhcp) {
-      this.dhcp = dhcp;
+   public void setProperties(Properties properties) {
+      this.properties = properties;
    }
 
-   /**
-    * @return the balancednics
-    */
-   public List<Nic> getBalancednics() {
-      return balancednics;
+   public static class Properties {
+
+      private String name;
+      private String ip;
+      private boolean dhcp;
+
+      /**
+       * @return the name
+       */
+      public String getName() {
+         return name;
+      }
+
+      /**
+       * @param name the name to set
+       */
+      public void setName(String name) {
+         this.name = name;
+      }
+
+      /**
+       * @return the ip
+       */
+      public String getIp() {
+         return ip;
+      }
+
+      /**
+       * @param ip the ip to set
+       */
+      public void setIp(String ip) {
+         this.ip = ip;
+      }
+
+      /**
+       * @return the dhcp
+       */
+      public boolean isDhcp() {
+         return dhcp;
+      }
+
+      /**
+       * @param dhcp the dhcp to set
+       */
+      public void setDhcp(boolean dhcp) {
+         this.dhcp = dhcp;
+      }
    }
 
-   /**
-    * @param balancednics the balancednics to set
-    */
-   public void setBalancednics(List<Nic> balancednics) {
-      this.balancednics = balancednics;
+   public class Entities {
+
+      private Balancednics balancednics = new Balancednics();
+
+      /**
+       * @return the balancednics
+       */
+      public Balancednics getBalancednics() {
+         return balancednics;
+      }
+
+      /**
+       * @param balancednics the balancednics to set
+       */
+      public void setBalancednics(Balancednics balancednics) {
+         this.balancednics = balancednics;
+      }
    }
+
+   private Entities entities = new Entities();
+   private Properties properties = new Properties();
 }

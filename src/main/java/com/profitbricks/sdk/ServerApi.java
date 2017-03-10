@@ -16,66 +16,62 @@
 package com.profitbricks.sdk;
 
 import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.Helper;
 import com.profitbricks.rest.domain.PBObject;
 import com.profitbricks.rest.domain.Server;
-import com.profitbricks.rest.domain.raw.ServerRaw;
-import com.profitbricks.rest.domain.raw.ServersRaw;
+import com.profitbricks.rest.domain.Servers;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 /**
- *
  * @author jasmin.gacic
  */
 public class ServerApi extends ProfitbricksAPIBase {
 
-   public ServerApi() {
-      super("servers", "datacenters");
-   }
+    public ServerApi() {
+        super("servers", "datacenters");
+    }
 
-   public List<Server> getAllServers(String dataCenterId) throws RestClientException, IOException {
-      return Helper.convertServers(client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat(resource)
-              .concat(depth), null, ServersRaw.class));
-   }
+    public Servers getAllServers(String dataCenterId) throws RestClientException, IOException {
+        return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
+                .concat("/").concat(resource)
+                .concat(depth), null, Servers.class);
+    }
 
-   public Server getServer(String dataCenterId, String serverId) throws RestClientException, IOException {
-      return Helper.convertServer(client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat(resource).concat("/").concat(serverId)
-              .concat(depth), null, ServerRaw.class));
-   }
+    public Server getServer(String dataCenterId, String serverId) throws RestClientException, IOException {
+        return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
+                .concat("/").concat(resource).concat("/").concat(serverId)
+                .concat(depth), null, Server.class);
+    }
 
-   public Server createServer(String dataCenterId, ServerRaw server) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      return Helper.convertServer(client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat(resource), server, ServerRaw.class, 202));
-   }
+    public Server createServer(String dataCenterId, Server server) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        return client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
+                .concat("/").concat(resource), server, Server.class, 202);
+    }
 
-   public void deleteServer(String dataCenterId, String serverId) throws RestClientException, IOException {
-      client.delete(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat(resource).concat("/").concat(serverId), 202);
+    public void deleteServer(String dataCenterId, String serverId) throws RestClientException, IOException {
+        client.delete(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
+                .concat("/").concat(resource).concat("/").concat(serverId), 202);
 
-   }
+    }
 
-   public Server updateServer(String dataCenterId, String serverId, PBObject server) throws RestClientException, IOException,NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      return Helper.convertServer(client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat(resource).concat("/").concat(serverId), server, ServerRaw.class, 202));
+    public Server updateServer(String dataCenterId, String serverId, PBObject server) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        return client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
+                .concat("/").concat(resource).concat("/").concat(serverId), server, Server.class, 202);
 
-   }
+    }
 
-   public void rebootServer(String dataCenterId, String serverId) throws RestClientException, IOException {
-      client.execute(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat(resource).concat("/").concat(serverId).concat("/").concat("reboot"), 202);
-   }
+    public void rebootServer(String dataCenterId, String serverId) throws RestClientException, IOException {
+        client.execute(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
+                .concat("/").concat(resource).concat("/").concat(serverId).concat("/").concat("reboot"), 202);
+    }
 
-   public void startServer(String dataCenterId, String serverId) throws RestClientException, IOException {
-      client.execute(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat(resource).concat("/").concat(serverId).concat("/").concat("start"), 202);
-   }
+    public void startServer(String dataCenterId, String serverId) throws RestClientException, IOException {
+        client.execute(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
+                .concat("/").concat(resource).concat("/").concat(serverId).concat("/").concat("start"), 202);
+    }
 
-   public void stopServer(String dataCenterId, String serverId) throws RestClientException, IOException {
-      client.execute(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat(resource).concat("/").concat(serverId).concat("/").concat("stop"), 202);
-   }
+    public void stopServer(String dataCenterId, String serverId) throws RestClientException, IOException {
+        client.execute(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
+                .concat("/").concat(resource).concat("/").concat(serverId).concat("/").concat("stop"), 202);
+    }
 }

@@ -17,9 +17,9 @@ package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.Image;
+import com.profitbricks.rest.domain.Images;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
-import java.util.List;
 import static org.junit.Assert.assertNotNull;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -36,9 +36,9 @@ public class ImageTest {
    @BeforeClass
    public static void getAllImages() throws RestClientException, IOException {
       profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
-      List<Image> images = profitbricksApi.getImageApi().getAllImages();
+      Images images = profitbricksApi.getImageApi().getAllImages();
       assertNotNull(images);
-      imageId = images.get(0).getId();
+      imageId = images.getItems().get(0).getId();
    }
 
    @Test

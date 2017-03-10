@@ -17,9 +17,9 @@ package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.*;
-import com.profitbricks.rest.domain.raw.DataCenterRaw;
-import com.profitbricks.rest.domain.raw.ServerRaw;
-import com.profitbricks.rest.domain.raw.VolumeRaw;
+import com.profitbricks.rest.domain.DataCenter;
+import com.profitbricks.rest.domain.Server;
+import com.profitbricks.rest.domain.Volume;
 
 import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 
@@ -52,17 +52,17 @@ public class VolumeTest {
     public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
 
-        imageId = getImageId("ubuntu-16", Location.US_LAS.value());
-        DataCenterRaw datacenter = new DataCenterRaw();
+        imageId = getImageId("ubuntu-16", "us/las", "HDD");
+        DataCenter datacenter = new DataCenter();
         datacenter.getProperties().setName("SDK TEST VOLUME - Data Center 28/7 1153");
-        datacenter.getProperties().setLocation(Location.US_LAS.value());
+        datacenter.getProperties().setLocation("us/las");
         datacenter.getProperties().setDescription("SDK TEST Description");
 
         DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
         waitTillProvisioned(newDatacenter.getRequestId());
         dataCenterId = newDatacenter.getId();
 
-        ServerRaw server = new ServerRaw();
+        Server server = new Server();
         server.getProperties().setName("SDK TEST VOLUME - Server");
         server.getProperties().setRam("1024");
         server.getProperties().setCores("1");
@@ -73,7 +73,7 @@ public class VolumeTest {
         waitTillProvisioned(newServer.getRequestId());
         serverId = newServer.getId();
 
-        VolumeRaw volume = new VolumeRaw();
+        Volume volume = new Volume();
         volume.getProperties().setName("SDK TEST VOLUME - Volume");
         volume.getProperties().setSize("10");
         volume.getProperties().setImage(imageId); //"Ubuntu-15.04-server-2015-07-01"
@@ -91,11 +91,11 @@ public class VolumeTest {
 
     }
 
-    public static String getImageId(String imageName, String location) throws RestClientException, IOException {
-        List<Image> images = profitbricksApi.getImageApi().getAllImages();
-        for (Image image : images) {
-            if (image.getName().toLowerCase().contains(imageName.toLowerCase()) && image.getLocation().equals(location)
-                    && image.getIsPublic()) {
+    public static String getImageId(String imageName, String location, String type) throws RestClientException, IOException {
+        Images images = profitbricksApi.getImageApi().getAllImages();
+        for (Image image : images.getItems()) {
+            if (image.getProperties().getName().toLowerCase().contains(imageName.toLowerCase()) && image.getProperties().getLocation().equals(location)
+                    && image.getProperties().getIsPublic() && image.getProperties().getImageType().equals(type)) {
                 return image.getId();
             }
         }
@@ -119,12 +119,12 @@ public class VolumeTest {
     }
 
     public void testGetAllVolumes() throws RestClientException, IOException {
-        List<Volume> volumes = profitbricksApi.getVolumeApi().getAllVolumes(dataCenterId);
+        Volumes volumes = profitbricksApi.getVolumeApi().getAllVolumes(dataCenterId);
         assertNotNull(volumes);
     }
 
     public void testGetAllAttachedVolumes() throws RestClientException, IOException {
-        List<Volume> volumes = profitbricksApi.getVolumeApi().getAllVolumes(dataCenterId, serverId);
+        Volumes volumes = profitbricksApi.getVolumeApi().getAllVolumes(dataCenterId, serverId);
         assertNotNull(volumes);
     }
 
