@@ -16,14 +16,11 @@
 package com.profitbricks.sdk;
 
 import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.Helper;
 import com.profitbricks.rest.domain.Image;
 import com.profitbricks.rest.domain.PBObject;
-import com.profitbricks.rest.domain.raw.ImageRaw;
-import com.profitbricks.rest.domain.raw.ImagesRaw;
+import com.profitbricks.rest.domain.Images;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 /**
  *
@@ -35,12 +32,12 @@ public class ImageApi extends ProfitbricksAPIBase {
       super("images", null);
    }
 
-   public List<Image> getAllImages() throws RestClientException, IOException {
-      return Helper.convertImages(client.get(getUrlBase().concat(resource).concat(depth), null, ImagesRaw.class));
+   public Images getAllImages() throws RestClientException, IOException {
+      return client.get(getUrlBase().concat(resource).concat(depth), null, Images.class);
    }
 
    public Image getImage(String imageId) throws RestClientException, IOException {
-      return Helper.convertImage(client.get(getUrlBase().concat(resource).concat("/").concat(imageId).concat(depth), null, ImageRaw.class));
+      return client.get(getUrlBase().concat(resource).concat("/").concat(imageId).concat(depth), null, Image.class);
    }
 
    public void deleteImage(String imageId) throws RestClientException, IOException {
@@ -48,7 +45,7 @@ public class ImageApi extends ProfitbricksAPIBase {
    }
 
    public Image updateImage(String imageId, PBObject object) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      return Helper.convertImage(client.update(getUrlBase().concat(resource).concat("/").concat(imageId), object, ImageRaw.class, 202));
+      return client.update(getUrlBase().concat(resource).concat("/").concat(imageId), object, Image.class, 202);
    }
 
 }

@@ -24,110 +24,161 @@ import java.util.List;
  */
 public class Nic extends ProfitbricksBase {
 
-   private String mac;
-   private List<String> ips = new ArrayList<String>();
-   private boolean dhcp;
-   private String lan;
-   private boolean firewallActive;
-   private Boolean nat;
-   private List<FirewallRule> firewallrules = new ArrayList<FirewallRule>();
-
    /**
-    * @return the mac
+    * @return the properties
     */
-   public String getMac() {
-      return mac;
+   public Properties getProperties() {
+      return properties;
    }
 
    /**
-    * @param mac the mac to set
+    * @param properties the properties to set
     */
-   public void setMac(String mac) {
-      this.mac = mac;
+   public void setProperties(Properties properties) {
+      this.properties = properties;
    }
 
    /**
-    * @return the ips
+    * @return the entities
     */
-   public List<String> getIps() {
-      return ips;
+   public Entities getEntities() {
+      return entities;
    }
 
    /**
-    * @param ips the ips to set
+    * @param entities the entities to set
     */
-   public void setIps(List<String> ips) {
-      this.ips = ips;
+   public void setEntities(Entities entities) {
+      this.entities = entities;
    }
 
-   /**
-    * @return the dhcp
-    */
-   public boolean isDhcp() {
-      return dhcp;
+   public class Properties {
+
+      private String name;
+      private String mac;
+      private List<String> ips = new ArrayList<String>();
+      private boolean dhcp;
+      private String lan;
+      private Boolean nat;
+      private boolean firewallActive;
+
+      /**
+       * @return the name
+       */
+      public String getName() {
+         return name;
+      }
+
+      /**
+       * @param name the name to set
+       */
+      public void setName(String name) {
+         this.name = name;
+      }
+
+      /**
+       * @return the mac
+       */
+      public String getMac() {
+         return mac;
+      }
+
+      /**
+       * @param mac the mac to set
+       */
+      public void setMac(String mac) {
+         this.mac = mac;
+      }
+
+      /**
+       * @return the ips
+       */
+      public List<String> getIps() {
+         return ips;
+      }
+
+      /**
+       * @param ips the ips to set
+       */
+      public void setIps(List<String> ips) {
+         this.ips = ips;
+      }
+
+      /**
+       * @return the dhcp
+       */
+      public boolean isDhcp() {
+         return dhcp;
+      }
+
+      /**
+       * @param dhcp the dhcp to set
+       */
+      public void setDhcp(boolean dhcp) {
+         this.dhcp = dhcp;
+      }
+
+      /**
+       * @return the lan
+       */
+      public String getLan() {
+         return lan;
+      }
+
+      /**
+       * @param lan the lan to set
+       */
+      public void setLan(String lan) {
+         this.lan = lan;
+      }
+
+      /**
+       * @return the firewallActive
+       */
+      public boolean isFirewallActive() {
+         return firewallActive;
+      }
+
+      /**
+       * @param firewallActive the firewallActive to set
+       */
+      public void setFirewallActive(boolean firewallActive) {
+         this.firewallActive = firewallActive;
+      }
+
+      /**
+       * @return the nat
+       */
+      public Boolean getNat() {
+         return nat;
+      }
+
+      /**
+       * @param nat the nat to set
+       */
+      public void setNat(Boolean nat) {
+         this.nat = nat;
+      }
    }
 
-   /**
-    * @param dhcp the dhcp to set
-    */
-   public void setDhcp(boolean dhcp) {
-      this.dhcp = dhcp;
-   }
+   public class Entities {
 
-   /**
-    * @return the lan
-    */
-   public String getLan() {
-      return lan;
-   }
+      private FirewallRules firewallrules = new FirewallRules();
 
-   /**
-    * @param lan the lan to set
-    */
-   public void setLan(String lan) {
-      this.lan = lan;
-   }
+      /**
+       * @return the firewallrules
+       */
+      public FirewallRules getFirewallrules() {
+         return firewallrules;
+      }
 
-   /**
-    * @return the firewallActive
-    */
-   public boolean isFirewallActive() {
-      return firewallActive;
+      /**
+       * @param firewallrules the firewallrules to set
+       */
+      public void setFirewallrules(FirewallRules firewallrules) {
+         this.firewallrules = firewallrules;
+      }
    }
-
-   /**
-    * @param firewallActive the firewallActive to set
-    */
-   public void setFirewallActive(boolean firewallActive) {
-      this.firewallActive = firewallActive;
-   }
-
-   /**
-    * @return the firewallrules
-    */
-   public List<FirewallRule> getFirewallrules() {
-      return firewallrules;
-   }
-
-   /**
-    * @param firewallrules the firewallrules to set
-    */
-   public void setFirewallrules(List<FirewallRule> firewallrules) {
-      this.firewallrules = firewallrules;
-   }
-
-   /**
-    * @return the nat
-    */
-   public Boolean getNat() {
-      return nat;
-   }
-
-   /**
-    * @param nat the nat to set
-    */
-   public void setNat(Boolean nat) {
-      this.nat = nat;
-   }
-
+   private Properties properties = new Properties();
+   private Entities entities = new Entities();
 }

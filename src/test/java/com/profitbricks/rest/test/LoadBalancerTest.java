@@ -16,12 +16,8 @@
 package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.DataCenter;
-import com.profitbricks.rest.domain.LoadBalancer;
-import com.profitbricks.rest.domain.Location;
-import com.profitbricks.rest.domain.PBObject;
-import com.profitbricks.rest.domain.raw.DataCenterRaw;
-import com.profitbricks.rest.domain.raw.LoadBalancerRaw;
+import com.profitbricks.rest.domain.*;
+
 import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
@@ -46,19 +42,19 @@ public class LoadBalancerTest {
     public static void setUp() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
 
-        DataCenterRaw datacenter = new DataCenterRaw();
+        DataCenter datacenter = new DataCenter();
 
         datacenter.getProperties().setName("SDK TEST LOADBALANCER - Data center");
-        datacenter.getProperties().setLocation(Location.US_LAS.value());
+        datacenter.getProperties().setLocation("us/las");
         datacenter.getProperties().setDescription("SDK TEST Description");
 
         DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
         dataCenterId = newDatacenter.getId();
-        assertEquals(newDatacenter.getName(), datacenter.getProperties().getName());
+        assertEquals(newDatacenter.getProperties().getName(), datacenter.getProperties().getName());
         waitTillProvisioned(newDatacenter.getRequestId());
 
-        LoadBalancerRaw loadBalancer = new LoadBalancerRaw();
-        LoadBalancerRaw.Properties properties = new LoadBalancerRaw.Properties();
+        LoadBalancer loadBalancer = new LoadBalancer();
+        LoadBalancer.Properties properties = new LoadBalancer.Properties();
         properties.setName("SDK TEST LOADBALANCER - LoadBalancer");
         properties.setIp("123.123.123.125");
         loadBalancer.setProperties(properties);
@@ -80,7 +76,7 @@ public class LoadBalancerTest {
     }
 
     public void getAllLoadBalancers() throws RestClientException, IOException {
-        List<LoadBalancer> loadbalancers = profitbricksApi.getLoadbalancerApi().getAllLoadBalancers(dataCenterId);
+        LoadBalancers loadbalancers = profitbricksApi.getLoadbalancerApi().getAllLoadBalancers(dataCenterId);
         assertNotNull(loadbalancers);
     }
 
@@ -95,7 +91,7 @@ public class LoadBalancerTest {
         object.setName("SDK TEST LOADBALANCER - LoadBalancer - Changed");
         LoadBalancer loadBalancer = profitbricksApi.getLoadbalancerApi().updateLoadBalancer(dataCenterId, loadBalancerId, object);
         assertNotNull(loadBalancer);
-        assertEquals(object.getName(), loadBalancer.getName());
+        assertEquals(object.getName(), loadBalancer.getProperties().getName());
     }
 
     private void deleteLoadBalancer() throws RestClientException, IOException {

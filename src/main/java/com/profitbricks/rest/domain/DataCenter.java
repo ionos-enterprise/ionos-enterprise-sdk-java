@@ -15,8 +15,7 @@
  */
 package com.profitbricks.rest.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  *
@@ -24,106 +23,163 @@ import java.util.List;
  */
 public class DataCenter extends ProfitbricksBase {
 
-   private String description;
-   private String location;
-   private String version;
-   private List<Server> servers = new ArrayList<Server>();
-   private List<Volume> volumes = new ArrayList<Volume>();
-   private List<LoadBalancer> loadbalancers = new ArrayList<LoadBalancer>();
-   private List<Lan> lans = new ArrayList<Lan>();
+    private Properties properties = new Properties();
+    private Entities entities;
 
-   /**
-    * @param location the location to set
-    */
-   public void setLocation(String location) {
-      this.location = location;
-   }
+    /**
+     * @return the properties
+     */
+    public Properties getProperties() {
+        return properties;
+    }
 
-   public String getLocation() {
-      return this.location;
-   }
+    /**
+     * @param properties the properties to set
+     */
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
 
-   /**
-    * @return the description
-    */
-   public String getDescription() {
-      return description;
-   }
+    /**
+     * @return the entities
+     */
+    public Entities getEntities() {
+        if (entities == null) {
+            entities = new Entities();
+        }
+        return entities;
+    }
 
-   /**
-    * @param description the description to set
-    */
-   public void setDescription(String description) {
-      this.description = description;
-   }
+    /**
+     * @param entities the entities to set
+     */
+    public void setEntities(Entities entities) {
+        this.entities = entities;
+    }
 
-   /**
-    * @return the version
-    */
-   public String getVersion() {
-      return version;
-   }
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public class Properties {
 
-   /**
-    * @param version the version to set
-    */
-   public void setVersion(String version) {
-      this.version = version;
-   }
+        private String name;
+        private String description;
+        private String location;
+        private String version;
 
-   /**
-    * @return the servers
-    */
-   public List<Server> getServers() {
-      return servers;
-   }
+        /**
+         * @param location the location to set
+         */
+        public void setLocation(String location) {
+            this.location = location;
+        }
 
-   /**
-    * @param servers the servers to set
-    */
-   public void setServers(List<Server> servers) {
-      this.servers = servers;
-   }
+        public String getLocation() {
+            return this.location;
+        }
 
-   /**
-    * @return the volumes
-    */
-   public List<Volume> getVolumes() {
-      return volumes;
-   }
+        /**
+         * @return the name
+         */
+        public String getName() {
+            return name;
+        }
 
-   /**
-    * @param volumes the volumes to set
-    */
-   public void setVolumes(List<Volume> volumes) {
-      this.volumes = volumes;
-   }
+        /**
+         * @param name the name to set
+         */
+        public void setName(String name) {
+            this.name = name;
+        }
 
-   /**
-    * @return the loadbalancers
-    */
-   public List<LoadBalancer> getLoadbalancers() {
-      return loadbalancers;
-   }
+        /**
+         * @return the description
+         */
+        public String getDescription() {
+            return description;
+        }
 
-   /**
-    * @param loadbalancers the loadbalancers to set
-    */
-   public void setLoadbalancers(List<LoadBalancer> loadbalancers) {
-      this.loadbalancers = loadbalancers;
-   }
+        /**
+         * @param description the description to set
+         */
+        public void setDescription(String description) {
+            this.description = description;
+        }
 
-   /**
-    * @return the lans
-    */
-   public List<Lan> getLans() {
-      return lans;
-   }
+        /**
+         * @return the version
+         */
+        public String getVersion() {
+            return version;
+        }
 
-   /**
-    * @param lans the lans to set
-    */
-   public void setLans(List<Lan> lans) {
-      this.lans = lans;
-   }
+        /**
+         * @param version the version to set
+         */
+        public void setVersion(String version) {
+            this.version = version;
+        }
+    }
+
+    public class Entities {
+
+        private Servers servers = new Servers();
+        private Volumes volumes = new Volumes();
+        private LoadBalancers loadbalancers = new LoadBalancers();
+        private Lans lans = new Lans();
+
+        /**
+         * @return the servers
+         */
+        public Servers getServers() {
+            return servers;
+        }
+
+        /**
+         * @param servers the servers to set
+         */
+        public void setServers(Servers servers) {
+            this.servers = servers;
+        }
+
+        /**
+         * @return the volumes
+         */
+        public Volumes getVolumes() {
+            return volumes;
+        }
+
+        /**
+         * @param volumes the volumes to set
+         */
+        public void setVolumes(Volumes volumes) {
+            this.volumes = volumes;
+        }
+
+        /**
+         * @return the loadbalancers
+         */
+        public LoadBalancers getLoadbalancers() {
+            return loadbalancers;
+        }
+
+        /**
+         * @param loadbalancers the loadbalancers to set
+         */
+        public void setLoadbalancers(LoadBalancers loadbalancers) {
+            this.loadbalancers = loadbalancers;
+        }
+
+        /**
+         * @return the lans
+         */
+        public Lans getLans() {
+            return lans;
+        }
+
+        /**
+         * @param lans the lans to set
+         */
+        public void setLans(Lans lans) {
+            this.lans = lans;
+        }
+    }
 }

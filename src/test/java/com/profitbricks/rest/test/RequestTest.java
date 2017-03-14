@@ -17,7 +17,7 @@ package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.DataCenter;
-import com.profitbricks.rest.domain.raw.DataCenterRaw;
+import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.Request;
 import com.profitbricks.sdk.ProfitbricksApi;
@@ -43,16 +43,16 @@ public class RequestTest {
     @BeforeClass
     public static void setUp() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
-        DataCenterRaw datacenter = new DataCenterRaw();
+        DataCenter datacenter = new DataCenter();
 
         datacenter.getProperties().setName("SDK TEST DC - Data center");
-        datacenter.getProperties().setLocation(Location.US_LAS.value());
+        datacenter.getProperties().setLocation("us/las");
         datacenter.getProperties().setDescription("SDK TEST Description");
 
         newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
         requestId = newDatacenter.getRequestId();
         dataCenterId = newDatacenter.getId();
-        assertEquals(newDatacenter.getName(), datacenter.getProperties().getName());
+        assertEquals(newDatacenter.getProperties().getName(), datacenter.getProperties().getName());
     }
 
     @Test

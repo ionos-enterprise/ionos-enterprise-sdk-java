@@ -16,16 +16,8 @@
 package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.DataCenter;
-import com.profitbricks.rest.domain.LoadBalancer;
-import com.profitbricks.rest.domain.Location;
-import com.profitbricks.rest.domain.Nic;
-import com.profitbricks.rest.domain.PBObject;
-import com.profitbricks.rest.domain.Server;
-import com.profitbricks.rest.domain.raw.DataCenterRaw;
-import com.profitbricks.rest.domain.raw.LoadBalancerRaw;
-import com.profitbricks.rest.domain.raw.NicRaw;
-import com.profitbricks.rest.domain.raw.ServerRaw;
+import com.profitbricks.rest.domain.*;
+
 import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
@@ -52,16 +44,16 @@ public class NicTest {
    @BeforeClass
    public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
       profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
-      DataCenterRaw datacenter = new DataCenterRaw();
+      DataCenter datacenter = new DataCenter();
       datacenter.getProperties().setName("SDK TEST NIC - Server");
-      datacenter.getProperties().setLocation(Location.US_LAS.value());
+      datacenter.getProperties().setLocation("us/las");
       datacenter.getProperties().setDescription("SDK TEST Description");
 
       DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
       dataCenterId = newDatacenter.getId();
 
-      LoadBalancerRaw loadBalancer = new LoadBalancerRaw();
-      LoadBalancerRaw.Properties properties = new LoadBalancerRaw.Properties();
+      LoadBalancer loadBalancer = new LoadBalancer();
+      LoadBalancer.Properties properties = new LoadBalancer.Properties();
       properties.setName("SDK TEST NIC - LoadBalancer");
       properties.setIp("123.123.129.132");
       loadBalancer.setProperties(properties);
@@ -72,7 +64,7 @@ public class NicTest {
 
       loadBalancerId = newLoadBalancer.getId();
 
-      ServerRaw server = new ServerRaw();
+      Server server = new Server();
       server.getProperties().setName("SDK TEST NIC - Server");
       server.getProperties().setRam("1024");
       server.getProperties().setCores("4");
@@ -83,7 +75,7 @@ public class NicTest {
 
       serverId = newServer.getId();
 
-      NicRaw nic = new NicRaw();
+      Nic nic = new Nic();
 
       nic.getProperties().setName("SDK TEST NIC - Nic");
       nic.getProperties().setLan("1");
@@ -118,7 +110,7 @@ public class NicTest {
       Nic nic = profitbricksApi.getNicApi().updateNic(dataCenterId, serverId, nicId, object);
 
       assertNotNull(nic);
-      assertEquals(object.getName(), nic.getName());
+      assertEquals(object.getName(), nic.getProperties().getName());
       waitTillProvisioned(nic.getRequestId());
    }
 
@@ -129,7 +121,7 @@ public class NicTest {
    }
 
    public void getAllNics() throws RestClientException, IOException {
-      List<Nic> nics = profitbricksApi.getNicApi().getAllNics(dataCenterId, serverId);
+      Nics nics = profitbricksApi.getNicApi().getAllNics(dataCenterId, serverId);
       assertNotNull(nics);
    }
 
@@ -145,7 +137,7 @@ public class NicTest {
    }
 
    private void listAssignedNics() throws RestClientException, IOException {
-      List<Nic> nics = profitbricksApi.getNicApi().getAllBalancedNics(dataCenterId, loadBalancerId, serverId);
+      Nics nics = profitbricksApi.getNicApi().getAllBalancedNics(dataCenterId, loadBalancerId);
       assertNotNull(nics);
    }
 

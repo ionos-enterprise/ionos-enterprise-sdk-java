@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright 2015.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,72 +15,96 @@
  */
 package com.profitbricks.rest.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author jasmin.gacic
- */
-public class IPBlock extends ProfitbricksBase {
+ /**
+  *
+  * @author jasmin.gacic
+  */
+ public class IPBlock extends ProfitbricksBase {
 
-   private List<String> ips;
-   private String location;
-   private String size;
-   private String name;
+     private Properties properties = new Properties();
 
-   /**
-    * @return the ips
-    */
-   public List<String> getIps() {
-      return ips;
-   }
+     /**
+      * @return the properties
+      */
+     public Properties getProperties() {
+         return properties;
+     }
 
-   /**
-    * @param ips the ips to set
-    */
-   public void setIps(List<String> ips) {
-      this.ips = ips;
-   }
+     /**
+      * @param properties the properties to set
+      */
+     public void setProperties(Properties properties) {
+         this.properties = properties;
+     }
 
-   /**
-    * @return the location
-    */
-   public String getLocation() {
-      return location;
-   }
+     //@JsonIgnoreProperties(ignoreUnknown = true)
+     public static class Properties {
 
-   /**
-    * @param location the location to set
-    */
-   public void setLocation(String location) {
-      this.location = location;
-   }
+         private List<String> ips;
+         private String location;
+         private String size;
+         private String name;
 
-   /**
-    * @return the size
-    */
-   public String getSize() {
-      return size;
-   }
+         /**
+          * @return the ips
+          */
+         public List<String> getIps() {
+             return ips;
+         }
 
-   /**
-    * @param size the size to set
-    */
-   public void setSize(String size) {
-      this.size = size;
-   }
+         /**
+          * @param ips the ips to set
+          */
+         public void setIps(List<String> ips) {
+             if (ips == null) {
+                 ips = new ArrayList<String>();
+             }
+             this.ips = ips;
+         }
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
+         /**
+          * @return the location
+          */
+         public String getLocation() {
+             return location;
+         }
 
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-}
+         /**
+          * @param location the location to set
+          */
+         public void setLocation(String location) {
+             this.location = location;
+         }
+
+         /**
+          * @return the size
+          */
+         public String getSize() {
+             return size;
+         }
+
+         /**
+          * @param size the size to set
+          */
+         public void setSize(String size) {
+             this.size = size;
+         }
+
+         /**
+          * @return the name
+          */
+         public String getName() {
+             return name;
+         }
+
+         /**
+          * @param name the name to set
+          */
+         public void setName(String name) {
+             this.name = name;
+         }
+     }
+ }

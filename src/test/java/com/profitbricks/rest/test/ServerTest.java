@@ -16,18 +16,15 @@
 package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.DataCenter;
-import com.profitbricks.rest.domain.Location;
-import com.profitbricks.rest.domain.PBObject;
-import com.profitbricks.rest.domain.Server;
-import com.profitbricks.rest.domain.raw.DataCenterRaw;
-import com.profitbricks.rest.domain.raw.ServerRaw;
+import com.profitbricks.rest.domain.*;
+
 import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
+
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 import org.junit.AfterClass;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.BeforeClass;
@@ -47,16 +44,16 @@ public class ServerTest {
    public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
       profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
 
-      DataCenterRaw datacenter = new DataCenterRaw();
+      DataCenter datacenter = new DataCenter();
       datacenter.getProperties().setName("SDK TEST SERVER - Server");
-      datacenter.getProperties().setLocation(Location.US_LAS.value());
+      datacenter.getProperties().setLocation("us/las");
       datacenter.getProperties().setDescription("SDK TEST Description");
 
       DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
       waitTillProvisioned(newDatacenter.getRequestId());
       dataCenterId = newDatacenter.getId();
 
-      ServerRaw server = new ServerRaw();
+      Server server = new Server();
       server.getProperties().setName("SDK TEST SERVER - Server");
       server.getProperties().setRam("1024");
       server.getProperties().setCores("1");
@@ -86,7 +83,7 @@ public class ServerTest {
 
    public void testGetAllServers() throws RestClientException, IOException {
       System.out.println("Getting All Servers");
-      List<Server> servers = profitbricksApi.getServerApi().getAllServers(dataCenterId);
+      Servers servers = profitbricksApi.getServerApi().getAllServers(dataCenterId);
       assertNotNull(servers);
    }
 
@@ -103,7 +100,7 @@ public class ServerTest {
       object.setName(newName);
 
       Server updatedServer = profitbricksApi.getServerApi().updateServer(dataCenterId, serverId, object);
-      assertEquals(newName, updatedServer.getName());
+      assertEquals(newName, updatedServer.getProperties().getName());
 
    }
 

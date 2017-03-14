@@ -15,164 +15,229 @@
  */
 package com.profitbricks.rest.domain;
 
-import com.profitbricks.rest.domain.raw.ImageRaw;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- *
  * @author jasmin.gacic
  */
 public class Server extends ProfitbricksBase {
 
-   private String cores;
-   private String ram;
-   private AvailabilityZone availabilityZone;
-   private Status vmState;
-   private ImageRaw bootVolume;
-   private ImageRaw bootCdrom;
-   private LicenceType licencetype;
-   private List<Nic> nics = new ArrayList<Nic>();
-   private List<Volume> volumes = new ArrayList<Volume>();
-   private List<Image> cdroms = new ArrayList<Image>();
+    /**
+     * @return the properties
+     */
+    public Properties getProperties() {
+        return properties;
+    }
 
-   /**
-    * @return the licencetype
-    */
-   public LicenceType getLicencetype() {
-      return licencetype;
-   }
+    /**
+     * @param properties the properties to set
+     */
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
 
-   /**
-    * @param licencetype the licencetype to set
-    */
-   public void setLicencetype(LicenceType licencetype) {
-      this.licencetype = licencetype;
-   }
+    /**
+     * @return the entities
+     */
+    public Entities getEntities() {
+        return entities;
+    }
 
-   /**
-    * @return the availabilityZone
-    */
-   public AvailabilityZone getAvailabilityZone() {
-      return availabilityZone;
-   }
+    /**
+     * @param entities the entities to set
+     */
+    public void setEntities(Entities entities) {
+        this.entities = entities;
+    }
 
-   /**
-    * @param availabilityZone the availabilityZone to set
-    */
-   public void setAvailabilityZone(AvailabilityZone availabilityZone) {
-      this.availabilityZone = availabilityZone;
-   }
+    public class Properties {
 
-   /**
-    * @return the cores
-    */
-   public String getCores() {
-      return cores;
-   }
+        private String name;
+        private String cores;
+        private String ram;
+        private AvailabilityZone availabilityZone;
+        private Status vmState;
+        private Image bootVolume;
+        private Image bootCdrom;
+        private LicenceType licencetype;
+        private String cpuFamily;
 
-   /**
-    * @param cores the cores to set
-    */
-   public void setCores(String cores) {
-      this.cores = cores;
-   }
+        /**
+         * @return the licencetype
+         */
+        public LicenceType getLicencetype() {
+            return licencetype;
+        }
 
-   /**
-    * @return the ram
-    */
-   public String getRam() {
-      return ram;
-   }
+        /**
+         * @param licencetype the licencetype to set
+         */
+        public void setLicencetype(String licencetype) {
+            this.licencetype.fromValue(licencetype);
+        }
 
-   /**
-    * @param ram the ram to set
-    */
-   public void setRam(String ram) {
-      this.ram = ram;
-   }
+        /**
+         * @return the availabilityZone
+         */
+        public AvailabilityZone getAvailabilityZone() {
+            return availabilityZone;
+        }
 
-   /**
-    * @return the vmState
-    */
-   public Status getVmState() {
-      return vmState;
-   }
+        /**
+         * @param availabilityZone the availabilityZone to set
+         */
+        public void setAvailabilityZone(String availabilityZone) {
+            this.availabilityZone.fromValue(availabilityZone);
+        }
 
-   /**
-    * @param vmState the vmState to set
-    */
-   public void setVmState(Status vmState) {
-      this.vmState = vmState;
-   }
+        /**
+         * @return the name
+         */
+        public String getName() {
+            return name;
+        }
 
-   /**
-    * @return the bootVolume
-    */
-   public ImageRaw getBootVolume() {
-      return bootVolume;
-   }
+        /**
+         * @param name the name to set
+         */
+        public void setName(String name) {
+            this.name = name;
+        }
 
-   /**
-    * @param bootVolume the bootVolume to set
-    */
-   public void setBootVolume(ImageRaw bootVolume) {
-      this.bootVolume = bootVolume;
-   }
+        /**
+         * @return the cores
+         */
+        public String getCores() {
+            return cores;
+        }
 
-   /**
-    * @return the bootCdrom
-    */
-   public ImageRaw getBootCdrom() {
-      return bootCdrom;
-   }
+        /**
+         * @param cores the cores to set
+         */
+        public void setCores(String cores) {
+            this.cores = cores;
+        }
 
-   /**
-    * @param bootCdrom the bootCdrom to set
-    */
-   public void setBootCdrom(ImageRaw bootCdrom) {
-      this.bootCdrom = bootCdrom;
-   }
+        /**
+         * @return the ram
+         */
+        public String getRam() {
+            return ram;
+        }
 
-   /**
-    * @return the nics
-    */
-   public List<Nic> getNics() {
-      return nics;
-   }
+        /**
+         * @param ram the ram to set
+         */
+        public void setRam(String ram) {
+            this.ram = ram;
+        }
 
-   /**
-    * @param nics the nics to set
-    */
-   public void setNics(List<Nic> nics) {
-      this.nics = nics;
-   }
+        /**
+         * @return the vmState
+         */
+        public Status getVmState() {
+            return vmState;
+        }
 
-   /**
-    * @return the volumes
-    */
-   public List<Volume> getVolumes() {
-      return volumes;
-   }
+        /**
+         * @param vmState the vmState to set
+         */
+        public void setVmState(Status vmState) {
+            this.vmState = vmState;
+        }
 
-   /**
-    * @param volumes the volumes to set
-    */
-   public void setVolumes(List<Volume> volumes) {
-      this.volumes = volumes;
-   }
+        /**
+         * @return the bootVolume
+         */
+        public Image getBootVolume() {
+            return bootVolume;
+        }
 
-   /**
-    * @return the cdroms
-    */
-   public List<Image> getCdroms() {
-      return cdroms;
-   }
+        /**
+         * @param bootVolume the bootVolume to set
+         */
+        public void setBootVolume(Image bootVolume) {
+            this.bootVolume = bootVolume;
+        }
 
-   /**
-    * @param cdroms the cdroms to set
-    */
-   public void setCdroms(List<Image> cdroms) {
-      this.cdroms = cdroms;
-   }
+        /**
+         * @return the bootCdrom
+         */
+        public Image getBootCdrom() {
+            return bootCdrom;
+        }
+
+        /**
+         * @param bootCdrom the bootCdrom to set
+         */
+        public void setBootCdrom(Image bootCdrom) {
+            this.bootCdrom = bootCdrom;
+        }
+
+        /**
+         * @return the cpuFamily
+         */
+        public String getCpuFamily() {
+            return cpuFamily;
+        }
+
+        /**
+         * @param cpuFamily the cpuFamily to set
+         */
+        public void setCpuFamily(String cpuFamily) {
+            this.cpuFamily = cpuFamily;
+        }
+
+    }
+
+    public class Entities {
+
+        private Nics nics = new Nics();
+        private Volumes volumes = new Volumes();
+        private Images cdroms = new Images();
+
+        /**
+         * @return the nics
+         */
+        public Nics getNics() {
+            return nics;
+        }
+
+        /**
+         * @param nics the nics to set
+         */
+        public void setNics(Nics nics) {
+            this.nics = nics;
+        }
+
+        /**
+         * @return the volumes
+         */
+        public Volumes getVolumes() {
+            return volumes;
+        }
+
+        /**
+         * @param volumes the volumes to set
+         */
+        public void setVolumes(Volumes volumes) {
+            this.volumes = volumes;
+        }
+
+        /**
+         * @return the cdroms
+         */
+        public Images getCdroms() {
+            return cdroms;
+        }
+
+        /**
+         * @param cdroms the cdroms to set
+         */
+        public void setCdroms(Images cdroms) {
+            this.cdroms = cdroms;
+        }
+    }
+
+    private Properties properties = new Properties();
+    private Entities entities = new Entities();
+
 }

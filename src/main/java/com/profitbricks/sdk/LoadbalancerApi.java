@@ -16,14 +16,11 @@
 package com.profitbricks.sdk;
 
 import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.Helper;
 import com.profitbricks.rest.domain.LoadBalancer;
 import com.profitbricks.rest.domain.PBObject;
-import com.profitbricks.rest.domain.raw.LoadBalancerRaw;
-import com.profitbricks.rest.domain.raw.LoadBalancersRaw;
+import com.profitbricks.rest.domain.LoadBalancers;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 /**
  *
@@ -35,26 +32,26 @@ public class LoadbalancerApi extends ProfitbricksAPIBase {
       super("loadbalancers", "datacenters");
    }
 
-   public List<LoadBalancer> getAllLoadBalancers(String dataCenterId) throws RestClientException, IOException {
-      return Helper.convertLoadBalancers(client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
+   public LoadBalancers getAllLoadBalancers(String dataCenterId) throws RestClientException, IOException {
+      return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource)
-              .concat(depth), null, LoadBalancersRaw.class));
+              .concat(depth), null, LoadBalancers.class);
    }
 
    public LoadBalancer getLoadBalancer(String dataCenterId, String loadBalancerId) throws RestClientException, IOException {
-      return Helper.convertLoadBalancer(client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
+      return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
               .concat("/").concat(resource).concat("/").concat(loadBalancerId)
-              .concat(depth), null, LoadBalancerRaw.class));
+              .concat(depth), null, LoadBalancer.class);
    }
 
-   public LoadBalancer createLoadBalancer(String dataCenterId, LoadBalancerRaw loadBalancer) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      return Helper.convertLoadBalancer(client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat(resource), loadBalancer, LoadBalancerRaw.class, 202));
+   public LoadBalancer createLoadBalancer(String dataCenterId, LoadBalancer loadBalancer) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+      return client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
+              .concat("/").concat(resource), loadBalancer, LoadBalancer.class, 202);
    }
 
    public LoadBalancer updateLoadBalancer(String dataCenterId, String loadBalancerId, PBObject loadBalancer) throws RestClientException, IOException,NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      return Helper.convertLoadBalancer(client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat(resource).concat("/").concat(loadBalancerId), loadBalancer, LoadBalancerRaw.class, 202));
+      return client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
+              .concat("/").concat(resource).concat("/").concat(loadBalancerId), loadBalancer, LoadBalancer.class, 202);
    }
 
    public void deleteLoadBalaner(String dataCenterId, String loadBalancerId) throws RestClientException, IOException {

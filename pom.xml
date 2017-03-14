@@ -4,9 +4,9 @@
     <groupId>com.profitbricks.rest.client</groupId>
     <artifactId>profitbricks-sdk-java</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>4.0.0</version>
     <name>profitbricks-sdk-java</name>
-    <url>http://maven.apache.org</url>
+    <url>https://github.com/profitbricks/profitbricks-sdk-java</url>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
