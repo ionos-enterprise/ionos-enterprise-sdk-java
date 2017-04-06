@@ -1,129 +1,199 @@
 /*
- * Copyright 2015.
+ * Copyright (c) 2017, ProfitBricks GmbH
+ * All rights reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *    This product includes software developed by the <organization>.
+ * 4. Neither the name of the ProfitBricks nor the
+ *    names of its contributors may be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THIS SOFTWARE IS PROVIDED BY ProfitBricks GmbH ''AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL ProfitBricks GmbH BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.profitbricks.rest.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  *
- * @author jasmin.gacic
+ * @author jasmin@stackpointcloud.com
  */
 public class DataCenter extends ProfitbricksBase {
 
-   private String description;
-   private String location;
-   private String version;
-   private List<Server> servers = new ArrayList<Server>();
-   private List<Volume> volumes = new ArrayList<Volume>();
-   private List<LoadBalancer> loadbalancers = new ArrayList<LoadBalancer>();
-   private List<Lan> lans = new ArrayList<Lan>();
+    private Properties properties = new Properties();
+    private Entities entities;
 
-   /**
-    * @param location the location to set
-    */
-   public void setLocation(String location) {
-      this.location = location;
-   }
+    /**
+     * @return the properties
+     */
+    public Properties getProperties() {
+        return properties;
+    }
 
-   public String getLocation() {
-      return this.location;
-   }
+    /**
+     * @param properties the properties to set
+     */
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
 
-   /**
-    * @return the description
-    */
-   public String getDescription() {
-      return description;
-   }
+    /**
+     * @return the entities
+     */
+    public Entities getEntities() {
+        if (entities == null) {
+            entities = new Entities();
+        }
+        return entities;
+    }
 
-   /**
-    * @param description the description to set
-    */
-   public void setDescription(String description) {
-      this.description = description;
-   }
+    /**
+     * @param entities the entities to set
+     */
+    public void setEntities(Entities entities) {
+        this.entities = entities;
+    }
 
-   /**
-    * @return the version
-    */
-   public String getVersion() {
-      return version;
-   }
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public class Properties {
 
-   /**
-    * @param version the version to set
-    */
-   public void setVersion(String version) {
-      this.version = version;
-   }
+        private String name;
+        private String description;
+        private String location;
+        private String version;
 
-   /**
-    * @return the servers
-    */
-   public List<Server> getServers() {
-      return servers;
-   }
+        /**
+         * @param location the location to set
+         */
+        public void setLocation(String location) {
+            this.location = location;
+        }
 
-   /**
-    * @param servers the servers to set
-    */
-   public void setServers(List<Server> servers) {
-      this.servers = servers;
-   }
+        public String getLocation() {
+            return this.location;
+        }
 
-   /**
-    * @return the volumes
-    */
-   public List<Volume> getVolumes() {
-      return volumes;
-   }
+        /**
+         * @return the name
+         */
+        public String getName() {
+            return name;
+        }
 
-   /**
-    * @param volumes the volumes to set
-    */
-   public void setVolumes(List<Volume> volumes) {
-      this.volumes = volumes;
-   }
+        /**
+         * @param name the name to set
+         */
+        public void setName(String name) {
+            this.name = name;
+        }
 
-   /**
-    * @return the loadbalancers
-    */
-   public List<LoadBalancer> getLoadbalancers() {
-      return loadbalancers;
-   }
+        /**
+         * @return the description
+         */
+        public String getDescription() {
+            return description;
+        }
 
-   /**
-    * @param loadbalancers the loadbalancers to set
-    */
-   public void setLoadbalancers(List<LoadBalancer> loadbalancers) {
-      this.loadbalancers = loadbalancers;
-   }
+        /**
+         * @param description the description to set
+         */
+        public void setDescription(String description) {
+            this.description = description;
+        }
 
-   /**
-    * @return the lans
-    */
-   public List<Lan> getLans() {
-      return lans;
-   }
+        /**
+         * @return the version
+         */
+        public String getVersion() {
+            return version;
+        }
 
-   /**
-    * @param lans the lans to set
-    */
-   public void setLans(List<Lan> lans) {
-      this.lans = lans;
-   }
+        /**
+         * @param version the version to set
+         */
+        public void setVersion(String version) {
+            this.version = version;
+        }
+    }
+
+    public class Entities {
+
+        private Servers servers = new Servers();
+        private Volumes volumes = new Volumes();
+        private LoadBalancers loadbalancers = new LoadBalancers();
+        private Lans lans = new Lans();
+
+        /**
+         * @return the servers
+         */
+        public Servers getServers() {
+            return servers;
+        }
+
+        /**
+         * @param servers the servers to set
+         */
+        public void setServers(Servers servers) {
+            this.servers = servers;
+        }
+
+        /**
+         * @return the volumes
+         */
+        public Volumes getVolumes() {
+            return volumes;
+        }
+
+        /**
+         * @param volumes the volumes to set
+         */
+        public void setVolumes(Volumes volumes) {
+            this.volumes = volumes;
+        }
+
+        /**
+         * @return the loadbalancers
+         */
+        public LoadBalancers getLoadbalancers() {
+            return loadbalancers;
+        }
+
+        /**
+         * @param loadbalancers the loadbalancers to set
+         */
+        public void setLoadbalancers(LoadBalancers loadbalancers) {
+            this.loadbalancers = loadbalancers;
+        }
+
+        /**
+         * @return the lans
+         */
+        public Lans getLans() {
+            return lans;
+        }
+
+        /**
+         * @param lans the lans to set
+         */
+        public void setLans(Lans lans) {
+            this.lans = lans;
+        }
+    }
 }

@@ -1,178 +1,242 @@
 /*
- * Copyright 2015.
+ * Copyright (c) 2017, ProfitBricks GmbH
+ * All rights reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *    This product includes software developed by the <organization>.
+ * 4. Neither the name of the ProfitBricks nor the
+ *    names of its contributors may be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THIS SOFTWARE IS PROVIDED BY ProfitBricks GmbH ''AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL ProfitBricks GmbH BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.profitbricks.rest.domain;
 
-import com.profitbricks.rest.domain.raw.ImageRaw;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- *
- * @author jasmin.gacic
+ * @author jasmin@stackpointcloud.com
  */
 public class Server extends ProfitbricksBase {
 
-   private String cores;
-   private String ram;
-   private AvailabilityZone availabilityZone;
-   private Status vmState;
-   private ImageRaw bootVolume;
-   private ImageRaw bootCdrom;
-   private LicenceType licencetype;
-   private List<Nic> nics = new ArrayList<Nic>();
-   private List<Volume> volumes = new ArrayList<Volume>();
-   private List<Image> cdroms = new ArrayList<Image>();
+    /**
+     * @return the properties
+     */
+    public Properties getProperties() {
+        return properties;
+    }
 
-   /**
-    * @return the licencetype
-    */
-   public LicenceType getLicencetype() {
-      return licencetype;
-   }
+    /**
+     * @param properties the properties to set
+     */
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
 
-   /**
-    * @param licencetype the licencetype to set
-    */
-   public void setLicencetype(LicenceType licencetype) {
-      this.licencetype = licencetype;
-   }
+    /**
+     * @return the entities
+     */
+    public Entities getEntities() {
+        return entities;
+    }
 
-   /**
-    * @return the availabilityZone
-    */
-   public AvailabilityZone getAvailabilityZone() {
-      return availabilityZone;
-   }
+    /**
+     * @param entities the entities to set
+     */
+    public void setEntities(Entities entities) {
+        this.entities = entities;
+    }
 
-   /**
-    * @param availabilityZone the availabilityZone to set
-    */
-   public void setAvailabilityZone(AvailabilityZone availabilityZone) {
-      this.availabilityZone = availabilityZone;
-   }
+    public class Properties {
 
-   /**
-    * @return the cores
-    */
-   public String getCores() {
-      return cores;
-   }
+        private String name;
+        private Integer cores;
+        private Integer ram;
+        private AvailabilityZone availabilityZone;
+        private Status vmState;
+        private Image bootVolume;
+        private Image bootCdrom;
+        private String cpuFamily;
 
-   /**
-    * @param cores the cores to set
-    */
-   public void setCores(String cores) {
-      this.cores = cores;
-   }
+        /**
+         * @return the availabilityZone
+         */
+        public AvailabilityZone getAvailabilityZone() {
+            return availabilityZone;
+        }
 
-   /**
-    * @return the ram
-    */
-   public String getRam() {
-      return ram;
-   }
+        /**
+         * @param availabilityZone the availabilityZone to set
+         */
+        public void setAvailabilityZone(String availabilityZone) {
+            this.availabilityZone.fromValue(availabilityZone);
+        }
 
-   /**
-    * @param ram the ram to set
-    */
-   public void setRam(String ram) {
-      this.ram = ram;
-   }
+        /**
+         * @return the name
+         */
+        public String getName() {
+            return name;
+        }
 
-   /**
-    * @return the vmState
-    */
-   public Status getVmState() {
-      return vmState;
-   }
+        /**
+         * @param name the name to set
+         */
+        public void setName(String name) {
+            this.name = name;
+        }
 
-   /**
-    * @param vmState the vmState to set
-    */
-   public void setVmState(Status vmState) {
-      this.vmState = vmState;
-   }
+        /**
+         * @return the cores
+         */
+        public Integer getCores() {
+            return cores;
+        }
 
-   /**
-    * @return the bootVolume
-    */
-   public ImageRaw getBootVolume() {
-      return bootVolume;
-   }
+        /**
+         * @param cores the cores to set
+         */
+        public void setCores(Integer cores) {
+            this.cores = cores;
+        }
 
-   /**
-    * @param bootVolume the bootVolume to set
-    */
-   public void setBootVolume(ImageRaw bootVolume) {
-      this.bootVolume = bootVolume;
-   }
+        /**
+         * @return the ram
+         */
+        public Integer getRam() {
+            return ram;
+        }
 
-   /**
-    * @return the bootCdrom
-    */
-   public ImageRaw getBootCdrom() {
-      return bootCdrom;
-   }
+        /**
+         * @param ram the ram to set
+         */
+        public void setRam(Integer ram) {
+            this.ram = ram;
+        }
 
-   /**
-    * @param bootCdrom the bootCdrom to set
-    */
-   public void setBootCdrom(ImageRaw bootCdrom) {
-      this.bootCdrom = bootCdrom;
-   }
+        /**
+         * @return the vmState
+         */
+        public Status getVmState() {
+            return vmState;
+        }
 
-   /**
-    * @return the nics
-    */
-   public List<Nic> getNics() {
-      return nics;
-   }
+        /**
+         * @param vmState the vmState to set
+         */
+        public void setVmState(Status vmState) {
+            this.vmState = vmState;
+        }
 
-   /**
-    * @param nics the nics to set
-    */
-   public void setNics(List<Nic> nics) {
-      this.nics = nics;
-   }
+        /**
+         * @return the bootVolume
+         */
+        public Image getBootVolume() {
+            return bootVolume;
+        }
 
-   /**
-    * @return the volumes
-    */
-   public List<Volume> getVolumes() {
-      return volumes;
-   }
+        /**
+         * @param bootVolume the bootVolume to set
+         */
+        public void setBootVolume(Image bootVolume) {
+            this.bootVolume = bootVolume;
+        }
 
-   /**
-    * @param volumes the volumes to set
-    */
-   public void setVolumes(List<Volume> volumes) {
-      this.volumes = volumes;
-   }
+        /**
+         * @return the bootCdrom
+         */
+        public Image getBootCdrom() {
+            return bootCdrom;
+        }
 
-   /**
-    * @return the cdroms
-    */
-   public List<Image> getCdroms() {
-      return cdroms;
-   }
+        /**
+         * @param bootCdrom the bootCdrom to set
+         */
+        public void setBootCdrom(Image bootCdrom) {
+            this.bootCdrom = bootCdrom;
+        }
 
-   /**
-    * @param cdroms the cdroms to set
-    */
-   public void setCdroms(List<Image> cdroms) {
-      this.cdroms = cdroms;
-   }
+        /**
+         * @return the cpuFamily
+         */
+        public String getCpuFamily() {
+            return cpuFamily;
+        }
+
+        /**
+         * @param cpuFamily the cpuFamily to set
+         */
+        public void setCpuFamily(String cpuFamily) {
+            this.cpuFamily = cpuFamily;
+        }
+
+    }
+
+    public class Entities {
+
+        private Nics nics = new Nics();
+        private Volumes volumes = new Volumes();
+        private Images cdroms = new Images();
+
+        /**
+         * @return the nics
+         */
+        public Nics getNics() {
+            return nics;
+        }
+
+        /**
+         * @param nics the nics to set
+         */
+        public void setNics(Nics nics) {
+            this.nics = nics;
+        }
+
+        /**
+         * @return the volumes
+         */
+        public Volumes getVolumes() {
+            return volumes;
+        }
+
+        /**
+         * @param volumes the volumes to set
+         */
+        public void setVolumes(Volumes volumes) {
+            this.volumes = volumes;
+        }
+
+        /**
+         * @return the cdroms
+         */
+        public Images getCdroms() {
+            return cdroms;
+        }
+
+        /**
+         * @param cdroms the cdroms to set
+         */
+        public void setCdroms(Images cdroms) {
+            this.cdroms = cdroms;
+        }
+    }
+
+    private Properties properties = new Properties();
+    private Entities entities = new Entities();
+
 }

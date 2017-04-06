@@ -1,72 +1,143 @@
 /*
- * Copyright 2015.
+ * Copyright (c) 2017, ProfitBricks GmbH
+ * All rights reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *    This product includes software developed by the <organization>.
+ * 4. Neither the name of the ProfitBricks nor the
+ *    names of its contributors may be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THIS SOFTWARE IS PROVIDED BY ProfitBricks GmbH ''AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL ProfitBricks GmbH BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package com.profitbricks.rest.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  *
- * @author jasmin.gacic
+ * @author jasmin@stackpointcloud.com
  */
 public class LoadBalancer extends ProfitbricksBase {
 
-   private String ip;
-   private boolean dhcp;
-   private List<Nic> balancednics = new ArrayList<Nic>();
-
    /**
-    * @return the ip
+    * @return the entities
     */
-   public String getIp() {
-      return ip;
+   public Entities getEntities() {
+      return entities;
    }
 
    /**
-    * @param ip the ip to set
+    * @param entities the entities to set
     */
-   public void setIp(String ip) {
-      this.ip = ip;
+   public void setEntities(Entities entities) {
+      if (entities == null)
+         this.entities = new Entities();
+
+      this.entities = entities;
    }
 
    /**
-    * @return the dhcp
+    * @return the properties
     */
-   public boolean isDhcp() {
-      return dhcp;
+   public Properties getProperties() {
+      return properties;
    }
 
    /**
-    * @param dhcp the dhcp to set
+    * @param properties the properties to set
     */
-   public void setDhcp(boolean dhcp) {
-      this.dhcp = dhcp;
+   public void setProperties(Properties properties) {
+      this.properties = properties;
    }
 
-   /**
-    * @return the balancednics
-    */
-   public List<Nic> getBalancednics() {
-      return balancednics;
+   public class Properties {
+
+      private String name;
+      private String ip;
+      private boolean dhcp;
+
+      /**
+       * @return the name
+       */
+      public String getName() {
+         return name;
+      }
+
+      /**
+       * @param name the name to set
+       */
+      public void setName(String name) {
+         this.name = name;
+      }
+
+      /**
+       * @return the ip
+       */
+      public String getIp() {
+         return ip;
+      }
+
+      /**
+       * @param ip the ip to set
+       */
+      public void setIp(String ip) {
+         this.ip = ip;
+      }
+
+      /**
+       * @return the dhcp
+       */
+      public boolean isDhcp() {
+         return dhcp;
+      }
+
+      /**
+       * @param dhcp the dhcp to set
+       */
+      public void setDhcp(boolean dhcp) {
+         this.dhcp = dhcp;
+      }
    }
 
-   /**
-    * @param balancednics the balancednics to set
-    */
-   public void setBalancednics(List<Nic> balancednics) {
-      this.balancednics = balancednics;
+   public class Entities {
+
+      @JsonProperty("balancednics")
+      private Nics balancednics = new Nics ();
+
+      /**
+       * @return the balancednics
+       */
+      public Nics  getBalancednics() {
+         return balancednics;
+      }
+
+      /**
+       * @param balancednics the balancednics to set
+       */
+      public void setBalancednics(Nics  balancednics) {
+         this.balancednics = balancednics;
+      }
    }
+
+   private Entities entities = new Entities();
+   private Properties properties = new Properties();
 }

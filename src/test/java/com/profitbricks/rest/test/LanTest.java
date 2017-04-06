@@ -1,97 +1,147 @@
 /*
- * Copyright 2015.
+ * Copyright (c) 2017, ProfitBricks GmbH
+ * All rights reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *    This product includes software developed by the <organization>.
+ * 4. Neither the name of the ProfitBricks nor the
+ *    names of its contributors may be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THIS SOFTWARE IS PROVIDED BY ProfitBricks GmbH ''AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL ProfitBricks GmbH BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.DataCenter;
-import com.profitbricks.rest.domain.Lan;
-import com.profitbricks.rest.domain.Location;
-import com.profitbricks.rest.domain.raw.DataCenterRaw;
-import com.profitbricks.rest.domain.raw.LanRaw;
+import com.profitbricks.rest.domain.*;
+
 import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
+
 import com.profitbricks.sdk.ProfitbricksApi;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.AfterClass;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- *
- * @author jasmin.gacic
+ * @author jasmin@stackpointcloud.com
  */
 public class LanTest {
 
-   static String dataCenterId;
-   static ProfitbricksApi profitbricksApi = new ProfitbricksApi();
-   private static String lanId;
+    static ProfitbricksApi profitbricksApi;
 
-   @BeforeClass
-   public static void createDataCenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+    static {
+        try {
+            profitbricksApi = new ProfitbricksApi();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-      profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
-      DataCenterRaw datacenter = new DataCenterRaw();
+    private static String dataCenterId;
+    private static String lanId;
 
-      datacenter.getProperties().setName("SDK TEST Lan - Data center");
-      datacenter.getProperties().setLocation(Location.US_LAS.value());
-      datacenter.getProperties().setDescription("SDK TEST Description");
+    @BeforeClass
+    public static void createDataCenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
 
-      DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
-      dataCenterId = newDatacenter.getId();
-      assertEquals(newDatacenter.getName(), datacenter.getProperties().getName());
-      waitTillProvisioned(newDatacenter.getRequestId());
+        profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
+        DataCenter datacenter = new DataCenter();
 
-      LanRaw lan = new LanRaw();
+        datacenter.getProperties().setName("SDK TEST Lan - Data center");
+        datacenter.getProperties().setLocation("us/las");
+        datacenter.getProperties().setDescription("SDK TEST Description");
 
-      lan.getProperties().setName("SDK TEST Lan - Lan");
-      lan.getProperties().setIsPublic(false);
+        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(datacenter);
+        dataCenterId = newDatacenter.getId();
+        assertEquals(newDatacenter.getProperties().getName(), datacenter.getProperties().getName());
+        waitTillProvisioned(newDatacenter.getRequestId());
 
-      Lan newLan = profitbricksApi.getLanApi().createLan(dataCenterId, lan);
-      lanId = newLan.getId();
-      assertNotNull(newLan);
-      waitTillProvisioned(newLan.getRequestId());
-   }
+        Lan lan = new Lan();
 
-   @Test
-   public void getAllLans() throws RestClientException, IOException {
-      List<Lan> lans = profitbricksApi.getLanApi().getAllLans(dataCenterId);
-      assertNotNull(lans);
-   }
+        lan.getProperties().setName("SDK TEST Lan - Lan");
+        lan.getProperties().setIsPublic(false);
 
-   @Test
-   public void getLan() throws RestClientException, IOException {
-      Lan lan = profitbricksApi.getLanApi().getLan(dataCenterId, lanId);
-      assertNotNull(lan);
-      assertEquals(lan.getId(), lanId);
-   }
+        Lan newLan = profitbricksApi.getLan().createLan(dataCenterId, lan);
+        lanId = newLan.getId();
+        assertNotNull(newLan);
+        waitTillProvisioned(newLan.getRequestId());
+    }
 
-   @Test
-   public void updateLan() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      Lan updatedLan = profitbricksApi.getLanApi().updateLan(dataCenterId, lanId, Boolean.TRUE);
-      assertEquals(updatedLan.getIsPublic(), true);
-      waitTillProvisioned(updatedLan.getRequestId());
+    @Test
+    public void getAllLans() throws RestClientException, IOException {
+        Lans lans = profitbricksApi.getLan().getAllLans(dataCenterId);
+        assertNotNull(lans);
+    }
 
-   }
+    @Test
+    public void getLan() throws RestClientException, IOException {
+        Lan lan = profitbricksApi.getLan().getLan(dataCenterId, lanId);
+        assertNotNull(lan);
+        assertEquals(lan.getId(), lanId);
+    }
 
-   @AfterClass
-   public static void cleanup() throws RestClientException, IOException {
-      //profitbricksApi.getLanApi().deleteLan(dataCenterId, lanId);
-      profitbricksApi.getDataCenterApi().deleteDataCenter(dataCenterId);
-   }
+    @Test
+    public void updateLan() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        Lan updatedLan = profitbricksApi.getLan().updateLan(dataCenterId, lanId, Boolean.TRUE);
+        assertEquals(updatedLan.getProperties().isIsPublic(), true);
+        waitTillProvisioned(updatedLan.getRequestId());
+
+    }
+
+    @Test
+    public void createLanComposite() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, RestClientException, IOException, InterruptedException {
+        DataCenter datacenter = new DataCenter();
+
+        datacenter.getProperties().setName("SDK TEST DC - Composite Data center");
+        datacenter.getProperties().setLocation("us/las");
+        datacenter.getProperties().setDescription("SDK TEST Description");
+
+        Lan lan = new Lan();
+
+        lan.getProperties().setName("SDK TEST Lan - Lan");
+        lan.getProperties().setIsPublic(false);
+
+        Lans lans = new Lans();
+        List<Lan> lanList = new ArrayList<Lan>();
+        lanList.add(lan);
+        lans.setItems(lanList);
+        datacenter.getEntities().setLans(lans);
+
+        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(datacenter);
+
+        waitTillProvisioned(newDatacenter.getRequestId());
+
+        profitbricksApi.getDataCenter().deleteDataCenter(newDatacenter.getId());
+    }
+
+    @AfterClass
+    public static void cleanup() throws RestClientException, IOException {
+        profitbricksApi.getDataCenter().deleteDataCenter(dataCenterId);
+    }
 }

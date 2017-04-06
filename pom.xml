@@ -4,9 +4,9 @@
     <groupId>com.profitbricks.rest.client</groupId>
     <artifactId>profitbricks-sdk-java</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>4.0.0</version>
     <name>profitbricks-sdk-java</name>
-    <url>http://maven.apache.org</url>
+    <url>https://github.com/profitbricks/profitbricks-sdk-java</url>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -25,7 +25,6 @@
             <version>2.4.1.2</version>
             <type>jar</type>
         </dependency>
-    
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
@@ -40,21 +39,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.7</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>17.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.novocode</groupId>
-            <artifactId>junit-interface</artifactId>
-            <version>0.9</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>1.9.5</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

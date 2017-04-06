@@ -1,88 +1,212 @@
 /*
- * Copyright 2015.
+ * Copyright (c) 2017, ProfitBricks GmbH
+ * All rights reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *    This product includes software developed by the <organization>.
+ * 4. Neither the name of the ProfitBricks nor the
+ *    names of its contributors may be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THIS SOFTWARE IS PROVIDED BY ProfitBricks GmbH ''AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL ProfitBricks GmbH BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.profitbricks.rest.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
- *
- * @author jasmin.gacic
+ * @author jasmin@stackpointcloud.com
  */
 public class CDRom extends ProfitbricksBase {
 
-   private Image image;
+    /**
+     * @return the properties
+     */
+    public Properties getProperties() {
+        return properties;
+    }
 
-   /**
-    * @return the image
-    */
-   public Image getImage() {
-      return image;
-   }
+    /**
+     * @param properties the properties to set
+     */
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
 
-   /**
-    * @param image the image to set
-    */
-   public void setImage(Image image) {
-      this.image = image;
-   }
+    public class Properties {
 
-   public static class Image {
+        private String name;
+        private String description;
+        private String location;
+        private Float size;
+        private Boolean cpuHotPlug;
+        private Boolean cpuHotUnplug;
+        private Boolean ramHotPlug;
+        private Boolean ramHotUnplug;
+        private Boolean nicHotPlug;
+        private Boolean nicHotUnplug;
+        private Boolean discVirtioHotPlug;
+        private Boolean discVirtioHotUnplug;
+        private Boolean discScsiHotPlug;
+        private Boolean discScsiHotUnplug;
+        private String licenceType;
+        private String imageType;
+        @JsonProperty("public")
+        private Boolean isPublic;
 
-      private String id;
-      private String type;
-      private String href;
+        public String getName() {
+            return name;
+        }
 
-      /**
-       * @return the id
-       */
-      public String getId() {
-         return id;
-      }
+        public void setName(String name) {
+            this.name = name;
+        }
 
-      /**
-       * @param id the id to set
-       */
-      public void setId(String id) {
-         this.id = id;
-      }
+        public String getDescription() {
+            return description;
+        }
 
-      /**
-       * @return the type
-       */
-      public String getType() {
-         return type;
-      }
+        public void setDescription(String description) {
+            this.description = description;
+        }
 
-      /**
-       * @param type the type to set
-       */
-      public void setType(String type) {
-         this.type = type;
-      }
+        public String getLocation() {
+            return location;
+        }
 
-      /**
-       * @return the href
-       */
-      public String getHref() {
-         return href;
-      }
+        public void setLocation(String location) {
+            this.location = location;
+        }
 
-      /**
-       * @param href the href to set
-       */
-      public void setHref(String href) {
-         this.href = href;
-      }
-   }
+        public Float getSize() {
+            return size;
+        }
+
+        public void setSize(Float size) {
+            this.size = size;
+        }
+
+        public Boolean getCpuHotPlug() {
+            return cpuHotPlug;
+        }
+
+        public void setCpuHotPlug(Boolean cpuHotPlug) {
+            this.cpuHotPlug = cpuHotPlug;
+        }
+
+        public Boolean getCpuHotUnplug() {
+            return cpuHotUnplug;
+        }
+
+        public void setCpuHotUnplug(Boolean cpuHotUnplug) {
+            this.cpuHotUnplug = cpuHotUnplug;
+        }
+
+        public Boolean getRamHotPlug() {
+            return ramHotPlug;
+        }
+
+        public void setRamHotPlug(Boolean ramHotPlug) {
+            this.ramHotPlug = ramHotPlug;
+        }
+
+        public Boolean getRamHotUnplug() {
+            return ramHotUnplug;
+        }
+
+        public void setRamHotUnplug(Boolean ramHotUnplug) {
+            this.ramHotUnplug = ramHotUnplug;
+        }
+
+        public Boolean getNicHotPlug() {
+            return nicHotPlug;
+        }
+
+        public void setNicHotPlug(Boolean nicHotPlug) {
+            this.nicHotPlug = nicHotPlug;
+        }
+
+        public Boolean getNicHotUnplug() {
+            return nicHotUnplug;
+        }
+
+        public void setNicHotUnplug(Boolean nicHotUnplug) {
+            this.nicHotUnplug = nicHotUnplug;
+        }
+
+        public Boolean getDiscVirtioHotPlug() {
+            return discVirtioHotPlug;
+        }
+
+        public void setDiscVirtioHotPlug(Boolean discVirtioHotPlug) {
+            this.discVirtioHotPlug = discVirtioHotPlug;
+        }
+
+        public Boolean getDiscVirtioHotUnplug() {
+            return discVirtioHotUnplug;
+        }
+
+        public void setDiscVirtioHotUnplug(Boolean discVirtioHotUnplug) {
+            this.discVirtioHotUnplug = discVirtioHotUnplug;
+        }
+
+        public Boolean getDiscScsiHotPlug() {
+            return discScsiHotPlug;
+        }
+
+        public void setDiscScsiHotPlug(Boolean discScsiHotPlug) {
+            this.discScsiHotPlug = discScsiHotPlug;
+        }
+
+        public Boolean getDiscScsiHotUnplug() {
+            return discScsiHotUnplug;
+        }
+
+        public void setDiscScsiHotUnplug(Boolean discScsiHotUnplug) {
+            this.discScsiHotUnplug = discScsiHotUnplug;
+        }
+
+        public String getLicenceType() {
+            return licenceType;
+        }
+
+        public void setLicenceType(String licenceType) {
+            this.licenceType = licenceType;
+        }
+
+        public String getImageType() {
+            return imageType;
+        }
+
+        public void setImageType(String imageType) {
+            this.imageType = imageType;
+        }
+
+        public Boolean getPublic() {
+            return isPublic;
+        }
+
+        public void setPublic(Boolean aPublic) {
+            isPublic = aPublic;
+        }
+    }
+
+    private Properties properties = new Properties();
 }

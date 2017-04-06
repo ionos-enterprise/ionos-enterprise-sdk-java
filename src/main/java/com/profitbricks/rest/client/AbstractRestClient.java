@@ -1,5 +1,5 @@
 /*
- * Copyright (c) <year>, <copyright holder>
+ * Copyright (c) 2017, ProfitBricks GmbH
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -12,14 +12,14 @@
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    This product includes software developed by the <organization>.
- * 4. Neither the name of the <organization> nor the
+ * 4. Neither the name of the ProfitBricks nor the
  *    names of its contributors may be used to endorse or promote products
  *    derived from this software without specific prior written permission.
  * 
- * THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDER> ''AS IS'' AND ANY
+ * THIS SOFTWARE IS PROVIDED BY ProfitBricks GmbH ''AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DISCLAIMED. IN NO EVENT SHALL ProfitBricks GmbH BE LIABLE FOR ANY
  * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -42,7 +42,6 @@ import java.util.Map;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -54,6 +53,9 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * @author jasmin@stackpointcloud.com
+ */
 public abstract class AbstractRestClient {
 
    protected final Logger logger = LoggerFactory.getLogger(getClass());
@@ -117,7 +119,7 @@ public abstract class AbstractRestClient {
    }
 
    protected HttpResponse execute(RequestInterceptor interceptor, HttpRequestBase request)
-           throws ClientProtocolException, IOException {
+           throws IOException {
       request = userAgentHeader(request);
       if (interceptor != null) {
          interceptor.intercept(request);
@@ -132,7 +134,7 @@ public abstract class AbstractRestClient {
 
       String method = request.getMethod();
       String path = request.getURI().toString();
-      logger.info("Send -> " + method + " " + path);
+      //logger.info("Send -> " + method + " " + path);
       HttpResponse response = null;
       try {
          response = execute(interceptor, request);
@@ -140,11 +142,7 @@ public abstract class AbstractRestClient {
          throw new RestClientException(e, response);
       }
       int status = response.getStatusLine().getStatusCode();
-      if (status >= 200 && status < 400) {
-         logger.info("[" + status + "] Successfully sent " + method + " " + path);
-      } else {
-         logger.error("[" + status + "] Failed to send " + method + " " + path);
-      }
+
       if (expectedStatus != status) {
          String content = "";
          try {

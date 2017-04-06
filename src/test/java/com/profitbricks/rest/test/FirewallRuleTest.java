@@ -1,37 +1,40 @@
 /*
- * Copyright 2015.
+ * Copyright (c) 2017, ProfitBricks GmbH
+ * All rights reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *    This product includes software developed by the <organization>.
+ * 4. Neither the name of the ProfitBricks nor the
+ *    names of its contributors may be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THIS SOFTWARE IS PROVIDED BY ProfitBricks GmbH ''AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL ProfitBricks GmbH BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.DataCenter;
-import com.profitbricks.rest.domain.FirewallRule;
-import com.profitbricks.rest.domain.Location;
-import com.profitbricks.rest.domain.Nic;
-import com.profitbricks.rest.domain.PBObject;
-import com.profitbricks.rest.domain.Protocol;
-import com.profitbricks.rest.domain.Server;
-import com.profitbricks.rest.domain.raw.DataCenterRaw;
-import com.profitbricks.rest.domain.raw.FirewallRuleRaw;
-import com.profitbricks.rest.domain.raw.NicRaw;
-import com.profitbricks.rest.domain.raw.ServerRaw;
+import com.profitbricks.rest.domain.*;
 import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -39,12 +42,19 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * @author jasmin.gacic
+ * @author jasmin@stackpointcloud.com
  */
 public class FirewallRuleTest {
 
-    static ProfitbricksApi profitbricksApi = new ProfitbricksApi();
-    static String dataCenterId;
+    static ProfitbricksApi profitbricksApi;
+
+    static {
+        try {
+            profitbricksApi = new ProfitbricksApi();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }    static String dataCenterId;
     static String serverId;
     private static String nicId;
     private static String firewallRuleId;
@@ -53,46 +63,46 @@ public class FirewallRuleTest {
     public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
 
-        DataCenterRaw datacenter = new DataCenterRaw();
+        DataCenter datacenter = new DataCenter();
         datacenter.getProperties().setName("SDK TEST FIREWALLRULES - Data Center");
-        datacenter.getProperties().setLocation(Location.US_LAS.value());
+        datacenter.getProperties().setLocation("us/las");
         datacenter.getProperties().setDescription("SDK TEST Description");
-        DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
+        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(datacenter);
         waitTillProvisioned(newDatacenter.getRequestId());
         dataCenterId = newDatacenter.getId();
 
-        ServerRaw server = new ServerRaw();
+        Server server = new Server();
         server.getProperties().setName("SDK TEST FIREWALLRULES - Server");
-        server.getProperties().setRam("1024");
-        server.getProperties().setCores("4");
+        server.getProperties().setRam(1024);
+        server.getProperties().setCores(4);
 
-        Server newServer = profitbricksApi.getServerApi().createServer(dataCenterId, server);
+        Server newServer = profitbricksApi.getServer().createServer(dataCenterId, server);
         waitTillProvisioned(newServer.getRequestId());
 
         assertNotNull(newServer);
         serverId = newServer.getId();
 
-        NicRaw nic = new NicRaw();
+        Nic nic = new Nic();
 
         nic.getProperties().setName("SDK TEST FIREWALLRULES - Nic");
         nic.getProperties().setLan("1");
 
         nic.getEntities().setFirewallrules(null);
 
-        Nic newNic = profitbricksApi.getNicApi().createNic(dataCenterId, serverId, nic);
+        Nic newNic = profitbricksApi.getNic().createNic(dataCenterId, serverId, nic);
         waitTillProvisioned(newNic.getRequestId());
 
         assertNotNull(newNic);
         nicId = newNic.getId();
 
-        FirewallRuleRaw firewallRule = new FirewallRuleRaw();
+        FirewallRule firewallRule = new FirewallRule();
 
         firewallRule.getProperties().setProtocol(Protocol.ICMP.toString());
         firewallRule.getProperties().setIcmpType("8");
         firewallRule.getProperties().setIcmpCode("0");
         firewallRule.getProperties().setName("SDK TEST FIREWALLRULES - FirewallRule");
 
-        FirewallRule newFirewallRule = profitbricksApi.getFirewallRuleApi().createFirewallRule(dataCenterId, serverId, nicId, firewallRule);
+        FirewallRule newFirewallRule = profitbricksApi.getFirewallRule().createFirewallRule(dataCenterId, serverId, nicId, firewallRule);
         waitTillProvisioned(newFirewallRule.getRequestId());
 
         assertNotNull(newFirewallRule);
@@ -107,31 +117,28 @@ public class FirewallRuleTest {
     }
 
     public void getAllFirewallRules() throws RestClientException, IOException {
-     System.out.println("getAllFirewallRules");
-        List<FirewallRule> fireWallRules = profitbricksApi.getFirewallRuleApi().getAllFirewallRules(dataCenterId, serverId, nicId);
+        FirewallRules fireWallRules = profitbricksApi.getFirewallRule().getAllFirewallRules(dataCenterId, serverId, nicId);
         assertNotNull(fireWallRules);
     }
 
     public void getFirewallRule() throws RestClientException, IOException {
-        System.out.println("getFirewallRule");
-        FirewallRule firewallRule = profitbricksApi.getFirewallRuleApi().getFirewallRule(dataCenterId, serverId, nicId, firewallRuleId);
+        FirewallRule firewallRule = profitbricksApi.getFirewallRule().getFirewallRule(dataCenterId, serverId, nicId, firewallRuleId);
         assertNotNull(firewallRule);
     }
 
     public void updateFirewallRule() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        System.out.println("updateFirewallRule");
-        PBObject object = new PBObject();
+        FirewallRule.Properties object = new FirewallRule().new Properties();
         object.setName("SDK TEST FIREWALLRULES - FirewallRule - changed");
 
-        FirewallRule firewallRule = profitbricksApi.getFirewallRuleApi().updateFirewWallRule(dataCenterId, serverId, nicId, firewallRuleId, object);
+        FirewallRule firewallRule = profitbricksApi.getFirewallRule().updateFirewWallRule(dataCenterId, serverId, nicId, firewallRuleId, object);
         waitTillProvisioned(firewallRule.getRequestId());
-        assertEquals(object.getName(), firewallRule.getName());
+        assertEquals(object.getName(), firewallRule.getProperties().getName());
     }
 
     @AfterClass
     public static void cleanup() throws RestClientException, IOException {
-        profitbricksApi.getFirewallRuleApi().deleteFirewallRule(dataCenterId, serverId, nicId, firewallRuleId);
-        profitbricksApi.getDataCenterApi().deleteDataCenter(dataCenterId);
+        profitbricksApi.getFirewallRule().deleteFirewallRule(dataCenterId, serverId, nicId, firewallRuleId);
+        profitbricksApi.getDataCenter().deleteDataCenter(dataCenterId);
     }
 
 }
