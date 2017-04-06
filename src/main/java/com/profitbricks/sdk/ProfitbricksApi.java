@@ -1,18 +1,33 @@
 /*
-* Copyright 2015.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
+ * Copyright (c) 2017, ProfitBricks GmbH
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *    This product includes software developed by the <organization>.
+ * 4. Neither the name of the ProfitBricks nor the
+ *    names of its contributors may be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY ProfitBricks GmbH ''AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL ProfitBricks GmbH BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package com.profitbricks.sdk;
 
 import org.apache.commons.codec.binary.Base64;
@@ -21,197 +36,197 @@ public class ProfitbricksApi {
 
     private String credentials;
 
-    public ProfitbricksApi() {
-        this.dataCenterApi = new DatacenterApi();
-        this.serverApi = new ServerApi();
-        this.volumeApi = new VolumeApi();
-        this.snapshotApi = new SnapshotApi();
-        this.loadbalancerApi = new LoadbalancerApi();
-        this.nicApi = new NicApi();
-        this.firewallRuleApi = new FirewallRuleApi();
-        this.imageApi = new ImageApi();
-        this.ipBlockApi = new IPBlockApi();
-        this.requestApi = new RequestApi();
-        this.lanApi = new LanApi();
-        this.locationApi = new LocationApi();
+    public ProfitbricksApi() throws Exception {
+        this.dataCenter = new Datacenter();
+        this.server = new Server();
+        this.volume = new Volume();
+        this.snapshot = new Snapshot();
+        this.loadbalancer = new Loadbalancer();
+        this.nic = new Nic();
+        this.firewallRule = new FirewallRule();
+        this.image = new Image();
+        this.ipBlock = new IPBlock();
+        this.request = new Request();
+        this.lan = new Lan();
+        this.location = new Location();
     }
 
-    private DatacenterApi dataCenterApi;
-    private ServerApi serverApi;
-    private VolumeApi volumeApi;
-    private SnapshotApi snapshotApi;
-    private LoadbalancerApi loadbalancerApi;
-    private NicApi nicApi;
-    private FirewallRuleApi firewallRuleApi;
-    private ImageApi imageApi;
-    private IPBlockApi ipBlockApi;
-    private RequestApi requestApi;
-    private LanApi lanApi;
-    private LocationApi locationApi;
+    private Datacenter dataCenter;
+    private Server server;
+    private Volume volume;
+    private Snapshot snapshot;
+    private Loadbalancer loadbalancer;
+    private Nic nic;
+    private FirewallRule firewallRule;
+    private Image image;
+    private IPBlock ipBlock;
+    private Request request;
+    private Lan lan;
+    private Location location;
 
     /**
-     * @return the dataCenterApi
+     * @return the dataCenter
      */
-    public DatacenterApi getDataCenterApi() {
-        this.dataCenterApi.setCredentials(credentials);
-        return dataCenterApi;
-    }
-
-    /**
-     * @param dataCenterApi the dataCenterApi to set
-     */
-    public void setDataCenterApi(DatacenterApi dataCenterApi) {
-        this.dataCenterApi = dataCenterApi;
+    public Datacenter getDataCenter() {
+        this.dataCenter.setCredentials(credentials);
+        return dataCenter;
     }
 
     /**
-     * @return the serverApi
+     * @param dataCenter the dataCenter to set
      */
-    public ServerApi getServerApi() {
-        this.serverApi.setCredentials(credentials);
-        return serverApi;
+    public void setDataCenter(Datacenter dataCenter) {
+        this.dataCenter = dataCenter;
     }
 
     /**
-     * @param serverApi the serverApi to set
+     * @return the server
      */
-    public void setServerApi(ServerApi serverApi) {
-        this.serverApi = serverApi;
+    public Server getServer() {
+        this.server.setCredentials(credentials);
+        return server;
     }
 
     /**
-     * @return the volumeApi
+     * @param server the server to set
      */
-    public VolumeApi getVolumeApi() {
-        this.volumeApi.setCredentials(credentials);
-        return volumeApi;
+    public void setServer(Server server) {
+        this.server = server;
     }
 
     /**
-     * @param volumeApi the volumeApi to set
+     * @return the volume
      */
-    public void setVolumeApi(VolumeApi volumeApi) {
-        this.volumeApi = volumeApi;
+    public Volume getVolume() {
+        this.volume.setCredentials(credentials);
+        return volume;
     }
 
     /**
-     * @return the snapshotApi
+     * @param volume the volume to set
      */
-    public SnapshotApi getSnapshotApi() {
-        this.snapshotApi.setCredentials(credentials);
-        return snapshotApi;
+    public void setVolume(Volume volume) {
+        this.volume = volume;
     }
 
     /**
-     * @param snapshotApi the snapshotApi to set
+     * @return the snapshot
      */
-    public void setSnapshotApi(SnapshotApi snapshotApi) {
-        this.snapshotApi = snapshotApi;
+    public Snapshot getSnapshot() {
+        this.snapshot.setCredentials(credentials);
+        return snapshot;
     }
 
     /**
-     * @return the loadbalancerApi
+     * @param snapshot the snapshot to set
      */
-    public LoadbalancerApi getLoadbalancerApi() {
-        this.loadbalancerApi.setCredentials(credentials);
-        return loadbalancerApi;
+    public void setSnapshot(Snapshot snapshot) {
+        this.snapshot = snapshot;
     }
 
     /**
-     * @param loadbalancerApi the loadbalancerApi to set
+     * @return the loadbalancer
      */
-    public void setLoadbalancerApi(LoadbalancerApi loadbalancerApi) {
-        this.loadbalancerApi = loadbalancerApi;
+    public Loadbalancer getLoadbalancer() {
+        this.loadbalancer.setCredentials(credentials);
+        return loadbalancer;
     }
 
     /**
-     * @return the nicApi
+     * @param loadbalancer the loadbalancer to set
      */
-    public NicApi getNicApi() {
-        this.nicApi.setCredentials(credentials);
-        return nicApi;
+    public void setLoadbalancer(Loadbalancer loadbalancer) {
+        this.loadbalancer = loadbalancer;
     }
 
     /**
-     * @param nicApi the nicApi to set
+     * @return the nic
      */
-    public void setNicApi(NicApi nicApi) {
-        this.nicApi = nicApi;
+    public Nic getNic() {
+        this.nic.setCredentials(credentials);
+        return nic;
     }
 
     /**
-     * @return the firewallRuleApi
+     * @param nic the nic to set
      */
-    public FirewallRuleApi getFirewallRuleApi() {
-        this.firewallRuleApi.setCredentials(credentials);
-        return firewallRuleApi;
+    public void setNic(Nic nic) {
+        this.nic = nic;
     }
 
     /**
-     * @param firewallRuleApi the firewallRuleApi to set
+     * @return the firewallRule
      */
-    public void setFirewallRuleApi(FirewallRuleApi firewallRuleApi) {
-        this.firewallRuleApi = firewallRuleApi;
+    public FirewallRule getFirewallRule() {
+        this.firewallRule.setCredentials(credentials);
+        return firewallRule;
     }
 
     /**
-     * @return the imageApi
+     * @param firewallRule the firewallRule to set
      */
-    public ImageApi getImageApi() {
-        this.imageApi.setCredentials(credentials);
-        return imageApi;
+    public void setFirewallRule(FirewallRule firewallRule) {
+        this.firewallRule = firewallRule;
     }
 
     /**
-     * @param imageApi the imageApi to set
+     * @return the image
      */
-    public void setImageApi(ImageApi imageApi) {
-        this.imageApi = imageApi;
+    public Image getImage() {
+        this.image.setCredentials(credentials);
+        return image;
     }
 
     /**
-     * @return the ipBlockApi
+     * @param image the image to set
      */
-    public IPBlockApi getIpBlockApi() {
-        this.ipBlockApi.setCredentials(credentials);
-        return ipBlockApi;
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     /**
-     * @param ipBlockApi the ipBlockApi to set
+     * @return the ipBlock
      */
-    public void setIpBlockApi(IPBlockApi ipBlockApi) {
-        this.ipBlockApi = ipBlockApi;
+    public IPBlock getIpBlock() {
+        this.ipBlock.setCredentials(credentials);
+        return ipBlock;
     }
 
     /**
-     * @return the requestApi
+     * @param ipBlock the ipBlock to set
      */
-    public RequestApi getRequestApi() {
-        this.requestApi.setCredentials(credentials);
-        return requestApi;
+    public void setIpBlock(IPBlock ipBlock) {
+        this.ipBlock = ipBlock;
     }
 
     /**
-     * @param requestApi the requestApi to set
+     * @return the request
      */
-    public void setRequestApi(RequestApi requestApi) {
-        this.requestApi = requestApi;
+    public Request getRequest() {
+        this.request.setCredentials(credentials);
+        return request;
     }
 
     /**
-     * @return the lanApi
+     * @param request the request to set
      */
-    public LanApi getLanApi() {
-        this.lanApi.setCredentials(credentials);
-        return lanApi;
+    public void setRequest(Request request) {
+        this.request = request;
     }
 
     /**
-     * @param lanApi the lanApi to set
+     * @return the lan
      */
-    public void setLanApi(LanApi lanApi) {
-        this.lanApi = lanApi;
+    public Lan getLan() {
+        this.lan.setCredentials(credentials);
+        return lan;
+    }
+
+    /**
+     * @param lan the lan to set
+     */
+    public void setLan(Lan lan) {
+        this.lan = lan;
     }
 
     /**
@@ -227,12 +242,12 @@ public class ProfitbricksApi {
         this.credentials = new String(bytesEncoded);
     }
 
-    public LocationApi getLocationApi() {
-        this.locationApi.setCredentials(credentials);
-        return locationApi;
+    public Location getLocation() {
+        this.location.setCredentials(credentials);
+        return location;
     }
 
-    public void setLocationApi(LocationApi locationApi) {
-        this.locationApi = locationApi;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }
