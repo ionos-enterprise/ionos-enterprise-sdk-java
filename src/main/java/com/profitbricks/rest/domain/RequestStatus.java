@@ -30,21 +30,19 @@
 
 package com.profitbricks.rest.domain;
 
-import com.profitbricks.sdk.ProfitbricksApi;
-
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author jasmin@stackpointcloud.com
  */
-public class ProfitbricksBase {
+public class RequestStatus {
 
    private String id;
    private String type;
    private String href;
-   private Metadata metadata;
-   private String requestId;
+   private MetaData metadata;
 
    /**
     * @return the id
@@ -91,116 +89,50 @@ public class ProfitbricksBase {
    /**
     * @return the metadata
     */
-   public Metadata getMetadata() {
+   public MetaData getMetadata() {
       return metadata;
    }
 
    /**
     * @param metadata the metadata to set
     */
-   public void setMetadata(Metadata metadata) {
+   public void setMetadata(MetaData metadata) {
       this.metadata = metadata;
    }
 
-   /**
-    * @return the requestId
-    */
-   public String getRequestId() {
-      return requestId;
-   }
+   public static class MetaData {
 
-   /**
-    * @param requestId the requestId to set
-    */
-   public void setRequestId(String requestId) {
-      this.requestId = requestId;
-   }
-
-   public RequestStatus getStatus() throws Exception {
-      if (requestId == null)
-         return null;
-
-      ProfitbricksApi profitbricksApi = new ProfitbricksApi();
-      return profitbricksApi.getRequest().getRequestStatus(requestId);
-   }
-
-   public static class Metadata {
-
-      private Date lastModifiedDate;
-      private String lastModifiedBy;
-      private Date createdDate;
-      private String createdBy;
-      private State state;
+      private String status;
+      private String message;
       private String etag;
+      private List<Data> targets = new ArrayList<Data>();
 
       /**
-       * @return the lastModifiedDate
+       * @return the status
        */
-      public Date getLastModifiedDate() {
-         return lastModifiedDate;
+      public String getStatus() {
+         return status;
       }
 
       /**
-       * @param lastModifiedDate the lastModifiedDate to set
+       * @param status the status to set
        */
-      public void setLastModifiedDate(Date lastModifiedDate) {
-         this.lastModifiedDate = lastModifiedDate;
+      public void setStatus(String status) {
+         this.status = status;
       }
 
       /**
-       * @return the lastModifiedBy
+       * @return the message
        */
-      public String getLastModifiedBy() {
-         return lastModifiedBy;
+      public String getMessage() {
+         return message;
       }
 
       /**
-       * @param lastModifiedBy the lastModifiedBy to set
+       * @param message the message to set
        */
-      public void setLastModifiedBy(String lastModifiedBy) {
-         this.lastModifiedBy = lastModifiedBy;
-      }
-
-      /**
-       * @return the createdDate
-       */
-      public Date getCreatedDate() {
-         return createdDate;
-      }
-
-      /**
-       * @param createdDate the createdDate to set
-       */
-      public void setCreatedDate(Date createdDate) {
-         this.createdDate = createdDate;
-      }
-
-      /**
-       * @return the createdBy
-       */
-      public String getCreatedBy() {
-         return createdBy;
-      }
-
-      /**
-       * @param createdBy the createdBy to set
-       */
-      public void setCreatedBy(String createdBy) {
-         this.createdBy = createdBy;
-      }
-
-      /**
-       * @return the state
-       */
-      public State getState() {
-         return state;
-      }
-
-      /**
-       * @param state the state to set
-       */
-      public void setState(State state) {
-         this.state = state;
+      public void setMessage(String message) {
+         this.message = message;
       }
 
       /**
@@ -217,6 +149,102 @@ public class ProfitbricksBase {
          this.etag = etag;
       }
 
-   }
-}
+      /**
+       * @return the targets
+       */
+      public List<Data> getTargets() {
+         return targets;
+      }
 
+      /**
+       * @param targets the targets to set
+       */
+      public void setTargets(List<Data> targets) {
+         this.targets = targets;
+      }
+
+      public static class Data {
+
+         private Target target;
+         private String status;
+
+         /**
+          * @return the target
+          */
+         public Target getTarget() {
+            return target;
+         }
+
+         /**
+          * @param target the target to set
+          */
+         public void setTarget(Target target) {
+            this.target = target;
+         }
+
+         /**
+          * @return the status
+          */
+         public String getStatus() {
+            return status;
+         }
+
+         /**
+          * @param status the status to set
+          */
+         public void setStatus(String status) {
+            this.status = status;
+         }
+      }
+
+      public static class Target {
+
+         private String id;
+         private String type;
+         private String href;
+
+         /**
+          * @return the id
+          */
+         public String getId() {
+            return id;
+         }
+
+         /**
+          * @param id the id to set
+          */
+         public void setId(String id) {
+            this.id = id;
+         }
+
+         /**
+          * @return the type
+          */
+         public String getType() {
+            return type;
+         }
+
+         /**
+          * @param type the type to set
+          */
+         public void setType(String type) {
+            this.type = type;
+         }
+
+         /**
+          * @return the href
+          */
+         public String getHref() {
+            return href;
+         }
+
+         /**
+          * @param href the href to set
+          */
+         public void setHref(String href) {
+            this.href = href;
+         }
+      }
+   }
+
+}

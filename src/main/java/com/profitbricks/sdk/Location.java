@@ -27,54 +27,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.profitbricks.rest.test;
+
+package com.profitbricks.sdk;
 
 import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.Locations;
-import com.profitbricks.sdk.ProfitbricksApi;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.io.IOException;
-
-import static junit.framework.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author jasmin@stackpointcloud.com
- * */
-public class LocationTest {
+ *
+ */
+public class Location extends ProfitbricksAPIBase {
 
-    static ProfitbricksApi profitbricksApi;
-
-    static {
-        try {
-            profitbricksApi = new ProfitbricksApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public Location() throws Exception {
+        super("locations", "");
+    }
+    
+    /**
+     *
+     * Locations represent regions where you can provision your Virtual Data Centers.
+     *
+     * @return Locations
+     */
+    public Locations getAllLocations() throws RestClientException, IOException {
+        return client.get(getUrlBase().concat(resource).concat(depth), null, Locations.class);
     }
 
-    @Before
-    public void setup() {
-        profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
-
-    }
-
-    @Test
-    public void listLocations() throws RestClientException, IOException {
-        Locations locations = profitbricksApi.getLocation().getAllLocations();
-        assertNotNull(locations);
-        assertTrue(locations.getItems().size() > 0);
-
-        Location location = locations.getItems().get(0);
-
-        Location loc = profitbricksApi.getLocation().getLocation(location.getId());
-        assertNotNull(loc);
-        assertEquals(loc.getId(), location.getId());
-        assertEquals(loc.getProperties().getName(), location.getProperties().getName());
-        assertEquals(loc.getProperties().getFeatures(), location.getProperties().getFeatures());
+      /**
+     * Retrieves the attributes of a given location.
+     *
+     * @param id The resource's unique identifier consisting of country/city.
+     * @return Location object with properties and metadata
+     */
+    public com.profitbricks.rest.domain.Location getLocation(String id) throws RestClientException, IOException {
+        return client.get(getUrlBase().concat(resource).concat("/").concat(id).concat(depth), null, com.profitbricks.rest.domain.Location.class);
     }
 }

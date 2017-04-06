@@ -1,27 +1,51 @@
+/*
+ * Copyright 2017.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.*;
 import com.profitbricks.sdk.ProfitbricksApi;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import org.junit.Test;
 
 /**
- * Created by jasmingacic on 02/02/2017.
+ *
+ * @author jasmin@stackpointcloud.com
  */
 public class CompositeCreateTest {
 
-    static ProfitbricksApi profitbricksApi = new ProfitbricksApi();
+    static ProfitbricksApi profitbricksApi;
+    static String dataCenterId;
+
+    static {
+        try {
+            profitbricksApi = new ProfitbricksApi();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     public void createDataCenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
-        String imageId = getImageId("ubuntu-16", "us/las", "HDD");
+        String imageId = getImageId();
 
         DataCenter datacenter = new DataCenter();
 
@@ -33,13 +57,13 @@ public class CompositeCreateTest {
         Server server = new Server();
 
         server.getProperties().setName("comp test");
-        server.getProperties().setCores("1");
-        server.getProperties().setRam("1024");
+        server.getProperties().setCores(1);
+        server.getProperties().setRam(1024);
 
         //Add a volume to the server
         Volume volume = new Volume();
         volume.getProperties().setName("SDK TEST VOLUME - Volume");
-        volume.getProperties().setSize("10");
+        volume.getProperties().setSize(10);
         volume.getProperties().setImage(imageId);
         volume.getProperties().setType("HDD");
 
@@ -71,20 +95,19 @@ public class CompositeCreateTest {
         servers.setItems(serversList);
         datacenter.getEntities().setServers(servers);
 
-        DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
+        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(datacenter);
 
         waitTillProvisioned(newDatacenter.getRequestId());
 
-        profitbricksApi.getDataCenterApi().deleteDataCenter(newDatacenter.getId());
+        profitbricksApi.getDataCenter().deleteDataCenter(newDatacenter.getId());
         waitTillProvisioned(newDatacenter.getRequestId());
-
     }
 
-    public String getImageId(String imageName, String location, String type) throws RestClientException, IOException {
-        Images images = profitbricksApi.getImageApi().getAllImages();
+    public String getImageId() throws RestClientException, IOException {
+        Images images = profitbricksApi.getImage().getAllImages();
         for (Image image : images.getItems()) {
-            if (image.getProperties().getName().toLowerCase().contains(imageName.toLowerCase()) && image.getProperties().getLocation().equals(location)
-                    && image.getProperties().getIsPublic() && image.getProperties().getImageType().equals(type)) {
+            if (image.getProperties().getName().toLowerCase().contains("ubuntu-16".toLowerCase()) && image.getProperties().getLocation().equals("us/las")
+                    && image.getProperties().getIsPublic() && image.getProperties().getImageType().equals("HDD")) {
                 return image.getId();
             }
         }
@@ -95,7 +118,7 @@ public class CompositeCreateTest {
         int counter = 120;
         for (int i = 0; i < counter; i++) {
             profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
-            Request request = profitbricksApi.getRequestApi().getRequest(requestId);
+            RequestStatus request = profitbricksApi.getRequest().getRequestStatus(requestId);
             TimeUnit.SECONDS.sleep(1);
             if (request.getMetadata().getStatus().equals("DONE")) {
                 break;
@@ -105,5 +128,4 @@ public class CompositeCreateTest {
             }
         }
     }
-
 }

@@ -1,43 +1,60 @@
 /*
- * Copyright 2015.
+ * Copyright (c) 2017, ProfitBricks GmbH
+ * All rights reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *    This product includes software developed by the <organization>.
+ * 4. Neither the name of the ProfitBricks nor the
+ *    names of its contributors may be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THIS SOFTWARE IS PROVIDED BY ProfitBricks GmbH ''AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL ProfitBricks GmbH BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.*;
+import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 import com.profitbricks.sdk.ProfitbricksApi;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-
 import org.junit.AfterClass;
-
-import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * @author jasmin.gacic
+ * @author jasmin@stackpointcloud.com
  */
 public class SnapshotTest {
 
-    static ProfitbricksApi profitbricksApi = new ProfitbricksApi();
+    static ProfitbricksApi profitbricksApi;
 
+    static {
+        try {
+            profitbricksApi = new ProfitbricksApi();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     static String dataCenterId;
     static String volumeId;
     static String snapshotId;
@@ -51,30 +68,24 @@ public class SnapshotTest {
         datacenter.getProperties().setLocation("us/las");
         datacenter.getProperties().setDescription("SDK TEST Description");
 
-        DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
+        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(datacenter);
         dataCenterId = newDatacenter.getId();
 
         Volume volume = new Volume();
 
         volume.getProperties().setName("SDK TEST SNAPSHOT - Volume");
-        volume.getProperties().setSize("1");
-        volume.getProperties().setLicenceType("LINUX");
+        volume.getProperties().setSize(1);
+        volume.getProperties().setLicenceType(LicenceType.LINUX);
         volume.getProperties().setType("HDD");
 
-        Volume newVolume = profitbricksApi.getVolumeApi().createVolume(dataCenterId, volume);
+        Volume newVolume = profitbricksApi.getVolume().createVolume(dataCenterId, volume);
         assertNotNull(newVolume);
 
         volumeId = newVolume.getId();
 
         waitTillProvisioned(newVolume.getRequestId());
 
-        /*    Request volumeStatus = newVolume.getStatus();
-         if (volumeStatus != null)
-         do
-         Thread.sleep(5000);
-         while (volumeStatus.getMetadata().getStatus() != "DONE");
-         */
-        Snapshot snapshot = profitbricksApi.getSnapshotApi().createSnapshot(dataCenterId, volumeId, "SDK TEST SNAPSHOT - Snapshot", "SDK TEST Description");
+        Snapshot snapshot = profitbricksApi.getSnapshot().createSnapshot(dataCenterId, volumeId, "SDK TEST SNAPSHOT - Snapshot", "SDK TEST Description");
         snapshotId = snapshot.getId();
 
         waitTillProvisioned(snapshot.getRequestId());
@@ -83,27 +94,27 @@ public class SnapshotTest {
 
     @Test
     public void getSnapshot() throws RestClientException, IOException {
-        Snapshot snapshot = profitbricksApi.getSnapshotApi().getSnapshot(snapshotId);
+        Snapshot snapshot = profitbricksApi.getSnapshot().getSnapshot(snapshotId);
         assertNotNull(snapshot);
     }
 
     @Test
     public void getAllSnapshots() throws RestClientException, IOException {
-        Snapshots snapshots = profitbricksApi.getSnapshotApi().getAllSnapshots();
+        Snapshots snapshots = profitbricksApi.getSnapshot().getAllSnapshots();
         assertNotNull(snapshots);
     }
 
     @Test
     public void restoreSnapshot() throws RestClientException, IOException {
-        profitbricksApi.getSnapshotApi().restoreSnapshot(dataCenterId, volumeId, snapshotId);
+        profitbricksApi.getSnapshot().restoreSnapshot(dataCenterId, volumeId, snapshotId);
     }
 
     @Test
     public void updateSnapshot() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InterruptedException {
-        PBObject object = new PBObject();
+        Snapshot.Properties object = new Snapshot().new Properties();
         object.setName("SDK TEST SNAPSHOT - Snapshot - changed");
 
-        Snapshot snapshot = profitbricksApi.getSnapshotApi().updateSnapshot(dataCenterId, snapshotId, object);
+        Snapshot snapshot = profitbricksApi.getSnapshot().updateSnapshot(dataCenterId, snapshotId, object);
         waitTillProvisioned(snapshot.getRequestId());
         assertEquals(snapshot.getProperties().getName(), object.getName());
         snapshotId = snapshot.getId();
@@ -111,10 +122,10 @@ public class SnapshotTest {
 
     @AfterClass
     public static void cleanUp() throws RestClientException, IOException, InterruptedException {
-        Thread.sleep(60000);
+        Thread.sleep(80000);
 
-        profitbricksApi.getSnapshotApi().deleteSnapshot(snapshotId);
-        profitbricksApi.getVolumeApi().deleteVolume(dataCenterId, volumeId);
-        profitbricksApi.getDataCenterApi().deleteDataCenter(dataCenterId);
+        profitbricksApi.getSnapshot().deleteSnapshot(snapshotId);
+        profitbricksApi.getVolume().deleteVolume(dataCenterId, volumeId);
+        profitbricksApi.getDataCenter().deleteDataCenter(dataCenterId);
     }
 }

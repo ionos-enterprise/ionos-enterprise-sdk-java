@@ -27,54 +27,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.profitbricks.rest.test;
+
+package com.profitbricks.sdk;
 
 import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.Location;
-import com.profitbricks.rest.domain.Locations;
-import com.profitbricks.sdk.ProfitbricksApi;
-import org.junit.Before;
-import org.junit.Test;
+import com.profitbricks.rest.domain.RequestStatus;
+import com.profitbricks.rest.domain.Requests;
 
 import java.io.IOException;
 
-import static junit.framework.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 /**
  * @author jasmin@stackpointcloud.com
- * */
-public class LocationTest {
+ */
+public class Request extends ProfitbricksAPIBase {
 
-    static ProfitbricksApi profitbricksApi;
+    public Request() throws Exception {
+        super("status", "requests");
+    }
 
-    static {
-        try {
-            profitbricksApi = new ProfitbricksApi();
-        } catch (Exception e) {
-            e.printStackTrace();
+    /**
+     * Retrieves the status of a specific request.
+     *
+     * @param url The unique ID of the request.
+     * @return RequestStatus
+     */
+    public RequestStatus getRequestStatus(String url) throws RestClientException, IOException {
+        if (url != null) {
+            return client.get(url, null, RequestStatus.class);
         }
+        return null;
     }
 
-    @Before
-    public void setup() {
-        profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
-
+    /**
+     * Retrieves all requests
+     */
+    public Requests listRequests() throws RestClientException, IOException {
+        return client.get(getUrlBase().concat(parentResource).concat(depth), null, Requests.class);
     }
 
-    @Test
-    public void listLocations() throws RestClientException, IOException {
-        Locations locations = profitbricksApi.getLocation().getAllLocations();
-        assertNotNull(locations);
-        assertTrue(locations.getItems().size() > 0);
-
-        Location location = locations.getItems().get(0);
-
-        Location loc = profitbricksApi.getLocation().getLocation(location.getId());
-        assertNotNull(loc);
-        assertEquals(loc.getId(), location.getId());
-        assertEquals(loc.getProperties().getName(), location.getProperties().getName());
-        assertEquals(loc.getProperties().getFeatures(), location.getProperties().getFeatures());
+    /**
+     * Retrieves a specific request
+     *
+     * @param url The unique ID of the request.
+     */
+    public com.profitbricks.rest.domain.Request getRequest(String requestId) throws RestClientException, IOException {
+        return client.get(getUrlBase().concat(parentResource).concat("/").concat(requestId).concat(depth), null, com.profitbricks.rest.domain.Request.class);
     }
+
 }

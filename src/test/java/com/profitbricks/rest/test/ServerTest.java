@@ -1,119 +1,134 @@
 /*
- * Copyright 2015.
+ * Copyright (c) 2017, ProfitBricks GmbH
+ * All rights reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *    This product includes software developed by the <organization>.
+ * 4. Neither the name of the ProfitBricks nor the
+ *    names of its contributors may be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THIS SOFTWARE IS PROVIDED BY ProfitBricks GmbH ''AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL ProfitBricks GmbH BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.*;
-
 import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
-
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import org.junit.AfterClass;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- *
- * @author jasmin.gacic
+ * @author jasmin@stackpointcloud.com
  */
 public class ServerTest {
 
-   static ProfitbricksApi profitbricksApi = new ProfitbricksApi();
-   static String dataCenterId;
-   static String serverId;
+    static ProfitbricksApi profitbricksApi;
 
-   @BeforeClass
-   public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-      profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
+    static {
+        try {
+            profitbricksApi = new ProfitbricksApi();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }    static String dataCenterId;
+    static String serverId;
 
-      DataCenter datacenter = new DataCenter();
-      datacenter.getProperties().setName("SDK TEST SERVER - Server");
-      datacenter.getProperties().setLocation("us/las");
-      datacenter.getProperties().setDescription("SDK TEST Description");
+    @BeforeClass
+    public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+        profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
 
-      DataCenter newDatacenter = profitbricksApi.getDataCenterApi().createDataCenter(datacenter);
-      waitTillProvisioned(newDatacenter.getRequestId());
-      dataCenterId = newDatacenter.getId();
+        DataCenter datacenter = new DataCenter();
+        datacenter.getProperties().setName("SDK TEST SERVER - Server");
+        datacenter.getProperties().setLocation("us/las");
+        datacenter.getProperties().setDescription("SDK TEST Description");
 
-      Server server = new Server();
-      server.getProperties().setName("SDK TEST SERVER - Server");
-      server.getProperties().setRam("1024");
-      server.getProperties().setCores("1");
+        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(datacenter);
+        waitTillProvisioned(newDatacenter.getRequestId());
+        dataCenterId = newDatacenter.getId();
 
-      Server newServer = profitbricksApi.getServerApi().createServer(dataCenterId, server);
-      waitTillProvisioned(newServer.getRequestId());
+        Server server = new Server();
+        server.getProperties().setName("SDK TEST SERVER - Server");
+        server.getProperties().setRam(1024);
+        server.getProperties().setCores(1);
 
-      assertNotNull(newServer);
-      serverId = newServer.getId();
-   }
+        Server newServer = profitbricksApi.getServer().createServer(dataCenterId, server);
+        waitTillProvisioned(newServer.getRequestId());
 
-   @AfterClass
-   public static void cleanup() throws RestClientException, IOException {
-      profitbricksApi.getServerApi().deleteServer(dataCenterId, serverId);
-      profitbricksApi.getDataCenterApi().deleteDataCenter(dataCenterId);
-   }
+        assertNotNull(newServer);
+        serverId = newServer.getId();
+    }
 
-   @Test
-   public void testInOrder() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      testGetAllServers();
-      testGetServer();
-      testUpdateServer();
-      testRebootServer();
-      testStartServer();
-      testStopServer();
-   }
+    @AfterClass
+    public static void cleanup() throws RestClientException, IOException {
+        profitbricksApi.getServer().deleteServer(dataCenterId, serverId);
+        profitbricksApi.getDataCenter().deleteDataCenter(dataCenterId);
+    }
 
-   public void testGetAllServers() throws RestClientException, IOException {
-      System.out.println("Getting All Servers");
-      Servers servers = profitbricksApi.getServerApi().getAllServers(dataCenterId);
-      assertNotNull(servers);
-   }
+    @Test
+    public void testInOrder() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        testGetAllServers();
+        testGetServer();
+        testUpdateServer();
+        testRebootServer();
+        testStartServer();
+        testStopServer();
+    }
 
-   public void testGetServer() throws RestClientException, IOException, InterruptedException {
-      System.out.println("Getting One Server");
-      Thread.sleep(5000);
-      Server server = profitbricksApi.getServerApi().getServer(dataCenterId, serverId);
-      assertNotNull(server);
-   }
+    public void testGetAllServers() throws RestClientException, IOException {
+        Servers servers = profitbricksApi.getServer().getAllServers(dataCenterId);
+        assertNotNull(servers);
+    }
 
-   public void testUpdateServer() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      String newName = "SDK TEST SERVER CHANGED";
-      PBObject object = new PBObject();
-      object.setName(newName);
+    public void testGetServer() throws RestClientException, IOException, InterruptedException {
+        Thread.sleep(5000);
+        Server server = profitbricksApi.getServer().getServer(dataCenterId, serverId);
+        assertNotNull(server);
+    }
 
-      Server updatedServer = profitbricksApi.getServerApi().updateServer(dataCenterId, serverId, object);
-      assertEquals(newName, updatedServer.getProperties().getName());
+    public void testUpdateServer() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        String newName = "SDK TEST SERVER CHANGED";
+        Server.Properties object = new Server().new Properties();
+        object.setName(newName);
 
-   }
+        Server updatedServer = profitbricksApi.getServer().updateServer(dataCenterId, serverId, object);
+        assertEquals(newName, updatedServer.getProperties().getName());
 
-   public void testStartServer() throws RestClientException, IOException {
-      profitbricksApi.getServerApi().startServer(dataCenterId, serverId);
-   }
+    }
 
-   public void testStopServer() throws RestClientException, IOException {
-      profitbricksApi.getServerApi().stopServer(dataCenterId, serverId);
+    public void testStartServer() throws RestClientException, IOException {
+        profitbricksApi.getServer().startServer(dataCenterId, serverId);
+    }
 
-   }
+    public void testStopServer() throws RestClientException, IOException {
+        profitbricksApi.getServer().stopServer(dataCenterId, serverId);
 
-   public void testRebootServer() throws RestClientException, IOException {
-      profitbricksApi.getServerApi().rebootServer(dataCenterId, serverId);
-   }
+    }
+
+    public void testRebootServer() throws RestClientException, IOException {
+        profitbricksApi.getServer().rebootServer(dataCenterId, serverId);
+    }
 }

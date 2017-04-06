@@ -1,235 +1,216 @@
 /*
- * Copyright 2015.
+ * Copyright (c) 2017, ProfitBricks GmbH
+ * All rights reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *    This product includes software developed by the <organization>.
+ * 4. Neither the name of the ProfitBricks nor the
+ *    names of its contributors may be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THIS SOFTWARE IS PROVIDED BY ProfitBricks GmbH ''AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL ProfitBricks GmbH BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.profitbricks.rest.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
+import java.util.Map;
 
-/**
- *
- * @author jasmin.gacic
- */
 public class Request {
 
-   private String id;
-   private String type;
-   private String href;
-   private MetaData metadata;
 
-   /**
-    * @return the id
-    */
-   public String getId() {
-      return id;
-   }
+    private String id;
+    private String type;
+    private String href;
+    private Metadata metadata;
+    private Properties properties;
 
-   /**
-    * @param id the id to set
-    */
-   public void setId(String id) {
-      this.id = id;
-   }
+    public String getId() {
+        return id;
+    }
 
-   /**
-    * @return the type
-    */
-   public String getType() {
-      return type;
-   }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-   /**
-    * @param type the type to set
-    */
-   public void setType(String type) {
-      this.type = type;
-   }
+    public String getType() {
+        return type;
+    }
 
-   /**
-    * @return the href
-    */
-   public String getHref() {
-      return href;
-   }
+    public void setType(String type) {
+        this.type = type;
+    }
 
-   /**
-    * @param href the href to set
-    */
-   public void setHref(String href) {
-      this.href = href;
-   }
+    public String getHref() {
+        return href;
+    }
 
-   /**
-    * @return the metadata
-    */
-   public MetaData getMetadata() {
-      return metadata;
-   }
+    public void setHref(String href) {
+        this.href = href;
+    }
 
-   /**
-    * @param metadata the metadata to set
-    */
-   public void setMetadata(MetaData metadata) {
-      this.metadata = metadata;
-   }
+    public Metadata getMetadata() {
+        return metadata;
+    }
 
-   public static class MetaData {
+    public void setMetadata(Metadata metadata) {
+        this.metadata = metadata;
+    }
 
-      private String status;
-      private String message;
-      private String etag;
-      private List<Data> targets = new ArrayList<Data>();
+    public Properties getProperties() {
+        return properties;
+    }
 
-      /**
-       * @return the status
-       */
-      public String getStatus() {
-         return status;
-      }
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
 
-      /**
-       * @param status the status to set
-       */
-      public void setStatus(String status) {
-         this.status = status;
-      }
+    public class Properties {
+        private Map<String, String> headers;
 
-      /**
-       * @return the message
-       */
-      public String getMessage() {
-         return message;
-      }
+        private String body;
 
-      /**
-       * @param message the message to set
-       */
-      public void setMessage(String message) {
-         this.message = message;
-      }
+        private String method;
 
-      /**
-       * @return the etag
-       */
-      public String getEtag() {
-         return etag;
-      }
+        private String url;
 
-      /**
-       * @param etag the etag to set
-       */
-      public void setEtag(String etag) {
-         this.etag = etag;
-      }
+        public Map<String, String> getHeaders() {
+            return headers;
+        }
 
-      /**
-       * @return the targets
-       */
-      public List<Data> getTargets() {
-         return targets;
-      }
+        public void setHeaders(Map<String, String> headers) {
+            this.headers = headers;
+        }
 
-      /**
-       * @param targets the targets to set
-       */
-      public void setTargets(List<Data> targets) {
-         this.targets = targets;
-      }
+        public String getBody() {
+            return body;
+        }
 
-      public static class Data {
+        public void setBody(String body) {
+            this.body = body;
+        }
 
-         private Target target;
-         private String status;
+        public String getMethod() {
+            return method;
+        }
 
-         /**
-          * @return the target
-          */
-         public Target getTarget() {
-            return target;
-         }
+        public void setMethod(String method) {
+            this.method = method;
+        }
 
-         /**
-          * @param target the target to set
-          */
-         public void setTarget(Target target) {
-            this.target = target;
-         }
+        public String getUrl() {
+            return url;
+        }
 
-         /**
-          * @return the status
-          */
-         public String getStatus() {
-            return status;
-         }
+        public void setUrl(String url) {
+            this.url = url;
+        }
+    }
 
-         /**
-          * @param status the status to set
-          */
-         public void setStatus(String status) {
-            this.status = status;
-         }
-      }
+    public class Metadata {
 
-      public static class Target {
 
-         private String id;
-         private String type;
-         private String href;
+        private Date createdDate;
+        private String createdBy;
+        private RequestStatus requestStatus = new RequestStatus();
+        private String etag;
 
-         /**
-          * @return the id
-          */
-         public String getId() {
+        /**
+         * @return the createdDate
+         */
+        public Date getCreatedDate() {
+            return createdDate;
+        }
+
+        /**
+         * @param createdDate the createdDate to set
+         */
+        public void setCreatedDate(Date createdDate) {
+            this.createdDate = createdDate;
+        }
+
+        /**
+         * @return the createdBy
+         */
+        public String getCreatedBy() {
+            return createdBy;
+        }
+
+        /**
+         * @param createdBy the createdBy to set
+         */
+        public void setCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
+        }
+
+        /**
+         * @return the etag
+         */
+        public String getEtag() {
+            return etag;
+        }
+
+        /**
+         * @param etag the etag to set
+         */
+        public void setEtag(String etag) {
+            this.etag = etag;
+        }
+
+        public RequestStatus getRequestStatus() {
+            return requestStatus;
+        }
+
+        public void setRequestStatus(RequestStatus requestStatus) {
+            this.requestStatus = requestStatus;
+        }
+    }
+
+    public static class RequestStatus {
+
+
+        private String id;
+        private String type;
+        private String href;
+
+        public String getId() {
             return id;
-         }
+        }
 
-         /**
-          * @param id the id to set
-          */
-         public void setId(String id) {
+        public void setId(String id) {
             this.id = id;
-         }
+        }
 
-         /**
-          * @return the type
-          */
-         public String getType() {
+        public String getType() {
             return type;
-         }
+        }
 
-         /**
-          * @param type the type to set
-          */
-         public void setType(String type) {
+        public void setType(String type) {
             this.type = type;
-         }
+        }
 
-         /**
-          * @return the href
-          */
-         public String getHref() {
+        public String getHref() {
             return href;
-         }
+        }
 
-         /**
-          * @param href the href to set
-          */
-         public void setHref(String href) {
+        public void setHref(String href) {
             this.href = href;
-         }
-      }
-   }
-
+        }
+    }
 }

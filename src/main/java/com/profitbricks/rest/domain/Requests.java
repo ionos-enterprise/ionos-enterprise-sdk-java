@@ -27,54 +27,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.profitbricks.rest.test;
 
-import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.Location;
-import com.profitbricks.rest.domain.Locations;
-import com.profitbricks.sdk.ProfitbricksApi;
-import org.junit.Before;
-import org.junit.Test;
+package com.profitbricks.rest.domain;
 
-import java.io.IOException;
-
-import static junit.framework.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
+ *
  * @author jasmin@stackpointcloud.com
- * */
-public class LocationTest {
+ */
+public class Requests extends ProfitbricksBase {
 
-    static ProfitbricksApi profitbricksApi;
+   public List<Request> items = new ArrayList<Request>();
 
-    static {
-        try {
-            profitbricksApi = new ProfitbricksApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+   /**
+    * @return the items
+    */
+   public List<Request> getItems() {
+      return items;
+   }
 
-    @Before
-    public void setup() {
-        profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
-
-    }
-
-    @Test
-    public void listLocations() throws RestClientException, IOException {
-        Locations locations = profitbricksApi.getLocation().getAllLocations();
-        assertNotNull(locations);
-        assertTrue(locations.getItems().size() > 0);
-
-        Location location = locations.getItems().get(0);
-
-        Location loc = profitbricksApi.getLocation().getLocation(location.getId());
-        assertNotNull(loc);
-        assertEquals(loc.getId(), location.getId());
-        assertEquals(loc.getProperties().getName(), location.getProperties().getName());
-        assertEquals(loc.getProperties().getFeatures(), location.getProperties().getFeatures());
-    }
+   /**
+    * @param items the items to set
+    */
+   public void setItems(List<Request> items) {
+      this.items = items;
+   }
 }
+
+
