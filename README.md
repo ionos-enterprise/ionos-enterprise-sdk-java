@@ -26,7 +26,6 @@ Version: **profitbricks-sdk-java v4.0.0**
     * [LANs](#lans)
     * [Images](#images)
     * [Load Balancers](#load-balancers)
-    * [Locations](#locations)
     * [IP Blocks](#ip-blocks)
     * [Snapshots](#snapshots)
     * [Requests](#requests)
@@ -44,7 +43,7 @@ Version: **profitbricks-sdk-java v4.0.0**
 
 ## Description
 
-This Java library is a wrapper for the ProfitBricks REST API. All API operations are performed over SSL and authenticated using your ProfitBricks portal credentials. The API can be accessed within an instance running in ProfitBricks or directly over the Internet from any application that can send an HTTPS request and receive an HTTPS response.
+This Java library is a wrapper for the ProfitBricks REST API. All API operations are performed over SSL and are authenticated using your ProfitBricks portal credentials. The API can be accessed within an instance running in ProfitBricks or directly over the Internet from any application that can send an HTTPS request and receive an HTTPS response.
 
 This guide will show you how to programmatically perform common management tasks using the ProfitBricks SDK for Java.
 
@@ -54,7 +53,7 @@ This guide will show you how to programmatically perform common management tasks
 * Java
 * [Apache Maven](https://maven.apache.org/)
 
-Before you begin you will need to have [signed-up](https://www.profitbricks.com/signup) for a ProfitBricks account. The credentials you setup during sign-up will be used to authenticate against the API.
+Before you begin you will need to have [signed up](https://www.profitbricks.com/signup) for a ProfitBricks account. The credentials you set up during sign-up will be used to authenticate against the API.
 
 Apache Maven must also be installed. Please review the official [Apache Maven installation documentation](https://maven.apache.org/install.html) for details on the installation.
 
@@ -62,7 +61,7 @@ Apache Maven must also be installed. Please review the official [Apache Maven in
 
 The official ProfitBricks Java library is available from the ProfitBricks GitHub account found [here](https://github.com/profitbricks/profitbricks-sdk-Java). You can download the latest stable version by cloning the repository and then adding the project to your solution.
 
-Once the SDK is downloaded:
+After the SDK is downloaded:
 
 1. Maven will run live tests before installing. Therefore, it is necessary set the following environment variables:
        
@@ -93,7 +92,7 @@ Once the SDK is downloaded:
 
 ### Authentication
 
-First you need to instantiate ProfitBricks API and pass the ProfitBricks account credentials:
+First you need to instantiate the ProfitBricks API and pass the ProfitBricks account credentials:
 
     ProfitbricksApi profitbricksApi = new ProfitbricksApi();
     profitbricksApi.setCredentials("username", "password");
@@ -108,11 +107,11 @@ This will list all data centers you have under your account.
 
 ### How to: Create a Data Center
 
-ProfitBricks introduces the concept of virtual data centers. These are logically separated from one another and allow you to have a self-contained environment for all servers, volumes, networking, snapshots, and so forth. The goal is to give you the same experience as you would have if you were running your own physical data center.
+ProfitBricks introduces the concept of virtual data centers. These are logically separated from one another and allow you to have a self-contained environment for all servers, volumes, networking, snapshots, etc. This gives you the same experience as if you were running your own physical data center.
 
-You are required to have a data center created before you can create any further objects. Think of the data center as a bucket in which all objects, such as servers and volumes, reside. 
+You are required to create a data center before you can create any further objects. Think of the data center as a bucket in which all objects (such as servers and volumes) are stored. 
 
-The following code example shows you how to programmatically create a data center: 
+This code example shows how to programmatically create a data center: 
 
     DataCenter datacenter = new DataCenter();
 
@@ -124,15 +123,17 @@ The following code example shows you how to programmatically create a data cente
 
 ### How to: Delete a Data Center
 
-You will want to exercise a bit of caution here. Removing a data center will **destroy** all objects contained within that data center -- servers, volumes, snapshots, and so on. The objects -- **once removed** -- will be **unrecoverable**. 
+Use caution when deleting a data center. Deleting a data center will **destroy** all objects contained within that data center -- including all servers, volumes, snapshots, etc. **When the objects are deleted** they **cannot be recovered**.
 
-The following is an example on how to remove the data center created above:
+This example deletes the data center created above:
 
     profitbricksApi.getDataCenter().deleteDataCenter(dataCenterId);
 
 ### How To: Create Data Center with Multiple Resources
 
-The ProfitBricks SDK for Java allows a single request to create multiple nested resources. The following will create a composite data center with an associated server, NIC, and volume:
+The ProfitBricks SDK for Java allows a single request to create multiple nested resources. 
+
+This example will create a composite data center with an associated server, NIC, and volume:
     
     DataCenter datacenter = new DataCenter();
     datacenter.getProperties().setName("SDK Test Data Center");
@@ -185,7 +186,7 @@ The ProfitBricks SDK for Java allows a single request to create multiple nested 
 
 ### How to: Create a Server
 
-The following example demonstrates how you would create a server and assign it an OS, cores, and memory. We urge you to check the [documentation](https://devops.profitbricks.com/api/rest/) to see the complete list attributes available.
+This example creates a server and assigns it an OS, cores, and memory. We urge you to refer to the [documentation](https://devops.profitbricks.com/api/rest/) to see the complete list attributes available.
 
     Server server = new Server();
     server.getProperties().setName("SDK Test Server");
@@ -195,13 +196,13 @@ The following example demonstrates how you would create a server and assign it a
 
     Server newServer = profitbricksApi.getServer().createServer(dataCenterId, server);
 
-One of the unique features of the ProfitBricks platform when compared with the other providers is that it allows you to define your own settings for cores, memory, and disk size without being tied to a particular instance size.  
+One of the unique features of the ProfitBricks platform is that it allows you to define your own settings for cores, memory, and disk size without being tied to a particular instance size.  
 
 ### How to: Update Cores and Memory
 
-ProfitBricks allows users to dynamically update cores and memory independently of each other. This removes the restriction of needing to upgrade to the next size up to receive an increase in memory. You can now simply increase the instances memory keeping your costs in-line with your resource needs. 
+ProfitBricks allows users to dynamically update cores and memory independently of each other. This means that you do not have to upgrade to the larger size in order to increase memory. You can simply increase the instance's memory, which keeps your costs in line with your resource needs. 
 
-The following code illustrates how you can update cores and memory: 
+This example updates cores and memory: 
 
     Server.Properties object = new Server().new Properties();
     object.setName("SDK New Server Name");
@@ -212,9 +213,9 @@ The following code illustrates how you can update cores and memory:
 
 ### How to: Attach and Detach a Volume
 
-ProfitBricks allows for the creation of multiple storage volumes. You can attach and detach these on the fly. This allows for various scenarios such as attaching a failed OS disk to another server for possible recovery or moving a volume to another server to bring online.
+ProfitBricks allows for the creation of multiple storage volumes. You can attach and detach these on the fly. This is helpful in scenarios such as attaching a failed OS disk to another server for recovery, or moving a volume to another server to bring online.
 
-The following illustrates how you would attach a volume and then detach it from a server:
+This example attaches a volume, then detaches it from a server:
 
     // First we need to create a volume.
     Volume volume = new Volume();
@@ -235,7 +236,7 @@ The following illustrates how you would attach a volume and then detach it from 
 
 You can pull various resource lists from your data centers using the SDK for Java. The three most common resources are data centers, servers, and volumes.
 
-The following code illustrates how to retrieve these three list types: 
+This example retrieves these three list types: 
 
     DataCenters datacenters = profitbricksApi.getDataCenter().getAllDataCenters();
 
@@ -246,7 +247,8 @@ The following code illustrates how to retrieve these three list types:
 ### How to: Create Network Interfaces
 
 The ProfitBricks platform supports adding multiple NICs to a server. These NICs can be used to create different, segmented networks on the platform.
-The sample below shows you how to add a second NIC to an existing server: 
+
+This example adds a second NIC to an existing server: 
 
     Nic nic = new Nic();
 
@@ -257,7 +259,7 @@ The sample below shows you how to add a second NIC to an existing server:
 
     Nic newNic = profitbricksApi.getNic().createNic(dataCenterId, serverId, nic);
 
-One item to note is this function will result in the server being restarted.
+Note: This function will result in the server being restarted.
 
 ## Reference  
 
@@ -274,7 +276,7 @@ getAllDataCenters()
 
 #### Retrieve a Data Center
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name | Type | Description | Required |
 |---|---|---|---|
@@ -287,15 +289,15 @@ getDataCenter(String id)
 
 #### Create a Data Center
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required |Type | Description | 
 |---|---|---|---|
-| name | string | The name of the data center. | Yes |
-| location | string | The physical location where the data center will be created. This will be where all of your servers live. | Yes |
-| description | string | A description for the data center, e.g. staging, production. | No |
+| name | **yes** | string | The name of the data center. | 
+| location | **yes** |string | The physical location where the data center will be created. This will be where all of your servers live. | 
+| description | no | string | A description for the data center, e.g. staging, production. | 
 
-The following table outlines the locations currently supported:
+**Supported Locations**
 
 | ID | Country | City |
 |---|---|---|
@@ -307,9 +309,10 @@ The following table outlines the locations currently supported:
 createDataCenter(DataCenter datacenter)
 ```
 
-*NOTES*:
-- The value for `name` cannot contain the following characters: (@, /, , |, ‘’, ‘).
-- You cannot change a data center's `location` once it has been provisioned.
+**NOTES**
+
+* The value for `name` cannot contain the characters: (@, /, , |, ‘’, ‘).
+* You cannot change a data center's `location` once it has been provisioned.
 
 ---
 
@@ -321,13 +324,12 @@ After retrieving a data center, you can change it's properties and call the `upd
 updateDataCenter(String id, DataCenter.Properties object)
 ```
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 | --- | --- | --- | --- |
-| Properties.name | string | The new name of the data center. | No |
-| Properties.description | string | The new description of the data center. | No |
-
+| Properties.name | no | string | The new name of the data center. | 
+| Properties.description | no | string | The new description of the data center. | 
 ---
 
 #### Delete a Data Center
@@ -348,11 +350,11 @@ deleteDataCenter(String id)
 
 You can retrieve a list of all servers within a data center.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
+| dataCenterId | **yes** |string | The ID of the data center. | 
 
 ```
 getAllServers(String dataCenterId)
@@ -364,12 +366,12 @@ getAllServers(String dataCenterId)
 
 Returns information about a server such as its configuration, provisioning status, etc.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** |string | The ID of the server. | 
 
 ```
 getServer(String dataCenterId, String serverId)
@@ -381,29 +383,29 @@ getServer(String dataCenterId, String serverId)
 
 Creates a server within an existing data center. You can configure additional properties such as specifying a boot volume and connecting the server to an existing LAN.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required |Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| name | string | The hostname of the server. | Yes |
-| cores | int | The total number of cores for the server. | Yes |
-| ram | int | The amount of memory for the server in MB, e.g. 2048. Size must be specified in multiples of 256 MB with a minimum of 256 MB; however, if you set ramHotPlug to TRUE then you must use a minimum of 1024 MB. | Yes |
-| availabilityZone | string | The availability zone in which the server should exist. | No |
-| licenceType | string | Sets the OS type of the server. If undefined the OS type will be inherited from the boot image or boot volume. | No* |
-| bootVolume | string | Reference to a Volume used for booting. If not ‘null’ then bootCdrom has to be ‘null’. | No |
-| bootCdrom | string | Reference to a CD-ROM used for booting. If not 'null' then bootVolume has to be 'null'. | No |
-| cpuFamily | string | Sets the CPU type. "AMD_OPTERON" or "INTEL_XEON". Defaults to "AMD_OPTERON". | No |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| name | **yes** | string | The hostname of the server. | 
+| cores | **yes** | int | The total number of cores for the server. | 
+| ram | **yes** |int | The amount of memory for the server in MB, e.g. 2048. Size must be specified in multiples of 256 MB with a minimum of 256 MB; however, if you set ramHotPlug to TRUE then you must use a minimum of 1024 MB. | 
+| availabilityZone | no | string | The availability zone in which the server should exist. | 
+| licenceType | no | string | Sets the OS type of the server. If undefined the OS type will be inherited from the boot image or boot volume. | 
+| bootVolume | no | string | Reference to a Volume used for booting. If not ‘null’ then bootCdrom has to be ‘null’. | 
+| bootCdrom | no | string | Reference to a CD-ROM used for booting. If not 'null' then bootVolume has to be 'null'. | 
+| cpuFamily | no | string | Sets the CPU type. "AMD_OPTERON" or "INTEL_XEON". Defaults to "AMD_OPTERON". | 
 
-The following table outlines the various licence types you can define:
+**Licence Types** 
 
 | Licence Type | Description |
 |---|---|
 | WINDOWS | You must specify this if you are using your own, custom Windows image due to Microsoft's licensing terms. |
 | LINUX | |
-| UNKNOWN | If you are using an image uploaded to your account your OS Type will inherit as UNKNOWN. |
+| UNKNOWN | If you are using an image uploaded to your account, your OS Type will inherit as UNKNOWN. |
 
-The following table outlines the availability zones currently supported:
+**Availability Zones**
 
 | Availability Zone | Description |
 |---|---|
@@ -420,23 +422,23 @@ createServer(String dataCenterId, Server server)
 
 #### Update a Server
 
-Perform updates to attributes of a server.
+Performs updates to the attributes of a server.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
-| server.name | string | The name of the server. | No |
-| server.cores | int | The number of cores for the server. | No |
-| server.ram | int | The amount of memory in the server. | No |
-| server.availabilityZone | string | The new availability zone for the server. | No |
-| server.licenceType | string | The licence type for the server. | No |
-| server.bootVolume | string | Reference to a Volume used for booting. If not ‘null’ then bootCdrom has to be ‘null’ | No |
-| server.bootCdrom | string | Reference to a CD-ROM used for booting. If not 'null' then bootVolume has to be 'null'. | No |
+| dataCenterId | **yes** |string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
+| server.name | no | string | The name of the server. | 
+| server.cores | no | int | The number of cores for the server. | 
+| server.ram | no | int | The amount of memory in the server. | 
+| server.availabilityZone | no | string | The new availability zone for the server. | 
+| server.licenceType | no | string | The licence type for the server. | 
+| server.bootVolume | no | string | Reference to a Volume used for booting. If not ‘null’ then bootCdrom has to be ‘null’ | 
+| server.bootCdrom | no | string | Reference to a CD-ROM used for booting. If not 'null' then bootVolume has to be 'null'. | 
 
-After retrieving a server, either by getting it by id, you can change it's properties and call the `update` method:
+After retrieving a server, either by getting it by ID, or as a create response object, you can change its properties and call the `update` method:
 
 ```
 updateServer(String dataCenterId, String serverId, Server.Properties server)
@@ -448,14 +450,14 @@ updateServer(String dataCenterId, String serverId, Server.Properties server)
 
 This will remove a server from a data center. NOTE: This will not automatically remove the storage volume(s) attached to a server. A separate API call is required to perform that action.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `delete` method directly on the object:
+After retrieving a server, either by getting it by ID, or as a create response object, you can call the `delete` method directly on the object:
 
 ```
 deleteServer(String dataCenterId, String serverId)
@@ -465,16 +467,16 @@ deleteServer(String dataCenterId, String serverId)
 
 #### Reboot a Server
 
-This will force a hard reboot of the server. Do not use this method if you want to gracefully reboot the machine. This is the equivalent of powering off the machine and turning it back on.
+Forces a hard reboot of the server. Do not use this method if you want to gracefully reboot the machine. This is the equivalent of powering off the machine and turning it back on.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `reboot` method directly on the object:
+After retrieving a server, either by getting it by ID, or as a create response object, you can call the `reboot` method directly on the object:
 
 ```
 rebootServer(String dataCenterId, String serverId)
@@ -484,16 +486,16 @@ rebootServer(String dataCenterId, String serverId)
 
 #### Start a Server
 
-This will start a server. If the server's public IP was deallocated then a new IP will be assigned.
+Starts a server. If the server's public IP address was deallocated, a new IP address will be assigned.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `start` method directly on the object:
+After retrieving a server, either by getting it by ID, or as a create response object, you can call the `start` method directly on the object:
 
 ```
 startServer(String dataCenterId, String serverId)
@@ -503,16 +505,16 @@ startServer(String dataCenterId, String serverId)
 
 #### Stop a Server
 
-This will stop a server. The machine will be forcefully powered off, billing will cease, and the public IP, if one is allocated, will be deallocated.
+Stops a server. The machine will be forcefully powered off, billing will stop, and if a public IP address is allocated, it will be deallocated.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `stop` method directly on the object:
+After retrieving a server, either by getting it by ID, or as a create response object, you can call the `stop` method directly on the object:
 
 ```
 stopServer(String dataCenterId, String serverId)
@@ -520,19 +522,19 @@ stopServer(String dataCenterId, String serverId)
 
 ---
 
-#### Attach a CDROM
+#### Attach a CD-ROM
 
-This will attach a CDROM to the server.
+Attaches a CD-ROM to the server.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
-| imageId | string | The ID of a ProfitBricks image of type CDROM. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
+| imageId | **yes** | string | The ID of a ProfitBricks image of type CDROM. | 
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `attach_cdrom` method directly on the object:
+After retrieving a server, either by getting it by ID, or as a create response object, you can call the `attach_cdrom` method directly on the object:
 
 ```
 attachCDRom(String dataCenterId, String serverId, String imageId)
@@ -540,17 +542,17 @@ attachCDRom(String dataCenterId, String serverId, String imageId)
 
 ---
 
-#### Detach a CDROM
+#### Detach a CD-ROM
 
-This will detach the CDROM from the server. Depending on the volume "hot_unplug" settings, this may result in the server being rebooted.
+Detaches a CD-ROM from the server. Depending on the volume's "hot_unplug" settings, this may result in the server being rebooted.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
-| cdromID | string | The ID of the attached CDROM. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
+| cdromID | **yes** | string | The ID of the attached CDROM. | 
 
 After retrieving a server, you can call the `detach_cdrom` method directly on the object:
 
@@ -560,16 +562,16 @@ detachCDRom(String dataCenterId, String serverId, String cdromId)
 
 ---
 
-#### List attached CDROMs
+#### List attached CD-ROMs
 
-This will list CDROMs that are attached to the server
+Lists CD-ROMs that are attached to the server
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
 
 
 ```
@@ -578,17 +580,17 @@ ligetAllAttachedCDRoms(String dataCenterId, String serverId)
 
 ---
 
-#### Get attached CDROM
+#### Get attached CD-ROM
 
-This will retrieve a CDROM that is attached to the server
+Retrieves a CD-ROM that is attached to the server
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
-| cdromID | string | The ID of the attached CDROM. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
+| cdromID | **yes** | string | The ID of the attached CD-ROM. | 
 
 
 ```
@@ -601,13 +603,13 @@ ligetAllAttachedCDRoms(String dataCenterId, String serverId)
 
 #### List Volumes
 
-Retrieve a list of volumes within the data center. If you want to retrieve a list of volumes attached to a server you can pass the serverid parameter as below.
+Retrieves a list of volumes within the data center. If you want to retrieve a list of volumes attached to a server you can pass the `serverId` parameter as below.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. |
 
 ```
 getAllVolumes(String dataCenterId)
@@ -620,12 +622,12 @@ getAllVolumes(String dataCenterId, String serverId)
 
 Retrieves the attributes of a given volume.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| volumeId | string | The ID of the volume. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| volumeId | **yes** | string | The ID of the volume. | 
 
 ```
 getVolume(String dataCenterId, String volumeId)
@@ -637,20 +639,20 @@ getVolume(String dataCenterId, String volumeId)
 
 Creates a volume within the data center.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| name | string | The name of the volume. | No |
-| size | int | The size of the volume in GB. | Yes |
-| bus | enum | The bus type of the volume (VIRTIO or IDE). Default: VIRTIO. | No |
-| image | string | The image or snapshot ID. | Yes* |
-| type | string | The volume type, HDD or SSD. | Yes |
-| licenceType | string | The licence type of the volume. Options: LINUX, WINDOWS, UNKNOWN, OTHER | Yes* |
-| imagePassword | string | One-time password is set on the Image for the appropriate account. This field may only be set in creation requests. When reading, it always returns null. Password has to contain 8-50 characters. Only these characters are allowed: [abcdefghjkmnpqrstuvxABCDEFGHJKLMNPQRSTUVX23456789] | Yes** |
-| sshKeys | string | SSH keys to allow access to the volume via SSH | Yes** |
-| availabilityZone | string | The storage availability zone assigned to the volume. Valid values: AUTO, ZONE_1, ZONE_2, or ZONE_3. This only applies to HDD volumes. Leave blank or set to AUTO when provisioning SSD volumes. | No |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| size | **yes** | int | The size of the volume in GB. | 
+| type | **yes** | string | The volume type, HDD or SSD. | 
+| image | **yes*** | string | The image or snapshot ID. | 
+| licenceType | **yes*** | string | The licence type of the volume. Options: LINUX, WINDOWS, UNKNOWN, OTHER | 
+| imagePassword | **yes**** | string | One-time password is set on the Image for the appropriate account. This field may only be set in creation requests. When reading, it always returns null. Password has to contain 8-50 characters. Only these characters are allowed: [abcdefghjkmnpqrstuvxABCDEFGHJKLMNPQRSTUVX23456789] | 
+| sshKeys | **yes**** | string | SSH keys to allow access to the volume via SSH |
+| name | no | string | The name of the volume. |  
+| availabilityZone | no | string | The storage availability zone assigned to the volume. Valid values: AUTO, ZONE_1, ZONE_2, or ZONE_3. This only applies to HDD volumes. Leave blank or set to AUTO when provisioning SSD volumes. | 
+| bus | no | enum | The bus type of the volume (VIRTIO or IDE). Default: VIRTIO. | 
 
 *You will need to provide either the `image` or the `licenceType` parameters. `licenceType` is required, but if `image` is supplied, it is already set and cannot be changed. Similarly either the `imagePassword` or `sshKeys` parameters need to be supplied when creating a volume. We recommend setting a valid value for `imagePassword` even when using `sshKeys` so that it is possible to authenticate using the remote console feature of the DCD.
 
@@ -666,23 +668,26 @@ createVolume(String dataCenterId, Volume volume)
 
 Updates a specified volume.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| volumeId | string | The ID of the volume. | Yes |
-| volume.name | string | The name of the volume. | No |
-| volume.size | int | The size of the volume in GB. | No |
-| volume.bus | enum | The bus type of the volume (VIRTIO or IDE). Default: VIRTIO. | No |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| volumeId | **yes** | string | The ID of the volume. | 
+| volume.name | no | string | The name of the volume. | 
+| volume.size | no | int | The size of the volume in GB. | 
+| volume.bus | no | enum | The bus type of the volume (VIRTIO or IDE). Default: VIRTIO. | 
 
-You can update -- in full or partially -- various attributes on the volume; however, some restrictions are in place:
+Various attributes on the volume can be updated (either in full or partially) although the following restrictions apply: 
 
-You can increase the size of an existing storage volume. You cannot reduce the size of an existing storage volume. The volume size will be increased without reboot if the hot plug settings have been set to true. The additional capacity is not added to any partition therefore you will need to partition it afterwards. Once you have increased the volume size you cannot decrease the volume size.
+* An existing storage volume can be increased. It cannot be decreased.
+* The volume size will be increased without reboot if the hot plug settings have been set to `true`.
+* The additional capacity is not added to any partition. You will need to partition it after it has been added.
+* After you have increased the volume size you cannot decrease the volume size.
 
-Since an existing volume is being modified , none of the request parameters are specifically required as long as the changes being made satisfy the requirements for creating a volume.
+Since an existing volume is being modified, none of the request parameters are specifically required, as long as the changes meet the requirements for creating a volume.
 
-After retrieving a volume, you can change it's properties and call the `update` method:
+After retrieving a volume, you can change its properties and call the `update` method:
 
 ```
 updateVolume(String dataCenterId, String volumeId, Volume.Properties volume)
@@ -692,17 +697,17 @@ updateVolume(String dataCenterId, String volumeId, Volume.Properties volume)
 
 #### Attach a Volume
 
-This will attach a pre-existing storage volume to the server.
+Attaches a pre-existing storage volume to the server.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
-| volumeId | string | The ID of a storage volume. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
+| volumeId | **yes** | string | The ID of a storage volume. | 
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `attach_volume` method directly on the object:
+After retrieving a server, either by getting it by ID, or as a create response object, you can call the `attach_volume` method directly on the object:
 
 ```
 attachVolume(String dataCenterId, String serverId, String volumeId)
@@ -712,17 +717,17 @@ attachVolume(String dataCenterId, String serverId, String volumeId)
 
 #### Detach a Volume
 
-This will detach the volume from the server. Depending on the volume "hot_unplug" settings, this may result in the server being rebooted.
+Detaches a volume from the server. Depending on the volume's "hot_unplug" settings, this may result in the server being rebooted.
 
 This will NOT delete the volume from your data center. You will need to make a separate request to delete a volume.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
-| volumeId | string | The ID of the attached volume. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
+| volumeId | **yes** | string | The ID of the attached volume. | 
 
 After retrieving a server, you can call the `detach_volume` method directly on the object:
 
@@ -736,7 +741,7 @@ detachVolume(String dataCenterId, String serverId, String volumeId)
 
 Deletes the specified volume. This will result in the volume being removed from your data center. Use this with caution.
 
-After retrieving a volume, either by getting it by id, or as a create response object, you can call the `delete` method directly on the object:
+After retrieving a volume, either by getting it by ID, or as a create response object, you can call the `delete` method directly on the object:
 
 ```
 deleteVolume(String dataCenterId, String volumeId)
@@ -749,14 +754,14 @@ deleteVolume(String dataCenterId, String volumeId)
 
 #### List NICs
 
-Retrieve a list of LANs within the data center.
+Retrieves a list of NICs within the data center.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
 
 ```
 getAllNics(String dataCenterId, String serverId)
@@ -768,13 +773,13 @@ getAllNics(String dataCenterId, String serverId)
 
 Retrieves the attributes of a given NIC.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
-| nicId | string | The ID of the NIC. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
+| nicId | **yes** | string | The ID of the NIC. | 
 
 ```
 getNic(String dataCenterId, String serverId, String nicId)
@@ -786,19 +791,19 @@ getNic(String dataCenterId, String serverId, String nicId)
 
 Adds a NIC to the target server.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
-| name | string | The name of the NIC. | No |
-| ips | string collection | IPs assigned to the NIC. This can be a collection. | No |
-| dhcp | bool | Set to FALSE if you wish to disable DHCP on the NIC. Default: TRUE. | No |
-| lan | int | The LAN ID the NIC will sit on. If the LAN ID does not exist it will be created. | Yes |
-| nat | bool | Indicates the private IP address has outbound access to the public internet. | No |
-| firewallActive | bool | Once you add a firewall rule this will reflect a true value. | No |
-| firewallrules | string collection | A list of firewall rules associated to the NIC represented as a collection. | No |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. |
+| lan | **yes** | int | The LAN ID the NIC will sit on. If the LAN ID does not exist it will be created. |  
+| name | no | string | The name of the NIC. | 
+| ips | no | string collection | IPs assigned to the NIC. This can be a collection. | 
+| dhcp | no | bool | Set to FALSE if you wish to disable DHCP on the NIC. Default: TRUE. | 
+| nat | no | bool | Indicates the private IP address has outbound access to the public internet. |
+| firewallActive | no | bool | Once you add a firewall rule this will reflect a true value. |
+| firewallrules | no | string collection | A list of firewall rules associated to the NIC represented as a collection. | 
 
 ```
 createNic(String dataCenterId, String serverId, Nic nic)
@@ -808,26 +813,27 @@ createNic(String dataCenterId, String serverId, Nic nic)
 
 #### Update a NIC
 
-You can update -- in full or partially -- various attributes on the NIC; however, some restrictions are in place:
+Various attributes on the NIC can be updated (either in full or partially) although the following restrictions apply: 
 
-The primary address of a NIC connected to a load balancer can only be changed by changing the IP of the load balancer. You can also add additional reserved, public IPs to the NIC.
+* The primary address of a NIC connected to a load balancer can only be changed by changing the IP address of the load balancer. 
+* You can also add additional reserved, public IP addresses to the NIC.
+* The user can specify and assign private IP addresses manually. 
+* Valid IP addresses for private networks are 10.0.0.0/8, 172.16.0.0/12 or 192.168.0.0/16.
 
-The user can specify and assign private IPs manually. Valid IP addresses for private networks are 10.0.0.0/8, 172.16.0.0/12 or 192.168.0.0/16.
+**Request Arguments**
 
-The following table describes the request arguments:
-
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
-| nicId | string | The ID of the NIC. | Yes |
-| nic.name | string | The name of the NIC. | No |
-| nic.ips | string collection | IPs assigned to the NIC represented as a collection. | No |
-| nic.dhcp | bool | Boolean value that indicates if the NIC is using DHCP or not. | No |
-| nic.lan | int | The LAN ID the NIC sits on. | No |
-| nic.nat | bool | Indicates the private IP address has outbound access to the public internet. | No |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
+| nicId | **yes** | string | The ID of the NIC. | 
+| nic.name | no | string | The name of the NIC. | 
+| nic.ips | no | string collection | IPs assigned to the NIC represented as a collection. | 
+| nic.dhcp | no | bool | Boolean value that indicates if the NIC is using DHCP or not. | 
+| nic.lan | no | int | The LAN ID the NIC sits on. | 
+| nic.nat | no | bool | Indicates the private IP address has outbound access to the public internet. | 
 
-After retrieving a NIC, either by getting it by id, or as a create response object, you can call the `update` method directly on the object:
+After retrieving a NIC, either by getting it by ID, or as a create response object, you can call the `update` method directly on the object:
 
 ```
 updateNic(String dataCenterId, String serverId, String nicId, Nic.Properties nic)
@@ -837,12 +843,12 @@ updateNic(String dataCenterId, String serverId, String nicId, Nic.Properties nic
 
 #### List Load Balanced NICs
 
-This will retrieve a list of NICs associated with the load balancer.
+Retrieves a list of NICs associated with the load balancer.
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| loadBalancerId | string | The ID of the load balancer. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| loadBalancerId | **yes** | string | The ID of the load balancer. | 
 
 After retrieving a load balancer, you can call the `getAllBalancedNics` method directly:
 
@@ -856,12 +862,12 @@ getAllBalancedNics(String dataCenterId, String loadBalancerId, String serverId)
 
 Retrieves the attributes of a given load balanced NIC.
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| loadBalancerId | string | The ID of the load balancer. | Yes |
-| serverId | string | The ID of the server. | Yes |
-| nicId | string | The ID of the load balancer. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| loadBalancerId | **yes** | string | The ID of the load balancer. | 
+| serverId | **yes** | string | The ID of the server. | 
+| nicId | **yes** | string | The ID of the load balancer. | 
 
 ```
 getBalancedNic(String dataCenterId, String loadBalancerId, String serverId, String nicId)
@@ -871,13 +877,13 @@ getBalancedNic(String dataCenterId, String loadBalancerId, String serverId, Stri
 
 #### Associate NIC to a Load Balancer
 
-This will associate a NIC to a Load Balancer, enabling the NIC to participate in load-balancing.
+Associates a NIC to a Load Balancer, enabling the NIC to participate in load-balancing.
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| loadBalancerId | string | The ID of the load balancer. | Yes |
-| nicId | string | The ID of the load balancer. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| loadBalancerId | **yes** | string | The ID of the load balancer. | 
+| nicId | **yes** | string | The ID of the load balancer. | 
 
 After retrieving a load balancer, you can call the `assignNicToLoadBalancer` method :
 
@@ -891,11 +897,11 @@ assignNicToLoadBalancer(String dataCenterId, String loadBalancerId, String nicId
 
 Removes the association of a NIC with a load balancer.
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| loadBalancerId | string | The ID of the load balancer. | Yes |
-| nicId | string | The ID of the load balancer. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| loadBalancerId | **yes** | string | The ID of the load balancer. | 
+| nicId | **yes** | string | The ID of the load balancer. | 
 
 After retrieving a load balancer, you can call the `unassignNicFromLoadBalancer` method :
 
@@ -910,15 +916,15 @@ unassignNicFromLoadBalancer(String dataCenterId, String loadBalancerId, String n
 
 Deletes the specified NIC.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
-| nicId | string | The ID of the NIC. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
+| nicId | **yes** | string | The ID of the NIC. | 
 
-After retrieving a NIC, either by getting it by id, or as a create response object, you can call the `delete` method directly on the object:
+After retrieving a NIC, either by getting it by ID, or as a create response object, you can call the `delete` method directly on the object:
 
 ```
 deleteNic(String dataCenterId, String serverId, String nicId)
@@ -932,11 +938,13 @@ deleteNic(String dataCenterId, String serverId, String nicId)
 
 Retrieves a list of firewall rules associated with a particular NIC.
 
-| Name | Type | Description | Required |
+**Request Arguments**
+
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
-| nicId | string | The ID of the NIC. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
+| nicId | **yes** | string | The ID of the NIC. | 
 
 ```
 getAllFirewallRules(String dataCenterId, String serverId, String nicId)
@@ -948,12 +956,14 @@ getAllFirewallRules(String dataCenterId, String serverId, String nicId)
 
 Retrieves the attributes of a given firewall rule.
 
-| Name | Type | Description | Required |
+**Request Arguments**
+
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
-| nicId | string | The ID of the NIC. | Yes |
-| firewallRuleId | string | The ID of the firewall rule. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
+| nicId | **yes** | string | The ID of the NIC. | 
+| firewallRuleId | **yes** | string | The ID of the firewall rule. | 
 
 ```
 getFirewallRule(String dataCenterId, String serverId, String nicId, String firewallRuleId)
@@ -963,24 +973,24 @@ getFirewallRule(String dataCenterId, String serverId, String nicId, String firew
 
 #### Create a Firewall Rule
 
-This will add a firewall rule to the NIC.
+Adds a firewall rule to the NIC.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
-| nicId | string | The ID of the NIC. | Yes |
-| name | string | The name of the Firewall Rule. | No |
-| protocol | string | The protocol for the rule: TCP, UDP, ICMP, ANY. | Yes |
-| sourceMac | string | Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. Value null allows all source MAC address. | No |
-| sourceIp | string | Only traffic originating from the respective IPv4 address is allowed. Value null allows all source IPs. | No |
-| targetIp | string | In case the target NIC has multiple IP addresses, only traffic directed to the respective IP address of the NIC is allowed. Value null allows all target IPs. | No |
-| portRangeStart | string | Defines the start range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd value null to allow all ports. | No |
-| portRangeEnd | string | Defines the end range of the allowed port (from 1 to 65534) if the protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd null to allow all ports. | No |
-| icmpType | string | Defines the allowed type (from 0 to 254) if the protocol ICMP is chosen. Value null allows all types. | No |
-| icmpCode | string | Defines the allowed code (from 0 to 254) if protocol ICMP is chosen. Value null allows all codes. | No |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
+| nicId | **yes** | string | The ID of the NIC. | 
+| protocol | **yes** | string | The protocol for the rule: TCP, UDP, ICMP, ANY. |
+| name | no | string | The name of the Firewall Rule. |  
+| sourceMac | no | string | Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. Value null allows all source MAC address. | 
+| sourceIp | no | string | Only traffic originating from the respective IPv4 address is allowed. Value null allows all source IPs. | 
+| targetIp | no | string | In case the target NIC has multiple IP addresses, only traffic directed to the respective IP address of the NIC is allowed. Value null allows all target IPs. | 
+| portRangeStart | no | string | Defines the start range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd value null to allow all ports. | 
+| portRangeEnd | no | string | Defines the end range of the allowed port (from 1 to 65534) if the protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd null to allow all ports. | 
+| icmpType | no | string | Defines the allowed type (from 0 to 254) if the protocol ICMP is chosen. Value null allows all types. | 
+| icmpCode | no | string | Defines the allowed code (from 0 to 254) if protocol ICMP is chosen. Value null allows all codes. | 
 
 ```
 createFirewallRule(String dataCenterId, String serverId, String nicId, FirewallRule firewallRule)
@@ -990,26 +1000,26 @@ createFirewallRule(String dataCenterId, String serverId, String nicId, FirewallR
 
 #### Update a Firewall Rule
 
-Perform updates to attributes of a firewall rule.
+Performs updates to attributes of a firewall rule.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
-| nicId | string | The ID of the NIC. | Yes |
-| firewallRuleId | string | The ID of the firewall rule. | Yes |
-| firewallRule.name | string | The name of the Firewall Rule. | No |
-| firewallRule.sourceMac | string | Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. Value null allows all source MAC address. | No |
-| firewallRule.sourceIp | string | Only traffic originating from the respective IPv4 address is allowed. Value null allows all source IPs. | No |
-| firewallRule.targetIp | string | In case the target NIC has multiple IP addresses, only traffic directed to the respective IP address of the NIC is allowed. Value null allows all target IPs. | No |
-| firewallRule.portRangeStart | string | Defines the start range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd value null to allow all ports. | No |
-| firewallRule.portRangeEnd | string | Defines the end range of the allowed port (from 1 to 65534) if the protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd null to allow all ports. | No |
-| firewallRule.icmpType | string | Defines the allowed type (from 0 to 254) if the protocol ICMP is chosen. Value null allows all types. | No |
-| firewallRule.icmpCode | string | Defines the allowed code (from 0 to 254) if protocol ICMP is chosen. Value null allows all codes. | No |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
+| nicId | **yes** | string | The ID of the NIC. | 
+| firewallRuleId | **yes** | string | The ID of the firewall rule. | 
+| firewallRule.name | no | string | The name of the Firewall Rule. | 
+| firewallRule.sourceMac | no | string | Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. Value null allows all source MAC address. | 
+| firewallRule.sourceIp | no | string | Only traffic originating from the respective IPv4 address is allowed. Value null allows all source IPs. | 
+| firewallRule.targetIp | no | string | In case the target NIC has multiple IP addresses, only traffic directed to the respective IP address of the NIC is allowed. Value null allows all target IPs. | 
+| firewallRule.portRangeStart | no | string | Defines the start range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd value null to allow all ports. | 
+| firewallRule.portRangeEnd | no | string | Defines the end range of the allowed port (from 1 to 65534) if the protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd null to allow all ports. | 
+| firewallRule.icmpType | no | string | Defines the allowed type (from 0 to 254) if the protocol ICMP is chosen. Value null allows all types. | 
+| firewallRule.icmpCode | no | string | Defines the allowed code (from 0 to 254) if protocol ICMP is chosen. Value null allows all codes. | 
 
-After retrieving a firewall rule, either by getting it by id, or as a create response object, you can change its properties and call the `update` method:
+After retrieving a firewall rule, either by getting it by ID, or as a create response object, you can change its properties and call the `update` method:
 
 ```
 updateFirewWallRule(String dataCenterId, String serverId, String nicId, String firewallRuleId, FirewallRule.Properties firewallRule)
@@ -1021,14 +1031,16 @@ updateFirewWallRule(String dataCenterId, String serverId, String nicId, String f
 
 Removes the specific firewall rule.
 
-| Name | Type | Description | Required |
-|---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| serverId | string | The ID of the server. | Yes |
-| nicId | string | The ID of the NIC. | Yes |
-| firewallRuleId | string | The ID of the firewall rule. | Yes |
+**Request Arguments**
 
-After retrieving a firewall rule, either by getting it by id, or as a create response object, you can call the `delete` method directly on the object:
+| Name | Required | Type | Description | 
+|---|---|---|---|
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| serverId | **yes** | string | The ID of the server. | 
+| nicId | **yes** | string | The ID of the NIC. | 
+| firewallRuleId | **yes** | string | The ID of the firewall rule. | 
+
+After retrieving a firewall rule, either by getting it by ID, or as a create response object, you can call the `delete` method directly on the object:
 
 ```
 deleteFirewallRule(String dataCenterId, String serverId, String nicId, String firewallRuleId)
@@ -1040,13 +1052,13 @@ deleteFirewallRule(String dataCenterId, String serverId, String nicId, String fi
 
 #### List LANs
 
-Retrieve a list of LANs within the data center.
+Retrieves a list of LANs within the data center.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
 
 ```
 getAllLans(String dataCenterId)
@@ -1058,14 +1070,14 @@ getAllLans(String dataCenterId)
 
 Creates a LAN within a data center.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| name | string | The name of your LAN. | No |
-| isPublic | bool | Boolean indicating if the LAN faces the public Internet or not. | No |
-| nics | string collection | A collection of NICs associated with the LAN. | No |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| name | no | string | The name of your LAN. | 
+| isPublic | no | bool | Boolean indicating if the LAN faces the public Internet or not. | 
+| nics | no | string collection | A collection of NICs associated with the LAN. | 
 
 ```
 createLan(String dataCenterId, Lan lan)
@@ -1077,12 +1089,12 @@ createLan(String dataCenterId, Lan lan)
 
 Retrieves the attributes of a given LAN.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| lanId | string | The ID of the LAN. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| lanId | **yes** | string | The ID of the LAN. | 
 
 ```
 getLan(String dataCenterId, String lanId)
@@ -1092,17 +1104,17 @@ getLan(String dataCenterId, String lanId)
 
 #### Update a LAN
 
-Perform updates to attributes of a LAN.
+Performs updates to the attributes of a LAN.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| lanId | string | The ID of the LAN. | Yes |
-| isPublic | bool | Boolean indicating if the LAN faces the public Internet or not. | No |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| lanId | **yes** | string | The ID of the LAN. | 
+| isPublic | no | bool | Boolean indicating if the LAN faces the public Internet or not. | 
 
-After retrieving a LAN, you can change it's properties and call the `updateLan` method:
+After retrieving a LAN, you can change its properties and call the `updateLan` method:
 
 ```
 updateLan(String dataCenterId, String lanId, Boolean isPublic)
@@ -1114,12 +1126,12 @@ updateLan(String dataCenterId, String lanId, Boolean isPublic)
 
 Deletes the specified LAN.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| lanId | string | The ID of the LAN. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| lanId | **yes** | string | The ID of the LAN. | 
 
 After retrieving a LAN, you can call the `deleteLan` method directly on the object:
 
@@ -1131,7 +1143,7 @@ deleteLan(String dataCenterId, String lanId)
 
 #### List Images
 
-Retrieve a list of images.
+Retrieves a list of images.
 
 ```
 getAllImages()
@@ -1143,11 +1155,11 @@ getAllImages()
 
 Retrieves the attributes of a specific image.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| imageId | string | The ID of the image. | Yes |
+| imageId | **yes** | string | The ID of the image. | 
 
 ```
 getImage(String imageId)
@@ -1157,11 +1169,11 @@ getImage(String imageId)
 
 Deletes a specific image.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| imageId | string | The ID of the image. | Yes |
+| imageId | **yes** | string | The ID of the image. | 
 
 ```
 deleteImage(String imageId)
@@ -1171,11 +1183,11 @@ deleteImage(String imageId)
 
 Updates a specific image.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| imageId | string | The ID of the image. | Yes |
+| imageId | **yes** | string | The ID of the image. | 
 
 ```
 updateImage(String imageId, Image.Properties object)
@@ -1187,11 +1199,11 @@ updateImage(String imageId, Image.Properties object)
 
 #### List Load Balancers
 
-Retrieve a list of load balancers within the data center.
+Retrieves a list of load balancers within the data center.
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| datacenter_id | string | The ID of the data center. | Yes |
+| datacenter_id | **yes** | string | The ID of the data center. | 
 
 ```
 getAllLoadBalancers(String dataCenterId)
@@ -1203,10 +1215,10 @@ getAllLoadBalancers(String dataCenterId)
 
 Retrieves the attributes of a given load balancer.
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| loadBalancerId | string | The ID of the load balancer. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| loadBalancerId | **yes** | string | The ID of the load balancer. | 
 
 ```
 getLoadBalancer(String dataCenterId, String loadBalancerId)
@@ -1216,15 +1228,15 @@ getLoadBalancer(String dataCenterId, String loadBalancerId)
 
 #### Create a Load Balancer
 
-Creates a load balancer within the data center. Load balancers can be used for public or private IP traffic.
+Creates a load balancer within the data center. Load balancers can be used for traffic on either public or private IP addresses.
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| name | string | The name of the load balancer. | Yes |
-| ip | string | IPv4 address of the load balancer. All attached NICs will inherit this IP. | No |
-| dhcp | bool | Indicates if the load balancer will reserve an IP using DHCP. | No |
-| balancednics | string collection | List of NICs taking part in load-balancing. All balanced nics inherit the IP of the load balancer. | No |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| name | **yes** | string | The name of the load balancer. | 
+| ip | no | string | IPv4 address of the load balancer. All attached NICs will inherit this IP address. | 
+| dhcp | no | bool | Indicates if the load balancer will reserve an IP address using DHCP. | 
+| balancednics | no | string collection | List of NICs taking part in load-balancing. All balanced NICs inherit the IP address of the load balancer. | 
 
 ```
 createLoadBalancer(String dataCenterId, LoadBalancer loadBalancer)
@@ -1234,17 +1246,17 @@ createLoadBalancer(String dataCenterId, LoadBalancer loadBalancer)
 
 #### Update a Load Balancer
 
-Perform updates to attributes of a load balancer.
+Performs updates to attributes of a load balancer.
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| loadBalancerId | string | The ID of the load balancer. | Yes |
-| loadBalancer.name | string | The name of the load balancer. | No |
-| loadBalancer.ip | string | The IP of the load balancer. | No |
-| loadBalancer.dhcp | bool | Indicates if the load balancer will reserve an IP using DHCP. | No |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| loadBalancerId | **yes** | string | The ID of the load balancer. | 
+| loadBalancer.name | no | string | The name of the load balancer. | 
+| loadBalancer.ip | no | string | The IP address of the load balancer. | 
+| loadBalancer.dhcp | no | bool | Indicates if the load balancer will reserve an IP address using DHCP. | 
 
-After retrieving a load balancer, you can change it's properties and call the `updateLoadBalancer` method:
+After retrieving a load balancer, you can change its properties and call the `updateLoadBalancer` method:
 
 ```
 updateLoadBalancer(String dataCenterId, String loadBalancerId, LoadBalancer.Properties loadBalancer) 
@@ -1256,10 +1268,10 @@ updateLoadBalancer(String dataCenterId, String loadBalancerId, LoadBalancer.Prop
 
 Deletes the specified load balancer.
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the data center. | Yes |
-| loadBalancerId | string | The ID of the load balancer. | Yes |
+| dataCenterId | **yes** | string | The ID of the data center. | 
+| loadBalancerId | **yes** | string | The ID of the load balancer. | 
 
 After retrieving a load balancer, you can call the `deleteLoadBalaner` method directly on the object:
 
@@ -1273,7 +1285,7 @@ deleteLoadBalaner(String dataCenterId, String loadBalancerId)
 
 #### List IP Blocks
 
-Retrieve a list of IP Blocks.
+Retrieves a list of IP address blocks.
 
 ```
 getAllIPBlocks()
@@ -1285,11 +1297,11 @@ getAllIPBlocks()
 
 Retrieves the attributes of a specific IP Block.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| ipBlockId | string | The ID of the IP block. | Yes |
+| ipBlockId | **yes** | string | The ID of the IP block. | 
 
 ```
 getIPBlock(String ipBlockId)
@@ -1301,13 +1313,13 @@ getIPBlock(String ipBlockId)
 
 Creates an IP block.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| ipBlock.location | string | This must be one of the locations: us/las, de/fra, de/fkb. | Yes |
-| ipBlock.size | int | The size of the IP block you want. | Yes |
-| ipBlock.name | string | A descriptive name for the IP block | No |
+| ipBlock.location | **yes** | string | This must be one of the following locations: us/las, de/fra, de/fkb. | 
+| ipBlock.size | **yes** | int | The size of the IP block you want. | 
+| ipBlock.name | no | string | A descriptive name for the IP block | 
 
 ```
 createIPBlock(IPBlock ipBlock)
@@ -1319,13 +1331,13 @@ createIPBlock(IPBlock ipBlock)
 
 Deletes the specified IP Block.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| ipBlockId | string | The ID of the IP block. | Yes |
+| ipBlockId | **yes** | string | The ID of the IP block. | 
 
-After retrieving an IP block, either by getting it by id, you can call the `deleteIPBlock` method directly on the object:
+After retrieving an IP block, either by getting it by ID, you can call the `deleteIPBlock` method directly on the object:
 
 ```
 deleteIPBlock(String ipBlockId)
@@ -1336,7 +1348,7 @@ deleteIPBlock(String ipBlockId)
 
 #### List Snapshots
 
-You can retrieve a list of all snapshots.
+Retrieves a list of all snapshots.
 
 ```
 getAllSnapshots()
@@ -1348,11 +1360,11 @@ getAllSnapshots()
 
 Retrieves the attributes of a specific snapshot.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| snapshotId | string | The ID of the snapshot. | Yes |
+| snapshotId | **yes** | string | The ID of the snapshot. | 
 
 ```
 getSnapshot(String snapshotId)
@@ -1362,29 +1374,29 @@ getSnapshot(String snapshotId)
 
 #### Update a Snapshot
 
-Perform updates to attributes of a snapshot.
+Performs updates to attributes of a snapshot.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the snapshot. | Yes |
-| snapshotId | string | The ID of the snapshot. | Yes |
-| name | string | The name of the snapshot. | No |
-| description | string | The description of the snapshot. | No |
-| cpuHotPlug | bool | This volume is capable of CPU hot plug (no reboot required) | No |
-| cpuHotUnplug | bool | This volume is capable of CPU hot unplug (no reboot required) | No |
-| ramHotPlug | bool | This volume is capable of memory hot plug (no reboot required) | No |
-| ramHotUnplug | bool | This volume is capable of memory hot unplug (no reboot required) | No |
-| nicHotPlug | bool | This volume is capable of NIC hot plug (no reboot required) | No |
-| nicHotUnplug | bool | This volume is capable of NIC hot unplug (no reboot required) | No |
-| discVirtioHotPlug | bool | This volume is capable of Virt-IO drive hot plug (no reboot required) | No |
-| discVirtioHotUnplug | bool | This volume is capable of Virt-IO drive hot unplug (no reboot required) | No |
-| discScsiHotPlug | bool | This volume is capable of SCSI drive hot plug (no reboot required) | No |
-| discScsiHotUnplug | bool | This volume is capable of SCSI drive hot unplug (no reboot required) | No |
-| licenceType | string | The snapshot's licence type: LINUX, WINDOWS, or UNKNOWN. | No |
+| dataCenterId | **yes** | string | The ID of the snapshot. | 
+| snapshotId | **yes** | string | The ID of the snapshot. | 
+| name | no | string | The name of the snapshot. | 
+| description | no | string | The description of the snapshot. | 
+| cpuHotPlug | no | bool | This volume is capable of CPU hot plug (no reboot required) | 
+| cpuHotUnplug | no | bool | This volume is capable of CPU hot unplug (no reboot required) | 
+| ramHotPlug | no | bool | This volume is capable of memory hot plug (no reboot required) | 
+| ramHotUnplug | no | bool | This volume is capable of memory hot unplug (no reboot required) | 
+| nicHotPlug | no | bool | This volume is capable of NIC hot plug (no reboot required) | 
+| nicHotUnplug | no | bool | This volume is capable of NIC hot unplug (no reboot required) | 
+| discVirtioHotPlug | no | bool | This volume is capable of Virt-IO drive hot plug (no reboot required) |
+| discVirtioHotUnplug | no | bool | This volume is capable of Virt-IO drive hot unplug (no reboot required) | 
+| discScsiHotPlug | no | bool | This volume is capable of SCSI drive hot plug (no reboot required) | 
+| discScsiHotUnplug | no | bool | This volume is capable of SCSI drive hot unplug (no reboot required) | 
+| licenceType | no | string | The snapshot's licence type: LINUX, WINDOWS, or UNKNOWN. | 
 
-After retrieving a snapshot, you can change it's properties and call the `updateSnapshot` method:
+After retrieving a snapshot, you can change its properties and call the `updateSnapshot` method:
 
 ```
 updateSnapshot(String dataCenterId, String snapshotId, Snapshot.Properties snapshot)
@@ -1396,14 +1408,14 @@ updateSnapshot(String dataCenterId, String snapshotId, Snapshot.Properties snaps
 
 Creates a snapshot of a volume within the data center. You can use a snapshot to create a new storage volume or to restore a storage volume.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the datacenter. | Yes |
-| volumeId | string | The ID of the volume. | Yes |
-| name | string | The name of the snapshot. | No |
-| description | string | The description of the snapshot. | No |
+| dataCenterId | **yes** | string | The ID of the datacenter. | 
+| volumeId | **yes** | string | The ID of the volume. | 
+| name |  no | string | The name of the snapshot. |
+| description | no | string | The description of the snapshot. | 
 
 After retrieving a volume, you can call the `createSnapshot` method directly on the object:
 
@@ -1416,17 +1428,17 @@ createSnapshot(dataCenterId, volumeId, description);
 
 #### Restore a Volume Snapshot
 
-This will restore a snapshot onto a volume. A snapshot is created as just another image that can be used to create new volumes or to restore an existing volume.
+Restores a snapshot onto a volume. A snapshot is created as an image which can be used to create new volumes or to restore an existing volume.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| dataCenterId | string | The ID of the datacenter. | Yes |
-| volumeId | string | The ID of the volume. | Yes |
-| snapshotId | string | The ID of the snapshot. | Yes |
+| dataCenterId | **yes** | string | The ID of the datacenter. | 
+| volumeId | **yes** | string | The ID of the volume. | 
+| snapshotId | **yes** | string | The ID of the snapshot. | 
 
-After retrieving a volume, either by getting it by id, or as a create response object, you can call the `restoreSnapshot` method directly on the object:
+After retrieving a volume, either by getting it by ID, or as a create response object, you can call the `restoreSnapshot` method directly on the object:
 
 ```
 restoreSnapshot(String dataCenterId, String volumeId, String snapshotId)
@@ -1438,11 +1450,11 @@ restoreSnapshot(String dataCenterId, String volumeId, String snapshotId)
 
 Deletes the specified snapshot.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| snapshotId | string | The ID of the snapshot. | Yes |
+| snapshotId | **yes** | string | The ID of the snapshot. | 
 
 After retrieving a snapshot, you can call the `deleteSnapshot` method directly on the object:
 
@@ -1458,11 +1470,11 @@ deleteSnapshot(String snapshotId)
 
 Retrieves the status of a specific request.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| url | string | The ID of the request. | Yes |
+| url | **yes** | string | The ID of the request. | 
 
 ```
 getRequestStatus(String url)
@@ -1473,11 +1485,11 @@ getRequestStatus(String url)
 
 Retrieves the attributes of a specific request.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 |---|---|---|---|
-| requestId | string | The ID of the request. | Yes |
+| requestId | **yes** | string | The ID of the request. | 
 
 ```
 getRequest(String url)
@@ -1485,9 +1497,7 @@ getRequest(String url)
 
 #### List Requests
 
-Retrieves list of requests.
-
-The following table describes the request arguments:
+Retrieves a list of requests.
 
 ```
 listRequests()
@@ -1511,11 +1521,11 @@ getAllLocations()
 
 Retrieves the attributes of a given location.
 
-The following table describes the request arguments:
+**Request Arguments**
 
-| Name | Type | Description | Required |
+| Name | Required | Type | Description | 
 | --- | --- | --- | --- |
-| id | string | The unique identifier consisting of country/city. | Yes |
+| id | **yes** | string | The unique identifier consisting of country/city. | 
 
 ```
 getLocation(String id)
@@ -1525,7 +1535,7 @@ getLocation(String id)
 
 ## Examples
 
-The following examples make a couple of assumptions.
+The examples in this section make two assumptions:
 
 1. The ProfitBricks account credentials will be set through environment variables:
 
@@ -1582,7 +1592,9 @@ The following examples make a couple of assumptions.
 
 ### Wait for Resources
 
-ProfitBricks allows servers to be created with individual, customizable components including NICs and volumes. A wait method is necessary to provision components that depends on each other. Below is an example of a `waitTillProvisioned` method that can be used between dependent requests:
+ProfitBricks allows servers to be created with individual, customizable components including NICs and volumes. A wait method is necessary to provision components that depend on each other. 
+
+This is an example of a `waitTillProvisioned` method which can be used between dependent requests:
 
 `src/main/java/com/company/app/Common.java`
 
@@ -1617,7 +1629,7 @@ ProfitBricks allows servers to be created with individual, customizable componen
 
 ### Component Build
 
-Using the above `waitTillProvisioned` method and individual components, a fully operational public server can be built using the following example.
+Using the above `waitTillProvisioned` method and individual components, a fully operational public server can be built using this example:
 
 `src/main/java/com/company/app/ComponentBuild.java`
 
@@ -1705,7 +1717,7 @@ Using the above `waitTillProvisioned` method and individual components, a fully 
 
 ### Composite Build
 
-ProfitBricks also allows servers to be built using a composite request. The following example will demonstrate a fully operational public server built with a single composite request. Note that a second request is necessary to set the provisioned LAN to public.
+ProfitBricks also allows servers to be built using a composite request. This example  demonstrates a fully-operational public server built with a single composite request. Note that a second request is necessary to set the provisioned LAN to public.
 
 `src/main/java/com/company/app/CompositeBuild.java`
 
@@ -1787,7 +1799,9 @@ ProfitBricks also allows servers to be built using a composite request. The foll
 
 ## Support
 
-You can engage with us on the [ProfitBricks DevOps Central](https://devops.profitbricks.com/) site where we will be more than happy to answer any questions you might have. Please review the list below for additional resources.
+You can engage with us on the [ProfitBricks DevOps Central](https://devops.profitbricks.com/) site where we will be happy to answer any questions you might have. 
+
+**Additional Resources**
 
 * [ProfitBricks SDK for Java](https://devops.profitbricks.com/libraries/java/) guide.
 * [ProfitBricks REST API](https://devops.profitbricks.com/api/rest/) documentation.
@@ -1796,19 +1810,19 @@ You can engage with us on the [ProfitBricks DevOps Central](https://devops.profi
 
 ## Testing
 
-To run the unit tests you need to set following environment variables:
+Set these environment variables to run the unit tests:
 
     export PROFITBRICKS_USERName=username
     export PROFITBRICKS_PASSWORD=password
 
-Maven can then be used to run the tests.
+Maven can then be used to run the tests:
 
     mvn test
 
 ## Contributing
 
 1. Fork the repository (https://github.com/profitbricks/profitbricks-sdk-java/fork)
-2. Create your feature branch (git checkout -b my-new-feature)
-3. Commit your changes (git commit -am 'Add some feature')
-4. Push to the branch (git push origin my-new-feature)
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
