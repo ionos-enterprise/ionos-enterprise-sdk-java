@@ -57,6 +57,7 @@ public class Location extends ProfitbricksBase {
     public class Properties {
         private List<String> features;
         private String name;
+        private List<String> imageAliases;
 
         public List<String> getFeatures() {
             if (features == null) {
@@ -75,6 +76,14 @@ public class Location extends ProfitbricksBase {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        public List<String> getImageAliases() {
+            return imageAliases;
+        }
+
+        public void setImageAliases(List<String> imageAliases) {
+            this.imageAliases = imageAliases;
         }
     }
 

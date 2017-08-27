@@ -31,6 +31,8 @@ package com.profitbricks.rest.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 /**
  * @author jasmin@stackpointcloud.com
  */
@@ -70,6 +72,7 @@ public class CDRom extends ProfitbricksBase {
         private String imageType;
         @JsonProperty("public")
         private Boolean isPublic;
+        private List<String> imageAliases;
 
         public String getName() {
             return name;
@@ -205,6 +208,14 @@ public class CDRom extends ProfitbricksBase {
 
         public void setPublic(Boolean aPublic) {
             isPublic = aPublic;
+        }
+
+        public List<String> getImageAliases() {
+            return imageAliases;
+        }
+
+        public void setImageAliases(List<String> imageAliases) {
+            this.imageAliases = imageAliases;
         }
     }
 

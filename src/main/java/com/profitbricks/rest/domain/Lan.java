@@ -30,7 +30,10 @@
 
 package com.profitbricks.rest.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 /**
  *
@@ -52,11 +55,13 @@ public class Lan extends ProfitbricksBase {
       this.properties = properties;
    }
 
+   @JsonIgnoreProperties(ignoreUnknown = true)
    public class Properties {
 
       @JsonProperty("public")
       private Boolean isPublic;
       private String name;
+      private List<IpFailover> ipFailover;
 
       /**
        * @return the isPublic
@@ -85,8 +90,17 @@ public class Lan extends ProfitbricksBase {
       public void setName(String name) {
          this.name = name;
       }
+
+       public List<IpFailover> getIpFailover() {
+           return ipFailover;
+       }
+
+       public void setIpFailover(List<IpFailover> ipFailover) {
+           this.ipFailover = ipFailover;
+       }
    }
 
+   @JsonIgnoreProperties(ignoreUnknown = true)
    public class Entities {
 
       private Nics nics = new Nics();
@@ -104,6 +118,28 @@ public class Lan extends ProfitbricksBase {
       public void setNics(Nics nics) {
          this.nics = nics;
       }
+   }
+
+   @JsonIgnoreProperties(ignoreUnknown = true)
+   public class IpFailover{
+       private String Ip;
+       private String NicUuid;
+
+       public String getIp() {
+           return Ip;
+       }
+
+       public void setIp(String ip) {
+           Ip = ip;
+       }
+
+       public String getNicUuid() {
+           return NicUuid;
+       }
+
+       public void setNicUuid(String nicUuid) {
+           NicUuid = nicUuid;
+       }
    }
 
    private Entities entities = new Entities();

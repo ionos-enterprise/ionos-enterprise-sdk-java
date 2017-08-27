@@ -65,6 +65,7 @@ public class Snapshot extends ProfitbricksBase {
         private Boolean discVirtioHotUnplug;
         private Boolean discScsiHotPlug;
         private Boolean discScsiHotUnplug;
+        private Boolean secAuthProtection;
 
         public void setLocation(String location) {
             this.location = location;
@@ -268,6 +269,14 @@ public class Snapshot extends ProfitbricksBase {
          */
         public void setDiscScsiHotUnplug(Boolean discScsiHotUnplug) {
             this.discScsiHotUnplug = discScsiHotUnplug;
+        }
+
+        public Boolean getSecAuthProtection() {
+            return secAuthProtection;
+        }
+
+        public void setSecAuthProtection(Boolean secAuthProtection) {
+            this.secAuthProtection = secAuthProtection;
         }
     }
 
