@@ -32,6 +32,8 @@ package com.profitbricks.rest.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 /**
  *
  * @author jasmin@stackpointcloud.com
@@ -57,6 +59,7 @@ public class Lan extends ProfitbricksBase {
       @JsonProperty("public")
       private Boolean isPublic;
       private String name;
+      private List<String> ipFailover;
 
       /**
        * @return the isPublic
@@ -84,6 +87,14 @@ public class Lan extends ProfitbricksBase {
        */
       public void setName(String name) {
          this.name = name;
+      }
+
+      public List<String> getIpFailover() {
+         return ipFailover;
+      }
+
+      public void setIpFailover(List<String> ipFailover) {
+         this.ipFailover = ipFailover;
       }
    }
 
