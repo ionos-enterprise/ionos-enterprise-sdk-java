@@ -38,10 +38,7 @@ import org.apache.commons.io.Charsets;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPatch;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
 /**
@@ -178,8 +175,25 @@ public class RestClient extends AbstractRestClient {
         }
     }
 
+    public <T> T put(RequestInterceptor interceptor, String path, Object object, Class<T> entityClass, int expectedStatus)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        HttpPut patch = contentTypePartialJson(newHttpPut(path));
+        HttpEntity entity = new StringEntity(toJson(WrappWithProperties(object)).toString(), Charsets.UTF_8);
+        patch.setEntity(entity);
+        HttpResponse response = execute(interceptor, patch, expectedStatus);
+        if (response != null) {
+            return bindObject(response, entityClass);
+        } else {
+            return null;
+        }
+    }
+
     public <T> T update(String path, Object object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         return update(null, path, object, entityClass, expectedStatus);
+    }
+
+    public <T> T put(String path, Object object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        return put(null, path, object, entityClass, expectedStatus);
     }
 
     public void consume(HttpResponse response) throws IOException {

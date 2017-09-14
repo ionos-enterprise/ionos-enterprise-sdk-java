@@ -4,7 +4,7 @@
     <groupId>com.profitbricks.rest.client</groupId>
     <artifactId>profitbricks-sdk-java</artifactId>
     <packaging>jar</packaging>
-    <version>4.0.0</version>
+    <version>4.1.0</version>
     <name>profitbricks-sdk-java</name>
     <url>https://github.com/profitbricks/profitbricks-sdk-java</url>
     <dependencies>

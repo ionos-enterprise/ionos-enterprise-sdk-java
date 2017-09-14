@@ -30,6 +30,7 @@
 
 package com.profitbricks.rest.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.profitbricks.sdk.ProfitbricksApi;
 
 import java.util.Date;
@@ -124,6 +125,7 @@ public class ProfitbricksBase {
       return profitbricksApi.getRequest().getRequestStatus(requestId);
    }
 
+   @JsonIgnoreProperties(ignoreUnknown = true)
    public static class Metadata {
 
       private Date lastModifiedDate;

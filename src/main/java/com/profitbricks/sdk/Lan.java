@@ -34,6 +34,7 @@ import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.Lans;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 /**
  *
@@ -100,6 +101,23 @@ public class Lan extends ProfitbricksAPIBase {
     public com.profitbricks.rest.domain.Lan updateLan(String dataCenterId, String lanId, Boolean isPublic) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         com.profitbricks.rest.domain.Lan.Properties pbObject = new com.profitbricks.rest.domain.Lan().new Properties();
         pbObject.setIsPublic(isPublic);
+        return client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource).concat("/").concat(lanId), pbObject, com.profitbricks.rest.domain.Lan.class, 202);
+    }
+
+    /**
+     * Perform updates to attributes of a LAN.
+     *
+     * @param dataCenterId The unique ID of the data center.
+     * @param lanId The unique ID of the data center.
+     * @param isPublic Boolean indicating if the LAN faces the public Internet
+     * or not.
+     * @param ipFailover Attributes related to IP failover groups.
+     * @return Lan object with properties and metadata.
+     */
+    public com.profitbricks.rest.domain.Lan updateLan(String dataCenterId, String lanId, Boolean isPublic, List<com.profitbricks.rest.domain.Lan.IpFailover> ipFailover) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        com.profitbricks.rest.domain.Lan.Properties pbObject = new com.profitbricks.rest.domain.Lan().new Properties();
+        pbObject.setIsPublic(isPublic);
+        pbObject.setIpFailover(ipFailover);
         return client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource).concat("/").concat(lanId), pbObject, com.profitbricks.rest.domain.Lan.class, 202);
     }
 
