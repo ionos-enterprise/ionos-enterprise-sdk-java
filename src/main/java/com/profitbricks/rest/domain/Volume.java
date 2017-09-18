@@ -74,6 +74,7 @@ public class Volume extends ProfitbricksBase {
         private Boolean discVirtioHotUnplug;
         private Boolean discScsiHotPlug;
         private Boolean discScsiHotUnplug;
+        private String imageAlias;
 
         /**
          * @return the name
@@ -277,6 +278,14 @@ public class Volume extends ProfitbricksBase {
 
         public void setDiscScsiHotUnplug(Boolean discScsiHotUnplug) {
             this.discScsiHotUnplug = discScsiHotUnplug;
+        }
+
+        public String getImageAlias() {
+            return imageAlias;
+        }
+
+        public void setImageAlias(String imageAlias) {
+            this.imageAlias = imageAlias;
         }
     }
 

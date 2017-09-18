@@ -36,7 +36,7 @@ package com.profitbricks.rest.domain;
  */
 public enum LicenceType {
 
-   WINDOWS, LINUX, OTHER, UNKNOWN, UNRECOGNIZED;
+   WINDOWS,WINDOWS2016, LINUX, OTHER, UNKNOWN, UNRECOGNIZED;
 
    public static LicenceType fromValue(String v) {
       try {

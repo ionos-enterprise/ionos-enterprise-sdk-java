@@ -31,6 +31,9 @@ package com.profitbricks.rest.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.lang.reflect.Array;
+import java.util.List;
+
 /**
  *
  * @author jasmin@stackpointcloud.com
@@ -68,6 +71,7 @@ public class Image extends ProfitbricksBase {
       private String imagePassword;
       private String bus;
       private String deviceNumber;
+      private List<String> imageAliases;
 
       private Boolean cpuHotPlug;
       private Boolean cpuHotUnplug;
@@ -388,6 +392,14 @@ public class Image extends ProfitbricksBase {
        */
       public void setDeviceNumber(String deviceNumber) {
          this.deviceNumber = deviceNumber;
+      }
+
+      public List<String> getImageAliases() {
+         return imageAliases;
+      }
+
+      public void setImageAliases(List<String> imageAliases) {
+         this.imageAliases = imageAliases;
       }
    }
 

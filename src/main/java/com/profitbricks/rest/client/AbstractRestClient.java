@@ -110,6 +110,13 @@ public abstract class AbstractRestClient {
       return mapper.valueToTree(object);
    }
 
+   protected Object WrappWithProperties(Object object){
+      PropertiesFix wrapper = new PropertiesFix();
+      wrapper.setProperties(object);
+
+      return wrapper;
+   }
+
    protected <T> JsonNode toJsonArray(List<T> data) throws IOException {
       return mapper.convertValue(data, JsonNode.class);
    }
@@ -242,5 +249,18 @@ public abstract class AbstractRestClient {
          return IOUtils.toString(response.getEntity().getContent(), Charsets.UTF_8);
       }
       return null;
+   }
+
+
+   public class PropertiesFix{
+      private Object properties;
+
+      public Object getProperties() {
+         return properties;
+      }
+
+      public void setProperties(Object properties) {
+         this.properties = properties;
+      }
    }
 }

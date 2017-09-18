@@ -29,6 +29,8 @@
  */
 package com.profitbricks.rest.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 import java.util.Map;
 
@@ -81,6 +83,7 @@ public class Request {
         this.properties = properties;
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public class Properties {
         private Map<String, String> headers;
 
@@ -123,6 +126,7 @@ public class Request {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public class Metadata {
 
 
@@ -182,6 +186,7 @@ public class Request {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RequestStatus {
 
 
