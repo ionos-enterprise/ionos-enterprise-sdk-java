@@ -29,7 +29,10 @@
  */
 package com.profitbricks.rest.test.resource;
 
-import com.profitbricks.rest.domain.DataCenter;
+import com.profitbricks.rest.domain.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -58,6 +61,25 @@ public class DataCenterResource {
             compositeDataCenter.getProperties().setName("Java SDK Test Composite");
             compositeDataCenter.getProperties().setDescription("Java SDK test composite datacenter");
             compositeDataCenter.getProperties().setLocation("us/las");
+
+            Server compositeServer = new Server();
+            compositeServer.getProperties().setName("Java SDK Test Composite");
+            compositeServer.getProperties().setRam(1024);
+            compositeServer.getProperties().setCores(1);
+
+            Servers servers = new Servers();
+            servers.addItem(compositeServer);
+
+            Volume volume = new Volume();
+            volume.getProperties().setName("Java SDK Test");
+            volume.getProperties().setSize(2);
+            volume.getProperties().setBus(Bus.VIRTIO);
+            volume.getProperties().setType("HDD");
+            volume.getProperties().setLicenceType(LicenceType.UNKNOWN);
+            volume.getProperties().setAvailabilityZone(AvailabilityZone.ZONE_1);
+            Volumes volumes = new Volumes();
+            volumes.addItem(volume);
+            compositeServer.getEntities().setVolumes(volumes);
         }
         return compositeDataCenter;
     }

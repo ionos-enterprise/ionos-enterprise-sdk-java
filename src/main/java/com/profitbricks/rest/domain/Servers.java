@@ -34,26 +34,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author jasmin@stackpointcloud.com
  */
 
 public class Servers extends ProfitbricksBase {
 
-   public List<Server> items = new ArrayList<Server>();
+    public List<Server> items = new ArrayList<Server>();
 
-   /**
-    * @return the items
-    */
-   public List<Server> getItems() {
-      return items;
-   }
+    /**
+     * @return the items
+     */
+    public List<Server> getItems() {
+        return items;
+    }
 
-   /**
-    * @param items the items to set
-    */
-   public void setItems(List<Server> items) {
-      this.items = items;
-   }
+    /**
+     * @param items the items to set
+     */
+    public void setItems(List<Server> items) {
+        this.items = items;
+    }
 
+    public void addItem(Server server) {
+        this.items.add(server);
+    }
 }
