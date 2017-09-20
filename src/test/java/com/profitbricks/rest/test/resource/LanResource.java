@@ -29,15 +29,39 @@
  */
 package com.profitbricks.rest.test.resource;
 
-import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.Image;
-import com.profitbricks.rest.domain.Images;
+import com.profitbricks.rest.domain.Lan;
 
-import java.io.IOException;
 /**
  *
  * @author denis@stackpointcloud.com
  */
-public class ImageResource {
+public class LanResource {
+    private static Lan lan;
+    private static Lan badLan;
+    private static Lan editLan;
 
+    public static Lan getLan() {
+        if (lan == null) {
+            lan = new Lan();
+            lan.getProperties().setName("Java SDK Test");
+            lan.getProperties().setIsPublic(true);
+        }
+        return lan;
+    }
+
+    public static Lan getEditLan() {
+        if (lan == null) {
+            lan = new Lan();
+            lan.getProperties().setName("Java SDK Test - RENAME");
+            lan.getProperties().setIsPublic(false);
+        }
+        return lan;
+    }
+
+    public static Lan getBadLan() {
+        if (lan == null) {
+            lan = new Lan();
+        }
+        return lan;
+    }
 }
