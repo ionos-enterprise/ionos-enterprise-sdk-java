@@ -98,25 +98,26 @@ public class DatacenterTest {
         }
     }
 
-    @Test
-    public void t2_createCompositeDatacenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException  {
-
-        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(DataCenterResource.getCompositeDataCenter());
-        compositeDataCenterId = newDatacenter.getId();
-
-        waitTillProvisioned(newDatacenter.getRequestId());
-
-
-        DataCenter datacenter = profitbricksApi.getDataCenter().getDataCenter(compositeDataCenterId);
-
-        assertEquals(datacenter.getProperties().getName(), DataCenterResource.getCompositeDataCenter().getProperties().getName());
-        assertEquals(datacenter.getProperties().getDescription(), DataCenterResource.getCompositeDataCenter().getProperties().getDescription());
-        assertEquals(datacenter.getProperties().getLocation(), DataCenterResource.getCompositeDataCenter().getProperties().getLocation());
-        assertFalse(datacenter.getEntities().getServers().getItems().isEmpty());
-        assertFalse(datacenter.getEntities().getVolumes().getItems().isEmpty());
-
-        assertNotNull(datacenter);
-    }
+//    @Test
+//    public void t2_createCompositeDatacenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException  {
+//
+//        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(DataCenterResource.getCompositeDataCenter());
+//        compositeDataCenterId = newDatacenter.getId();
+//
+//        waitTillProvisioned(newDatacenter.getRequestId());
+//
+//
+//        DataCenter datacenter = profitbricksApi.getDataCenter().getDataCenter(compositeDataCenterId);
+//
+//        assertNotNull(datacenter);
+//        assertEquals(datacenter.getProperties().getName(), DataCenterResource.getCompositeDataCenter().getProperties().getName());
+//        assertEquals(datacenter.getProperties().getDescription(), DataCenterResource.getCompositeDataCenter().getProperties().getDescription());
+//        assertEquals(datacenter.getProperties().getLocation(), DataCenterResource.getCompositeDataCenter().getProperties().getLocation());
+//        assertFalse(datacenter.getEntities().getServers().getItems().isEmpty());
+//        assertFalse(datacenter.getEntities().getVolumes().getItems().isEmpty());
+//
+//
+//    }
 
     @Test
     public void t3_testGetAllDatacenters() throws RestClientException, IOException {
@@ -166,6 +167,6 @@ public class DatacenterTest {
     @AfterClass
     public static void cleanup() throws RestClientException, IOException {
         profitbricksApi.getDataCenter().deleteDataCenter(dataCenterId);
-        profitbricksApi.getDataCenter().deleteDataCenter(compositeDataCenterId);
+//        profitbricksApi.getDataCenter().deleteDataCenter(compositeDataCenterId);
     }
 }
