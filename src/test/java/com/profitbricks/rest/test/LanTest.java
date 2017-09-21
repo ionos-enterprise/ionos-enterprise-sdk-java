@@ -151,6 +151,7 @@ public class LanTest {
         profitbricksApi.getDataCenter().deleteDataCenter(newDatacenter.getId());
     }
 
+    @Test
     public static void t7_createLanFail() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
         try {
             Lan lan = profitbricksApi.getLan().createLan(dataCenterId,LanResource.getBadLan());
