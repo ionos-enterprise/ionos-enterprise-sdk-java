@@ -39,9 +39,6 @@ import com.profitbricks.sdk.ProfitbricksApi;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.AfterClass;
 
 import static org.junit.Assert.assertEquals;
