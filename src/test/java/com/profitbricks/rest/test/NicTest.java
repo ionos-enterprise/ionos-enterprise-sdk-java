@@ -81,12 +81,6 @@ public class NicTest {
         DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
         dataCenterId = newDatacenter.getId();
 
-//        LoadBalancer loadBalancer = new LoadBalancer();
-//        LoadBalancer.Properties properties = new LoadBalancer().new Properties();
-//        properties.setName("SDK TEST NIC - LoadBalancer");
-//        properties.setIp("123.123.129.132");
-//        loadBalancer.setProperties(properties);
-
         LoadBalancer newLoadBalancer = profitbricksApi.getLoadbalancer().createLoadBalancer(dataCenterId, LoadBalancerResource.getLoadBalancer());
         waitTillProvisioned(newLoadBalancer.getRequestId());
         assertNotNull(newLoadBalancer);
@@ -99,30 +93,11 @@ public class NicTest {
         waitTillProvisioned(newServer.getRequestId());
         serverId = newServer.getId();
 
-//        Nic nic = new Nic();
-//
-//        nic.getProperties().setName("SDK TEST NIC - Nic");
-//        nic.getProperties().setLan("1");
-//        nic.getProperties().setNat(Boolean.FALSE);
-//
-//        nic.getEntities().setFirewallrules(null);
-
         Nic newNic = profitbricksApi.getNic().createNic(dataCenterId, serverId, NicResource.getNic());
         waitTillProvisioned(newNic.getRequestId());
         assertNotNull(newNic);
         nicId = newNic.getId();
     }
-
-//    @Test
-//    public void orderedTests() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-//        getAllNics();
-//        getNic();
-//        updateNic();
-//        assignNicToLoadBalancer();
-//        listAssignedNics();
-//        listAssignedNic();
-//        unassignNicToLoadBalancer();
-//    }
 
     @Test
     public void t1_getNic() throws RestClientException, IOException {
