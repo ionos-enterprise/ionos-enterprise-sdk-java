@@ -91,6 +91,12 @@ public class LanTest {
         lanId = newLan.getId();
         assertNotNull(newLan);
         waitTillProvisioned(newLan.getRequestId());
+
+        IPBlock ipb = new IPBlock();
+        ipb.getProperties().setLocation("us/las");
+        ipb.getProperties().setSize(1);
+        IPBlock iPBlock = profitbricksApi.getIpBlock().createIPBlock(ipb);
+        ipBlockId = iPBlock.getId();
     }
 
     @Test
@@ -140,8 +146,66 @@ public class LanTest {
         profitbricksApi.getDataCenter().deleteDataCenter(newDatacenter.getId());
     }
 
+    @Test
+    public void updateLanWithFailover() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        Server server1 = new Server();
+        server1.getProperties().setName("SDK TEST SERVER - Server Failover 1");
+        server1.getProperties().setRam(1024);
+        server1.getProperties().setCores(1);
+        Server newServer1 = profitbricksApi.getServer().createServer(dataCenterId, server1);
+        waitTillProvisioned(newServer1.getRequestId());
+        String server1Id = newServer1.getId();
+
+        Lan lan1 = new Lan();
+        lan1.getProperties().setName("SDK TEST Lan - Lan");
+        lan1.getProperties().setIsPublic(false);
+        Lan newLan1 = profitbricksApi.getLan().createLan(dataCenterId, lan1);
+        String lan1Id = newLan1.getId();
+        waitTillProvisioned(newLan1.getRequestId());
+
+        IPBlock iPBlock = profitbricksApi.getIpBlock().getIPBlock(ipBlockId);
+
+        Nic nic = new Nic();
+        nic.getProperties().setName("SDK TEST NIC - Nic");
+        nic.getProperties().setLan(lan1Id);
+        nic.getProperties().setNat(Boolean.FALSE);
+        nic.getProperties().setIps(iPBlock.getProperties().getIps());
+        nic.getEntities().setFirewallrules(null);
+        Nic newNic = profitbricksApi.getNic().createNic(dataCenterId, server1Id, nic);
+        waitTillProvisioned(newNic.getRequestId());
+
+        Lan.IpFailover ipFailover = newLan1.new IpFailover();
+        ipFailover.setIp(iPBlock.getProperties().getIps().get(0));
+        ipFailover.setNicUuid(newNic.getId());
+
+        List<Lan.IpFailover> failovers = new ArrayList<Lan.IpFailover>();
+        failovers.add(ipFailover);
+
+        Lan updatedLan =  profitbricksApi.getLan().updateLan(dataCenterId, lan1Id, Boolean.TRUE, failovers);
+        assertEquals(updatedLan.getProperties().isIsPublic(), true);
+        waitTillProvisioned(updatedLan.getRequestId());
+
+        Server server2 = new Server();
+        server2.getProperties().setName("SDK TEST SERVER - Server Failover 2");
+        server2.getProperties().setRam(1024);
+        server2.getProperties().setCores(1);
+        Server newServer2 = profitbricksApi.getServer().createServer(dataCenterId, server2);
+        waitTillProvisioned(newServer2.getRequestId());
+        String server2Id = newServer2.getId();
+
+        Nic nic2 = new Nic();
+        nic2.getProperties().setName("SDK TEST NIC - Nic2");
+        nic2.getProperties().setLan("1");
+        nic2.getProperties().setNat(Boolean.FALSE);
+        nic2.getProperties().setIps(iPBlock.getProperties().getIps());
+        nic2.getEntities().setFirewallrules(null);
+        Nic newNic2 = profitbricksApi.getNic().createNic(dataCenterId, server2Id, nic2);
+        waitTillProvisioned(newNic2.getRequestId());
+    }
+
     @AfterClass
     public static void cleanup() throws RestClientException, IOException {
         profitbricksApi.getDataCenter().deleteDataCenter(dataCenterId);
+        profitbricksApi.getIpBlock().deleteIPBlock(ipBlockId);
     }
 }
