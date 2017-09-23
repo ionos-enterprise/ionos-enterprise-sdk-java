@@ -114,7 +114,6 @@ public class IPBlockTest {
         }catch (RestClientException ex){
             assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
         }
-
     }
 
     @AfterClass
