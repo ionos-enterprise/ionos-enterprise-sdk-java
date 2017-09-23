@@ -34,10 +34,7 @@ import com.profitbricks.rest.domain.*;
 
 import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 
-import com.profitbricks.rest.test.resource.CommonResource;
-import com.profitbricks.rest.test.resource.DataCenterResource;
-import com.profitbricks.rest.test.resource.NicResource;
-import com.profitbricks.rest.test.resource.ServerResource;
+import com.profitbricks.rest.test.resource.*;
 import com.profitbricks.sdk.ProfitbricksApi;
 
 import java.io.IOException;
@@ -82,17 +79,12 @@ public class LoadBalancerTest {
         dataCenterId = newDatacenter.getId();
         waitTillProvisioned(newDatacenter.getRequestId());
 
-        LoadBalancer loadBalancer = new LoadBalancer();
-        LoadBalancer.Properties properties = new LoadBalancer().new Properties();
-        properties.setName("SDK TEST LOADBALANCER - LoadBalancer");
-        properties.setIp("123.123.123.125");
-        loadBalancer.setProperties(properties);
-
-        LoadBalancer newLoadBalancer = profitbricksApi.getLoadbalancer().createLoadBalancer(dataCenterId, loadBalancer);
+        LoadBalancer newLoadBalancer = profitbricksApi.getLoadbalancer().createLoadBalancer(dataCenterId, LoadBalancerResource.getLoadBalancer());
         assertNotNull(newLoadBalancer);
         waitTillProvisioned(newLoadBalancer.getRequestId());
-
         loadBalancerId = newLoadBalancer.getId();
+        assertEquals(newLoadBalancer.getProperties().getName(), LoadBalancerResource.getLoadBalancer().getProperties().getName());
+        assertEquals(newLoadBalancer.getProperties().getIp(), LoadBalancerResource.getLoadBalancer().getProperties().getIp());
 
         Server newServer = profitbricksApi.getServer().createServer(dataCenterId, ServerResource.getServer());
         assertNotNull(newServer);
@@ -120,11 +112,9 @@ public class LoadBalancerTest {
 
     @Test
     public void t3_updateLoadBalancer() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        LoadBalancer.Properties object = new LoadBalancer().new Properties();
-        object.setName("SDK TEST LOADBALANCER - LoadBalancer - Changed");
-        LoadBalancer loadBalancer = profitbricksApi.getLoadbalancer().updateLoadBalancer(dataCenterId, loadBalancerId, object);
+        LoadBalancer loadBalancer = profitbricksApi.getLoadbalancer().updateLoadBalancer(dataCenterId, loadBalancerId, LoadBalancerResource.getEditLoadBalancer().getProperties());
         assertNotNull(loadBalancer);
-        assertEquals(object.getName(), loadBalancer.getProperties().getName());
+        assertEquals(loadBalancer.getProperties().getName(), LoadBalancerResource.getEditLoadBalancer().getProperties().getName());
     }
 
     @Test
