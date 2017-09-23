@@ -89,22 +89,12 @@ public class SnapshotTest {
     public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
-//        DataCenter datacenter = new DataCenter();
-//        datacenter.getProperties().setName("SDK TEST SNAPSHOT - Data Center");
-//        datacenter.getProperties().setLocation("us/las");
-//        datacenter.getProperties().setDescription("SDK TEST Description");
 
         DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
         dataCenterId = newDatacenter.getId();
 
         Volume volume = VolumeResource.getVolume();
         volume.getProperties().setImage(getImageId());
-//
-//        volume.getProperties().setName("SDK TEST SNAPSHOT - Volume");
-//        volume.getProperties().setSize(1);
-//        volume.getProperties().setLicenceType(LicenceType.LINUX);
-//        volume.getProperties().setType("HDD");
-
         Volume newVolume = profitbricksApi.getVolume().createVolume(dataCenterId, volume);
         assertNotNull(newVolume);
 
