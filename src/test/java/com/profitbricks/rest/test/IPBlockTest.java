@@ -32,72 +32,93 @@ package com.profitbricks.rest.test;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.IPBlock;
 import com.profitbricks.rest.domain.IPBlocks;
+import com.profitbricks.rest.test.resource.CommonResource;
+import com.profitbricks.rest.test.resource.IpBlockResource;
 import com.profitbricks.sdk.ProfitbricksApi;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.AfterClass;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 /**
- *
  * @author jasmin@stackpointcloud.com
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class IPBlockTest {
 
-   static ProfitbricksApi profitbricksApi;
+    static ProfitbricksApi profitbricksApi;
 
-   static {
-      try {
-         profitbricksApi = new ProfitbricksApi();
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
-   }   static String ipBlockId;
+    static {
+        try {
+            profitbricksApi = new ProfitbricksApi();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-   @BeforeClass
-   public static void setUp() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    static String ipBlockId;
 
-      profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
+    @BeforeClass
+    public static void setUp() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-      IPBlock ipb = new IPBlock();
+        profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
 
-      ipb.getProperties().setLocation("us/las");
-      List<String> ips = new ArrayList<String>();
-      ips.add("123.123.123.123");
-      ips.add("123.123.123.124");
-     
-      // ipb.getProperties().setIps(ips);
-      ipb.getProperties().setSize(1);
+        IPBlock iPBlock = profitbricksApi.getIpBlock().createIPBlock(IpBlockResource.getIpBlock());
+        assertNotNull(iPBlock);
+        assertEquals(iPBlock.getProperties().getName(), IpBlockResource.getIpBlock().getProperties().getName());
+        assertEquals(iPBlock.getProperties().getLocation(), IpBlockResource.getIpBlock().getProperties().getLocation());
+        assertEquals(iPBlock.getProperties().getSize(), IpBlockResource.getIpBlock().getProperties().getSize());
+        ipBlockId = iPBlock.getId();
+    }
 
-      IPBlock iPBlock = profitbricksApi.getIpBlock().createIPBlock(ipb);
+    @Test
+    public void t1_getAllIpBlocks() throws RestClientException, IOException {
+        IPBlocks iPBlocks = profitbricksApi.getIpBlock().getAllIPBlocks();
+        assertNotNull(iPBlocks);
+    }
 
-      assertNotNull(iPBlock);
+    @Test
+    public void t2_getIpBlock() throws RestClientException, IOException {
+        IPBlock iPBlock = profitbricksApi.getIpBlock().getIPBlock(ipBlockId);
+        assertNotNull(iPBlock);
+        assertEquals(iPBlock.getProperties().getName(), IpBlockResource.getIpBlock().getProperties().getName());
+        assertEquals(iPBlock.getProperties().getLocation(), IpBlockResource.getIpBlock().getProperties().getLocation());
+        assertEquals(iPBlock.getProperties().getSize(), IpBlockResource.getIpBlock().getProperties().getSize());
+    }
 
-      ipBlockId = iPBlock.getId();
-   }
+    @Test
+    public void t3_getIpBlockFail() throws RestClientException, IOException {
+        try {
+            IPBlock iPBlock = profitbricksApi.getIpBlock().getIPBlock(CommonResource.getBadId());
+        } catch (RestClientException ex) {
+            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+        }
+    }
 
-   @Test
-   public void orderdTest() throws RestClientException, IOException {
-      getAllIpBlocks();
-      getIpBlock();
-   }
+    @Test
+    public void t4_createIpBlockFail() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+        try {
+            IPBlock iPBlock = profitbricksApi.getIpBlock().createIPBlock(IpBlockResource.geBadtIpBlock());
+        }catch (RestClientException ex){
+            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+        }
 
-   public void getAllIpBlocks() throws RestClientException, IOException {
-      IPBlocks iPBlocks = profitbricksApi.getIpBlock().getAllIPBlocks();
-      assertNotNull(iPBlocks);
-   }
+    }
 
-   public void getIpBlock() throws RestClientException, IOException {
-      IPBlock iPBlock = profitbricksApi.getIpBlock().getIPBlock(ipBlockId);
-      assertNotNull(iPBlock);
-   }
-
-   @AfterClass
-   public static void cleanUp() throws RestClientException, IOException {
-      profitbricksApi.getIpBlock().deleteIPBlock(ipBlockId);
-   }
+    @AfterClass
+    public static void cleanUp() throws RestClientException, IOException {
+        profitbricksApi.getIpBlock().deleteIPBlock(ipBlockId);
+    }
 }
