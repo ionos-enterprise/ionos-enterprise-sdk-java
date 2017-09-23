@@ -31,19 +31,32 @@ package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.*;
+
 import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
+
+import com.profitbricks.rest.test.resource.CommonResource;
+import com.profitbricks.rest.test.resource.DataCenterResource;
+import com.profitbricks.rest.test.resource.NicResource;
+import com.profitbricks.rest.test.resource.ServerResource;
 import com.profitbricks.sdk.ProfitbricksApi;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+
 import org.junit.AfterClass;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 /**
  * @author jasmin@stackpointcloud.com
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class LoadBalancerTest {
 
     static ProfitbricksApi profitbricksApi;
@@ -55,22 +68,18 @@ public class LoadBalancerTest {
             e.printStackTrace();
         }
     }
+
     static String dataCenterId;
     static String loadBalancerId;
+    static String serverId;
+    static String nicId;
 
     @BeforeClass
     public static void setUp() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
 
-        DataCenter datacenter = new DataCenter();
-
-        datacenter.getProperties().setName("SDK TEST LOADBALANCER - Data center");
-        datacenter.getProperties().setLocation("us/las");
-        datacenter.getProperties().setDescription("SDK TEST Description");
-
-        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(datacenter);
+        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
         dataCenterId = newDatacenter.getId();
-        assertEquals(newDatacenter.getProperties().getName(), datacenter.getProperties().getName());
         waitTillProvisioned(newDatacenter.getRequestId());
 
         LoadBalancer loadBalancer = new LoadBalancer();
@@ -84,29 +93,33 @@ public class LoadBalancerTest {
         waitTillProvisioned(newLoadBalancer.getRequestId());
 
         loadBalancerId = newLoadBalancer.getId();
+
+        Server newServer = profitbricksApi.getServer().createServer(dataCenterId, ServerResource.getServer());
+        assertNotNull(newServer);
+        waitTillProvisioned(newServer.getRequestId());
+        serverId = newServer.getId();
+
+        Nic newNic = profitbricksApi.getNic().createNic(dataCenterId, serverId, NicResource.getNic());
+        waitTillProvisioned(newNic.getRequestId());
+        assertNotNull(newNic);
+        nicId = newNic.getId();
     }
 
     @Test
-    public void orderedTest() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        getAllLoadBalancers();
-        Thread.sleep(5000);
-        getLoadBalancer();
-        updateLoadBalancer();
-        deleteLoadBalancer();
-    }
-
-    public void getAllLoadBalancers() throws RestClientException, IOException {
+    public void t1_getAllLoadBalancers() throws RestClientException, IOException {
         LoadBalancers loadbalancers = profitbricksApi.getLoadbalancer().getAllLoadBalancers(dataCenterId);
         assertNotNull(loadbalancers);
     }
 
-    public void getLoadBalancer() throws RestClientException, IOException {
+    @Test
+    public void t2_getLoadBalancer() throws RestClientException, IOException {
         LoadBalancer loadBalancer = profitbricksApi.getLoadbalancer().getLoadBalancer(dataCenterId, loadBalancerId);
         assertNotNull(loadBalancer);
         assertEquals(loadBalancerId, loadBalancer.getId());
     }
 
-    private void updateLoadBalancer() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    @Test
+    public void t3_updateLoadBalancer() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         LoadBalancer.Properties object = new LoadBalancer().new Properties();
         object.setName("SDK TEST LOADBALANCER - LoadBalancer - Changed");
         LoadBalancer loadBalancer = profitbricksApi.getLoadbalancer().updateLoadBalancer(dataCenterId, loadBalancerId, object);
@@ -114,9 +127,49 @@ public class LoadBalancerTest {
         assertEquals(object.getName(), loadBalancer.getProperties().getName());
     }
 
-    private void deleteLoadBalancer() throws RestClientException, IOException {
+    @Test
+    public void t4_assignNicToLoadBalancer() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        Nic nic = profitbricksApi.getNic().assignNicToLoadBalancer(dataCenterId, loadBalancerId, nicId);
+        assertNotNull(nic);
+        assertEquals(nic.getId(), nicId);
+        waitTillProvisioned(nic.getRequestId());
+    }
+
+    @Test
+    public void t5_listAssignedNics() throws RestClientException, IOException {
+        Nics nics = profitbricksApi.getNic().getAllBalancedNics(dataCenterId, loadBalancerId);
+        assertNotNull(nics);
+    }
+
+    @Test
+    public void t6_listAssignedNic() throws RestClientException, IOException {
+        Nic nic = profitbricksApi.getNic().getBalancedNic(dataCenterId, loadBalancerId, serverId, nicId);
+        assertNotNull(nic);
+    }
+
+    @Test
+    public void t7_deleteLoadBalancer() throws RestClientException, IOException {
         profitbricksApi.getLoadbalancer().deleteLoadBalaner(dataCenterId, loadBalancerId);
     }
+
+    @Test
+    public void t8_getFaildLoadBalancer() throws RestClientException, IOException {
+        try {
+            LoadBalancer loadBalancer = profitbricksApi.getLoadbalancer().getLoadBalancer(dataCenterId, CommonResource.getBadId());
+        } catch (RestClientException ex) {
+            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+        }
+    }
+
+    @Test
+    public void t9_createFailLoadBalancer() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+        try {
+            LoadBalancer newLoadBalancer = profitbricksApi.getLoadbalancer().createLoadBalancer(dataCenterId, new LoadBalancer());
+        } catch (RestClientException ex) {
+            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+        }
+    }
+
 
     @AfterClass
     public static void cleanup() throws RestClientException, IOException {
