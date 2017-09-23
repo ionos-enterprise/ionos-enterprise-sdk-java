@@ -148,7 +148,7 @@ public class SnapshotTest {
     }
 
     @Test
-    public void t3_getSnapshotFail() throws RestClientException, IOException {
+    public void t5_getSnapshotFail() throws RestClientException, IOException {
         try {
             Snapshot snapshot = profitbricksApi.getSnapshot().getSnapshot(CommonResource.getBadId());
         } catch (RestClientException ex) {
@@ -157,7 +157,7 @@ public class SnapshotTest {
     }
 
     @Test
-    public void t4_createSnapshotFail() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+    public void t6_createSnapshotFail() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
         try {
             Snapshot snapshot = profitbricksApi.getSnapshot().createSnapshot(dataCenterId, volumeId, "", "");
         } catch (RestClientException ex) {
@@ -167,10 +167,10 @@ public class SnapshotTest {
 
     @AfterClass
     public static void cleanUp() throws RestClientException, IOException, InterruptedException {
-//        Thread.sleep(80000);
+        Thread.sleep(80000);
 
-        profitbricksApi.getSnapshot().deleteSnapshot(snapshotId);
         profitbricksApi.getVolume().deleteVolume(dataCenterId, volumeId);
+        profitbricksApi.getSnapshot().deleteSnapshot(snapshotId);
         profitbricksApi.getDataCenter().deleteDataCenter(dataCenterId);
     }
 }
