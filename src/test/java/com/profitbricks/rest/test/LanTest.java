@@ -34,12 +34,14 @@ import com.profitbricks.rest.domain.*;
 
 import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
 
+import com.profitbricks.sdk.Datacenter;
 import com.profitbricks.sdk.ProfitbricksApi;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.AfterClass;
 
@@ -66,6 +68,7 @@ public class LanTest {
 
     private static String dataCenterId;
     private static String lanId;
+    private static String ipBlockId;
 
     @BeforeClass
     public static void createDataCenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
@@ -174,15 +177,14 @@ public class LanTest {
         Nic newNic = profitbricksApi.getNic().createNic(dataCenterId, server1Id, nic);
         waitTillProvisioned(newNic.getRequestId());
 
-        Lan.IpFailover ipFailover = newLan1.new IpFailover();
+        IpFailover ipFailover = new IpFailover();
         ipFailover.setIp(iPBlock.getProperties().getIps().get(0));
         ipFailover.setNicUuid(newNic.getId());
 
-        List<Lan.IpFailover> failovers = new ArrayList<Lan.IpFailover>();
+        List<IpFailover> failovers = new ArrayList<IpFailover>();
         failovers.add(ipFailover);
 
         Lan updatedLan =  profitbricksApi.getLan().updateLan(dataCenterId, lan1Id, Boolean.TRUE, failovers);
-        assertEquals(updatedLan.getProperties().isIsPublic(), true);
         waitTillProvisioned(updatedLan.getRequestId());
 
         Server server2 = new Server();
@@ -195,7 +197,7 @@ public class LanTest {
 
         Nic nic2 = new Nic();
         nic2.getProperties().setName("SDK TEST NIC - Nic2");
-        nic2.getProperties().setLan("1");
+        nic2.getProperties().setLan(lan1Id);
         nic2.getProperties().setNat(Boolean.FALSE);
         nic2.getProperties().setIps(iPBlock.getProperties().getIps());
         nic2.getEntities().setFirewallrules(null);
@@ -206,6 +208,12 @@ public class LanTest {
     @AfterClass
     public static void cleanup() throws RestClientException, IOException {
         profitbricksApi.getDataCenter().deleteDataCenter(dataCenterId);
+
+        try {
+            TimeUnit.MINUTES.sleep(1);
+        }
+        catch (Exception ex) {}
+
         profitbricksApi.getIpBlock().deleteIPBlock(ipBlockId);
     }
 }

@@ -114,7 +114,7 @@ public class Lan extends ProfitbricksAPIBase {
      * @param ipFailover Attributes related to IP failover groups.
      * @return Lan object with properties and metadata.
      */
-    public com.profitbricks.rest.domain.Lan updateLan(String dataCenterId, String lanId, Boolean isPublic, List<com.profitbricks.rest.domain.Lan.IpFailover> ipFailover) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public com.profitbricks.rest.domain.Lan updateLan(String dataCenterId, String lanId, Boolean isPublic, List<com.profitbricks.rest.domain.IpFailover> ipFailover) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         com.profitbricks.rest.domain.Lan.Properties pbObject = new com.profitbricks.rest.domain.Lan().new Properties();
         pbObject.setIsPublic(isPublic);
         pbObject.setIpFailover(ipFailover);

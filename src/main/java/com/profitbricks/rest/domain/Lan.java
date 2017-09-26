@@ -30,6 +30,7 @@
 
 package com.profitbricks.rest.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -120,27 +121,27 @@ public class Lan extends ProfitbricksBase {
       }
    }
 
-   @JsonIgnoreProperties(ignoreUnknown = true)
-   public class IpFailover{
-       private String Ip;
-       private String NicUuid;
-
-       public String getIp() {
-           return Ip;
-       }
-
-       public void setIp(String ip) {
-           Ip = ip;
-       }
-
-       public String getNicUuid() {
-           return NicUuid;
-       }
-
-       public void setNicUuid(String nicUuid) {
-           NicUuid = nicUuid;
-       }
-   }
+//   @JsonIgnoreProperties(ignoreUnknown = true)
+//   public static class IpFailover{
+//       private String ip;
+//       private String nicUuid;
+//
+//       public String getIp() {
+//           return ip;
+//       }
+//
+//       public void setIp(String ip) {
+//           this.ip = ip;
+//       }
+//
+//       public String getNicUuid() {
+//           return nicUuid;
+//       }
+//
+//       public void setNicUuid(String nicUuid) {
+//           this.nicUuid = nicUuid;
+//       }
+//   }
 
    private Entities entities = new Entities();
 
