@@ -27,35 +27,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.profitbricks.rest.test.resource;
 
-package com.profitbricks.rest.domain;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.profitbricks.rest.domain.Group;
 
 /**
- * @author jasmin@stackpointcloud.com
+ *
+ * @author denis@stackpointcloud.com
  */
+public class GroupResource {
+    private static Group group;
+    private static Group badGroup;
+    private static Group editGroup;
 
-public class Servers extends ProfitbricksBase {
+    public static Group getGroup() {
+        if (group == null) {
+            group = new Group();
+            group.getProperties().setName("Java SDK Test");
+            group.getProperties().setCreateDataCenter(true);
+            group.getProperties().setCreateSnapshot(true);
+            group.getProperties().setReserveIp(true);
+            group.getProperties().setAccessActivityLog(true);
+        }
 
-    public List<Server> items = new ArrayList<Server>();
-
-    /**
-     * @return the items
-     */
-    public List<Server> getItems() {
-        return items;
+        return group;
     }
 
-    /**
-     * @param items the items to set
-     */
-    public void setItems(List<Server> items) {
-        this.items = items;
+    public static Group getBadGroup() {
+        if (badGroup == null) {
+            badGroup = new Group();
+        }
+
+        return badGroup;
     }
 
-    public void addItem(Server server) {
-        this.items.add(server);
+    public static Group getEditGroup() {
+        if (editGroup == null) {
+            editGroup = new Group();
+            editGroup.getProperties().setName("Java SDK Test RENAME");
+            editGroup.getProperties().setCreateDataCenter(false);
+        }
+
+        return editGroup;
     }
 }

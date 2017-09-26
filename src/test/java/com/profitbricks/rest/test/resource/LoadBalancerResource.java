@@ -27,35 +27,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.profitbricks.rest.test.resource;
 
-package com.profitbricks.rest.domain;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.profitbricks.rest.domain.LoadBalancer;
 
 /**
- * @author jasmin@stackpointcloud.com
+ * @author denis@stackpointcloud.com
  */
+public class LoadBalancerResource {
+    private static LoadBalancer loadBalancer;
+    private static LoadBalancer badLoadBalancer;
+    private static LoadBalancer editLoadBalancer;
 
-public class Servers extends ProfitbricksBase {
-
-    public List<Server> items = new ArrayList<Server>();
-
-    /**
-     * @return the items
-     */
-    public List<Server> getItems() {
-        return items;
+    public static LoadBalancer getLoadBalancer() {
+        if (loadBalancer == null) {
+            loadBalancer = new LoadBalancer();
+            loadBalancer.getProperties().setName("Java SDK Test");
+            loadBalancer.getProperties().setIp("10.0.0.1");
+        }
+        return loadBalancer;
     }
 
-    /**
-     * @param items the items to set
-     */
-    public void setItems(List<Server> items) {
-        this.items = items;
+    public static LoadBalancer getEditLoadBalancer() {
+        if (editLoadBalancer == null) {
+            editLoadBalancer = new LoadBalancer();
+            editLoadBalancer.getProperties().setName("Java SDK Test - RENAME");
+        }
+        return editLoadBalancer;
     }
 
-    public void addItem(Server server) {
-        this.items.add(server);
+    public static LoadBalancer getBadLoadBalancer() {
+        if (badLoadBalancer == null) {
+            badLoadBalancer = new LoadBalancer();
+            badLoadBalancer.getProperties().setName("Java SDK Test");
+        }
+        return badLoadBalancer;
     }
 }

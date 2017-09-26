@@ -27,35 +27,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.profitbricks.rest.test.resource;
 
-package com.profitbricks.rest.domain;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.profitbricks.rest.domain.User;
 
 /**
- * @author jasmin@stackpointcloud.com
+ *
+ * @author denis@stackpointcloud.com
  */
+public class UserResource {
+    private static User user;
+    private static User badUser;
+    private static User editUser;
 
-public class Servers extends ProfitbricksBase {
+    public static User getUser() {
+        if (user == null) {
+            user = new User();
+            user.getProperties().setFirstname("John");
+            user.getProperties().setLastname("Doe");
+            user.getProperties().setPassword("secretpassword123");
+            user.getProperties().setAdministrator(true);
+        }
 
-    public List<Server> items = new ArrayList<Server>();
-
-    /**
-     * @return the items
-     */
-    public List<Server> getItems() {
-        return items;
+        return user;
     }
 
-    /**
-     * @param items the items to set
-     */
-    public void setItems(List<Server> items) {
-        this.items = items;
+    public static User getBadUser() {
+        if (badUser == null) {
+            badUser = new User();
+        }
+
+        return badUser;
     }
 
-    public void addItem(Server server) {
-        this.items.add(server);
+    public static User getEditUser() {
+        if (editUser == null) {
+            editUser = new User();
+            editUser.getProperties().setFirstname("Jane");
+            editUser.getProperties().setLastname("Doe");
+            editUser.getProperties().setAdministrator(false);
+            editUser.getProperties().setForceSecAuth(false);
+        }
+
+        return editUser;
     }
 }

@@ -32,41 +32,54 @@ package com.profitbricks.rest.test;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.Image;
 import com.profitbricks.rest.domain.Images;
+import com.profitbricks.rest.test.resource.CommonResource;
 import com.profitbricks.sdk.ProfitbricksApi;
+
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- *
  * @author jasmin@stackpointcloud.com
  */
 public class ImageTest {
 
-   static ProfitbricksApi profitbricksApi;
+    static ProfitbricksApi profitbricksApi;
 
-   static {
-      try {
-         profitbricksApi = new ProfitbricksApi();
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
-   }
+    static {
+        try {
+            profitbricksApi = new ProfitbricksApi();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-   private static String imageId;
+    private static String imageId;
 
-   @BeforeClass
-   public static void getAllImages() throws RestClientException, IOException {
-      Images images = profitbricksApi.getImage().getAllImages();
-      assertNotNull(images);
-      imageId = images.getItems().get(0).getId();
-   }
+    @BeforeClass
+    public static void getAllImages() throws RestClientException, IOException {
+        Images images = profitbricksApi.getImage().getAllImages();
+        assertNotNull(images);
+        imageId = images.getItems().get(0).getId();
+    }
 
-   @Test
-   public void getImage() throws RestClientException, IOException {
-      Image image = profitbricksApi.getImage().getImage(imageId);
-      assertNotNull(image);
-   }
+    @Test
+    public void getImage() throws RestClientException, IOException {
+        Image image = profitbricksApi.getImage().getImage(imageId);
+        assertNotNull(image);
+    }
 
+    @Test
+    public void getFailImage() throws RestClientException, IOException {
+        try {
+            Image image = profitbricksApi.getImage().getImage(CommonResource.getBadId());
+        } catch (RestClientException ex) {
+            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+        }
+    }
 }

@@ -27,35 +27,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.profitbricks.rest.test.resource;
 
-package com.profitbricks.rest.domain;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.profitbricks.rest.domain.FirewallRule;
+import com.profitbricks.rest.domain.Protocol;
 
 /**
- * @author jasmin@stackpointcloud.com
+ * @author denis@stackpointcloud.com
  */
+public class FirewallRuleResource {
+    private static FirewallRule firewallRule;
+    private static FirewallRule badFirewallRule;
+    private static FirewallRule editFirewallRule;
 
-public class Servers extends ProfitbricksBase {
-
-    public List<Server> items = new ArrayList<Server>();
-
-    /**
-     * @return the items
-     */
-    public List<Server> getItems() {
-        return items;
+    public static FirewallRule getFirewallRule() {
+        if (firewallRule == null) {
+            firewallRule = new FirewallRule();
+            firewallRule.getProperties().setName("SSH");
+            firewallRule.getProperties().setProtocol(Protocol.ICMP.toString());
+            firewallRule.getProperties().setIcmpType("8");
+            firewallRule.getProperties().setIcmpCode("0");
+        }
+        return firewallRule;
     }
 
-    /**
-     * @param items the items to set
-     */
-    public void setItems(List<Server> items) {
-        this.items = items;
+    public static FirewallRule getEditFirewallRule() {
+        if (editFirewallRule == null) {
+            editFirewallRule = new FirewallRule();
+            editFirewallRule.getProperties().setName("SSH - RENAME");
+        }
+        return editFirewallRule;
     }
 
-    public void addItem(Server server) {
-        this.items.add(server);
+    public static FirewallRule getBadFirewallRule() {
+        if (badFirewallRule == null) {
+            badFirewallRule = new FirewallRule();
+            badFirewallRule.getProperties().setName("SSH");
+        }
+        return badFirewallRule;
     }
 }

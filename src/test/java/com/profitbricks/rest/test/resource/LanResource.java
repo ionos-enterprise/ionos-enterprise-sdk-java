@@ -27,35 +27,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.profitbricks.rest.test.resource;
 
-package com.profitbricks.rest.domain;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.profitbricks.rest.domain.Lan;
 
 /**
- * @author jasmin@stackpointcloud.com
+ *
+ * @author denis@stackpointcloud.com
  */
+public class LanResource {
+    private static Lan lan;
+    private static Lan badLan;
+    private static Lan editLan;
 
-public class Servers extends ProfitbricksBase {
-
-    public List<Server> items = new ArrayList<Server>();
-
-    /**
-     * @return the items
-     */
-    public List<Server> getItems() {
-        return items;
+    public static Lan getLan() {
+        if (lan == null) {
+            lan = new Lan();
+            lan.getProperties().setName("Java SDK Test");
+            lan.getProperties().setIsPublic(true);
+        }
+        return lan;
     }
 
-    /**
-     * @param items the items to set
-     */
-    public void setItems(List<Server> items) {
-        this.items = items;
+    public static Lan getEditLan() {
+        if (lan == null) {
+            lan = new Lan();
+            lan.getProperties().setName("Java SDK Test - RENAME");
+            lan.getProperties().setIsPublic(false);
+        }
+        return lan;
     }
 
-    public void addItem(Server server) {
-        this.items.add(server);
+    public static Lan getBadLan() {
+        if (lan == null) {
+            lan = new Lan();
+        }
+        return lan;
     }
 }

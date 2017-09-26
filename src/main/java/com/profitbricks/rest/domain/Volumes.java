@@ -59,4 +59,8 @@ public class Volumes extends ProfitbricksBase {
    public void setItems(List<Volume> items) {
       this.items = items;
    }
+
+   public void addItem(Volume volume) {
+      this.items.add(volume);
+   }
 }

@@ -27,35 +27,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package com.profitbricks.rest.domain;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.profitbricks.rest.test.resource;
 
 /**
- * @author jasmin@stackpointcloud.com
+ *
+ * @author denis@stackpointcloud.com
  */
+public class CommonResource {
+    private  static String badId = "00000000-0000-0000-0000-000000000000";
 
-public class Servers extends ProfitbricksBase {
-
-    public List<Server> items = new ArrayList<Server>();
-
-    /**
-     * @return the items
-     */
-    public List<Server> getItems() {
-        return items;
-    }
-
-    /**
-     * @param items the items to set
-     */
-    public void setItems(List<Server> items) {
-        this.items = items;
-    }
-
-    public void addItem(Server server) {
-        this.items.add(server);
+    public static String getBadId(){
+        return  badId;
     }
 }

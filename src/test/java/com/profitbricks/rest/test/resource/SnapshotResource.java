@@ -27,35 +27,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.profitbricks.rest.test.resource;
 
-package com.profitbricks.rest.domain;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.profitbricks.rest.domain.Snapshot;
 
 /**
- * @author jasmin@stackpointcloud.com
+ *
+ * @author denis@stackpointcloud.com
  */
+public class SnapshotResource {
+    private static Snapshot snapshot;
+    private static Snapshot editSnapshot;
+    private static Snapshot badSnapshot;
 
-public class Servers extends ProfitbricksBase {
-
-    public List<Server> items = new ArrayList<Server>();
-
-    /**
-     * @return the items
-     */
-    public List<Server> getItems() {
-        return items;
+    public static Snapshot getSnapshot() {
+        if (snapshot == null) {
+            snapshot = new Snapshot();
+            snapshot.getProperties().setName("Java SDK Test");
+            snapshot.getProperties().setDescription("Java SDK test snapshot");
+        }
+        return snapshot;
     }
 
-    /**
-     * @param items the items to set
-     */
-    public void setItems(List<Server> items) {
-        this.items = items;
+    public static Snapshot getEditSnapshot() {
+        if (editSnapshot == null) {
+            editSnapshot = new Snapshot();
+            editSnapshot.getProperties().setName("Java SDK Test - RENAME");
+            editSnapshot.getProperties().setDescription("Java SDK test snapshot - RENAME");
+        }
+        return editSnapshot;
     }
 
-    public void addItem(Server server) {
-        this.items.add(server);
+    public static Snapshot getBadSnapshot() {
+        if (badSnapshot == null) {
+            badSnapshot = new Snapshot();
+            badSnapshot.getProperties().setName("Java SDK Test");
+            badSnapshot.getProperties().setSize(2);
+        }
+        return badSnapshot;
     }
 }

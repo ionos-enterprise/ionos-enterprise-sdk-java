@@ -32,6 +32,7 @@ package com.profitbricks.rest.test;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.Location;
 import com.profitbricks.rest.domain.Locations;
+import com.profitbricks.rest.test.resource.CommonResource;
 import com.profitbricks.sdk.ProfitbricksApi;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +45,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * @author jasmin@stackpointcloud.com
- * */
+ */
 public class LocationTest {
 
     static ProfitbricksApi profitbricksApi;
@@ -76,5 +77,21 @@ public class LocationTest {
         assertEquals(loc.getId(), location.getId());
         assertEquals(loc.getProperties().getName(), location.getProperties().getName());
         assertEquals(loc.getProperties().getFeatures(), location.getProperties().getFeatures());
+    }
+
+    @Test
+    public void getLocation() throws RestClientException, IOException {
+
+        Location location = profitbricksApi.getLocation().getLocation("us/las");
+        assertNotNull(location);
+    }
+
+    @Test
+    public void getLocationFail() throws RestClientException, IOException {
+        try {
+            Location location = profitbricksApi.getLocation().getLocation(CommonResource.getBadId());
+        } catch (RestClientException ex) {
+            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+        }
     }
 }

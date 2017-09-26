@@ -35,10 +35,15 @@ import com.profitbricks.rest.domain.Group;
 import com.profitbricks.rest.domain.User;
 import com.profitbricks.rest.domain.Users;
 import com.profitbricks.rest.domain.RequestStatus;
+import com.profitbricks.rest.test.resource.CommonResource;
+import com.profitbricks.rest.test.resource.GroupResource;
+import com.profitbricks.rest.test.resource.UserResource;
 import com.profitbricks.sdk.ProfitbricksApi;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -52,6 +57,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @author denis@stackpointcloud.com
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserTest {
     static ProfitbricksApi profitbricksApi;
 
@@ -69,35 +75,20 @@ public class UserTest {
     static String groupId;
 
     @BeforeClass
-    public static void createUser() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+    public static void t1_createUser() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
         //Set email
         email = "no-reply" + System.currentTimeMillis() + "@example.com";
         email1 = "no-reply"+ (System.currentTimeMillis()+1) +"@example.com";
 
-        //Create a group
-        Group group = new Group();
-
-        group.getProperties().setName("Java SDK Test");
-        group.getProperties().setCreateDataCenter(true);
-        group.getProperties().setCreateSnapshot(true);
-        group.getProperties().setReserveIp(true);
-        group.getProperties().setAccessActivityLog(true);
-
-        Group newGroup = profitbricksApi.getGroup().createGroup(group);
+        Group newGroup = profitbricksApi.getGroup().createGroup(GroupResource.getGroup());
         groupId = newGroup.getId();
 
         waitTillProvisioned(newGroup.getRequestId());
 
         //Create a user
-        User user = new User();
-
-        user.getProperties().setFirstname("John");
-        user.getProperties().setLastname("Doe");
+        User user = UserResource.getUser();
         user.getProperties().setEmail(email);
-        user.getProperties().setPassword("secretpassword123");
-        user.getProperties().setAdministrator(true);
-//        user.getProperties().setForceSecAuth(true);
 
         User newUser = profitbricksApi.getUser().createUser(user);
         userId = newUser.getId();
@@ -123,7 +114,7 @@ public class UserTest {
     }
 
     @Test
-    public void testGetAllUsers() throws RestClientException, IOException {
+    public void t2_testGetAllUsers() throws RestClientException, IOException {
         Users users = profitbricksApi.getUser().getAllUsers();
 
         assertNotNull(users);
@@ -131,37 +122,32 @@ public class UserTest {
     }
 
     @Test
-    public void testGetUser() throws RestClientException, IOException {
+    public void t3_testGetUser() throws RestClientException, IOException {
         User user = profitbricksApi.getUser().getUser(userId);
         assertNotNull(user);
     }
 
     @Test
-    public void testGetUserFail() throws RestClientException, IOException {
+    public void t4_testGetUserFail() throws RestClientException, IOException {
         try {
-            User user = profitbricksApi.getUser().getUser("00000000-0000-0000-0000-000000000000");
-            assertNotNull(user);
+            User user = profitbricksApi.getUser().getUser(CommonResource.getBadId());
         }catch (RestClientException ex){
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
     }
 
     @Test
-    public void updateUser() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public void t5_updateUser() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-        User user = new User();
-        user.getProperties().setFirstname("Jane");
-        user.getProperties().setLastname("Doe");
+        User user = UserResource.getEditUser();
         user.getProperties().setEmail(email1);
-        user.getProperties().setAdministrator(false);
-        user.getProperties().setForceSecAuth(false);
 
         User updateUser = profitbricksApi.getUser().updateUser(userId, user.getProperties());
-        assertEquals(user.getProperties().getFirstname(), updateUser.getProperties().getFirstname());
-        assertEquals(user.getProperties().getLastname(), updateUser.getProperties().getLastname());
-        assertEquals(user.getProperties().getEmail(), updateUser.getProperties().getEmail());
-        assertEquals(user.getProperties().getAdministrator(), updateUser.getProperties().getAdministrator());
-        assertEquals(user.getProperties().getForceSecAuth(), updateUser.getProperties().getForceSecAuth());
+        assertEquals(updateUser.getProperties().getFirstname(), UserResource.getEditUser().getProperties().getFirstname());
+        assertEquals(updateUser.getProperties().getLastname(), UserResource.getEditUser().getProperties().getLastname());
+        assertEquals(updateUser.getProperties().getEmail(), email1);
+        assertEquals(updateUser.getProperties().getAdministrator(), UserResource.getEditUser().getProperties().getAdministrator());
+        assertEquals(updateUser.getProperties().getForceSecAuth(), UserResource.getEditUser().getProperties().getForceSecAuth());
     }
 
     @AfterClass

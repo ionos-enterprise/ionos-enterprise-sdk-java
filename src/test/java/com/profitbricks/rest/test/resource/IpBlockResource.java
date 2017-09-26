@@ -27,35 +27,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.profitbricks.rest.test.resource;
 
-package com.profitbricks.rest.domain;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.profitbricks.rest.domain.IPBlock;
 
 /**
- * @author jasmin@stackpointcloud.com
+ *
+ * @author denis@stackpointcloud.com
  */
+public class IpBlockResource {
+    private static IPBlock ipBlock;
+    private static IPBlock ipBadBlock;
 
-public class Servers extends ProfitbricksBase {
-
-    public List<Server> items = new ArrayList<Server>();
-
-    /**
-     * @return the items
-     */
-    public List<Server> getItems() {
-        return items;
+    public static IPBlock getIpBlock() {
+        if (ipBlock == null) {
+            ipBlock = new IPBlock();
+            ipBlock.getProperties().setName("Java SDK Test");
+            ipBlock.getProperties().setLocation("us/las");
+            ipBlock.getProperties().setSize(2);
+        }
+        return ipBlock;
     }
 
-    /**
-     * @param items the items to set
-     */
-    public void setItems(List<Server> items) {
-        this.items = items;
-    }
-
-    public void addItem(Server server) {
-        this.items.add(server);
+    public static IPBlock geBadtIpBlock() {
+        if (ipBadBlock == null) {
+            ipBadBlock = new IPBlock();
+            ipBadBlock.getProperties().setName("Java SDK Test");
+            ipBadBlock.getProperties().setSize(2);
+        }
+        return ipBadBlock;
     }
 }

@@ -27,35 +27,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.profitbricks.rest.test.resource;
 
-package com.profitbricks.rest.domain;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.profitbricks.rest.domain.Nic;
 
 /**
- * @author jasmin@stackpointcloud.com
+ * @author denis@stackpointcloud.com
  */
+public class NicResource {
+    private static Nic nic;
+    private static Nic badNic;
+    private static Nic editNic;
 
-public class Servers extends ProfitbricksBase {
-
-    public List<Server> items = new ArrayList<Server>();
-
-    /**
-     * @return the items
-     */
-    public List<Server> getItems() {
-        return items;
+    public static Nic getNic() {
+        if (nic == null) {
+            nic = new Nic();
+            nic.getProperties().setName("Java SDK Test");
+            nic.getProperties().setDhcp(true);
+            nic.getProperties().setLan("1");
+            nic.getProperties().setNat(Boolean.FALSE);
+        }
+        return nic;
     }
 
-    /**
-     * @param items the items to set
-     */
-    public void setItems(List<Server> items) {
-        this.items = items;
+    public static Nic getEditNic() {
+        if (editNic == null) {
+            editNic = new Nic();
+            editNic.getProperties().setName("Java SDK Test - RENAME");
+        }
+        return editNic;
     }
 
-    public void addItem(Server server) {
-        this.items.add(server);
+    public static Nic getBadNic() {
+        if (badNic == null) {
+            badNic = new Nic();
+            badNic.getProperties().setName("Java SDK Test");
+        }
+        return badNic;
     }
 }
