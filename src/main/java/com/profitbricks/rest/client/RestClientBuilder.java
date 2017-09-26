@@ -29,13 +29,12 @@
  */
 package com.profitbricks.rest.client;
 
-import java.lang.reflect.Constructor;
-
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.lang.reflect.Constructor;
 /**
  * @author jasmin@stackpointcloud.com
  */

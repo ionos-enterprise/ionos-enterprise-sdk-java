@@ -30,7 +30,6 @@
 
 package com.profitbricks.sdk;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.Users;
 
