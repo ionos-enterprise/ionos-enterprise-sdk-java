@@ -27,36 +27,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.profitbricks.rest.test;
+package com.profitbricks.rest.test.resource;
 
-import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.*;
-import com.profitbricks.sdk.ProfitbricksApi;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
+import com.profitbricks.rest.domain.IPBlock;
 
 /**
  *
  * @author denis@stackpointcloud.com
  */
-public class ContractTest {
-    static ProfitbricksApi profitbricksApi;
+public class IpBlockResource {
+    private static IPBlock ipBlock;
+    private static IPBlock ipBadBlock;
 
-    static {
-        try {
-            profitbricksApi = new ProfitbricksApi();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static IPBlock getIpBlock() {
+        if (ipBlock == null) {
+            ipBlock = new IPBlock();
+            ipBlock.getProperties().setName("Java SDK Test");
+            ipBlock.getProperties().setLocation("us/las");
+            ipBlock.getProperties().setSize(2);
         }
+        return ipBlock;
     }
 
-    @Test
-    public void testGetContract() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
-        profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
-
-        Contract contract = profitbricksApi.getContract().getContract();
-        assertNotNull(contract);
+    public static IPBlock geBadtIpBlock() {
+        if (ipBadBlock == null) {
+            ipBadBlock = new IPBlock();
+            ipBadBlock.getProperties().setName("Java SDK Test");
+            ipBadBlock.getProperties().setSize(2);
+        }
+        return ipBadBlock;
     }
 }

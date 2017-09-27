@@ -27,36 +27,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.profitbricks.rest.test;
-
-import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.*;
-import com.profitbricks.sdk.ProfitbricksApi;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
+package com.profitbricks.rest.test.resource;
 
 /**
  *
  * @author denis@stackpointcloud.com
  */
-public class ContractTest {
-    static ProfitbricksApi profitbricksApi;
+public class CommonResource {
+    private  static String badId = "00000000-0000-0000-0000-000000000000";
 
-    static {
-        try {
-            profitbricksApi = new ProfitbricksApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    public void testGetContract() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
-        profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
-
-        Contract contract = profitbricksApi.getContract().getContract();
-        assertNotNull(contract);
+    public static String getBadId(){
+        return  badId;
     }
 }

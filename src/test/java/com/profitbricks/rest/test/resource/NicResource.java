@@ -27,36 +27,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.profitbricks.rest.test;
+package com.profitbricks.rest.test.resource;
 
-import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.*;
-import com.profitbricks.sdk.ProfitbricksApi;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
+import com.profitbricks.rest.domain.Nic;
 
 /**
- *
  * @author denis@stackpointcloud.com
  */
-public class ContractTest {
-    static ProfitbricksApi profitbricksApi;
+public class NicResource {
+    private static Nic nic;
+    private static Nic badNic;
+    private static Nic editNic;
 
-    static {
-        try {
-            profitbricksApi = new ProfitbricksApi();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static Nic getNic() {
+        if (nic == null) {
+            nic = new Nic();
+            nic.getProperties().setName("Java SDK Test");
+            nic.getProperties().setDhcp(true);
+            nic.getProperties().setLan("1");
+            nic.getProperties().setNat(Boolean.FALSE);
         }
+        return nic;
     }
 
-    @Test
-    public void testGetContract() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
-        profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
+    public static Nic getEditNic() {
+        if (editNic == null) {
+            editNic = new Nic();
+            editNic.getProperties().setName("Java SDK Test - RENAME");
+        }
+        return editNic;
+    }
 
-        Contract contract = profitbricksApi.getContract().getContract();
-        assertNotNull(contract);
+    public static Nic getBadNic() {
+        if (badNic == null) {
+            badNic = new Nic();
+            badNic.getProperties().setName("Java SDK Test");
+        }
+        return badNic;
     }
 }

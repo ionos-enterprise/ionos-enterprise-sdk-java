@@ -27,36 +27,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.profitbricks.rest.test;
+package com.profitbricks.rest.test.resource;
 
-import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.*;
-import com.profitbricks.sdk.ProfitbricksApi;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
+import com.profitbricks.rest.domain.Group;
 
 /**
  *
  * @author denis@stackpointcloud.com
  */
-public class ContractTest {
-    static ProfitbricksApi profitbricksApi;
+public class GroupResource {
+    private static Group group;
+    private static Group badGroup;
+    private static Group editGroup;
 
-    static {
-        try {
-            profitbricksApi = new ProfitbricksApi();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static Group getGroup() {
+        if (group == null) {
+            group = new Group();
+            group.getProperties().setName("Java SDK Test");
+            group.getProperties().setCreateDataCenter(true);
+            group.getProperties().setCreateSnapshot(true);
+            group.getProperties().setReserveIp(true);
+            group.getProperties().setAccessActivityLog(true);
         }
+
+        return group;
     }
 
-    @Test
-    public void testGetContract() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
-        profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
+    public static Group getBadGroup() {
+        if (badGroup == null) {
+            badGroup = new Group();
+        }
 
-        Contract contract = profitbricksApi.getContract().getContract();
-        assertNotNull(contract);
+        return badGroup;
+    }
+
+    public static Group getEditGroup() {
+        if (editGroup == null) {
+            editGroup = new Group();
+            editGroup.getProperties().setName("Java SDK Test RENAME");
+            editGroup.getProperties().setCreateDataCenter(false);
+        }
+
+        return editGroup;
     }
 }

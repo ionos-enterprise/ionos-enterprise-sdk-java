@@ -31,6 +31,8 @@ package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.*;
+import com.profitbricks.rest.test.resource.CommonResource;
+import com.profitbricks.rest.test.resource.DataCenterResource;
 import com.profitbricks.sdk.ProfitbricksApi;
 
 import java.io.IOException;
@@ -39,20 +41,22 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.AfterClass;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
+
+import static org.junit.Assert.*;
 
 /**
  *
  * @author jasmin@stackpointcloud.com
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DatacenterTest {
 
     static String dataCenterId;
+    static String compositeDataCenterId;
     static ProfitbricksApi profitbricksApi;
 
     static {
@@ -64,20 +68,19 @@ public class DatacenterTest {
     }
 
     @BeforeClass
-    public static void createDataCenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+    public static void t1_createDataCenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
-        DataCenter datacenter = new DataCenter();
 
-        datacenter.getProperties().setName("SDK TEST DC - Data center");
-        datacenter.getProperties().setLocation("us/las");
-        datacenter.getProperties().setDescription("SDK TEST Description");
+        DataCenter datacenter = DataCenterResource.getDataCenter();
 
         DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(datacenter);
         dataCenterId = newDatacenter.getId();
 
         waitTillProvisioned(newDatacenter.getRequestId());
 
-        assertEquals(newDatacenter.getProperties().getName(), datacenter.getProperties().getName());
+        assertEquals(newDatacenter.getProperties().getName(), DataCenterResource.getDataCenter().getProperties().getName());
+        assertEquals(newDatacenter.getProperties().getDescription(), DataCenterResource.getDataCenter().getProperties().getDescription());
+        assertEquals(newDatacenter.getProperties().getLocation(), DataCenterResource.getDataCenter().getProperties().getLocation());
     }
 
     public static void waitTillProvisioned(String requestId) throws InterruptedException, RestClientException, IOException {
@@ -95,8 +98,29 @@ public class DatacenterTest {
         }
     }
 
+//    @Test
+//    public void t2_createCompositeDatacenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException  {
+//
+//        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(DataCenterResource.getCompositeDataCenter());
+//        compositeDataCenterId = newDatacenter.getId();
+//
+//        waitTillProvisioned(newDatacenter.getRequestId());
+//
+//
+//        DataCenter datacenter = profitbricksApi.getDataCenter().getDataCenter(compositeDataCenterId);
+//
+//        assertNotNull(datacenter);
+//        assertEquals(datacenter.getProperties().getName(), DataCenterResource.getCompositeDataCenter().getProperties().getName());
+//        assertEquals(datacenter.getProperties().getDescription(), DataCenterResource.getCompositeDataCenter().getProperties().getDescription());
+//        assertEquals(datacenter.getProperties().getLocation(), DataCenterResource.getCompositeDataCenter().getProperties().getLocation());
+//        assertFalse(datacenter.getEntities().getServers().getItems().isEmpty());
+//        assertFalse(datacenter.getEntities().getVolumes().getItems().isEmpty());
+//
+//
+//    }
+
     @Test
-    public void testGetAllDatacenters() throws RestClientException, IOException {
+    public void t3_testGetAllDatacenters() throws RestClientException, IOException {
         DataCenters datacenters = profitbricksApi.getDataCenter().getAllDataCenters();
 
         assertNotNull(datacenters);
@@ -104,15 +128,20 @@ public class DatacenterTest {
     }
 
     @Test
-    public void testGetDatacenter() throws RestClientException, IOException {
+    public void t4_testGetDatacenter() throws RestClientException, IOException {
         DataCenter datacenter = profitbricksApi.getDataCenter().getDataCenter(dataCenterId);
+
+        assertEquals(datacenter.getProperties().getName(), DataCenterResource.getDataCenter().getProperties().getName());
+        assertEquals(datacenter.getProperties().getDescription(), DataCenterResource.getDataCenter().getProperties().getDescription());
+        assertEquals(datacenter.getProperties().getLocation(), DataCenterResource.getDataCenter().getProperties().getLocation());
+
         assertNotNull(datacenter);
     }
 
     @Test
-    public void testGetDatacenterFail() throws RestClientException, IOException {
+    public void t5_testGetDatacenterFail() throws RestClientException, IOException {
         try {
-            DataCenter datacenter = profitbricksApi.getDataCenter().getDataCenter("412");
+            DataCenter datacenter = profitbricksApi.getDataCenter().getDataCenter(CommonResource.getBadId());
             assertNotNull(datacenter);
         }catch (RestClientException ex){
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
@@ -120,17 +149,24 @@ public class DatacenterTest {
     }
 
     @Test
-    public void updateDataCenter() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        String newName = "SDK TEST DC CHANGED";
-        DataCenter.Properties object = new DataCenter().new Properties();
-        object.setName(newName);
+    public void t6_testCreateDatacenterFail() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+        try {
+            DataCenter datacenter = profitbricksApi.getDataCenter().createDataCenter(DataCenterResource.getBadDataCenter());
+        }catch (RestClientException ex){
+            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+        }
+    }
 
-        DataCenter updatedDataCenter = profitbricksApi.getDataCenter().updateDataCenter(dataCenterId, object);
-        assertEquals(newName, updatedDataCenter.getProperties().getName());
+    @Test
+    public void t7_updateDataCenter() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+        DataCenter updatedDataCenter = profitbricksApi.getDataCenter().updateDataCenter(dataCenterId, DataCenterResource.getEditDataCenter().getProperties());
+        assertEquals(DataCenterResource.getEditDataCenter().getProperties().getName(), updatedDataCenter.getProperties().getName());
     }
 
     @AfterClass
     public static void cleanup() throws RestClientException, IOException {
         profitbricksApi.getDataCenter().deleteDataCenter(dataCenterId);
+//        profitbricksApi.getDataCenter().deleteDataCenter(compositeDataCenterId);
     }
 }

@@ -32,6 +32,7 @@ package com.profitbricks.sdk;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.Locations;
+
 import java.io.IOException;
 
 /**

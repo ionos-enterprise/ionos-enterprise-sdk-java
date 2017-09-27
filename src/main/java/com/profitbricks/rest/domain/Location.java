@@ -30,12 +30,15 @@
 
 package com.profitbricks.rest.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author jasmin@stackpointcloud.com
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Location extends ProfitbricksBase {
 
     /**
@@ -54,6 +57,7 @@ public class Location extends ProfitbricksBase {
 
     private Location.Properties properties = new Properties();
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public class Properties {
         private List<String> features;
         private String name;

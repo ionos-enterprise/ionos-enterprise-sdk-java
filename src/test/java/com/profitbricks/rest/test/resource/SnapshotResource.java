@@ -27,36 +27,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.profitbricks.rest.test;
+package com.profitbricks.rest.test.resource;
 
-import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.*;
-import com.profitbricks.sdk.ProfitbricksApi;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
+import com.profitbricks.rest.domain.Snapshot;
 
 /**
  *
  * @author denis@stackpointcloud.com
  */
-public class ContractTest {
-    static ProfitbricksApi profitbricksApi;
+public class SnapshotResource {
+    private static Snapshot snapshot;
+    private static Snapshot editSnapshot;
+    private static Snapshot badSnapshot;
 
-    static {
-        try {
-            profitbricksApi = new ProfitbricksApi();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static Snapshot getSnapshot() {
+        if (snapshot == null) {
+            snapshot = new Snapshot();
+            snapshot.getProperties().setName("Java SDK Test");
+            snapshot.getProperties().setDescription("Java SDK test snapshot");
         }
+        return snapshot;
     }
 
-    @Test
-    public void testGetContract() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
-        profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
+    public static Snapshot getEditSnapshot() {
+        if (editSnapshot == null) {
+            editSnapshot = new Snapshot();
+            editSnapshot.getProperties().setName("Java SDK Test - RENAME");
+            editSnapshot.getProperties().setDescription("Java SDK test snapshot - RENAME");
+        }
+        return editSnapshot;
+    }
 
-        Contract contract = profitbricksApi.getContract().getContract();
-        assertNotNull(contract);
+    public static Snapshot getBadSnapshot() {
+        if (badSnapshot == null) {
+            badSnapshot = new Snapshot();
+            badSnapshot.getProperties().setName("Java SDK Test");
+            badSnapshot.getProperties().setSize(2);
+        }
+        return badSnapshot;
     }
 }
