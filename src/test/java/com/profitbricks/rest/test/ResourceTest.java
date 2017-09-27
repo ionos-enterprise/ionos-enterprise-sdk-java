@@ -7,20 +7,15 @@ import com.profitbricks.rest.test.resource.IpBlockResource;
 import com.profitbricks.rest.test.resource.SnapshotResource;
 import com.profitbricks.rest.test.resource.VolumeResource;
 import com.profitbricks.sdk.ProfitbricksApi;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
+import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class ResourceTest {
     static ProfitbricksApi profitbricksApi;

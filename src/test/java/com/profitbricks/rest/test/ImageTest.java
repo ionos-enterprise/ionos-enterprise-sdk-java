@@ -34,13 +34,9 @@ import com.profitbricks.rest.domain.Image;
 import com.profitbricks.rest.domain.Images;
 import com.profitbricks.rest.test.resource.CommonResource;
 import com.profitbricks.sdk.ProfitbricksApi;
-
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 

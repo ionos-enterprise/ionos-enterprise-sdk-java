@@ -35,18 +35,11 @@ import com.profitbricks.rest.domain.IPBlocks;
 import com.profitbricks.rest.test.resource.CommonResource;
 import com.profitbricks.rest.test.resource.IpBlockResource;
 import com.profitbricks.sdk.ProfitbricksApi;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.AfterClass;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
