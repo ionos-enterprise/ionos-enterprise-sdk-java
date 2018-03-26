@@ -9,14 +9,16 @@ import com.profitbricks.rest.test.resource.ShareResource;
 import com.profitbricks.sdk.ProfitbricksApi;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
-
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ShareTest {
     static ProfitbricksApi profitbricksApi;
 
