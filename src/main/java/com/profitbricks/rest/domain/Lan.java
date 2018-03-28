@@ -120,28 +120,6 @@ public class Lan extends ProfitbricksBase {
       }
    }
 
-   @JsonIgnoreProperties(ignoreUnknown = true)
-   public class IpFailover{
-       private String Ip;
-       private String NicUuid;
-
-       public String getIp() {
-           return Ip;
-       }
-
-       public void setIp(String ip) {
-           Ip = ip;
-       }
-
-       public String getNicUuid() {
-           return NicUuid;
-       }
-
-       public void setNicUuid(String nicUuid) {
-           NicUuid = nicUuid;
-       }
-   }
-
    private Entities entities = new Entities();
 
    private Properties properties = new Properties();

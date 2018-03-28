@@ -53,4 +53,8 @@ public class FirewallRules extends ProfitbricksBase {
    public void setItems(List<FirewallRule> items) {
       this.items = items;
    }
+
+   public void addItem(FirewallRule rule) {
+      this.items.add(rule);
+   }
 }

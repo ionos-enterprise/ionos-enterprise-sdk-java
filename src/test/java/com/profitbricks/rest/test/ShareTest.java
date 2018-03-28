@@ -2,17 +2,23 @@ package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.*;
+import com.profitbricks.rest.test.resource.CommonResource;
+import com.profitbricks.rest.test.resource.DataCenterResource;
+import com.profitbricks.rest.test.resource.GroupResource;
+import com.profitbricks.rest.test.resource.ShareResource;
 import com.profitbricks.sdk.ProfitbricksApi;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
-
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ShareTest {
     static ProfitbricksApi profitbricksApi;
 
@@ -26,48 +32,22 @@ public class ShareTest {
 
     static String groupId;
     static String shareId;
-    static  String dataCenterId;
+    static String dataCenterId;
 
     @BeforeClass
-    public static void createShare() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+    public static void t1_createShare() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
-        //Create a datacenter
-        DataCenter datacenter = new DataCenter();
 
-        datacenter.getProperties().setName("SDK TEST DC - Data center");
-        datacenter.getProperties().setLocation("us/las");
-        datacenter.getProperties().setDescription("SDK TEST Description");
+        DataCenter datacenter = profitbricksApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
+        dataCenterId = datacenter.getId();
 
-        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(datacenter);
-        dataCenterId = newDatacenter.getId();
+        waitTillProvisioned(datacenter.getRequestId());
 
-        waitTillProvisioned(newDatacenter.getRequestId());
+        Group group = profitbricksApi.getGroup().createGroup(GroupResource.getGroup());
+        groupId = group.getId();
 
-        assertEquals(newDatacenter.getProperties().getName(), datacenter.getProperties().getName());
-
-        //Create a group
-        Group group = new Group();
-
-        group.getProperties().setName("Java SDK Test");
-        group.getProperties().setCreateDataCenter(true);
-        group.getProperties().setCreateSnapshot(true);
-        group.getProperties().setReserveIp(true);
-        group.getProperties().setAccessActivityLog(true);
-
-        Group newGroup = profitbricksApi.getGroup().createGroup(group);
-        groupId = newGroup.getId();
-
-        waitTillProvisioned(newGroup.getRequestId());
-
-        assertEquals(newGroup.getProperties().getName(), group.getProperties().getName());
-
-
-        Share share = new Share();
-
-        share.getProperties().setEditPrivilege(true);
-        share.getProperties().setSharePrivilege(true);
-
-        Share newShare =  profitbricksApi.getShare().createShare(groupId,dataCenterId,share);
+        waitTillProvisioned(group.getRequestId());
+        Share newShare = profitbricksApi.getShare().createShare(groupId, dataCenterId, ShareResource.getShare());
         shareId = newShare.getId();
     }
 
@@ -87,7 +67,7 @@ public class ShareTest {
     }
 
     @Test
-    public void testGetAllShares() throws RestClientException, IOException {
+    public void t2_testGetAllShares() throws RestClientException, IOException {
         Shares shares = profitbricksApi.getShare().getAllShares(groupId);
 
         assertNotNull(shares);
@@ -95,36 +75,36 @@ public class ShareTest {
     }
 
     @Test
-    public void testGetShare() throws RestClientException, IOException {
-        Share share = profitbricksApi.getShare().getShare(groupId,shareId);
+    public void t3_testGetShare() throws RestClientException, IOException {
+        Share share = profitbricksApi.getShare().getShare(groupId, shareId);
         assertNotNull(share);
-        assertTrue(share.getProperties().getEditPrivilege());
-        assertTrue(share.getProperties().getSharePrivilege());
+        assertEquals(share.getProperties().getEditPrivilege(),ShareResource.getShare().getProperties().getEditPrivilege());
+        assertEquals(share.getProperties().getSharePrivilege(),ShareResource.getShare().getProperties().getSharePrivilege());
     }
 
     @Test
-    public void testGetShareFail() throws RestClientException, IOException {
+    public void t4_testGetShareFail() throws RestClientException, IOException {
         try {
-            Share share = profitbricksApi.getShare().getShare(groupId,"00000000-0000-0000-0000-000000000000");
+            Share share = profitbricksApi.getShare().getShare(groupId, CommonResource.getBadId());
             assertNotNull(share);
-        }catch (RestClientException ex){
+        } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
     }
 
     @Test
-    public void updateShare() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        Share share = profitbricksApi.getShare().getShare(groupId,shareId);
+    public void t5_updateShare() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        Share share = profitbricksApi.getShare().getShare(groupId, shareId);
         share.getProperties().setEditPrivilege(false);
 
-        Share shareUpdated = profitbricksApi.getShare().updateShare(groupId,shareId, share.getProperties());
-        assertFalse(shareUpdated.getProperties().getEditPrivilege());
+        Share shareUpdated = profitbricksApi.getShare().updateShare(groupId, shareId, share.getProperties());
+        assertEquals(shareUpdated.getProperties().getEditPrivilege(),ShareResource.getEditShare().getProperties().getEditPrivilege());
 
     }
 
     @AfterClass
     public static void cleanup() throws RestClientException, IOException {
-        profitbricksApi.getShare().deleteShare(groupId,dataCenterId);
+        profitbricksApi.getShare().deleteShare(groupId, dataCenterId);
         profitbricksApi.getDataCenter().deleteDataCenter(dataCenterId);
         profitbricksApi.getGroup().deleteGroup(groupId);
     }

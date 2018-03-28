@@ -29,10 +29,6 @@
  */
 package com.profitbricks.rest.client;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
-
 import com.profitbricks.rest.domain.PBObject;
 import org.apache.commons.io.Charsets;
 import org.apache.http.Header;
@@ -41,6 +37,10 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 /**
  * @author jasmin@stackpointcloud.com
  */

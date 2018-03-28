@@ -34,6 +34,8 @@ import com.profitbricks.rest.domain.DataCenter;
 import com.profitbricks.rest.domain.Request;
 import com.profitbricks.rest.domain.RequestStatus;
 import com.profitbricks.rest.domain.Requests;
+import com.profitbricks.rest.test.resource.CommonResource;
+import com.profitbricks.rest.test.resource.DataCenterResource;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -64,19 +66,10 @@ public class RequestTest {
     @BeforeClass
     public static void setUp() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
-        DataCenter datacenter = new DataCenter();
 
-        datacenter.getProperties().setName("SDK TEST DC - Data center");
-        datacenter.getProperties().setLocation("us/las");
-        datacenter.getProperties().setDescription("SDK TEST Description");
-
-        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(datacenter);
+        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
         requestId = newDatacenter.getRequestId();
         dataCenterId = newDatacenter.getId();
-        assertEquals(newDatacenter.getProperties().getName(), datacenter.getProperties().getName());
-
-        RequestStatus request = profitbricksApi.getRequest().getRequestStatus(requestId);
-        assertNotNull(request);
     }
 
     @Test
@@ -84,8 +77,28 @@ public class RequestTest {
         Requests requests = profitbricksApi.getRequest().listRequests();
         assertNotNull(requests);
         requestId = requests.getItems().get(0).getId();
+    }
+
+    @Test
+    public void getRequest() throws RestClientException, IOException {
         Request request = profitbricksApi.getRequest().getRequest(requestId);
         assertNotNull(request);
+    }
+
+
+    @Test
+    public void getRequestStatus() throws RestClientException, IOException {
+        RequestStatus request = profitbricksApi.getRequest().getRequestStatus(requestId);
+        assertNotNull(request);
+    }
+
+    @Test
+    public void getRequestFail() throws RestClientException, IOException {
+        try{
+        Request request = profitbricksApi.getRequest().getRequest(CommonResource.getBadId());
+        } catch (RestClientException ex) {
+            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+        }
     }
 
     @AfterClass

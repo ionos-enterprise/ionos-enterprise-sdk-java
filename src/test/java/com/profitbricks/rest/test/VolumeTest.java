@@ -32,20 +32,26 @@ package com.profitbricks.rest.test;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.*;
 import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
+import com.profitbricks.rest.test.resource.CommonResource;
+import com.profitbricks.rest.test.resource.DataCenterResource;
+import com.profitbricks.rest.test.resource.ServerResource;
+import com.profitbricks.rest.test.resource.VolumeResource;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 /**
  * @author jasmin@stackpointcloud.com
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class VolumeTest {
 
     static ProfitbricksApi profitbricksApi;
@@ -67,36 +73,18 @@ public class VolumeTest {
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
 
         String imageId = getImageId();
-        DataCenter datacenter = new DataCenter();
-        datacenter.getProperties().setName("SDK TEST VOLUME - Data Center 28/7 1153");
-        datacenter.getProperties().setLocation("us/las");
-        datacenter.getProperties().setDescription("SDK TEST Description");
 
-        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(datacenter);
+        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
         waitTillProvisioned(newDatacenter.getRequestId());
         dataCenterId = newDatacenter.getId();
 
-        Server server = new Server();
-        server.getProperties().setName("SDK TEST VOLUME - Server");
-        server.getProperties().setRam(1024);
-        server.getProperties().setCores(1);
-
-        Server newServer = profitbricksApi.getServer().createServer(dataCenterId, server);
-
+        Server newServer = profitbricksApi.getServer().createServer(dataCenterId, ServerResource.getServer());
         assertNotNull(newServer);
         waitTillProvisioned(newServer.getRequestId());
         serverId = newServer.getId();
 
-        Volume volume = new Volume();
-        volume.getProperties().setName("SDK TEST VOLUME - Volume");
-        volume.getProperties().setSize(10);
+        Volume volume = VolumeResource.getVolume();
         volume.getProperties().setImage(imageId); //"Ubuntu-15.04-server-2015-07-01"
-        volume.getProperties().setType("HDD");
-
-        List<String> sshkeys = new ArrayList<String>();
-        sshkeys.add("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDgnV5MWhBqpQLt66KGlMKi/VYtmVPUt6epSVxnxrvjayNto5flG2sH4cGqdI2C0NE9/w7BFNdwWqp0mL2kYynC8l+SejW/qjx37hrEBWIXqdTyumchm0LD/7K7P7/kz14IV5NcHjNAsntPgKjx/fzJlbA1VCQYmnOq9RZeKme44rdHYW0BBfgMzekcEbyGTNDGp51NYhVafZLXsF8MzCKlJ+NCPlDqzD6w0fQe/qtMFO8NbFyS9/Lk4prp4HAWEyLSM26w1iLycYpbpWrHw6oc1U7bNIgbsa0ezDu4+OPkxeHz7aG5TeJ/dn0Wftzdfy2sy5PJy5MnYP3RTuROsOv+chu+AshZNNJ9A4ar5gFXSX40sQ0i4GzxZGrsKhW42ZP4sElzV74gEBQ2BOIOJUh4qGRtnjsQCJHBs7DLgpeVeGUq2B7p5zDAlJBGCXiHuTgIM8aVnpdnNrFwmr9SF66iaTrt7x8HinNOCIIztMU15Fk2AYSxSEuju1d3VcPt/d0= spc@spc");
-        volume.getProperties().setSshKeys(sshkeys);
-
         Volume newVolume = profitbricksApi.getVolume().createVolume(dataCenterId, volume);
         assertNotNull(newVolume);
         waitTillProvisioned(newVolume.getRequestId());
@@ -124,66 +112,66 @@ public class VolumeTest {
     }
 
     @Test
-    public void orderedTest() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        testGetAllVolumes();
-        testGetVolume();
-        testUpdateVolume();
-        testAttachVolume();
-        testGetAllAttachedVolumes();
-        testDetachVolume();
-        testFailVolumeCreate();
-    }
-
-    private void testFailVolumeCreate() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, IOException {
-        try {
-            Volume volume = new Volume();
-            volume.getProperties().setName("SDK TEST VOLUME - Volume");
-            volume.getProperties().setSize(10);
-            volume.getProperties().setImage("123"); //"Ubuntu-15.04-server-2015-07-01"
-            volume.getProperties().setType("HDD");
-
-            List<String> sshkeys = new ArrayList<String>();
-            sshkeys.add("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDgnV5MWhBqpQLt66KGlMKi/VYtmVPUt6epSVxnxrvjayNto5flG2sH4cGqdI2C0NE9/w7BFNdwWqp0mL2kYynC8l+SejW/qjx37hrEBWIXqdTyumchm0LD/7K7P7/kz14IV5NcHjNAsntPgKjx/fzJlbA1VCQYmnOq9RZeKme44rdHYW0BBfgMzekcEbyGTNDGp51NYhVafZLXsF8MzCKlJ+NCPlDqzD6w0fQe/qtMFO8NbFyS9/Lk4prp4HAWEyLSM26w1iLycYpbpWrHw6oc1U7bNIgbsa0ezDu4+OPkxeHz7aG5TeJ/dn0Wftzdfy2sy5PJy5MnYP3RTuROsOv+chu+AshZNNJ9A4ar5gFXSX40sQ0i4GzxZGrsKhW42ZP4sElzV74gEBQ2BOIOJUh4qGRtnjsQCJHBs7DLgpeVeGUq2B7p5zDAlJBGCXiHuTgIM8aVnpdnNrFwmr9SF66iaTrt7x8HinNOCIIztMU15Fk2AYSxSEuju1d3VcPt/d0= spc@spc");
-            volume.getProperties().setSshKeys(sshkeys);
-
-            Volume newVolume = profitbricksApi.getVolume().createVolume(dataCenterId, volume);
-        } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
-        }
-    }
-
-    public void testGetAllVolumes() throws RestClientException, IOException {
+    public void t1_testGetAllVolumes() throws RestClientException, IOException {
         Volumes volumes = profitbricksApi.getVolume().getAllVolumes(dataCenterId);
         assertNotNull(volumes);
+        assertTrue(volumes.getItems().size() > 0);
     }
 
-    public void testGetAllAttachedVolumes() throws RestClientException, IOException {
-        Volumes volumes = profitbricksApi.getVolume().getAllVolumes(dataCenterId, serverId);
-        assertNotNull(volumes);
-    }
-
-    public void testGetVolume() throws RestClientException, IOException, InterruptedException {
+    @Test
+    public void t2_testGetVolume() throws RestClientException, IOException, InterruptedException {
         Volume volume = profitbricksApi.getVolume().getVolume(dataCenterId, volumeId);
         assertNotNull(volume);
+        assertEquals(volume.getProperties().getName(), VolumeResource.getVolume().getProperties().getName());
+        assertEquals(volume.getProperties().getSize(), VolumeResource.getVolume().getProperties().getSize());
+        assertEquals(volume.getProperties().getType(), VolumeResource.getVolume().getProperties().getType());
+        assertEquals(volume.getProperties().getAvailabilityZone(), VolumeResource.getVolume().getProperties().getAvailabilityZone());
     }
 
-    public void testUpdateVolume() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, RestClientException, IOException {
-        Volume.Properties properties = new Volume().new Properties();
-        properties.setName("new name");
+    @Test
+    public void t3_testUpdateVolume() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, RestClientException, IOException {
 
-        Volume after = profitbricksApi.getVolume().updateVolume(dataCenterId, volumeId, properties);
+        Volume after = profitbricksApi.getVolume().updateVolume(dataCenterId, volumeId, VolumeResource.getEditVolume().getProperties());
 
-        assertEquals(after.getProperties().getName(), properties.getName());
+        assertEquals(after.getProperties().getName(), VolumeResource.getEditVolume().getProperties().getName());
+        assertEquals(after.getProperties().getSize(), VolumeResource.getEditVolume().getProperties().getSize());
     }
 
-    public void testAttachVolume() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    @Test
+    public void t4_testAttachVolume() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         Volume attachedVolume = profitbricksApi.getVolume().attachVolume(dataCenterId, serverId, volumeId);
         assertNotNull(attachedVolume);
         waitTillProvisioned(attachedVolume.getRequestId());
 
     }
 
-    public void testDetachVolume() throws RestClientException, IOException, InterruptedException {
+    @Test
+    public void t5_testGetAllAttachedVolumes() throws RestClientException, IOException {
+        Volumes volumes = profitbricksApi.getVolume().getAllVolumes(dataCenterId, serverId);
+        assertNotNull(volumes);
+    }
+
+    @Test
+    public void t6_testDetachVolume() throws RestClientException, IOException, InterruptedException {
         profitbricksApi.getVolume().detachVolume(dataCenterId, serverId, volumeId);
+    }
+
+    @Test
+    public void t7_testFailVolumeCreate() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, IOException {
+        try {
+
+            Volume newVolume = profitbricksApi.getVolume().createVolume(dataCenterId, VolumeResource.getBadVolume());
+        } catch (RestClientException ex) {
+            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+        }
+    }
+
+    @Test
+    public void t8_testGetFailVolume() throws RestClientException, IOException, InterruptedException {
+        try {
+            Volume volume = profitbricksApi.getVolume().getVolume(dataCenterId, CommonResource.getBadId());
+        } catch (RestClientException ex) {
+            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+        }
     }
 }

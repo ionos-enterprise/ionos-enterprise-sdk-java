@@ -30,7 +30,6 @@
 package com.profitbricks.rest.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
  * @author denis@stackpointcloud.com

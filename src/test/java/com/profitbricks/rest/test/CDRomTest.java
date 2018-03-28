@@ -32,6 +32,9 @@ package com.profitbricks.rest.test;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.*;
 import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
+
+import com.profitbricks.rest.test.resource.DataCenterResource;
+import com.profitbricks.rest.test.resource.ServerResource;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -39,12 +42,15 @@ import org.junit.AfterClass;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 /**
  *
  * @author jasmin@stackpointcloud.com
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CDRomTest {
 
 
@@ -66,21 +72,11 @@ public class CDRomTest {
     public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
 
-        DataCenter datacenter = new DataCenter();
-        datacenter.getProperties().setName("SDK TEST SERVER - Server");
-        datacenter.getProperties().setLocation("us/las");
-        datacenter.getProperties().setDescription("SDK TEST Description");
-
-        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(datacenter);
+        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
         waitTillProvisioned(newDatacenter.getRequestId());
         dataCenterId = newDatacenter.getId();
 
-        Server server = new Server();
-        server.getProperties().setName("SDK TEST SERVER - Server");
-        server.getProperties().setRam(1024);
-        server.getProperties().setCores(1);
-
-        Server newServer = profitbricksApi.getServer().createServer(dataCenterId, server);
+        Server newServer = profitbricksApi.getServer().createServer(dataCenterId, ServerResource.getServer());
         waitTillProvisioned(newServer.getRequestId());
 
         assertNotNull(newServer);
@@ -101,28 +97,22 @@ public class CDRomTest {
     }
 
     @Test
-    public void orderedTests() throws RestClientException, IOException {
-        testListCDRoms();
-        testGetCDRom();
-
-        testDetachCDRom();
-    }
-
-    private void testDetachCDRom() throws RestClientException, IOException {
-        profitbricksApi.getServer().detachCDRom(dataCenterId, serverId, romId);
-    }
-
-    public void testListCDRoms() throws RestClientException, IOException {
+    public void t1_ListCDRoms() throws RestClientException, IOException {
         CDRoms roms = profitbricksApi.getServer().getAllAttachedCDRoms(dataCenterId, serverId);
 
         assertNotNull(roms);
         assertTrue(roms.getItems().size() > 0);
     }
 
-
-    public void testGetCDRom() throws RestClientException, IOException {
+    @Test
+    public void t2_GetCDRom() throws RestClientException, IOException {
         CDRom rom = profitbricksApi.getServer().getAttachedCDRom(dataCenterId, serverId, romId);
         System.out.println(rom.getId());
+    }
+
+    @Test
+    public void t3_DetachCDRom() throws RestClientException, IOException {
+        profitbricksApi.getServer().detachCDRom(dataCenterId, serverId, romId);
     }
 
     public static String getImageId() throws RestClientException, IOException {

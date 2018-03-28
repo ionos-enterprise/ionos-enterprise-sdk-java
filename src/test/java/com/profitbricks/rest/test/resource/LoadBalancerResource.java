@@ -27,36 +27,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.profitbricks.rest.test;
+package com.profitbricks.rest.test.resource;
 
-import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.*;
-import com.profitbricks.sdk.ProfitbricksApi;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
+import com.profitbricks.rest.domain.LoadBalancer;
 
 /**
- *
  * @author denis@stackpointcloud.com
  */
-public class ContractTest {
-    static ProfitbricksApi profitbricksApi;
+public class LoadBalancerResource {
+    private static LoadBalancer loadBalancer;
+    private static LoadBalancer badLoadBalancer;
+    private static LoadBalancer editLoadBalancer;
 
-    static {
-        try {
-            profitbricksApi = new ProfitbricksApi();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static LoadBalancer getLoadBalancer() {
+        if (loadBalancer == null) {
+            loadBalancer = new LoadBalancer();
+            loadBalancer.getProperties().setName("Java SDK Test");
+            loadBalancer.getProperties().setIp("10.0.0.1");
         }
+        return loadBalancer;
     }
 
-    @Test
-    public void testGetContract() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
-        profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
+    public static LoadBalancer getEditLoadBalancer() {
+        if (editLoadBalancer == null) {
+            editLoadBalancer = new LoadBalancer();
+            editLoadBalancer.getProperties().setName("Java SDK Test - RENAME");
+        }
+        return editLoadBalancer;
+    }
 
-        Contract contract = profitbricksApi.getContract().getContract();
-        assertNotNull(contract);
+    public static LoadBalancer getBadLoadBalancer() {
+        if (badLoadBalancer == null) {
+            badLoadBalancer = new LoadBalancer();
+            badLoadBalancer.getProperties().setName("Java SDK Test");
+        }
+        return badLoadBalancer;
     }
 }

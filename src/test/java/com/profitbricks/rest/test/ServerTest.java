@@ -32,6 +32,9 @@ package com.profitbricks.rest.test;
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.*;
 import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
+
+import com.profitbricks.rest.test.resource.DataCenterResource;
+import com.profitbricks.rest.test.resource.ServerResource;
 import com.profitbricks.sdk.ProfitbricksApi;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -39,11 +42,14 @@ import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 /**
  * @author jasmin@stackpointcloud.com
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ServerTest {
 
     static ProfitbricksApi profitbricksApi;
@@ -61,21 +67,11 @@ public class ServerTest {
     public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
 
-        DataCenter datacenter = new DataCenter();
-        datacenter.getProperties().setName("SDK TEST SERVER - Server");
-        datacenter.getProperties().setLocation("us/las");
-        datacenter.getProperties().setDescription("SDK TEST Description");
-
-        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(datacenter);
+        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
         waitTillProvisioned(newDatacenter.getRequestId());
         dataCenterId = newDatacenter.getId();
 
-        Server server = new Server();
-        server.getProperties().setName("SDK TEST SERVER - Server");
-        server.getProperties().setRam(1024);
-        server.getProperties().setCores(1);
-
-        Server newServer = profitbricksApi.getServer().createServer(dataCenterId, server);
+        Server newServer = profitbricksApi.getServer().createServer(dataCenterId, ServerResource.getServer());
         waitTillProvisioned(newServer.getRequestId());
 
         assertNotNull(newServer);
@@ -89,46 +85,40 @@ public class ServerTest {
     }
 
     @Test
-    public void testInOrder() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        testGetAllServers();
-        testGetServer();
-        testUpdateServer();
-        testRebootServer();
-        testStartServer();
-        testStopServer();
-    }
-
-    public void testGetAllServers() throws RestClientException, IOException {
+    public void t1_GetAllServers() throws RestClientException, IOException {
         Servers servers = profitbricksApi.getServer().getAllServers(dataCenterId);
         assertNotNull(servers);
     }
 
-    public void testGetServer() throws RestClientException, IOException, InterruptedException {
+    @Test
+    public void t2_GetServer() throws RestClientException, IOException, InterruptedException {
         Thread.sleep(5000);
         Server server = profitbricksApi.getServer().getServer(dataCenterId, serverId);
         assertNotNull(server);
     }
 
-    public void testUpdateServer() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        String newName = "SDK TEST SERVER CHANGED";
+    @Test
+    public void t3_UpdateServer() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        String newName = ServerResource.getEditServer().getProperties().getName();
         Server.Properties object = new Server().new Properties();
         object.setName(newName);
 
         Server updatedServer = profitbricksApi.getServer().updateServer(dataCenterId, serverId, object);
         assertEquals(newName, updatedServer.getProperties().getName());
-
     }
 
-    public void testStartServer() throws RestClientException, IOException {
+    @Test
+    public void t4_StartServer() throws RestClientException, IOException {
         profitbricksApi.getServer().startServer(dataCenterId, serverId);
     }
 
-    public void testStopServer() throws RestClientException, IOException {
+    @Test
+    public void t5_StopServer() throws RestClientException, IOException {
         profitbricksApi.getServer().stopServer(dataCenterId, serverId);
-
     }
 
-    public void testRebootServer() throws RestClientException, IOException {
+    @Test
+    public void t6_RebootServer() throws RestClientException, IOException {
         profitbricksApi.getServer().rebootServer(dataCenterId, serverId);
     }
 }

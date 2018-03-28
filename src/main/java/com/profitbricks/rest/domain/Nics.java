@@ -34,24 +34,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author jasmin@stackpointcloud.com
  */
 public class Nics extends ProfitbricksBase {
 
-   private List<Nic> items = new ArrayList<Nic>();
+    private List<Nic> items = new ArrayList<Nic>();
 
-   /**
-    * @return the items
-    */
-   public List<Nic> getItems() {
-      return items;
-   }
+    /**
+     * @return the items
+     */
+    public List<Nic> getItems() {
+        return items;
+    }
 
-   /**
-    * @param items the items to set
-    */
-   public void setItems(List<Nic> items) {
-      this.items = items;
-   }
+    /**
+     * @param items the items to set
+     */
+    public void setItems(List<Nic> items) {
+        this.items = items;
+    }
+
+    public void addItem(Nic nic) {
+        this.items.add(nic);
+    }
 }

@@ -27,36 +27,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.profitbricks.rest.test;
+package com.profitbricks.rest.test.resource;
 
-import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.*;
-import com.profitbricks.sdk.ProfitbricksApi;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
+import com.profitbricks.rest.domain.Lan;
 
 /**
  *
  * @author denis@stackpointcloud.com
  */
-public class ContractTest {
-    static ProfitbricksApi profitbricksApi;
+public class LanResource {
+    private static Lan lan;
+    private static Lan badLan;
+    private static Lan editLan;
 
-    static {
-        try {
-            profitbricksApi = new ProfitbricksApi();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static Lan getLan() {
+        if (lan == null) {
+            lan = new Lan();
+            lan.getProperties().setName("Java SDK Test");
+            lan.getProperties().setIsPublic(true);
         }
+        return lan;
     }
 
-    @Test
-    public void testGetContract() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
-        profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
+    public static Lan getEditLan() {
+        if (lan == null) {
+            lan = new Lan();
+            lan.getProperties().setName("Java SDK Test - RENAME");
+            lan.getProperties().setIsPublic(false);
+        }
+        return lan;
+    }
 
-        Contract contract = profitbricksApi.getContract().getContract();
-        assertNotNull(contract);
+    public static Lan getBadLan() {
+        if (lan == null) {
+            lan = new Lan();
+        }
+        return lan;
     }
 }

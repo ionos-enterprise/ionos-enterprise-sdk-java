@@ -31,8 +31,8 @@
 package com.profitbricks.sdk;
 
 import com.profitbricks.rest.client.RestClientException;
+
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author denis@stackpointcloud.com

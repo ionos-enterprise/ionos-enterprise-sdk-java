@@ -27,36 +27,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.profitbricks.rest.test;
+package com.profitbricks.rest.test.resource;
 
-import com.profitbricks.rest.client.RestClientException;
-import com.profitbricks.rest.domain.*;
-import com.profitbricks.sdk.ProfitbricksApi;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
+import com.profitbricks.rest.domain.User;
 
 /**
  *
  * @author denis@stackpointcloud.com
  */
-public class ContractTest {
-    static ProfitbricksApi profitbricksApi;
+public class UserResource {
+    private static User user;
+    private static User badUser;
+    private static User editUser;
 
-    static {
-        try {
-            profitbricksApi = new ProfitbricksApi();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static User getUser() {
+        if (user == null) {
+            user = new User();
+            user.getProperties().setFirstname("John");
+            user.getProperties().setLastname("Doe");
+            user.getProperties().setPassword("secretpassword123");
+            user.getProperties().setAdministrator(true);
         }
+
+        return user;
     }
 
-    @Test
-    public void testGetContract() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
-        profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
+    public static User getBadUser() {
+        if (badUser == null) {
+            badUser = new User();
+        }
 
-        Contract contract = profitbricksApi.getContract().getContract();
-        assertNotNull(contract);
+        return badUser;
+    }
+
+    public static User getEditUser() {
+        if (editUser == null) {
+            editUser = new User();
+            editUser.getProperties().setFirstname("Jane");
+            editUser.getProperties().setLastname("Doe");
+            editUser.getProperties().setAdministrator(false);
+            editUser.getProperties().setForceSecAuth(false);
+        }
+
+        return editUser;
     }
 }

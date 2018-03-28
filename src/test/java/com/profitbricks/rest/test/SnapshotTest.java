@@ -31,19 +31,33 @@ package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.*;
+
 import static com.profitbricks.rest.test.DatacenterTest.waitTillProvisioned;
+
+import com.profitbricks.rest.test.resource.CommonResource;
+import com.profitbricks.rest.test.resource.DataCenterResource;
+import com.profitbricks.rest.test.resource.SnapshotResource;
+import com.profitbricks.rest.test.resource.VolumeResource;
 import com.profitbricks.sdk.ProfitbricksApi;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+
 import org.junit.AfterClass;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 /**
  * @author jasmin@stackpointcloud.com
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SnapshotTest {
 
     static ProfitbricksApi profitbricksApi;
@@ -55,29 +69,32 @@ public class SnapshotTest {
             e.printStackTrace();
         }
     }
+
     static String dataCenterId;
     static String volumeId;
     static String snapshotId;
+
+    public static String getImageId() throws RestClientException, IOException {
+        Images images = profitbricksApi.getImage().getAllImages();
+        for (Image image : images.getItems()) {
+            if (image.getProperties().getName().toLowerCase().contains("ubuntu-16".toLowerCase()) && image.getProperties().getLocation().equals("us/las")
+                    && image.getProperties().getIsPublic() && image.getProperties().getImageType().equals("HDD")) {
+                return image.getId();
+            }
+        }
+        return "";
+    }
 
     @BeforeClass
     public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
-        DataCenter datacenter = new DataCenter();
-        datacenter.getProperties().setName("SDK TEST SNAPSHOT - Data Center");
-        datacenter.getProperties().setLocation("us/las");
-        datacenter.getProperties().setDescription("SDK TEST Description");
 
-        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(datacenter);
+        DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
         dataCenterId = newDatacenter.getId();
 
-        Volume volume = new Volume();
-
-        volume.getProperties().setName("SDK TEST SNAPSHOT - Volume");
-        volume.getProperties().setSize(1);
-        volume.getProperties().setLicenceType(LicenceType.LINUX);
-        volume.getProperties().setType("HDD");
-
+        Volume volume = VolumeResource.getVolume();
+        volume.getProperties().setImage(getImageId());
         Volume newVolume = profitbricksApi.getVolume().createVolume(dataCenterId, volume);
         assertNotNull(newVolume);
 
@@ -85,47 +102,64 @@ public class SnapshotTest {
 
         waitTillProvisioned(newVolume.getRequestId());
 
-        Snapshot snapshot = profitbricksApi.getSnapshot().createSnapshot(dataCenterId, volumeId, "SDK TEST SNAPSHOT - Snapshot", "SDK TEST Description");
+        Snapshot snapshot = profitbricksApi.getSnapshot().createSnapshot(dataCenterId, volumeId, SnapshotResource.getSnapshot().getProperties().getName(), SnapshotResource.getSnapshot().getProperties().getDescription());
         snapshotId = snapshot.getId();
-
         waitTillProvisioned(snapshot.getRequestId());
-
+        assertEquals(snapshot.getProperties().getName(), SnapshotResource.getSnapshot().getProperties().getName());
+        assertEquals(snapshot.getProperties().getDescription(), SnapshotResource.getSnapshot().getProperties().getDescription());
     }
 
     @Test
-    public void getSnapshot() throws RestClientException, IOException {
+    public void t1_getSnapshot() throws RestClientException, IOException {
         Snapshot snapshot = profitbricksApi.getSnapshot().getSnapshot(snapshotId);
         assertNotNull(snapshot);
+        assertEquals(snapshot.getProperties().getName(), SnapshotResource.getSnapshot().getProperties().getName());
+        assertEquals(snapshot.getProperties().getDescription(), SnapshotResource.getSnapshot().getProperties().getDescription());
     }
 
     @Test
-    public void getAllSnapshots() throws RestClientException, IOException {
+    public void t2_getAllSnapshots() throws RestClientException, IOException {
         Snapshots snapshots = profitbricksApi.getSnapshot().getAllSnapshots();
         assertNotNull(snapshots);
+        assertTrue(snapshots.getItems().size() > 0);
     }
 
     @Test
-    public void restoreSnapshot() throws RestClientException, IOException {
+    public void t3_restoreSnapshot() throws RestClientException, IOException {
         profitbricksApi.getSnapshot().restoreSnapshot(dataCenterId, volumeId, snapshotId);
     }
 
     @Test
-    public void updateSnapshot() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InterruptedException {
-        Snapshot.Properties object = new Snapshot().new Properties();
-        object.setName("SDK TEST SNAPSHOT - Snapshot - changed");
-
-        Snapshot snapshot = profitbricksApi.getSnapshot().updateSnapshot(dataCenterId, snapshotId, object);
+    public void t4_updateSnapshot() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InterruptedException {
+        Snapshot snapshot = profitbricksApi.getSnapshot().updateSnapshot(dataCenterId, snapshotId, SnapshotResource.getEditSnapshot().getProperties());
         waitTillProvisioned(snapshot.getRequestId());
-        assertEquals(snapshot.getProperties().getName(), object.getName());
-        snapshotId = snapshot.getId();
+        assertEquals(snapshot.getProperties().getName(), SnapshotResource.getEditSnapshot().getProperties().getName());
+        assertEquals(snapshot.getProperties().getDescription(), SnapshotResource.getEditSnapshot().getProperties().getDescription());
+    }
+
+    @Test
+    public void t5_getSnapshotFail() throws RestClientException, IOException {
+        try {
+            Snapshot snapshot = profitbricksApi.getSnapshot().getSnapshot(CommonResource.getBadId());
+        } catch (RestClientException ex) {
+            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+        }
+    }
+
+    @Test
+    public void t6_createSnapshotFail() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+        try {
+            Snapshot snapshot = profitbricksApi.getSnapshot().createSnapshot(dataCenterId, volumeId, "", "");
+        } catch (RestClientException ex) {
+            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+        }
     }
 
     @AfterClass
     public static void cleanUp() throws RestClientException, IOException, InterruptedException {
-        Thread.sleep(80000);
+        Thread.sleep(100000);
 
         profitbricksApi.getSnapshot().deleteSnapshot(snapshotId);
-        profitbricksApi.getVolume().deleteVolume(dataCenterId, volumeId);
         profitbricksApi.getDataCenter().deleteDataCenter(dataCenterId);
     }
 }

@@ -31,10 +31,14 @@ package com.profitbricks.rest.test;
 
 import com.profitbricks.rest.client.RestClientException;
 import com.profitbricks.rest.domain.*;
+import com.profitbricks.rest.test.resource.CommonResource;
+import com.profitbricks.rest.test.resource.GroupResource;
 import com.profitbricks.sdk.ProfitbricksApi;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -43,9 +47,9 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.*;
 
 /**
- *
  * @author denis@stackpointcloud.com
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GroupTest {
     static ProfitbricksApi profitbricksApi;
 
@@ -60,22 +64,19 @@ public class GroupTest {
     static String groupId;
 
     @BeforeClass
-    public static void createGroup() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+    public static void t1_createGroup() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
-        Group group = new Group();
 
-        group.getProperties().setName("Java SDK Test");
-        group.getProperties().setCreateDataCenter(true);
-        group.getProperties().setCreateSnapshot(true);
-        group.getProperties().setReserveIp(true);
-        group.getProperties().setAccessActivityLog(true);
-
-        Group newGroup = profitbricksApi.getGroup().createGroup(group);
+        Group newGroup = profitbricksApi.getGroup().createGroup(GroupResource.getGroup());
         groupId = newGroup.getId();
 
         waitTillProvisioned(newGroup.getRequestId());
+        assertEquals(newGroup.getProperties().getName(), GroupResource.getGroup().getProperties().getName());
+        assertEquals(newGroup.getProperties().getCreateDataCenter(), GroupResource.getGroup().getProperties().getCreateDataCenter());
+        assertEquals(newGroup.getProperties().getCreateSnapshot(), GroupResource.getGroup().getProperties().getCreateSnapshot());
+        assertEquals(newGroup.getProperties().getReserveIp(), GroupResource.getGroup().getProperties().getReserveIp());
+        assertEquals(newGroup.getProperties().getAccessActivityLog(), GroupResource.getGroup().getProperties().getAccessActivityLog());
 
-        assertEquals(newGroup.getProperties().getName(), group.getProperties().getName());
     }
 
     public static void waitTillProvisioned(String requestId) throws InterruptedException, RestClientException, IOException {
@@ -94,7 +95,7 @@ public class GroupTest {
     }
 
     @Test
-    public void testGetAllGroups() throws RestClientException, IOException {
+    public void t2_testGetAllGroups() throws RestClientException, IOException {
         Groups groups = profitbricksApi.getGroup().getAllGroups();
 
         assertNotNull(groups);
@@ -102,31 +103,40 @@ public class GroupTest {
     }
 
     @Test
-    public void testGetGroup() throws RestClientException, IOException {
+    public void t3_testGetGroup() throws RestClientException, IOException {
         Group group = profitbricksApi.getGroup().getGroup(groupId);
         assertNotNull(group);
+        assertEquals(group.getProperties().getName(), GroupResource.getGroup().getProperties().getName());
+        assertEquals(group.getProperties().getCreateDataCenter(), GroupResource.getGroup().getProperties().getCreateDataCenter());
+        assertEquals(group.getProperties().getCreateSnapshot(), GroupResource.getGroup().getProperties().getCreateSnapshot());
+        assertEquals(group.getProperties().getReserveIp(), GroupResource.getGroup().getProperties().getReserveIp());
+        assertEquals(group.getProperties().getAccessActivityLog(), GroupResource.getGroup().getProperties().getAccessActivityLog());
     }
 
     @Test
-    public void testGetGroupFail() throws RestClientException, IOException {
+    public void t4_testGetGroupFail() throws RestClientException, IOException {
         try {
-            Group group = profitbricksApi.getGroup().getGroup("00000000-0000-0000-0000-000000000000");
+            Group group = profitbricksApi.getGroup().getGroup(CommonResource.getBadId());
             assertNotNull(group);
-        }catch (RestClientException ex){
+        } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
     }
 
     @Test
-    public void updateGroup() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        String newName = "Java SDK Test - RENAME";
-        Group.Properties object = new Group().getProperties();
-        object.setName(newName);
-        object.setCreateDataCenter(false);
+    public void t5_updateGroup() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        Group updateGroup = profitbricksApi.getGroup().updateGroup(groupId, GroupResource.getEditGroup().getProperties());
+        assertEquals(updateGroup.getProperties().getName(), GroupResource.getEditGroup().getProperties().getName());
+        assertEquals(updateGroup.getProperties().getCreateDataCenter(), GroupResource.getEditGroup().getProperties().getCreateDataCenter());
+    }
 
-        Group updateGroup = profitbricksApi.getGroup().updateGroup(groupId, object);
-        assertEquals(newName, updateGroup.getProperties().getName());
-        assertFalse( updateGroup.getProperties().getCreateDataCenter());
+    @Test
+    public void t6_createGroupFail() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+        try {
+            Group group = profitbricksApi.getGroup().createGroup(GroupResource.getBadGroup());
+        } catch (RestClientException ex) {
+            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+        }
     }
 
     @AfterClass
