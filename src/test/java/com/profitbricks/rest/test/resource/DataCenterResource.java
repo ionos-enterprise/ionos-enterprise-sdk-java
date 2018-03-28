@@ -77,9 +77,8 @@ public class DataCenterResource {
             volume.getProperties().setType("HDD");
             volume.getProperties().setLicenceType(LicenceType.UNKNOWN);
             volume.getProperties().setAvailabilityZone(AvailabilityZone.ZONE_1);
-//            List<String> sshKeys= new ArrayList<String>();
-//            sshKeys.add("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDgnV5MOhBqpQLt66Ksdf/VYtmVPUt6epSVxnxrvjayNto5flG2sH4cGqdI2C0NE9/w7BFNdwWqp0mL2kYynC8l+SejW/qjx37hrEBWIXqdTyumchm0LD/7K7P7/kz14IV5NcHjNAsntPgKjx/fzJlbA1VCQYmnOq9RZeKme44rdHYW0BBfgMzekcEbyGTNDGp51NYhVafZLXsF8MzCKlJ+NCPlDqzD6w0fQe/qtMFO8NbFyS9/Lk4prp4HAWEyLSM26w1iLycYpbpWrHw6oc1U7bNIgbsa0ezDu4+OPkxeHz7aG5TeJ/dn0Wftzdfy2sy5PJy5MnYP3RTuROsOv+chu+AshZNNJ9A4ar5gFXSX40sQ0i4GzxZGrsKhW42ZP4sElzV74gEBQ2BOIOJUh4qGRtnjsQCJHBs7DLgpeVeGUq2B7p5zDAlJBGCXiHuTgIM8aVnpdnNrFwmr9SF66iaTrt7x8HinNOCIIztMU15Fk2AYSxSEuju1d3VcPt/d0= spc@spc");
-//            volume.getProperties().setSshKeys(sshKeys);
+            volume.getProperties().setImageAlias("ubuntu:latest");
+            volume.getProperties().setImagePassword("StrongPassword01");
             Volumes volumes = new Volumes();
             volumes.addItem(volume);
             compositeServer.getEntities().setVolumes(volumes);

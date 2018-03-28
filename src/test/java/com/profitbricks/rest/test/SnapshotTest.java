@@ -157,9 +157,8 @@ public class SnapshotTest {
 
     @AfterClass
     public static void cleanUp() throws RestClientException, IOException, InterruptedException {
-        Thread.sleep(80000);
+        Thread.sleep(100000);
 
-        profitbricksApi.getVolume().deleteVolume(dataCenterId, volumeId);
         profitbricksApi.getSnapshot().deleteSnapshot(snapshotId);
         profitbricksApi.getDataCenter().deleteDataCenter(dataCenterId);
     }
