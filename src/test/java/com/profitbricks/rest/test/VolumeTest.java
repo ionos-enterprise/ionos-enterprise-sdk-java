@@ -72,8 +72,6 @@ public class VolumeTest {
     public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
         profitbricksApi.setCredentials(System.getenv("PROFITBRICKS_USERNAME"), System.getenv("PROFITBRICKS_PASSWORD"));
 
-        String imageId = getImageId();
-
         DataCenter newDatacenter = profitbricksApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
         waitTillProvisioned(newDatacenter.getRequestId());
         dataCenterId = newDatacenter.getId();
@@ -84,7 +82,7 @@ public class VolumeTest {
         serverId = newServer.getId();
 
         Volume volume = VolumeResource.getVolume();
-        volume.getProperties().setImage(imageId); //"Ubuntu-15.04-server-2015-07-01"
+        volume.getProperties().setImage(getImageId());
         Volume newVolume = profitbricksApi.getVolume().createVolume(dataCenterId, volume);
         assertNotNull(newVolume);
         waitTillProvisioned(newVolume.getRequestId());
@@ -96,7 +94,7 @@ public class VolumeTest {
     public static String getImageId() throws RestClientException, IOException {
         Images images = profitbricksApi.getImage().getAllImages();
         for (Image image : images.getItems()) {
-            if (image.getProperties().getName().toLowerCase().contains("ubuntu-16".toLowerCase()) && image.getProperties().getLocation().equals("us/las")
+            if (image.getProperties().getName().toLowerCase().contains("ubuntu".toLowerCase()) && image.getProperties().getLocation().equals("us/las")
                     && image.getProperties().getIsPublic() && image.getProperties().getImageType().equals("HDD")) {
                 return image.getId();
             }

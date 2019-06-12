@@ -44,7 +44,7 @@ public class ResourceTest {
         waitTillProvisioned(datacenter.getRequestId());
 
         Volume volume = VolumeResource.getVolume();
-        volume.getProperties().setImage(VolumeTest.getImageId()); //"Ubuntu-15.04-server-2015-07-01"
+        volume.getProperties().setImage(VolumeTest.getImageId());
 
         Volume newVolume = profitbricksApi.getVolume().createVolume(dataCenterId, volume);
         assertNotNull(newVolume);

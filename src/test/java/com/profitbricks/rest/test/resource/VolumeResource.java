@@ -48,7 +48,7 @@ public class VolumeResource {
         if (volume == null) {
             volume = new Volume();
             volume.getProperties().setName("Java SDK Test");
-            volume.getProperties().setSize(2);
+            volume.getProperties().setSize(12);
             volume.getProperties().setBus(Bus.VIRTIO);
             volume.getProperties().setType("HDD");
             volume.getProperties().setAvailabilityZone(AvailabilityZone.ZONE_1);

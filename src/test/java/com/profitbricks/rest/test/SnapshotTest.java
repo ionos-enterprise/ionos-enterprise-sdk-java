@@ -77,7 +77,7 @@ public class SnapshotTest {
     public static String getImageId() throws RestClientException, IOException {
         Images images = profitbricksApi.getImage().getAllImages();
         for (Image image : images.getItems()) {
-            if (image.getProperties().getName().toLowerCase().contains("ubuntu-16".toLowerCase()) && image.getProperties().getLocation().equals("us/las")
+            if (image.getProperties().getName().toLowerCase().contains("ubuntu".toLowerCase()) && image.getProperties().getLocation().equals("us/las")
                     && image.getProperties().getIsPublic() && image.getProperties().getImageType().equals("HDD")) {
                 return image.getId();
             }
