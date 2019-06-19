@@ -29,6 +29,8 @@
  */
 package com.ionosenterprise.rest.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +56,7 @@ import java.util.List;
          this.properties = properties;
      }
 
-     //@JsonIgnoreProperties(ignoreUnknown = true)
+     @JsonIgnoreProperties(ignoreUnknown = true)
      public static class Properties {
 
          private List<String> ips;

@@ -96,7 +96,7 @@ public class Contract extends BaseResource {
         }
     }
 
-
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ResourceLimits {
         private Integer coresPerContract;
         private Integer coresPerServer;

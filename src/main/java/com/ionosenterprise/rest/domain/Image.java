@@ -29,6 +29,7 @@
  */
 package com.ionosenterprise.rest.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -37,7 +38,6 @@ import java.util.List;
  *
  * @author jasmin@stackpointcloud.com
  */
-//@JsonIgnoreProperties(ignoreUnknown = true)
 public class Image extends BaseResource {
 
    private Properties properties = new Properties();
@@ -56,6 +56,7 @@ public class Image extends BaseResource {
       this.properties = properties;
    }
 
+   @JsonIgnoreProperties(ignoreUnknown = true)
    public static class Properties {
 
       private String name;

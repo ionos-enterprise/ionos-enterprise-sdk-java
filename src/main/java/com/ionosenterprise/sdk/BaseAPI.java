@@ -48,7 +48,7 @@ public abstract class BaseAPI {
     public String depth = "?depth=".concat("5");
 
     private String credentials;
-    private String urlBase = "https://api.profitbricks.com/cloudapi/v5/";
+    private String urlBase = "https://api.ionos.com/cloudapi/v5/";
 
     public BaseAPI(String resource, String parentResource) throws Exception {
         this.resource = resource;
