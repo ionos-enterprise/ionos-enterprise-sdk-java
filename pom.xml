@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.profitbricks.rest.client</groupId>
-    <artifactId>profitbricks-sdk-java</artifactId>
+    <groupId>com.ionosenterprise.rest.client</groupId>
+    <artifactId>ionos-enterprise-sdk-java</artifactId>
     <packaging>jar</packaging>
-    <version>4.1.1-SNAPSHOT</version>
-    <name>profitbricks-sdk-java</name>
-    <url>https://github.com/profitbricks/profitbricks-sdk-java</url>
+    <version>5.0.0-SNAPSHOT</version>
+    <name>ionos-enterprise-sdk-java</name>
+    <url>https://github.com/ionos-enterprise/ionos-enterprise-sdk-java</url>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -46,4 +46,21 @@
             <version>4.5.8</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
