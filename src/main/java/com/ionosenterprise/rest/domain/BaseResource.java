@@ -130,8 +130,10 @@ public class BaseResource {
 
       private Date lastModifiedDate;
       private String lastModifiedBy;
+      private String lastModifiedByUserId;
       private Date createdDate;
       private String createdBy;
+      private String createdByUserId;
       private State state;
       private String etag;
 
@@ -219,6 +221,37 @@ public class BaseResource {
          this.etag = etag;
       }
 
+      /**
+       *
+       * @return the lastModifiedByUserId
+       */
+      public String getLastModifiedByUserId() {
+         return lastModifiedByUserId;
+      }
+
+      /**
+       *
+       * @param lastModifiedByUserId the lastModifiedByUserId to be set
+       */
+      public void setLastModifiedByUserId(String lastModifiedByUserId) {
+         this.lastModifiedByUserId = lastModifiedByUserId;
+      }
+
+      /**
+       *
+       * @return the createdByUserId
+       */
+      public String getCreatedByUserId() {
+         return createdByUserId;
+      }
+
+      /**
+       *
+       * @param createdByUserId the createdByUserId to be set
+       */
+      public void setCreatedByUserId(String createdByUserId) {
+         this.createdByUserId = createdByUserId;
+      }
    }
 }
 
