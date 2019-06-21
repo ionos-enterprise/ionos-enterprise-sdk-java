@@ -30,6 +30,7 @@
 package com.ionosenterprise.rest.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,11 +58,12 @@ import java.util.List;
      }
 
      @JsonIgnoreProperties(ignoreUnknown = true)
+     @JsonInclude(JsonInclude.Include.NON_NULL)
      public static class Properties {
 
          private List<String> ips;
          private String location;
-         private int size;
+         private Integer size;
          private String name;
 
          /**
@@ -98,14 +100,14 @@ import java.util.List;
          /**
           * @return the size
           */
-         public int getSize() {
+         public Integer getSize() {
              return size;
          }
 
          /**
           * @param size the size to set
           */
-         public void setSize(int size) {
+         public void setSize(Integer size) {
              this.size = size;
          }
 

@@ -62,7 +62,8 @@ public class IPBlock extends BaseAPI {
      * @return IPBlock object with properties and metadata.
      */
    public com.ionosenterprise.rest.domain.IPBlock getIPBlock(String ipBlockId) throws RestClientException, IOException {
-      return client.get(getUrlBase().concat(resource).concat("/").concat(ipBlockId).concat(depth), null, com.ionosenterprise.rest.domain.IPBlock.class);
+      return client.get(getUrlBase().concat(resource).concat("/").concat(ipBlockId).concat(depth), null,
+              com.ionosenterprise.rest.domain.IPBlock.class);
    }
 
    /**
@@ -82,8 +83,11 @@ public class IPBlock extends BaseAPI {
      * <br>
      * @return IPBlock object with properties and metadata.
      */
-   public com.ionosenterprise.rest.domain.IPBlock createIPBlock(com.ionosenterprise.rest.domain.IPBlock ipBlock) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      return client.create(getUrlBase().concat(resource), ipBlock, com.ionosenterprise.rest.domain.IPBlock.class, 202);
+   public com.ionosenterprise.rest.domain.IPBlock createIPBlock(com.ionosenterprise.rest.domain.IPBlock ipBlock)
+           throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+           IllegalArgumentException, InvocationTargetException {
+      return client.create(getUrlBase().concat(resource), ipBlock,
+              com.ionosenterprise.rest.domain.IPBlock.class, 202);
    }
 
     /**
@@ -93,5 +97,24 @@ public class IPBlock extends BaseAPI {
      */
    public void deleteIPBlock(String ipBlockId) throws RestClientException, IOException {
       client.delete(getUrlBase().concat(resource).concat("/").concat(ipBlockId), 202);
+   }
+
+   /**
+    * Update the name of a an IP block.
+    *
+    * @param ipBlock object has the following properties:
+    * <br>
+    * <br>
+    * name = A descriptive name for the IP block
+    * <br>
+    * <br>
+    * @return IPBlock object with properties and metadata.
+    */
+   public com.ionosenterprise.rest.domain.IPBlock updateIPBlock(String ipBlockId,
+                                                                com.ionosenterprise.rest.domain.IPBlock.Properties ipBlock)
+           throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+           IllegalArgumentException, InvocationTargetException {
+      return client.update(getUrlBase().concat(resource).concat("/").concat(ipBlockId), ipBlock,
+              com.ionosenterprise.rest.domain.IPBlock.class, 202);
    }
 }

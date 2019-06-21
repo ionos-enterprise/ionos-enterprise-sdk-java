@@ -65,9 +65,12 @@ public class IPBlockTest {
     static String ipBlockId;
 
     @BeforeClass
-    public static void setUp() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static void setUp() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
 
-        ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
+        ionosEnterpriseApi.setCredentials(
+                System.getenv("IONOS_ENTERPRISE_USERNAME"),
+                System.getenv("IONOS_ENTERPRISE_PASSWORD"));
 
         IPBlock iPBlock = ionosEnterpriseApi.getIpBlock().createIPBlock(IpBlockResource.getIpBlock());
         assertNotNull(iPBlock);
@@ -95,19 +98,28 @@ public class IPBlockTest {
     @Test
     public void t3_getIpBlockFail() throws RestClientException, IOException {
         try {
-            IPBlock iPBlock = ionosEnterpriseApi.getIpBlock().getIPBlock(CommonResource.getBadId());
+            ionosEnterpriseApi.getIpBlock().getIPBlock(CommonResource.getBadId());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
     }
 
     @Test
-    public void t4_createIpBlockFail() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+    public void t4_createIpBlockFail() throws IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
         try {
-            IPBlock iPBlock = ionosEnterpriseApi.getIpBlock().createIPBlock(IpBlockResource.geBadtIpBlock());
+            ionosEnterpriseApi.getIpBlock().createIPBlock(IpBlockResource.getBadtIpBlock());
         }catch (RestClientException ex){
             assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
         }
+    }
+
+    @Test
+    public void t5_updateIpBlock() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException,
+            RestClientException, IOException {
+        IPBlock ipBlock = ionosEnterpriseApi.getIpBlock().updateIPBlock(
+                ipBlockId, IpBlockResource.getEditIpBlock().getProperties());
+        assertEquals(ipBlock.getProperties().getName(), IpBlockResource.getEditIpBlock().getProperties().getName());
     }
 
     @AfterClass

@@ -38,6 +38,7 @@ import com.ionosenterprise.rest.domain.IPBlock;
 public class IpBlockResource {
     private static IPBlock ipBlock;
     private static IPBlock ipBadBlock;
+    private static IPBlock ipEditBlock;
 
     public static IPBlock getIpBlock() {
         if (ipBlock == null) {
@@ -49,12 +50,20 @@ public class IpBlockResource {
         return ipBlock;
     }
 
-    public static IPBlock geBadtIpBlock() {
+    public static IPBlock getBadtIpBlock() {
         if (ipBadBlock == null) {
             ipBadBlock = new IPBlock();
             ipBadBlock.getProperties().setName("Java SDK Test");
             ipBadBlock.getProperties().setSize(2);
         }
         return ipBadBlock;
+    }
+
+    public static IPBlock getEditIpBlock() {
+        if (ipEditBlock == null) {
+            ipEditBlock = new IPBlock();
+            ipEditBlock.getProperties().setName("Java SDK Test - RENAME");
+        }
+        return ipEditBlock;
     }
 }
