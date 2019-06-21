@@ -52,15 +52,19 @@ public class ResourceTest {
         waitTillProvisioned(newVolume.getRequestId());
         volumeId = newVolume.getId();
 
-        //Create a snapshot
-        Snapshot snapshot = ionosEnterpriseApi.getSnapshot().createSnapshot(dataCenterId, volumeId, SnapshotResource.getSnapshot().getProperties().getName(), SnapshotResource.getSnapshot().getProperties().getDescription());
-        snapshotId = snapshot.getId();
+        Snapshot snapshot = SnapshotResource.getSnapshot();
+        Snapshot newSnapshot = ionosEnterpriseApi.getSnapshot().createSnapshot(dataCenterId, volumeId,
+                snapshot.getProperties().getName(),
+                snapshot.getProperties().getDescription(),
+                snapshot.getProperties().getLicenceType().name());
+        assertNotNull(newSnapshot);
 
-        waitTillProvisioned(snapshot.getRequestId());
+        snapshotId = newSnapshot.getId();
+
+        waitTillProvisioned(newSnapshot.getRequestId());
 
         //Create an IP Block
         IPBlock iPBlock = ionosEnterpriseApi.getIpBlock().createIPBlock(IpBlockResource.getIpBlock());
-
         assertNotNull(iPBlock);
 
         ipBlockId = iPBlock.getId();

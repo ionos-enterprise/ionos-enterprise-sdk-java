@@ -77,7 +77,8 @@ public class SnapshotTest {
     public static String getImageId() throws RestClientException, IOException {
         Images images = ionosEnterpriseApi.getImage().getAllImages();
         for (Image image : images.getItems()) {
-            if (image.getProperties().getName().toLowerCase().contains("ubuntu".toLowerCase()) && image.getProperties().getLocation().equals("us/las")
+            if (image.getProperties().getName().toLowerCase().contains("ubuntu".toLowerCase())
+                    && image.getProperties().getLocation().equals("us/las")
                     && image.getProperties().getIsPublic() && image.getProperties().getImageType().equals("HDD")) {
                 return image.getId();
             }
@@ -86,11 +87,14 @@ public class SnapshotTest {
     }
 
     @BeforeClass
-    public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+    public static void setUp() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException,
+            RestClientException, IOException, InterruptedException {
 
-        ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
+        ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"),
+                System.getenv("IONOS_ENTERPRISE_PASSWORD"));
 
-        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
+        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(
+                DataCenterResource.getDataCenter());
         dataCenterId = newDatacenter.getId();
 
         Volume volume = VolumeResource.getVolume();
@@ -102,11 +106,19 @@ public class SnapshotTest {
 
         waitTillProvisioned(newVolume.getRequestId());
 
-        Snapshot snapshot = ionosEnterpriseApi.getSnapshot().createSnapshot(dataCenterId, volumeId, SnapshotResource.getSnapshot().getProperties().getName(), SnapshotResource.getSnapshot().getProperties().getDescription());
-        snapshotId = snapshot.getId();
-        waitTillProvisioned(snapshot.getRequestId());
-        assertEquals(snapshot.getProperties().getName(), SnapshotResource.getSnapshot().getProperties().getName());
-        assertEquals(snapshot.getProperties().getDescription(), SnapshotResource.getSnapshot().getProperties().getDescription());
+        Snapshot snapshot = SnapshotResource.getSnapshot();
+        Snapshot newSnapshot = ionosEnterpriseApi.getSnapshot().createSnapshot(dataCenterId, volumeId,
+                snapshot.getProperties().getName(),
+                snapshot.getProperties().getDescription(),
+                snapshot.getProperties().getLicenceType().name());
+        assertNotNull(newSnapshot);
+
+        snapshotId = newSnapshot.getId();
+
+        waitTillProvisioned(newSnapshot.getRequestId());
+        assertEquals(newSnapshot.getProperties().getName(), snapshot.getProperties().getName());
+        assertEquals(newSnapshot.getProperties().getDescription(), snapshot.getProperties().getDescription());
+        assertEquals(newSnapshot.getProperties().getLicenceType(), snapshot.getProperties().getLicenceType());
     }
 
     @Test
@@ -114,7 +126,8 @@ public class SnapshotTest {
         Snapshot snapshot = ionosEnterpriseApi.getSnapshot().getSnapshot(snapshotId);
         assertNotNull(snapshot);
         assertEquals(snapshot.getProperties().getName(), SnapshotResource.getSnapshot().getProperties().getName());
-        assertEquals(snapshot.getProperties().getDescription(), SnapshotResource.getSnapshot().getProperties().getDescription());
+        assertEquals(snapshot.getProperties().getDescription(),
+                SnapshotResource.getSnapshot().getProperties().getDescription());
     }
 
     @Test
@@ -130,26 +143,34 @@ public class SnapshotTest {
     }
 
     @Test
-    public void t4_updateSnapshot() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InterruptedException {
-        Snapshot snapshot = ionosEnterpriseApi.getSnapshot().updateSnapshot(dataCenterId, snapshotId, SnapshotResource.getEditSnapshot().getProperties());
+    public void t4_updateSnapshot() throws RestClientException, IOException, NoSuchMethodException,
+            IllegalAccessException, IllegalArgumentException, InvocationTargetException, InterruptedException {
+        Snapshot snapshot = ionosEnterpriseApi.getSnapshot().updateSnapshot(dataCenterId, snapshotId,
+                SnapshotResource.getEditSnapshot().getProperties());
         waitTillProvisioned(snapshot.getRequestId());
         assertEquals(snapshot.getProperties().getName(), SnapshotResource.getEditSnapshot().getProperties().getName());
-        assertEquals(snapshot.getProperties().getDescription(), SnapshotResource.getEditSnapshot().getProperties().getDescription());
+        assertEquals(snapshot.getProperties().getDescription(),
+                SnapshotResource.getEditSnapshot().getProperties().getDescription());
     }
 
     @Test
-    public void t5_getSnapshotFail() throws RestClientException, IOException {
+    public void t5_getSnapshotFail() throws IOException {
         try {
-            Snapshot snapshot = ionosEnterpriseApi.getSnapshot().getSnapshot(CommonResource.getBadId());
+            ionosEnterpriseApi.getSnapshot().getSnapshot(CommonResource.getBadId());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
     }
 
     @Test
-    public void t6_createSnapshotFail() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+    public void t6_createSnapshotWithEmptyNameFail() throws IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
         try {
-            Snapshot snapshot = ionosEnterpriseApi.getSnapshot().createSnapshot(dataCenterId, volumeId, "", "");
+            Snapshot snapshot = SnapshotResource.getSnapshot();
+            ionosEnterpriseApi.getSnapshot().createSnapshot(dataCenterId, volumeId,
+                    "",
+                    snapshot.getProperties().getDescription(),
+                    snapshot.getProperties().getLicenceType().name());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
         }
