@@ -53,61 +53,33 @@ import org.junit.runners.MethodSorters;
  * @author jasmin@stackpointcloud.com
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class VolumeTest {
+public class VolumeTest extends BaseTest {
 
-    static IonosEnterpriseApi ionosEnterpriseApi;
-
-    static {
-        try {
-            ionosEnterpriseApi = new IonosEnterpriseApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    static String dataCenterId;
-    static String serverId;
-    static String volumeId;
+    private static String dataCenterId;
+    private static String serverId;
+    private static String volumeId;
 
     @BeforeClass
-    public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
+    public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 
-        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
-        waitTillProvisioned(newDatacenter.getRequestId());
+        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(
+                DataCenterResource.getDataCenter());
+        assertNotNull(newDatacenter);
         dataCenterId = newDatacenter.getId();
+        waitTillProvisioned(newDatacenter.getRequestId());
 
         Server newServer = ionosEnterpriseApi.getServer().createServer(dataCenterId, ServerResource.getServer());
         assertNotNull(newServer);
-        waitTillProvisioned(newServer.getRequestId());
         serverId = newServer.getId();
+        waitTillProvisioned(newServer.getRequestId());
 
         Volume volume = VolumeResource.getVolume();
         volume.getProperties().setImage(getImageId());
         Volume newVolume = ionosEnterpriseApi.getVolume().createVolume(dataCenterId, volume);
         assertNotNull(newVolume);
-        waitTillProvisioned(newVolume.getRequestId());
-
         volumeId = newVolume.getId();
-
-    }
-
-    public static String getImageId() throws RestClientException, IOException {
-        Images images = ionosEnterpriseApi.getImage().getAllImages();
-        for (Image image : images.getItems()) {
-            if (image.getProperties().getName().toLowerCase().contains("ubuntu".toLowerCase()) && image.getProperties().getLocation().equals("us/las")
-                    && image.getProperties().getIsPublic() && image.getProperties().getImageType().equals("HDD")) {
-                return image.getId();
-            }
-        }
-        return "";
-    }
-
-    @AfterClass
-    public static void cleanUp() throws RestClientException, IOException {
-        ionosEnterpriseApi.getVolume().deleteVolume(dataCenterId, volumeId);
-        ionosEnterpriseApi.getServer().deleteServer(dataCenterId, serverId);
-        ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
+        waitTillProvisioned(newVolume.getRequestId());
     }
 
     @Test
@@ -121,27 +93,30 @@ public class VolumeTest {
     public void t2_testGetVolume() throws RestClientException, IOException, InterruptedException {
         Volume volume = ionosEnterpriseApi.getVolume().getVolume(dataCenterId, volumeId);
         assertNotNull(volume);
-        assertEquals(volume.getProperties().getName(), VolumeResource.getVolume().getProperties().getName());
-        assertEquals(volume.getProperties().getSize(), VolumeResource.getVolume().getProperties().getSize());
-        assertEquals(volume.getProperties().getType(), VolumeResource.getVolume().getProperties().getType());
-        assertEquals(volume.getProperties().getAvailabilityZone(), VolumeResource.getVolume().getProperties().getAvailabilityZone());
+        Volume.Properties properties = VolumeResource.getVolume().getProperties();
+        assertEquals(volume.getProperties().getName(), properties.getName());
+        assertEquals(volume.getProperties().getSize(), properties.getSize());
+        assertEquals(volume.getProperties().getType(), properties.getType());
+        assertEquals(volume.getProperties().getAvailabilityZone(), properties.getAvailabilityZone());
     }
 
     @Test
-    public void t3_testUpdateVolume() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, RestClientException, IOException {
+    public void t3_testUpdateVolume() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException,
+            RestClientException, IOException {
 
-        Volume after = ionosEnterpriseApi.getVolume().updateVolume(dataCenterId, volumeId, VolumeResource.getEditVolume().getProperties());
-
-        assertEquals(after.getProperties().getName(), VolumeResource.getEditVolume().getProperties().getName());
-        assertEquals(after.getProperties().getSize(), VolumeResource.getEditVolume().getProperties().getSize());
+        Volume.Properties properties = VolumeResource.getEditVolume().getProperties();
+        Volume after = ionosEnterpriseApi.getVolume().updateVolume(dataCenterId, volumeId, properties);
+        assertEquals(after.getProperties().getName(), properties.getName());
+        assertEquals(after.getProperties().getSize(), properties.getSize());
     }
 
     @Test
-    public void t4_testAttachVolume() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public void t4_testAttachVolume() throws RestClientException, IOException, InterruptedException,
+            NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
         Volume attachedVolume = ionosEnterpriseApi.getVolume().attachVolume(dataCenterId, serverId, volumeId);
         assertNotNull(attachedVolume);
         waitTillProvisioned(attachedVolume.getRequestId());
-
     }
 
     @Test
@@ -151,26 +126,32 @@ public class VolumeTest {
     }
 
     @Test
-    public void t6_testDetachVolume() throws RestClientException, IOException, InterruptedException {
+    public void t6_testDetachVolume() throws RestClientException, IOException {
         ionosEnterpriseApi.getVolume().detachVolume(dataCenterId, serverId, volumeId);
     }
 
     @Test
-    public void t7_testFailVolumeCreate() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, IOException {
-        try {
+    public void t7_testFailVolumeCreate() throws InvocationTargetException, NoSuchMethodException,
+            IllegalAccessException, IOException {
 
-            Volume newVolume = ionosEnterpriseApi.getVolume().createVolume(dataCenterId, VolumeResource.getBadVolume());
+        try {
+            ionosEnterpriseApi.getVolume().createVolume(dataCenterId, VolumeResource.getBadVolume());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
         }
     }
 
     @Test
-    public void t8_testGetFailVolume() throws RestClientException, IOException, InterruptedException {
+    public void t8_testGetFailVolume() throws IOException {
         try {
-            Volume volume = ionosEnterpriseApi.getVolume().getVolume(dataCenterId, CommonResource.getBadId());
+            ionosEnterpriseApi.getVolume().getVolume(dataCenterId, CommonResource.getBadId());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
+    }
+
+    @AfterClass
+    public static void cleanUp() throws RestClientException, IOException {
+        ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
     }
 }

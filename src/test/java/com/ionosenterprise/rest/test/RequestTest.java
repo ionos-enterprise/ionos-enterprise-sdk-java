@@ -49,26 +49,18 @@ import org.junit.Test;
 /**
  * @author jasmin@stackpointcloud.com
  */
-public class RequestTest {
+public class RequestTest extends BaseTest {
 
-    static IonosEnterpriseApi ionosEnterpriseApi;
-    static String requestId;
-
-    static {
-        try {
-            ionosEnterpriseApi = new IonosEnterpriseApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+    private static String requestId;
     private static String dataCenterId;
 
     @BeforeClass
-    public static void setUp() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
+    public static void setUp() throws RestClientException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 
-        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
+        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(
+                DataCenterResource.getDataCenter());
+        assertNotNull(newDatacenter);
         requestId = newDatacenter.getRequestId();
         dataCenterId = newDatacenter.getId();
     }
@@ -94,9 +86,9 @@ public class RequestTest {
     }
 
     @Test
-    public void getRequestFail() throws RestClientException, IOException {
+    public void getRequestFail() throws IOException {
         try{
-        Request request = ionosEnterpriseApi.getRequest().getRequest(CommonResource.getBadId());
+            ionosEnterpriseApi.getRequest().getRequest(CommonResource.getBadId());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }

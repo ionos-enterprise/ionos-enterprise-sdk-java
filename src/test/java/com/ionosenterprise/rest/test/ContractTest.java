@@ -31,31 +31,21 @@ package com.ionosenterprise.rest.test;
 
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Contract;
-import com.ionosenterprise.sdk.IonosEnterpriseApi;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+
 import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
 
 /**
  *
  * @author denis@stackpointcloud.com
  */
-public class ContractTest {
-    static IonosEnterpriseApi ionosEnterpriseApi;
-
-    static {
-        try {
-            ionosEnterpriseApi = new IonosEnterpriseApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+public class ContractTest extends BaseTest {
 
     @Test
     public void testGetContract() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
-        ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
-
         Contract contract = ionosEnterpriseApi.getContract().getContract();
         assertNotNull(contract);
     }
