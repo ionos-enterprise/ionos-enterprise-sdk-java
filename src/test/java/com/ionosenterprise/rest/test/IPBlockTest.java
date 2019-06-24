@@ -30,17 +30,23 @@
 package com.ionosenterprise.rest.test;
 
 import com.ionosenterprise.rest.client.RestClientException;
-import com.ionosenterprise.rest.domain.IPBlock;
-import com.ionosenterprise.rest.domain.IPBlocks;
+import com.ionosenterprise.rest.domain.*;
 import com.ionosenterprise.rest.test.resource.CommonResource;
+import com.ionosenterprise.rest.test.resource.DataCenterResource;
 import com.ionosenterprise.rest.test.resource.IpBlockResource;
 import com.ionosenterprise.sdk.IonosEnterpriseApi;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.TimeUnit;
+
 import org.junit.AfterClass;
+
+import static com.ionosenterprise.rest.test.DatacenterTest.waitTillProvisioned;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -63,6 +69,7 @@ public class IPBlockTest {
     }
 
     static String ipBlockId;
+    static String dataCenterId;
 
     @BeforeClass
     public static void setUp() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -104,14 +111,71 @@ public class IPBlockTest {
     @Test
     public void t4_createIpBlockFail() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
         try {
-            IPBlock iPBlock = ionosEnterpriseApi.getIpBlock().createIPBlock(IpBlockResource.geBadtIpBlock());
+            ionosEnterpriseApi.getIpBlock().createIPBlock(IpBlockResource.geBadtIpBlock());
         }catch (RestClientException ex){
             assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
         }
     }
 
+    @Test
+    public void t5_testIpBlockConsumerDetails() throws InvocationTargetException, NoSuchMethodException,
+            IllegalAccessException, RestClientException, IOException, InterruptedException {
+        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(
+                DataCenterResource.getDataCenter());
+        assertNotNull(newDatacenter);
+        waitTillProvisioned(newDatacenter.getRequestId());
+        dataCenterId = newDatacenter.getId();
+
+        Server server = new Server();
+        server.getProperties().setName("SDK TEST SERVER");
+        server.getProperties().setRam(1024);
+        server.getProperties().setCores(1);
+        Server newServer = ionosEnterpriseApi.getServer().createServer(dataCenterId, server);
+        assertNotNull(newServer);
+        waitTillProvisioned(newServer.getRequestId());
+        String serverId = newServer.getId();
+
+        Lan lan = new Lan();
+        lan.getProperties().setName("SDK TEST Lan");
+        lan.getProperties().setIsPublic(true);
+        Lan newLan = ionosEnterpriseApi.getLan().createLan(dataCenterId, lan);
+        assertNotNull(newLan);
+        waitTillProvisioned(newLan.getRequestId());
+        String lanId = newLan.getId();
+
+        IPBlock iPBlock = ionosEnterpriseApi.getIpBlock().getIPBlock(ipBlockId);
+        assertNotNull(iPBlock);
+
+        Nic nic = new Nic();
+        nic.getProperties().setName("SDK TEST NIC");
+        nic.getProperties().setLan(lanId);
+        nic.getProperties().setNat(Boolean.FALSE);
+        nic.getProperties().setIps(iPBlock.getProperties().getIps());
+        nic.getEntities().setFirewallrules(null);
+        Nic newNic = ionosEnterpriseApi.getNic().createNic(dataCenterId, serverId, nic);
+        assertNotNull(newNic);
+        waitTillProvisioned(newNic.getRequestId());
+
+        IPBlock iPBlockWithConsumerDetails = ionosEnterpriseApi.getIpBlock().getIPBlock(ipBlockId);
+        assertNotNull(iPBlockWithConsumerDetails);
+        assertEquals(
+                iPBlockWithConsumerDetails.getProperties().getIpConsumers().size(),
+                iPBlock.getProperties().getIps().size());
+        assertTrue(iPBlock.getProperties().getIps()
+                .contains(iPBlockWithConsumerDetails.getProperties().getIpConsumers().get(0).getIp()));
+        assertTrue(iPBlock.getProperties().getIps()
+                .contains(iPBlockWithConsumerDetails.getProperties().getIpConsumers().get(1).getIp()));
+    }
+
     @AfterClass
     public static void cleanUp() throws RestClientException, IOException {
+        ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
+
+        try {
+            TimeUnit.MINUTES.sleep(1);
+        }
+        catch (Exception ex) {}
+
         ionosEnterpriseApi.getIpBlock().deleteIPBlock(ipBlockId);
     }
 }
