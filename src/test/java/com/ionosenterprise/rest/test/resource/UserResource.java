@@ -37,7 +37,6 @@ import com.ionosenterprise.rest.domain.User;
  */
 public class UserResource {
     private static User user;
-    private static User badUser;
     private static User editUser;
 
     public static User getUser() {
@@ -46,6 +45,7 @@ public class UserResource {
             user.getProperties().setFirstname("John");
             user.getProperties().setLastname("Doe");
             user.getProperties().setPassword("secretpassword123");
+            user.getProperties().setEmail("no-reply" + System.currentTimeMillis() + "@example.com");
             user.getProperties().setAdministrator(true);
         }
 
@@ -57,6 +57,7 @@ public class UserResource {
             editUser = new User();
             editUser.getProperties().setFirstname("Jane");
             editUser.getProperties().setLastname("Doe");
+            editUser.getProperties().setEmail("no-reply" + System.currentTimeMillis() + ".edit@example.com");
             editUser.getProperties().setAdministrator(false);
             editUser.getProperties().setForceSecAuth(false);
         }

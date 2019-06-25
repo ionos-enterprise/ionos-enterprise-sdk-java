@@ -51,4 +51,20 @@ public abstract class BaseTest {
         }
         return "";
     }
+
+    protected static void setIonosEnterpriseApiCredentials(String username, String password) throws Exception {
+        if (ionosEnterpriseApi == null){
+            ionosEnterpriseApi = new IonosEnterpriseApi();
+        }
+        ionosEnterpriseApi.setCredentials(username, password);
+    }
+
+    protected static void resetIonosEnterpriseApiCredentials() throws Exception {
+        if (ionosEnterpriseApi == null){
+            ionosEnterpriseApi = new IonosEnterpriseApi();
+        }
+        ionosEnterpriseApi.setCredentials(
+                System.getenv("IONOS_ENTERPRISE_USERNAME"),
+                System.getenv("IONOS_ENTERPRISE_PASSWORD"));
+    }
 }

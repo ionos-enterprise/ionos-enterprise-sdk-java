@@ -61,16 +61,11 @@ import static org.junit.Assert.assertTrue;
 public class UserTest extends BaseTest {
 
     private static String userId;
-    private static String email;
-    private static String email1;
     private static String groupId;
 
     @BeforeClass
     public static void t1_createUser() throws RestClientException, IOException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
-
-        email = "no-reply" + System.currentTimeMillis() + "@example.com";
-        email1 = "no-reply"+ (System.currentTimeMillis()+1) +"@example.com";
 
         Group newGroup = ionosEnterpriseApi.getGroup().createGroup(GroupResource.getGroup());
         assertNotNull(newGroup);
@@ -78,8 +73,6 @@ public class UserTest extends BaseTest {
         waitTillProvisioned(newGroup.getRequestId());
 
         User user = UserResource.getUser();
-        user.getProperties().setEmail(email);
-
         User newUser = ionosEnterpriseApi.getUser().createUser(user);
         assertNotNull(newUser);
         userId = newUser.getId();
@@ -113,12 +106,11 @@ public class UserTest extends BaseTest {
     public void t5_updateUser() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
         User user = UserResource.getEditUser();
-        user.getProperties().setEmail(email1);
 
         User updateUser = ionosEnterpriseApi.getUser().updateUser(userId, user.getProperties());
         assertEquals(updateUser.getProperties().getFirstname(), user.getProperties().getFirstname());
         assertEquals(updateUser.getProperties().getLastname(), user.getProperties().getLastname());
-        assertEquals(updateUser.getProperties().getEmail(), email1);
+        assertEquals(updateUser.getProperties().getEmail(), user.getProperties().getEmail());
         assertEquals(updateUser.getProperties().getAdministrator(), user.getProperties().getAdministrator());
         assertEquals(updateUser.getProperties().getForceSecAuth(), user.getProperties().getForceSecAuth());
     }

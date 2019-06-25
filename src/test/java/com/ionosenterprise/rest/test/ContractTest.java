@@ -31,11 +31,13 @@ package com.ionosenterprise.rest.test;
 
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Contract;
+import com.ionosenterprise.rest.domain.User;
+import com.ionosenterprise.rest.test.resource.UserResource;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -45,8 +47,45 @@ import static org.junit.Assert.assertNotNull;
 public class ContractTest extends BaseTest {
 
     @Test
-    public void testGetContract() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+    public void testGetContract() throws RestClientException, IOException, IllegalArgumentException {
         Contract contract = ionosEnterpriseApi.getContract().getContract();
         assertNotNull(contract);
+    }
+
+    @Test
+    public void testContractDetailsForNonAdminUser() throws Exception {
+        Contract contractAsOwner = ionosEnterpriseApi.getContract().getContract();
+        assertNotNull(contractAsOwner);
+        assertNotNull(contractAsOwner.getProperties());
+        assertNotNull(contractAsOwner.getProperties().getResourceLimits());
+        assertNotNull(contractAsOwner.getProperties().getResourceLimits().getCoresPerServer());
+        assertNotNull(contractAsOwner.getProperties().getResourceLimits().getRamPerServer());
+
+
+        User user = UserResource.getUser();
+        user.getProperties().setAdministrator(false);
+        User newUser = ionosEnterpriseApi.getUser().createUser(user);
+        assertNotNull(newUser);
+        waitTillProvisioned(newUser.getRequestId());
+
+        setIonosEnterpriseApiCredentials(user.getProperties().getEmail(), user.getProperties().getPassword());
+
+        Contract contractAsNonAdminUser = ionosEnterpriseApi.getContract().getContract();
+        assertNotNull(contractAsNonAdminUser);
+        assertNotNull(contractAsNonAdminUser.getProperties());
+        assertNotNull(contractAsNonAdminUser.getProperties().getResourceLimits());
+        assertNotNull(contractAsNonAdminUser.getProperties().getResourceLimits().getCoresPerContract());
+        assertEquals(
+                contractAsNonAdminUser.getProperties().getResourceLimits().getCoresPerServer(),
+                contractAsOwner.getProperties().getResourceLimits().getCoresPerServer()
+        );
+        assertNotNull(contractAsNonAdminUser.getProperties().getResourceLimits().getRamPerContract());
+        assertEquals(
+                contractAsNonAdminUser.getProperties().getResourceLimits().getRamPerServer(),
+                contractAsOwner.getProperties().getResourceLimits().getRamPerServer()
+        );
+
+        resetIonosEnterpriseApiCredentials();
+        ionosEnterpriseApi.getUser().deleteUser(newUser.getId());
     }
 }
