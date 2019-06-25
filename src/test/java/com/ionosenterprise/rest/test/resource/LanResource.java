@@ -37,7 +37,6 @@ import com.ionosenterprise.rest.domain.Lan;
  */
 public class LanResource {
     private static Lan lan;
-    private static Lan badLan;
     private static Lan editLan;
 
     public static Lan getLan() {
@@ -50,18 +49,11 @@ public class LanResource {
     }
 
     public static Lan getEditLan() {
-        if (lan == null) {
-            lan = new Lan();
-            lan.getProperties().setName("Java SDK Test - RENAME");
-            lan.getProperties().setIsPublic(false);
+        if (editLan == null) {
+            editLan = new Lan();
+            editLan.getProperties().setName("Java SDK Test - RENAME");
+            editLan.getProperties().setIsPublic(false);
         }
-        return lan;
-    }
-
-    public static Lan getBadLan() {
-        if (lan == null) {
-            lan = new Lan();
-        }
-        return lan;
+        return editLan;
     }
 }

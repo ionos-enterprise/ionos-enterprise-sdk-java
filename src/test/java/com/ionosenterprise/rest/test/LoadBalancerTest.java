@@ -54,47 +54,41 @@ import org.junit.runners.MethodSorters;
  * @author jasmin@stackpointcloud.com
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class LoadBalancerTest {
+public class LoadBalancerTest extends BaseTest {
 
-    static IonosEnterpriseApi ionosEnterpriseApi;
-
-    static {
-        try {
-            ionosEnterpriseApi = new IonosEnterpriseApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    static String dataCenterId;
-    static String loadBalancerId;
-    static String serverId;
-    static String nicId;
+    private static String dataCenterId;
+    private static String loadBalancerId;
+    private static String serverId;
+    private static String nicId;
 
     @BeforeClass
-    public static void setUp() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
-        ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
+    public static void setUp() throws RestClientException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
 
-        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
+        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(
+                DataCenterResource.getDataCenter());
+        assertNotNull(newDatacenter);
         dataCenterId = newDatacenter.getId();
         waitTillProvisioned(newDatacenter.getRequestId());
 
-        LoadBalancer newLoadBalancer = ionosEnterpriseApi.getLoadbalancer().createLoadBalancer(dataCenterId, LoadBalancerResource.getLoadBalancer());
+        LoadBalancer loadBalancer = LoadBalancerResource.getLoadBalancer();
+        LoadBalancer newLoadBalancer = ionosEnterpriseApi.getLoadbalancer().createLoadBalancer(dataCenterId,
+                loadBalancer);
         assertNotNull(newLoadBalancer);
-        waitTillProvisioned(newLoadBalancer.getRequestId());
+        assertEquals(newLoadBalancer.getProperties().getName(), loadBalancer.getProperties().getName());
+        assertEquals(newLoadBalancer.getProperties().getIp(), loadBalancer.getProperties().getIp());
         loadBalancerId = newLoadBalancer.getId();
-        assertEquals(newLoadBalancer.getProperties().getName(), LoadBalancerResource.getLoadBalancer().getProperties().getName());
-        assertEquals(newLoadBalancer.getProperties().getIp(), LoadBalancerResource.getLoadBalancer().getProperties().getIp());
+        waitTillProvisioned(newLoadBalancer.getRequestId());
 
         Server newServer = ionosEnterpriseApi.getServer().createServer(dataCenterId, ServerResource.getServer());
         assertNotNull(newServer);
-        waitTillProvisioned(newServer.getRequestId());
         serverId = newServer.getId();
+        waitTillProvisioned(newServer.getRequestId());
 
         Nic newNic = ionosEnterpriseApi.getNic().createNic(dataCenterId, serverId, NicResource.getNic());
-        waitTillProvisioned(newNic.getRequestId());
         assertNotNull(newNic);
         nicId = newNic.getId();
+        waitTillProvisioned(newNic.getRequestId());
     }
 
     @Test
@@ -111,14 +105,20 @@ public class LoadBalancerTest {
     }
 
     @Test
-    public void t3_updateLoadBalancer() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        LoadBalancer loadBalancer = ionosEnterpriseApi.getLoadbalancer().updateLoadBalancer(dataCenterId, loadBalancerId, LoadBalancerResource.getEditLoadBalancer().getProperties());
+    public void t3_updateLoadBalancer() throws RestClientException, IOException, NoSuchMethodException,
+            IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+        LoadBalancer.Properties properties = LoadBalancerResource.getEditLoadBalancer().getProperties();
+        LoadBalancer loadBalancer = ionosEnterpriseApi.getLoadbalancer().updateLoadBalancer(
+                dataCenterId, loadBalancerId, properties);
         assertNotNull(loadBalancer);
-        assertEquals(loadBalancer.getProperties().getName(), LoadBalancerResource.getEditLoadBalancer().getProperties().getName());
+        assertEquals(loadBalancer.getProperties().getName(), properties.getName());
     }
 
     @Test
-    public void t4_assignNicToLoadBalancer() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public void t4_assignNicToLoadBalancer() throws RestClientException, IOException, InterruptedException,
+            NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
         Nic nic = ionosEnterpriseApi.getNic().assignNicToLoadBalancer(dataCenterId, loadBalancerId, nicId);
         assertNotNull(nic);
         assertEquals(nic.getId(), nicId);
@@ -143,23 +143,25 @@ public class LoadBalancerTest {
     }
 
     @Test
-    public void t8_getFaildLoadBalancer() throws RestClientException, IOException {
+    public void t8_getFaildLoadBalancer() throws IOException {
         try {
-            LoadBalancer loadBalancer = ionosEnterpriseApi.getLoadbalancer().getLoadBalancer(dataCenterId, CommonResource.getBadId());
+            ionosEnterpriseApi.getLoadbalancer().getLoadBalancer(dataCenterId, CommonResource.getBadId());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
     }
 
     @Test
-    public void t9_createFailLoadBalancer() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+    public void t9_createFailLoadBalancer() throws IOException, IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException, NoSuchMethodException
+    {
         try {
-            LoadBalancer newLoadBalancer = ionosEnterpriseApi.getLoadbalancer().createLoadBalancer(dataCenterId, new LoadBalancer());
+            ionosEnterpriseApi.getLoadbalancer().createLoadBalancer(dataCenterId,
+                    LoadBalancerResource.getBadLoadBalancer());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
         }
     }
-
 
     @AfterClass
     public static void cleanup() throws RestClientException, IOException {

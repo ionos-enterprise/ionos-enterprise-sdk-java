@@ -32,10 +32,8 @@ package com.ionosenterprise.rest.test;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Group;
 import com.ionosenterprise.rest.domain.Groups;
-import com.ionosenterprise.rest.domain.RequestStatus;
 import com.ionosenterprise.rest.test.resource.CommonResource;
 import com.ionosenterprise.rest.test.resource.GroupResource;
-import com.ionosenterprise.sdk.IonosEnterpriseApi;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -44,7 +42,6 @@ import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
@@ -52,54 +49,30 @@ import static org.junit.Assert.*;
  * @author denis@stackpointcloud.com
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class GroupTest {
-    static IonosEnterpriseApi ionosEnterpriseApi;
+public class GroupTest extends BaseTest {
 
-    static {
-        try {
-            ionosEnterpriseApi = new IonosEnterpriseApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    static String groupId;
+    private static String groupId;
 
     @BeforeClass
-    public static void t1_createGroup() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
-        ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
+    public static void t1_createGroup() throws RestClientException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
 
-        Group newGroup = ionosEnterpriseApi.getGroup().createGroup(GroupResource.getGroup());
+        Group group = GroupResource.getGroup();
+        Group newGroup = ionosEnterpriseApi.getGroup().createGroup(group);
+        assertNotNull(newGroup);
         groupId = newGroup.getId();
-
         waitTillProvisioned(newGroup.getRequestId());
-        assertEquals(newGroup.getProperties().getName(), GroupResource.getGroup().getProperties().getName());
-        assertEquals(newGroup.getProperties().getCreateDataCenter(), GroupResource.getGroup().getProperties().getCreateDataCenter());
-        assertEquals(newGroup.getProperties().getCreateSnapshot(), GroupResource.getGroup().getProperties().getCreateSnapshot());
-        assertEquals(newGroup.getProperties().getReserveIp(), GroupResource.getGroup().getProperties().getReserveIp());
-        assertEquals(newGroup.getProperties().getAccessActivityLog(), GroupResource.getGroup().getProperties().getAccessActivityLog());
 
-    }
-
-    public static void waitTillProvisioned(String requestId) throws InterruptedException, RestClientException, IOException {
-        int counter = 120;
-        for (int i = 0; i < counter; i++) {
-            ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
-            RequestStatus request = ionosEnterpriseApi.getRequest().getRequestStatus(requestId);
-            TimeUnit.SECONDS.sleep(1);
-            if (request.getMetadata().getStatus().equals("DONE")) {
-                break;
-            }
-            if (request.getMetadata().getStatus().equals("FAILED")) {
-                throw new IOException("The request execution has failed with following message: " + request.getMetadata().getMessage());
-            }
-        }
+        assertEquals(newGroup.getProperties().getName(), group.getProperties().getName());
+        assertEquals(newGroup.getProperties().getCreateDataCenter(), group.getProperties().getCreateDataCenter());
+        assertEquals(newGroup.getProperties().getCreateSnapshot(), group.getProperties().getCreateSnapshot());
+        assertEquals(newGroup.getProperties().getReserveIp(), group.getProperties().getReserveIp());
+        assertEquals(newGroup.getProperties().getAccessActivityLog(), group.getProperties().getAccessActivityLog());
     }
 
     @Test
     public void t2_testGetAllGroups() throws RestClientException, IOException {
         Groups groups = ionosEnterpriseApi.getGroup().getAllGroups();
-
         assertNotNull(groups);
         assertTrue(groups.getItems().size() > 0);
     }
@@ -108,34 +81,40 @@ public class GroupTest {
     public void t3_testGetGroup() throws RestClientException, IOException {
         Group group = ionosEnterpriseApi.getGroup().getGroup(groupId);
         assertNotNull(group);
-        assertEquals(group.getProperties().getName(), GroupResource.getGroup().getProperties().getName());
-        assertEquals(group.getProperties().getCreateDataCenter(), GroupResource.getGroup().getProperties().getCreateDataCenter());
-        assertEquals(group.getProperties().getCreateSnapshot(), GroupResource.getGroup().getProperties().getCreateSnapshot());
-        assertEquals(group.getProperties().getReserveIp(), GroupResource.getGroup().getProperties().getReserveIp());
-        assertEquals(group.getProperties().getAccessActivityLog(), GroupResource.getGroup().getProperties().getAccessActivityLog());
+
+        Group.Properties properties = GroupResource.getGroup().getProperties();
+        assertEquals(group.getProperties().getName(), properties.getName());
+        assertEquals(group.getProperties().getCreateDataCenter(), properties.getCreateDataCenter());
+        assertEquals(group.getProperties().getCreateSnapshot(), properties.getCreateSnapshot());
+        assertEquals(group.getProperties().getReserveIp(), properties.getReserveIp());
+        assertEquals(group.getProperties().getAccessActivityLog(), properties.getAccessActivityLog());
     }
 
     @Test
-    public void t4_testGetGroupFail() throws RestClientException, IOException {
+    public void t4_testGetGroupFail() throws IOException {
         try {
-            Group group = ionosEnterpriseApi.getGroup().getGroup(CommonResource.getBadId());
-            assertNotNull(group);
+            ionosEnterpriseApi.getGroup().getGroup(CommonResource.getBadId());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
     }
 
     @Test
-    public void t5_updateGroup() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        Group updateGroup = ionosEnterpriseApi.getGroup().updateGroup(groupId, GroupResource.getEditGroup().getProperties());
-        assertEquals(updateGroup.getProperties().getName(), GroupResource.getEditGroup().getProperties().getName());
-        assertEquals(updateGroup.getProperties().getCreateDataCenter(), GroupResource.getEditGroup().getProperties().getCreateDataCenter());
+    public void t5_updateGroup() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        Group.Properties properties = GroupResource.getEditGroup().getProperties();
+        Group updateGroup = ionosEnterpriseApi.getGroup().updateGroup(groupId, properties);
+        assertEquals(updateGroup.getProperties().getName(), properties.getName());
+        assertEquals(updateGroup.getProperties().getCreateDataCenter(), properties.getCreateDataCenter());
     }
 
     @Test
-    public void t6_createGroupFail() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+    public void t6_createGroupFail() throws IOException, IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException, NoSuchMethodException {
+
         try {
-            Group group = ionosEnterpriseApi.getGroup().createGroup(GroupResource.getBadGroup());
+            ionosEnterpriseApi.getGroup().createGroup(GroupResource.getBadGroup());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
         }

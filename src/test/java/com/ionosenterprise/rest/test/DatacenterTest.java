@@ -32,21 +32,16 @@ package com.ionosenterprise.rest.test;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.DataCenter;
 import com.ionosenterprise.rest.domain.DataCenters;
-import com.ionosenterprise.rest.domain.RequestStatus;
 import com.ionosenterprise.rest.test.resource.CommonResource;
 import com.ionosenterprise.rest.test.resource.DataCenterResource;
-import com.ionosenterprise.sdk.IonosEnterpriseApi;
-
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.TimeUnit;
-
 import org.junit.AfterClass;
-
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import static org.junit.Assert.*;
 
@@ -55,55 +50,28 @@ import static org.junit.Assert.*;
  * @author jasmin@stackpointcloud.com
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class DatacenterTest {
+public class DatacenterTest extends BaseTest {
 
-    static String dataCenterId;
-    static String compositeDataCenterId;
-    static IonosEnterpriseApi ionosEnterpriseApi;
-
-    static {
-        try {
-            ionosEnterpriseApi = new IonosEnterpriseApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    private static String dataCenterId;
 
     @BeforeClass
-    public static void t1_createDataCenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
-        ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
+    public static void t1_createDataCenter() throws RestClientException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
 
-        DataCenter datacenter = DataCenterResource.getDataCenter();
-
-        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(datacenter);
+        DataCenter dataCenter = DataCenterResource.getDataCenter();
+        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(dataCenter);
+        assertNotNull(newDatacenter);
         dataCenterId = newDatacenter.getId();
-
         waitTillProvisioned(newDatacenter.getRequestId());
 
-        assertEquals(newDatacenter.getProperties().getName(), DataCenterResource.getDataCenter().getProperties().getName());
-        assertEquals(newDatacenter.getProperties().getDescription(), DataCenterResource.getDataCenter().getProperties().getDescription());
-        assertEquals(newDatacenter.getProperties().getLocation(), DataCenterResource.getDataCenter().getProperties().getLocation());
-    }
-
-    public static void waitTillProvisioned(String requestId) throws InterruptedException, RestClientException, IOException {
-        int counter = 120;
-        for (int i = 0; i < counter; i++) {
-            ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
-            RequestStatus request = ionosEnterpriseApi.getRequest().getRequestStatus(requestId);
-            TimeUnit.SECONDS.sleep(1);
-            if (request.getMetadata().getStatus().equals("DONE")) {
-                break;
-            }
-            if (request.getMetadata().getStatus().equals("FAILED")) {
-                throw new IOException("The request execution has failed with following message: " + request.getMetadata().getMessage());
-            }
-        }
+        assertEquals(newDatacenter.getProperties().getName(), dataCenter.getProperties().getName());
+        assertEquals(newDatacenter.getProperties().getDescription(), dataCenter.getProperties().getDescription());
+        assertEquals(newDatacenter.getProperties().getLocation(), dataCenter.getProperties().getLocation());
     }
 
     @Test
     public void t2_testGetAllDatacenters() throws RestClientException, IOException {
         DataCenters datacenters = ionosEnterpriseApi.getDataCenter().getAllDataCenters();
-
         assertNotNull(datacenters);
         assertTrue(datacenters.getItems().size() > 0);
     }
@@ -111,38 +79,40 @@ public class DatacenterTest {
     @Test
     public void t3_testGetDatacenter() throws RestClientException, IOException {
         DataCenter datacenter = ionosEnterpriseApi.getDataCenter().getDataCenter(dataCenterId);
-
-        assertEquals(datacenter.getProperties().getName(), DataCenterResource.getDataCenter().getProperties().getName());
-        assertEquals(datacenter.getProperties().getDescription(), DataCenterResource.getDataCenter().getProperties().getDescription());
-        assertEquals(datacenter.getProperties().getLocation(), DataCenterResource.getDataCenter().getProperties().getLocation());
-
         assertNotNull(datacenter);
+        DataCenter.Properties properties = DataCenterResource.getDataCenter().getProperties();
+        assertEquals(datacenter.getProperties().getName(), properties.getName());
+        assertEquals(datacenter.getProperties().getDescription(), properties.getDescription());
+        assertEquals(datacenter.getProperties().getLocation(), properties.getLocation());
     }
 
     @Test
-    public void t4_testGetDatacenterFail() throws RestClientException, IOException {
+    public void t4_testGetDatacenterFail() throws IOException {
         try {
-            DataCenter datacenter = ionosEnterpriseApi.getDataCenter().getDataCenter(CommonResource.getBadId());
-            assertNotNull(datacenter);
+            ionosEnterpriseApi.getDataCenter().getDataCenter(CommonResource.getBadId());
         }catch (RestClientException ex){
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
     }
 
     @Test
-    public void t5_testCreateDatacenterFail() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+    public void t5_testCreateDatacenterFail() throws IOException, IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException, NoSuchMethodException {
+
         try {
-            DataCenter datacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(DataCenterResource.getBadDataCenter());
+            ionosEnterpriseApi.getDataCenter().createDataCenter(DataCenterResource.getBadDataCenter());
         }catch (RestClientException ex){
             assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
         }
     }
 
     @Test
-    public void t6_updateDataCenter() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public void t6_updateDataCenter() throws RestClientException, IOException, NoSuchMethodException,
+            IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-        DataCenter updatedDataCenter = ionosEnterpriseApi.getDataCenter().updateDataCenter(dataCenterId, DataCenterResource.getEditDataCenter().getProperties());
-        assertEquals(DataCenterResource.getEditDataCenter().getProperties().getName(), updatedDataCenter.getProperties().getName());
+        DataCenter.Properties properties = DataCenterResource.getEditDataCenter().getProperties();
+        DataCenter updatedDataCenter = ionosEnterpriseApi.getDataCenter().updateDataCenter(dataCenterId, properties);
+        assertEquals(properties.getName(), updatedDataCenter.getProperties().getName());
     }
 
     @AfterClass

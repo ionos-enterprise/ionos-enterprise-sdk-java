@@ -52,14 +52,6 @@ public class UserResource {
         return user;
     }
 
-    public static User getBadUser() {
-        if (badUser == null) {
-            badUser = new User();
-        }
-
-        return badUser;
-    }
-
     public static User getEditUser() {
         if (editUser == null) {
             editUser = new User();

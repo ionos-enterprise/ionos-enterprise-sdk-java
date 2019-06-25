@@ -19,57 +19,34 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ShareTest {
-    static IonosEnterpriseApi ionosEnterpriseApi;
+public class ShareTest extends BaseTest {
 
-    static {
-        try {
-            ionosEnterpriseApi = new IonosEnterpriseApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    static String groupId;
-    static String shareId;
-    static String dataCenterId;
+    private static String groupId;
+    private static String shareId;
+    private static String dataCenterId;
 
     @BeforeClass
-    public static void t1_createShare() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
-        ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
+    public static void t1_createShare() throws RestClientException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
 
         DataCenter datacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
+        assertNotNull(datacenter);
         dataCenterId = datacenter.getId();
-
         waitTillProvisioned(datacenter.getRequestId());
 
         Group group = ionosEnterpriseApi.getGroup().createGroup(GroupResource.getGroup());
+        assertNotNull(group);
         groupId = group.getId();
-
         waitTillProvisioned(group.getRequestId());
-        Share newShare = ionosEnterpriseApi.getShare().createShare(groupId, dataCenterId, ShareResource.getShare());
-        shareId = newShare.getId();
-    }
 
-    public static void waitTillProvisioned(String requestId) throws InterruptedException, RestClientException, IOException {
-        int counter = 120;
-        for (int i = 0; i < counter; i++) {
-            ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
-            RequestStatus request = ionosEnterpriseApi.getRequest().getRequestStatus(requestId);
-            TimeUnit.SECONDS.sleep(1);
-            if (request.getMetadata().getStatus().equals("DONE")) {
-                break;
-            }
-            if (request.getMetadata().getStatus().equals("FAILED")) {
-                throw new IOException("The request execution has failed with following message: " + request.getMetadata().getMessage());
-            }
-        }
+        Share newShare = ionosEnterpriseApi.getShare().createShare(groupId, dataCenterId, ShareResource.getShare());
+        assertNotNull(newShare);
+        shareId = newShare.getId();
     }
 
     @Test
     public void t2_testGetAllShares() throws RestClientException, IOException {
         Shares shares = ionosEnterpriseApi.getShare().getAllShares(groupId);
-
         assertNotNull(shares);
         assertTrue(shares.getItems().size() > 0);
     }
@@ -78,28 +55,28 @@ public class ShareTest {
     public void t3_testGetShare() throws RestClientException, IOException {
         Share share = ionosEnterpriseApi.getShare().getShare(groupId, shareId);
         assertNotNull(share);
-        assertEquals(share.getProperties().getEditPrivilege(),ShareResource.getShare().getProperties().getEditPrivilege());
-        assertEquals(share.getProperties().getSharePrivilege(),ShareResource.getShare().getProperties().getSharePrivilege());
+        Share.Properties properties = ShareResource.getShare().getProperties();
+        assertEquals(share.getProperties().getEditPrivilege(), properties.getEditPrivilege());
+        assertEquals(share.getProperties().getSharePrivilege(), properties.getSharePrivilege());
     }
 
     @Test
-    public void t4_testGetShareFail() throws RestClientException, IOException {
+    public void t4_testGetShareFail() throws IOException {
         try {
-            Share share = ionosEnterpriseApi.getShare().getShare(groupId, CommonResource.getBadId());
-            assertNotNull(share);
+            ionosEnterpriseApi.getShare().getShare(groupId, CommonResource.getBadId());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
     }
 
     @Test
-    public void t5_updateShare() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public void t5_updateShare() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
         Share share = ionosEnterpriseApi.getShare().getShare(groupId, shareId);
         share.getProperties().setEditPrivilege(false);
-
         Share shareUpdated = ionosEnterpriseApi.getShare().updateShare(groupId, shareId, share.getProperties());
         assertEquals(shareUpdated.getProperties().getEditPrivilege(),ShareResource.getEditShare().getProperties().getEditPrivilege());
-
     }
 
     @AfterClass

@@ -44,17 +44,7 @@ import org.junit.Test;
 /**
  * @author jasmin@stackpointcloud.com
  */
-public class ImageTest {
-
-    static IonosEnterpriseApi ionosEnterpriseApi;
-
-    static {
-        try {
-            ionosEnterpriseApi = new IonosEnterpriseApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+public class ImageTest extends BaseTest {
 
     private static String imageId;
 
@@ -72,9 +62,9 @@ public class ImageTest {
     }
 
     @Test
-    public void getFailImage() throws RestClientException, IOException {
+    public void getFailImage() throws IOException {
         try {
-            Image image = ionosEnterpriseApi.getImage().getImage(CommonResource.getBadId());
+            ionosEnterpriseApi.getImage().getImage(CommonResource.getBadId());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
