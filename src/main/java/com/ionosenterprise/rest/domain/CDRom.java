@@ -29,6 +29,7 @@
  */
 package com.ionosenterprise.rest.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -52,23 +53,13 @@ public class CDRom extends BaseResource {
         this.properties = properties;
     }
 
-    public class Properties {
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public class Properties extends LvsProperties {
 
         private String name;
         private String description;
         private String location;
         private Float size;
-        private Boolean cpuHotPlug;
-        private Boolean cpuHotUnplug;
-        private Boolean ramHotPlug;
-        private Boolean ramHotUnplug;
-        private Boolean nicHotPlug;
-        private Boolean nicHotUnplug;
-        private Boolean discVirtioHotPlug;
-        private Boolean discVirtioHotUnplug;
-        private Boolean discScsiHotPlug;
-        private Boolean discScsiHotUnplug;
-        private String licenceType;
         private String imageType;
         @JsonProperty("public")
         private Boolean isPublic;
@@ -104,94 +95,6 @@ public class CDRom extends BaseResource {
 
         public void setSize(Float size) {
             this.size = size;
-        }
-
-        public Boolean getCpuHotPlug() {
-            return cpuHotPlug;
-        }
-
-        public void setCpuHotPlug(Boolean cpuHotPlug) {
-            this.cpuHotPlug = cpuHotPlug;
-        }
-
-        public Boolean getCpuHotUnplug() {
-            return cpuHotUnplug;
-        }
-
-        public void setCpuHotUnplug(Boolean cpuHotUnplug) {
-            this.cpuHotUnplug = cpuHotUnplug;
-        }
-
-        public Boolean getRamHotPlug() {
-            return ramHotPlug;
-        }
-
-        public void setRamHotPlug(Boolean ramHotPlug) {
-            this.ramHotPlug = ramHotPlug;
-        }
-
-        public Boolean getRamHotUnplug() {
-            return ramHotUnplug;
-        }
-
-        public void setRamHotUnplug(Boolean ramHotUnplug) {
-            this.ramHotUnplug = ramHotUnplug;
-        }
-
-        public Boolean getNicHotPlug() {
-            return nicHotPlug;
-        }
-
-        public void setNicHotPlug(Boolean nicHotPlug) {
-            this.nicHotPlug = nicHotPlug;
-        }
-
-        public Boolean getNicHotUnplug() {
-            return nicHotUnplug;
-        }
-
-        public void setNicHotUnplug(Boolean nicHotUnplug) {
-            this.nicHotUnplug = nicHotUnplug;
-        }
-
-        public Boolean getDiscVirtioHotPlug() {
-            return discVirtioHotPlug;
-        }
-
-        public void setDiscVirtioHotPlug(Boolean discVirtioHotPlug) {
-            this.discVirtioHotPlug = discVirtioHotPlug;
-        }
-
-        public Boolean getDiscVirtioHotUnplug() {
-            return discVirtioHotUnplug;
-        }
-
-        public void setDiscVirtioHotUnplug(Boolean discVirtioHotUnplug) {
-            this.discVirtioHotUnplug = discVirtioHotUnplug;
-        }
-
-        public Boolean getDiscScsiHotPlug() {
-            return discScsiHotPlug;
-        }
-
-        public void setDiscScsiHotPlug(Boolean discScsiHotPlug) {
-            this.discScsiHotPlug = discScsiHotPlug;
-        }
-
-        public Boolean getDiscScsiHotUnplug() {
-            return discScsiHotUnplug;
-        }
-
-        public void setDiscScsiHotUnplug(Boolean discScsiHotUnplug) {
-            this.discScsiHotUnplug = discScsiHotUnplug;
-        }
-
-        public String getLicenceType() {
-            return licenceType;
-        }
-
-        public void setLicenceType(String licenceType) {
-            this.licenceType = licenceType;
         }
 
         public String getImageType() {

@@ -253,5 +253,112 @@ public class BaseResource {
          this.createdByUserId = createdByUserId;
       }
    }
+
+   /**
+    * Common properties for all resources holding Live Vertical Scaling features.
+    */
+   @JsonIgnoreProperties(ignoreUnknown = true)
+   public class LvsProperties {
+
+      private LicenceType licenceType;
+      private Boolean cpuHotPlug;
+      private Boolean cpuHotUnplug;
+      private Boolean ramHotPlug;
+      private Boolean ramHotUnplug;
+      private Boolean nicHotPlug;
+      private Boolean nicHotUnplug;
+      private Boolean discVirtioHotPlug;
+      private Boolean discVirtioHotUnplug;
+      private Boolean discScsiHotPlug;
+      private Boolean discScsiHotUnplug;
+
+      public LicenceType getLicenceType() {
+         return licenceType;
+      }
+
+      public void setLicenceType(LicenceType licenceType) {
+         this.licenceType = licenceType;
+      }
+
+      public Boolean getCpuHotPlug() {
+         return cpuHotPlug;
+      }
+
+      public void setCpuHotPlug(Boolean cpuHotPlug) {
+         this.cpuHotPlug = cpuHotPlug;
+      }
+
+      public Boolean getCpuHotUnplug() {
+         return cpuHotUnplug;
+      }
+
+      public void setCpuHotUnplug(Boolean cpuHotUnplug) {
+         this.cpuHotUnplug = cpuHotUnplug;
+      }
+
+      public Boolean getRamHotPlug() {
+         return ramHotPlug;
+      }
+
+      public void setRamHotPlug(Boolean ramHotPlug) {
+         this.ramHotPlug = ramHotPlug;
+      }
+
+      public Boolean getRamHotUnplug() {
+         return ramHotUnplug;
+      }
+
+      public void setRamHotUnplug(Boolean ramHotUnplug) {
+         this.ramHotUnplug = ramHotUnplug;
+      }
+
+      public Boolean getNicHotPlug() {
+         return nicHotPlug;
+      }
+
+      public void setNicHotPlug(Boolean nicHotPlug) {
+         this.nicHotPlug = nicHotPlug;
+      }
+
+      public Boolean getNicHotUnplug() {
+         return nicHotUnplug;
+      }
+
+      public void setNicHotUnplug(Boolean nicHotUnplug) {
+         this.nicHotUnplug = nicHotUnplug;
+      }
+
+      public Boolean getDiscVirtioHotPlug() {
+         return discVirtioHotPlug;
+      }
+
+      public void setDiscVirtioHotPlug(Boolean discVirtioHotPlug) {
+         this.discVirtioHotPlug = discVirtioHotPlug;
+      }
+
+      public Boolean getDiscVirtioHotUnplug() {
+         return discVirtioHotUnplug;
+      }
+
+      public void setDiscVirtioHotUnplug(Boolean discVirtioHotUnplug) {
+         this.discVirtioHotUnplug = discVirtioHotUnplug;
+      }
+
+      public Boolean getDiscScsiHotPlug() {
+         return discScsiHotPlug;
+      }
+
+      public void setDiscScsiHotPlug(Boolean discScsiHotPlug) {
+         this.discScsiHotPlug = discScsiHotPlug;
+      }
+
+      public Boolean getDiscScsiHotUnplug() {
+         return discScsiHotUnplug;
+      }
+
+      public void setDiscScsiHotUnplug(Boolean discScsiHotUnplug) {
+         this.discScsiHotUnplug = discScsiHotUnplug;
+      }
+   }
 }
 

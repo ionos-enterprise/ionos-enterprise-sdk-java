@@ -57,7 +57,7 @@ import java.util.List;
      }
 
      @JsonIgnoreProperties(ignoreUnknown = true)
-     public static class Properties {
+     public class Properties {
 
          private List<String> ips;
          private String location;

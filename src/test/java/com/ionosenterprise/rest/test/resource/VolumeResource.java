@@ -43,6 +43,7 @@ public class VolumeResource {
     private static Volume volume;
     private static Volume badVolume;
     private static Volume editVolume;
+    private static Volume editLvsVolume;
 
     public static Volume getVolume() {
         if (volume == null) {
@@ -63,9 +64,23 @@ public class VolumeResource {
         if (editVolume == null) {
             editVolume = new Volume();
             editVolume.getProperties().setName("Java SDK Test - RENAME");
-            editVolume.getProperties().setSize(5);
+            editVolume.getProperties().setSize(15);
         }
         return editVolume;
+    }
+
+    public static Volume getEditLvsVolume() {
+        if (editLvsVolume == null) {
+            editLvsVolume = new Volume();
+            editLvsVolume.getProperties().setName("Java SDK Test - EDIT LVS");
+            editLvsVolume.getProperties().setCpuHotPlug(true);
+            editLvsVolume.getProperties().setRamHotPlug(true);
+            editLvsVolume.getProperties().setNicHotPlug(true);
+            editLvsVolume.getProperties().setNicHotUnplug(true);
+            editLvsVolume.getProperties().setDiscVirtioHotPlug(true);
+            editLvsVolume.getProperties().setDiscVirtioHotUnplug(true);
+        }
+        return editLvsVolume;
     }
 
     public static Volume getBadVolume() {
