@@ -33,90 +33,70 @@ import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.*;
 import com.ionosenterprise.rest.test.resource.DataCenterResource;
 import com.ionosenterprise.rest.test.resource.ServerResource;
-import static com.ionosenterprise.rest.test.DatacenterTest.waitTillProvisioned;
-
-import com.ionosenterprise.sdk.IonosEnterpriseApi;
-
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
+import java.io.IOException;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
  * @author jasmin@stackpointcloud.com
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class CDRomTest {
+public class CDRomTest extends BaseTest {
 
-
-    static IonosEnterpriseApi ionosEnterpriseApi;
-
-    static {
-        try {
-            ionosEnterpriseApi = new IonosEnterpriseApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    static String dataCenterId;
-    static String serverId;
-    static String romId;
+    private static String dataCenterId;
+    private static String serverId;
+    private static String romId;
 
     @BeforeClass
-    public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
-
+    public static void t1_createCDRom() throws Exception {
         DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
-        waitTillProvisioned(newDatacenter.getRequestId());
+        assertNotNull(newDatacenter);
         dataCenterId = newDatacenter.getId();
+        waitTillProvisioned(newDatacenter.getRequestId());
 
         Server newServer = ionosEnterpriseApi.getServer().createServer(dataCenterId, ServerResource.getServer());
+        assertNotNull(newServer);
+        serverId = newServer.getId();
         waitTillProvisioned(newServer.getRequestId());
 
-        assertNotNull(newServer);
-
-        serverId = newServer.getId();
-
         CDRom rom = ionosEnterpriseApi.getServer().attachCDRom(dataCenterId, serverId, getImageId());
-
         assertNotNull(rom);
-        waitTillProvisioned(rom.getRequestId());
         romId = rom.getId();
-    }
-
-    @AfterClass
-    public static void cleanup() throws RestClientException, IOException {
-        ionosEnterpriseApi.getServer().deleteServer(dataCenterId, serverId);
-        ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
+        waitTillProvisioned(rom.getRequestId());
     }
 
     @Test
-    public void t1_ListCDRoms() throws RestClientException, IOException {
+    public void t2_ListCDRoms() throws RestClientException, IOException {
         CDRoms roms = ionosEnterpriseApi.getServer().getAllAttachedCDRoms(dataCenterId, serverId);
-
         assertNotNull(roms);
         assertTrue(roms.getItems().size() > 0);
     }
 
     @Test
-    public void t2_GetCDRom() throws RestClientException, IOException {
+    public void t3_GetCDRom() throws RestClientException, IOException {
         CDRom rom = ionosEnterpriseApi.getServer().getAttachedCDRom(dataCenterId, serverId, romId);
-        System.out.println(rom.getId());
+        assertNotNull(rom);
     }
 
     @Test
-    public void t3_DetachCDRom() throws RestClientException, IOException {
+    public void t4_DetachCDRom() throws RestClientException, IOException {
         ionosEnterpriseApi.getServer().detachCDRom(dataCenterId, serverId, romId);
     }
 
-    public static String getImageId() throws RestClientException, IOException {
+    @AfterClass
+    public static void cleanup() throws RestClientException, IOException {
+        ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
+    }
+
+    protected static String getImageId() throws RestClientException, IOException {
         Images images = ionosEnterpriseApi.getImage().getAllImages();
         for (Image image : images.getItems()) {
             if (image.getProperties().getName().toLowerCase().contains("centos".toLowerCase()) && image.getProperties().getLocation().equals("us/las")

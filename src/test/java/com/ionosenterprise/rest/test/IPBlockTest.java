@@ -34,7 +34,6 @@ import com.ionosenterprise.rest.domain.IPBlock;
 import com.ionosenterprise.rest.domain.IPBlocks;
 import com.ionosenterprise.rest.test.resource.CommonResource;
 import com.ionosenterprise.rest.test.resource.IpBlockResource;
-import com.ionosenterprise.sdk.IonosEnterpriseApi;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -50,53 +49,43 @@ import org.junit.runners.MethodSorters;
  * @author jasmin@stackpointcloud.com
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class IPBlockTest {
+public class IPBlockTest extends BaseTest {
 
-    static IonosEnterpriseApi ionosEnterpriseApi;
-
-    static {
-        try {
-            ionosEnterpriseApi = new IonosEnterpriseApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    static String ipBlockId;
+    private static String ipBlockId;
 
     @BeforeClass
-    public static void setUp() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
-            IllegalArgumentException, InvocationTargetException {
+    public static void t1_createIPBlock() throws RestClientException, IOException, NoSuchMethodException,
+            IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-        ionosEnterpriseApi.setCredentials(
-                System.getenv("IONOS_ENTERPRISE_USERNAME"),
-                System.getenv("IONOS_ENTERPRISE_PASSWORD"));
-
-        IPBlock iPBlock = ionosEnterpriseApi.getIpBlock().createIPBlock(IpBlockResource.getIpBlock());
+        IPBlock ipBlock = IpBlockResource.getIpBlock();
+        IPBlock iPBlock = ionosEnterpriseApi.getIpBlock().createIPBlock(ipBlock);
         assertNotNull(iPBlock);
-        assertEquals(iPBlock.getProperties().getName(), IpBlockResource.getIpBlock().getProperties().getName());
-        assertEquals(iPBlock.getProperties().getLocation(), IpBlockResource.getIpBlock().getProperties().getLocation());
-        assertEquals(iPBlock.getProperties().getSize(), IpBlockResource.getIpBlock().getProperties().getSize());
         ipBlockId = iPBlock.getId();
+
+        assertEquals(iPBlock.getProperties().getName(), ipBlock.getProperties().getName());
+        assertEquals(iPBlock.getProperties().getLocation(), ipBlock.getProperties().getLocation());
+        assertEquals(iPBlock.getProperties().getSize(), ipBlock.getProperties().getSize());
     }
 
     @Test
-    public void t1_getAllIpBlocks() throws RestClientException, IOException {
+    public void t2_getAllIpBlocks() throws RestClientException, IOException {
         IPBlocks iPBlocks = ionosEnterpriseApi.getIpBlock().getAllIPBlocks();
         assertNotNull(iPBlocks);
     }
 
     @Test
-    public void t2_getIpBlock() throws RestClientException, IOException {
+    public void t3_getIpBlock() throws RestClientException, IOException {
         IPBlock iPBlock = ionosEnterpriseApi.getIpBlock().getIPBlock(ipBlockId);
         assertNotNull(iPBlock);
-        assertEquals(iPBlock.getProperties().getName(), IpBlockResource.getIpBlock().getProperties().getName());
-        assertEquals(iPBlock.getProperties().getLocation(), IpBlockResource.getIpBlock().getProperties().getLocation());
-        assertEquals(iPBlock.getProperties().getSize(), IpBlockResource.getIpBlock().getProperties().getSize());
+
+        IPBlock.Properties properties = IpBlockResource.getIpBlock().getProperties();
+        assertEquals(iPBlock.getProperties().getName(), properties.getName());
+        assertEquals(iPBlock.getProperties().getLocation(), properties.getLocation());
+        assertEquals(iPBlock.getProperties().getSize(), properties.getSize());
     }
 
     @Test
-    public void t3_getIpBlockFail() throws RestClientException, IOException {
+    public void t4_getIpBlockFail() throws RestClientException, IOException {
         try {
             ionosEnterpriseApi.getIpBlock().getIPBlock(CommonResource.getBadId());
         } catch (RestClientException ex) {
@@ -105,10 +94,11 @@ public class IPBlockTest {
     }
 
     @Test
-    public void t4_createIpBlockFail() throws IOException, IllegalAccessException,
-            IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+    public void t5_createIpBlockFail() throws IOException, IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException, NoSuchMethodException {
+
         try {
-            ionosEnterpriseApi.getIpBlock().createIPBlock(IpBlockResource.getBadtIpBlock());
+            ionosEnterpriseApi.getIpBlock().createIPBlock(IpBlockResource.getBadIpBlock());
         }catch (RestClientException ex){
             assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
         }

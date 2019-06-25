@@ -50,7 +50,7 @@ public class IpBlockResource {
         return ipBlock;
     }
 
-    public static IPBlock getBadtIpBlock() {
+    public static IPBlock getBadIpBlock() {
         if (ipBadBlock == null) {
             ipBadBlock = new IPBlock();
             ipBadBlock.getProperties().setName("Java SDK Test");

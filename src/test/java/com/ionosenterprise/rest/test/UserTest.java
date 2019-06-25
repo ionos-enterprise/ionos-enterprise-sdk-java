@@ -58,65 +58,38 @@ import static org.junit.Assert.assertTrue;
  * @author denis@stackpointcloud.com
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class UserTest {
-    static IonosEnterpriseApi ionosEnterpriseApi;
+public class UserTest extends BaseTest {
 
-    static {
-        try {
-            ionosEnterpriseApi = new IonosEnterpriseApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    static String userId;
-    static String email;
-    static String email1;
-    static String groupId;
+    private static String userId;
+    private static String email;
+    private static String email1;
+    private static String groupId;
 
     @BeforeClass
-    public static void t1_createUser() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
-        ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
-        //Set email
+    public static void t1_createUser() throws RestClientException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+
         email = "no-reply" + System.currentTimeMillis() + "@example.com";
         email1 = "no-reply"+ (System.currentTimeMillis()+1) +"@example.com";
 
         Group newGroup = ionosEnterpriseApi.getGroup().createGroup(GroupResource.getGroup());
+        assertNotNull(newGroup);
         groupId = newGroup.getId();
-
         waitTillProvisioned(newGroup.getRequestId());
 
-        //Create a user
         User user = UserResource.getUser();
         user.getProperties().setEmail(email);
 
         User newUser = ionosEnterpriseApi.getUser().createUser(user);
+        assertNotNull(newUser);
         userId = newUser.getId();
-
         waitTillProvisioned(newUser.getRequestId());
-
         assertEquals(newUser.getProperties().getEmail(), user.getProperties().getEmail());
-    }
-
-    public static void waitTillProvisioned(String requestId) throws InterruptedException, RestClientException, IOException {
-        int counter = 120;
-        for (int i = 0; i < counter; i++) {
-            ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
-            RequestStatus request = ionosEnterpriseApi.getRequest().getRequestStatus(requestId);
-            TimeUnit.SECONDS.sleep(1);
-            if (request.getMetadata().getStatus().equals("DONE")) {
-                break;
-            }
-            if (request.getMetadata().getStatus().equals("FAILED")) {
-                throw new IOException("The request execution has failed with following message: " + request.getMetadata().getMessage());
-            }
-        }
     }
 
     @Test
     public void t2_testGetAllUsers() throws RestClientException, IOException {
         Users users = ionosEnterpriseApi.getUser().getAllUsers();
-
         assertNotNull(users);
         assertTrue(users.getItems().size() > 0);
     }
@@ -128,9 +101,9 @@ public class UserTest {
     }
 
     @Test
-    public void t4_testGetUserFail() throws RestClientException, IOException {
+    public void t4_testGetUserFail() throws IOException {
         try {
-            User user = ionosEnterpriseApi.getUser().getUser(CommonResource.getBadId());
+            ionosEnterpriseApi.getUser().getUser(CommonResource.getBadId());
         }catch (RestClientException ex){
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
@@ -143,11 +116,11 @@ public class UserTest {
         user.getProperties().setEmail(email1);
 
         User updateUser = ionosEnterpriseApi.getUser().updateUser(userId, user.getProperties());
-        assertEquals(updateUser.getProperties().getFirstname(), UserResource.getEditUser().getProperties().getFirstname());
-        assertEquals(updateUser.getProperties().getLastname(), UserResource.getEditUser().getProperties().getLastname());
+        assertEquals(updateUser.getProperties().getFirstname(), user.getProperties().getFirstname());
+        assertEquals(updateUser.getProperties().getLastname(), user.getProperties().getLastname());
         assertEquals(updateUser.getProperties().getEmail(), email1);
-        assertEquals(updateUser.getProperties().getAdministrator(), UserResource.getEditUser().getProperties().getAdministrator());
-        assertEquals(updateUser.getProperties().getForceSecAuth(), UserResource.getEditUser().getProperties().getForceSecAuth());
+        assertEquals(updateUser.getProperties().getAdministrator(), user.getProperties().getAdministrator());
+        assertEquals(updateUser.getProperties().getForceSecAuth(), user.getProperties().getForceSecAuth());
     }
 
     @AfterClass

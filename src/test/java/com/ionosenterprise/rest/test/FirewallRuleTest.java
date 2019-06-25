@@ -32,104 +32,99 @@ package com.ionosenterprise.rest.test;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.*;
 import com.ionosenterprise.rest.test.resource.*;
-
-import static com.ionosenterprise.rest.test.DatacenterTest.waitTillProvisioned;
-
-import com.ionosenterprise.sdk.IonosEnterpriseApi;
-
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-
 import org.junit.AfterClass;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
+import static org.junit.Assert.*;
+
 /**
  * @author jasmin@stackpointcloud.com
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class FirewallRuleTest {
+public class FirewallRuleTest extends BaseTest {
 
-    static IonosEnterpriseApi ionosEnterpriseApi;
-
-    static {
-        try {
-            ionosEnterpriseApi = new IonosEnterpriseApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    static String dataCenterId;
-    static String serverId;
+    private static String dataCenterId;
+    private static String serverId;
     private static String nicId;
     private static String firewallRuleId;
 
     @BeforeClass
-    public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
+    public static void t1_createFirewallRule() throws RestClientException, IOException, InterruptedException,
+            IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 
-        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
-        waitTillProvisioned(newDatacenter.getRequestId());
+        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(
+                DataCenterResource.getDataCenter());
+        assertNotNull(newDatacenter);
         dataCenterId = newDatacenter.getId();
+        waitTillProvisioned(newDatacenter.getRequestId());
 
         Server newServer = ionosEnterpriseApi.getServer().createServer(dataCenterId, ServerResource.getServer());
-        waitTillProvisioned(newServer.getRequestId());
         assertNotNull(newServer);
         serverId = newServer.getId();
+        waitTillProvisioned(newServer.getRequestId());
 
         Nic newNic = ionosEnterpriseApi.getNic().createNic(dataCenterId, serverId, NicResource.getNic());
-        waitTillProvisioned(newNic.getRequestId());
         assertNotNull(newNic);
         nicId = newNic.getId();
+        waitTillProvisioned(newNic.getRequestId());
 
-        FirewallRule newFirewallRule = ionosEnterpriseApi.getFirewallRule().createFirewallRule(dataCenterId, serverId, nicId, FirewallRuleResource.getFirewallRule());
-        waitTillProvisioned(newFirewallRule.getRequestId());
+        FirewallRule newFirewallRule = ionosEnterpriseApi.getFirewallRule().createFirewallRule(
+                dataCenterId, serverId, nicId, FirewallRuleResource.getFirewallRule());
         assertNotNull(newFirewallRule);
         firewallRuleId = newFirewallRule.getId();
+        waitTillProvisioned(newFirewallRule.getRequestId());
     }
 
     @Test
-    public void t1_getAllFirewallRules() throws RestClientException, IOException {
-        FirewallRules fireWallRules = ionosEnterpriseApi.getFirewallRule().getAllFirewallRules(dataCenterId, serverId, nicId);
+    public void t2_getAllFirewallRules() throws RestClientException, IOException {
+        FirewallRules fireWallRules = ionosEnterpriseApi.getFirewallRule().getAllFirewallRules(
+                dataCenterId, serverId, nicId);
         assertNotNull(fireWallRules);
         assertTrue(fireWallRules.getItems().size() > 0);
     }
 
     @Test
-    public void t2_getFirewallRule() throws RestClientException, IOException {
-        FirewallRule firewallRule = ionosEnterpriseApi.getFirewallRule().getFirewallRule(dataCenterId, serverId, nicId, firewallRuleId);
+    public void t3_getFirewallRule() throws RestClientException, IOException {
+        FirewallRule firewallRule = ionosEnterpriseApi.getFirewallRule().getFirewallRule(
+                dataCenterId, serverId, nicId, firewallRuleId);
         assertNotNull(firewallRule);
-        assertEquals(firewallRule.getProperties().getName(), FirewallRuleResource.getFirewallRule().getProperties().getName());
+        assertEquals(firewallRule.getProperties().getName(),
+                FirewallRuleResource.getFirewallRule().getProperties().getName());
     }
 
     @Test
-    public void t3_updateFirewallRule() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        FirewallRule firewallRule = ionosEnterpriseApi.getFirewallRule().updateFirewWallRule(dataCenterId, serverId, nicId, firewallRuleId, FirewallRuleResource.getEditFirewallRule().getProperties());
+    public void t4_updateFirewallRule() throws RestClientException, IOException, InterruptedException,
+            NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+        FirewallRule firewallRule = ionosEnterpriseApi.getFirewallRule().updateFirewWallRule(dataCenterId, serverId,
+                nicId, firewallRuleId, FirewallRuleResource.getEditFirewallRule().getProperties());
         waitTillProvisioned(firewallRule.getRequestId());
-        assertEquals(firewallRule.getProperties().getName(), FirewallRuleResource.getEditFirewallRule().getProperties().getName());
+        assertEquals(firewallRule.getProperties().getName(),
+                FirewallRuleResource.getEditFirewallRule().getProperties().getName());
     }
 
     @Test
-    public void t4_getFailFirewall() throws RestClientException, IOException {
+    public void t5_getFailFirewall() throws RestClientException, IOException {
         try {
-            FirewallRule firewallRule = ionosEnterpriseApi.getFirewallRule().getFirewallRule(dataCenterId, serverId, nicId, CommonResource.getBadId());
+            ionosEnterpriseApi.getFirewallRule().getFirewallRule(dataCenterId, serverId, nicId, CommonResource.getBadId());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
     }
 
     @Test
-    public void t5_createFirewallFail() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+    public void t6_createFirewallFail() throws RestClientException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+
         try {
-            FirewallRule firewallRule = ionosEnterpriseApi.getFirewallRule().createFirewallRule(dataCenterId, serverId,nicId, FirewallRuleResource.getBadFirewallRule());
+            ionosEnterpriseApi.getFirewallRule().createFirewallRule(dataCenterId, serverId,nicId,
+                    FirewallRuleResource.getBadFirewallRule());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
         }
