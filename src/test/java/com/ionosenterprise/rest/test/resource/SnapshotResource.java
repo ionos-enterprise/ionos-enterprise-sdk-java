@@ -39,7 +39,6 @@ import com.ionosenterprise.rest.domain.Snapshot;
 public class SnapshotResource {
     private static Snapshot snapshot;
     private static Snapshot editSnapshot;
-    private static Snapshot badSnapshot;
 
     public static Snapshot getSnapshot() {
         if (snapshot == null) {
@@ -58,14 +57,5 @@ public class SnapshotResource {
             editSnapshot.getProperties().setDescription("Java SDK test snapshot - RENAME");
         }
         return editSnapshot;
-    }
-
-    public static Snapshot getBadSnapshot() {
-        if (badSnapshot == null) {
-            badSnapshot = new Snapshot();
-            badSnapshot.getProperties().setName("Java SDK Test");
-            badSnapshot.getProperties().setSize(2);
-        }
-        return badSnapshot;
     }
 }

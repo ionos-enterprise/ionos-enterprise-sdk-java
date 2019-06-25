@@ -55,44 +55,35 @@ import org.junit.runners.MethodSorters;
  * @author jasmin@stackpointcloud.com
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class LanTest {
-
-    static IonosEnterpriseApi ionosEnterpriseApi;
-
-    static {
-        try {
-            ionosEnterpriseApi = new IonosEnterpriseApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+public class LanTest extends BaseTest {
 
     private static String dataCenterId;
     private static String lanId;
     private static String ipBlockId;
 
     @BeforeClass
-    public static void t1_createDataCenter() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+    public static void t1_createDataCenter() throws RestClientException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
 
-        ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
-
-
-        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
+        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(
+                DataCenterResource.getDataCenter());
+        assertNotNull(newDatacenter);
         dataCenterId = newDatacenter.getId();
-        assertEquals(newDatacenter.getProperties().getName(), DataCenterResource.getDataCenter().getProperties().getName());
         waitTillProvisioned(newDatacenter.getRequestId());
 
-        Lan newLan = ionosEnterpriseApi.getLan().createLan(dataCenterId, LanResource.getLan());
-        lanId = newLan.getId();
+        Lan lan = LanResource.getLan();
+        Lan newLan = ionosEnterpriseApi.getLan().createLan(dataCenterId, lan);
         assertNotNull(newLan);
-        assertEquals(newLan.getProperties().getName(), LanResource.getLan().getProperties().getName());
-        assertEquals(newLan.getProperties().isIsPublic(), LanResource.getLan().getProperties().isIsPublic());
+        assertEquals(newLan.getProperties().getName(), lan.getProperties().getName());
+        assertEquals(newLan.getProperties().isIsPublic(), lan.getProperties().isIsPublic());
+        lanId = newLan.getId();
         waitTillProvisioned(newLan.getRequestId());
 
         IPBlock ipb = new IPBlock();
         ipb.getProperties().setLocation("us/las");
         ipb.getProperties().setSize(1);
         IPBlock iPBlock = ionosEnterpriseApi.getIpBlock().createIPBlock(ipb);
+        assertNotNull(iPBlock);
         ipBlockId = iPBlock.getId();
     }
 
@@ -112,32 +103,36 @@ public class LanTest {
     }
 
     @Test
-    public void t4_getLanFail() throws RestClientException, IOException {
+    public void t4_getLanFail() throws IOException {
         try {
-            Lan lan = ionosEnterpriseApi.getLan().getLan(dataCenterId, CommonResource.getBadId());
+            ionosEnterpriseApi.getLan().getLan(dataCenterId, CommonResource.getBadId());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
     }
 
     @Test
-    public void t5_updateLan() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        Lan updatedLan = ionosEnterpriseApi.getLan().updateLan(dataCenterId, lanId, LanResource.getEditLan().getProperties().getName(), LanResource.getEditLan().getProperties().isIsPublic());
+    public void t5_updateLan() throws RestClientException, IOException, InterruptedException, NoSuchMethodException,
+            IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+        Lan.Properties properties = LanResource.getEditLan().getProperties();
+        Lan updatedLan = ionosEnterpriseApi.getLan().updateLan(dataCenterId, lanId,
+                properties.getName(), properties.isIsPublic());
         waitTillProvisioned(updatedLan.getRequestId());
-        assertEquals(updatedLan.getProperties().getName(), LanResource.getEditLan().getProperties().getName());
-        assertEquals(updatedLan.getProperties().isIsPublic(), LanResource.getEditLan().getProperties().isIsPublic());
+        assertEquals(updatedLan.getProperties().getName(), properties.getName());
+        assertEquals(updatedLan.getProperties().isIsPublic(), properties.isIsPublic());
     }
 
     @Test
-    public void t6_createLanComposite() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, RestClientException, IOException, InterruptedException {
-        DataCenter datacenter = new DataCenter();
+    public void t6_createLanComposite() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException,
+            RestClientException, IOException, InterruptedException {
 
+        DataCenter datacenter = new DataCenter();
         datacenter.getProperties().setName("SDK TEST DC - Composite Data center");
         datacenter.getProperties().setLocation("us/las");
         datacenter.getProperties().setDescription("SDK TEST Description");
 
         Lan lan = new Lan();
-
         lan.getProperties().setName("SDK TEST Lan - Lan");
         lan.getProperties().setIsPublic(false);
 
@@ -155,16 +150,9 @@ public class LanTest {
     }
 
     @Test
-    public void t7_createLanFail() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
-        try {
-            Lan lan = ionosEnterpriseApi.getLan().createLan(dataCenterId,LanResource.getBadLan());
-        }catch (RestClientException ex){
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
-        }
-    }
+    public void t7_updateLanWithFailover() throws RestClientException, IOException, InterruptedException,
+            NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-    @Test
-    public void t8_updateLanWithFailover() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         Server server1 = new Server();
         server1.getProperties().setName("SDK TEST SERVER - Server Failover 1");
         server1.getProperties().setRam(1024);
@@ -177,8 +165,8 @@ public class LanTest {
         lan1.getProperties().setName("SDK TEST Lan - Lan");
         lan1.getProperties().setIsPublic(false);
         Lan newLan1 = ionosEnterpriseApi.getLan().createLan(dataCenterId, lan1);
-        String lan1Id = newLan1.getId();
         waitTillProvisioned(newLan1.getRequestId());
+        String lan1Id = newLan1.getId();
 
         IPBlock iPBlock = ionosEnterpriseApi.getIpBlock().getIPBlock(ipBlockId);
 
@@ -220,13 +208,10 @@ public class LanTest {
     }
 
     @AfterClass
-    public static void cleanup() throws RestClientException, IOException {
+    public static void cleanup() throws RestClientException, IOException, InterruptedException {
         ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
 
-        try {
-            TimeUnit.MINUTES.sleep(1);
-        }
-        catch (Exception ex) {}
+        TimeUnit.MINUTES.sleep(1);
 
         ionosEnterpriseApi.getIpBlock().deleteIPBlock(ipBlockId);
     }

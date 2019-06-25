@@ -57,9 +57,8 @@ public class LoadBalancerResource {
     }
 
     public static LoadBalancer getBadLoadBalancer() {
-        if (badLoadBalancer == null) {
+        if (badLoadBalancer == null){
             badLoadBalancer = new LoadBalancer();
-            badLoadBalancer.getProperties().setName("Java SDK Test");
         }
         return badLoadBalancer;
     }

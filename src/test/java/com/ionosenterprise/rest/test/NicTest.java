@@ -54,55 +54,48 @@ import org.junit.runners.MethodSorters;
  * @author jasmin@stackpointcloud.com
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class NicTest {
+public class NicTest extends BaseTest {
 
-    static IonosEnterpriseApi ionosEnterpriseApi;
-
-    static {
-        try {
-            ionosEnterpriseApi = new IonosEnterpriseApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    static String dataCenterId;
-    static String serverId;
+    private static String dataCenterId;
+    private static String serverId;
     private static String nicId;
     private static String loadBalancerId;
 
     @BeforeClass
-    public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
+    public static void setUp() throws RestClientException, IOException, InterruptedException,
+            IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 
-        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
+        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(
+                DataCenterResource.getDataCenter());
+        assertNotNull(newDatacenter);
         dataCenterId = newDatacenter.getId();
+        waitTillProvisioned(newDatacenter.getRequestId());
 
-        LoadBalancer newLoadBalancer = ionosEnterpriseApi.getLoadbalancer().createLoadBalancer(dataCenterId, LoadBalancerResource.getLoadBalancer());
-        waitTillProvisioned(newLoadBalancer.getRequestId());
+        LoadBalancer newLoadBalancer = ionosEnterpriseApi.getLoadbalancer().createLoadBalancer(dataCenterId,
+                LoadBalancerResource.getLoadBalancer());
         assertNotNull(newLoadBalancer);
-
         loadBalancerId = newLoadBalancer.getId();
-
+        waitTillProvisioned(newLoadBalancer.getRequestId());
 
         Server newServer = ionosEnterpriseApi.getServer().createServer(dataCenterId, ServerResource.getServer());
         assertNotNull(newServer);
-        waitTillProvisioned(newServer.getRequestId());
         serverId = newServer.getId();
+        waitTillProvisioned(newServer.getRequestId());
 
         Nic newNic = ionosEnterpriseApi.getNic().createNic(dataCenterId, serverId, NicResource.getNic());
-        waitTillProvisioned(newNic.getRequestId());
         assertNotNull(newNic);
         nicId = newNic.getId();
+        waitTillProvisioned(newNic.getRequestId());
     }
 
     @Test
     public void t1_getNic() throws RestClientException, IOException {
         Nic nic = ionosEnterpriseApi.getNic().getNic(dataCenterId, serverId, nicId);
         assertNotNull(nic);
-        assertEquals(nic.getProperties().getName(), NicResource.getNic().getProperties().getName());
-        assertEquals(nic.getProperties().getNat(), NicResource.getNic().getProperties().getNat());
-        assertEquals(nic.getProperties().getLan(), NicResource.getNic().getProperties().getLan());
+        Nic.Properties properties = NicResource.getNic().getProperties();
+        assertEquals(nic.getProperties().getName(), properties.getName());
+        assertEquals(nic.getProperties().getNat(), properties.getNat());
+        assertEquals(nic.getProperties().getLan(), properties.getLan());
     }
 
     @Test
@@ -113,16 +106,19 @@ public class NicTest {
     }
 
     @Test
-    public void t3_updateNic() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InterruptedException {
-        Nic nic = ionosEnterpriseApi.getNic().updateNic(dataCenterId, serverId, nicId, NicResource.getEditNic().getProperties());
+    public void t3_updateNic() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, InterruptedException {
 
+        Nic nic = ionosEnterpriseApi.getNic().updateNic(dataCenterId, serverId, nicId, NicResource.getEditNic().getProperties());
         assertNotNull(nic);
         assertEquals(nic.getProperties().getName(), NicResource.getEditNic().getProperties().getName());
         waitTillProvisioned(nic.getRequestId());
     }
 
     @Test
-    public void t4_assignNicToLoadBalancer() throws RestClientException, IOException, InterruptedException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public void t4_assignNicToLoadBalancer() throws RestClientException, IOException, InterruptedException,
+            NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
         Nic nic = ionosEnterpriseApi.getNic().assignNicToLoadBalancer(dataCenterId, loadBalancerId, nicId);
         assertNotNull(nic);
         assertEquals(nic.getId(), nicId);
@@ -147,27 +143,27 @@ public class NicTest {
     }
 
     @Test
-    public void t7_getFailNic() throws RestClientException, IOException {
+    public void t8_getFailNic() throws IOException {
         try {
-            Nic nic = ionosEnterpriseApi.getNic().getNic(dataCenterId, serverId, CommonResource.getBadId());
+            ionosEnterpriseApi.getNic().getNic(dataCenterId, serverId, CommonResource.getBadId());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
     }
 
     @Test
-    public void t8_createNicFail() throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
+    public void t9_createNicFail() throws IOException, IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException, NoSuchMethodException {
+
         try {
-            Nic nic = ionosEnterpriseApi.getNic().createNic(dataCenterId, serverId, NicResource.getBadNic());
+            ionosEnterpriseApi.getNic().createNic(dataCenterId, serverId, NicResource.getBadNic());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
         }
-
     }
 
     @AfterClass
     public static void cleanup() throws RestClientException, IOException {
-        ionosEnterpriseApi.getNic().deleteNic(dataCenterId, serverId, nicId);
         ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
     }
 

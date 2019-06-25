@@ -46,23 +46,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author jasmin@stackpointcloud.com
  */
-public class LocationTest {
-
-    static IonosEnterpriseApi ionosEnterpriseApi;
-
-    static {
-        try {
-            ionosEnterpriseApi = new IonosEnterpriseApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Before
-    public void setup() {
-        ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
-
-    }
+public class LocationTest extends BaseTest {
 
     @Test
     public void listLocations() throws RestClientException, IOException {
@@ -81,15 +65,14 @@ public class LocationTest {
 
     @Test
     public void getLocation() throws RestClientException, IOException {
-
         Location location = ionosEnterpriseApi.getLocation().getLocation("us/las");
         assertNotNull(location);
     }
 
     @Test
-    public void getLocationFail() throws RestClientException, IOException {
+    public void getLocationFail() throws IOException {
         try {
-            Location location = ionosEnterpriseApi.getLocation().getLocation(CommonResource.getBadId());
+            ionosEnterpriseApi.getLocation().getLocation(CommonResource.getBadId());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }

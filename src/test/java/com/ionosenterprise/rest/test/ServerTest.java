@@ -53,55 +53,42 @@ import org.junit.runners.MethodSorters;
  * @author jasmin@stackpointcloud.com
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ServerTest {
+public class ServerTest extends BaseTest {
 
-    static IonosEnterpriseApi ionosEnterpriseApi;
-
-    static {
-        try {
-            ionosEnterpriseApi = new IonosEnterpriseApi();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }    static String dataCenterId;
-    static String serverId;
+    private static String dataCenterId;
+    private static String serverId;
 
     @BeforeClass
-    public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        ionosEnterpriseApi.setCredentials(System.getenv("IONOS_ENTERPRISE_USERNAME"), System.getenv("IONOS_ENTERPRISE_PASSWORD"));
+    public static void t1_createServer() throws RestClientException, IOException, InterruptedException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 
         DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
-        waitTillProvisioned(newDatacenter.getRequestId());
+        assertNotNull(newDatacenter);
         dataCenterId = newDatacenter.getId();
+        waitTillProvisioned(newDatacenter.getRequestId());
 
         Server newServer = ionosEnterpriseApi.getServer().createServer(dataCenterId, ServerResource.getServer());
-        waitTillProvisioned(newServer.getRequestId());
-
         assertNotNull(newServer);
         serverId = newServer.getId();
-    }
-
-    @AfterClass
-    public static void cleanup() throws RestClientException, IOException {
-        ionosEnterpriseApi.getServer().deleteServer(dataCenterId, serverId);
-        ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
+        waitTillProvisioned(newServer.getRequestId());
     }
 
     @Test
-    public void t1_GetAllServers() throws RestClientException, IOException {
+    public void t2_GetAllServers() throws RestClientException, IOException {
         Servers servers = ionosEnterpriseApi.getServer().getAllServers(dataCenterId);
         assertNotNull(servers);
     }
 
     @Test
-    public void t2_GetServer() throws RestClientException, IOException, InterruptedException {
-        Thread.sleep(5000);
+    public void t3_GetServer() throws RestClientException, IOException {
         Server server = ionosEnterpriseApi.getServer().getServer(dataCenterId, serverId);
         assertNotNull(server);
     }
 
     @Test
-    public void t3_UpdateServer() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public void t4_UpdateServer() throws RestClientException, IOException, NoSuchMethodException,
+            IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
         String newName = ServerResource.getEditServer().getProperties().getName();
         Server.Properties object = new Server().new Properties();
         object.setName(newName);
@@ -111,17 +98,22 @@ public class ServerTest {
     }
 
     @Test
-    public void t4_StartServer() throws RestClientException, IOException {
+    public void t5_StartServer() throws RestClientException, IOException {
         ionosEnterpriseApi.getServer().startServer(dataCenterId, serverId);
     }
 
     @Test
-    public void t5_StopServer() throws RestClientException, IOException {
+    public void t6_StopServer() throws RestClientException, IOException {
         ionosEnterpriseApi.getServer().stopServer(dataCenterId, serverId);
     }
 
     @Test
-    public void t6_RebootServer() throws RestClientException, IOException {
+    public void t7_RebootServer() throws RestClientException, IOException {
         ionosEnterpriseApi.getServer().rebootServer(dataCenterId, serverId);
+    }
+
+    @AfterClass
+    public static void cleanup() throws RestClientException, IOException {
+        ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
     }
 }
