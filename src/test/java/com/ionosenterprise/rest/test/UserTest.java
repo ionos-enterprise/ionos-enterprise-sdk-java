@@ -34,11 +34,9 @@ import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Group;
 import com.ionosenterprise.rest.domain.User;
 import com.ionosenterprise.rest.domain.Users;
-import com.ionosenterprise.rest.domain.RequestStatus;
 import com.ionosenterprise.rest.test.resource.CommonResource;
 import com.ionosenterprise.rest.test.resource.GroupResource;
 import com.ionosenterprise.rest.test.resource.UserResource;
-import com.ionosenterprise.sdk.IonosEnterpriseApi;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -47,11 +45,8 @@ import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  *
