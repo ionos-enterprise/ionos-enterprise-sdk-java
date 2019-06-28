@@ -104,7 +104,6 @@ public class Snapshot extends BaseAPI {
     /**
      * Perform updates to attributes of a snapshot.
      *
-     * @param dataCenterId The unique ID of the data center
      * @param snapshotId The unique ID of the data center
      * @param snapshot object has the following properties:
      * <br>
@@ -158,7 +157,7 @@ public class Snapshot extends BaseAPI {
      * <br>
      * @return Snapshot object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.Snapshot updateSnapshot(String dataCenterId, String snapshotId, com.ionosenterprise.rest.domain.Snapshot.Properties snapshot) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public com.ionosenterprise.rest.domain.Snapshot updateSnapshot(String snapshotId, com.ionosenterprise.rest.domain.Snapshot.Properties snapshot) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         return client.update(getUrlBase().concat(resource).concat("/").concat(snapshotId), snapshot, com.ionosenterprise.rest.domain.Snapshot.class, 202);
     }
 

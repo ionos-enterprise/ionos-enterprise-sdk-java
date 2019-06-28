@@ -1403,26 +1403,25 @@ Performs updates to attributes of a snapshot.
 
 | Name | Required | Type | Description |
 |---|---|---|---|
-| dataCenterId | **yes** | string | The ID of the snapshot. |
 | snapshotId | **yes** | string | The ID of the snapshot. |
-| name | no | string | The name of the snapshot. |
-| description | no | string | The description of the snapshot. |
-| cpuHotPlug | no | bool | This volume is capable of CPU hot plug (no reboot required) |
-| cpuHotUnplug | no | bool | This volume is capable of CPU hot unplug (no reboot required) |
-| ramHotPlug | no | bool | This volume is capable of memory hot plug (no reboot required) |
-| ramHotUnplug | no | bool | This volume is capable of memory hot unplug (no reboot required) |
-| nicHotPlug | no | bool | This volume is capable of NIC hot plug (no reboot required) |
-| nicHotUnplug | no | bool | This volume is capable of NIC hot unplug (no reboot required) |
-| discVirtioHotPlug | no | bool | This volume is capable of Virt-IO drive hot plug (no reboot required) |
-| discVirtioHotUnplug | no | bool | This volume is capable of Virt-IO drive hot unplug (no reboot required) |
-| discScsiHotPlug | no | bool | This volume is capable of SCSI drive hot plug (no reboot required) |
-| discScsiHotUnplug | no | bool | This volume is capable of SCSI drive hot unplug (no reboot required) |
-| licenceType | no | string | The snapshot's licence type: LINUX, WINDOWS, WINDOWS2016, or UNKNOWN. |
+| snapshot.name | no | string | The name of the snapshot. |
+| snapshot.description | no | string | The description of the snapshot. |
+| snapshot.cpuHotPlug | no | bool | This volume is capable of CPU hot plug (no reboot required) |
+| snapshot.cpuHotUnplug | no | bool | This volume is capable of CPU hot unplug (no reboot required) |
+| snapshot.ramHotPlug | no | bool | This volume is capable of memory hot plug (no reboot required) |
+| snapshot.ramHotUnplug | no | bool | This volume is capable of memory hot unplug (no reboot required) |
+| snapshot.nicHotPlug | no | bool | This volume is capable of NIC hot plug (no reboot required) |
+| snapshot.nicHotUnplug | no | bool | This volume is capable of NIC hot unplug (no reboot required) |
+| snapshot.discVirtioHotPlug | no | bool | This volume is capable of Virt-IO drive hot plug (no reboot required) |
+| snapshot.discVirtioHotUnplug | no | bool | This volume is capable of Virt-IO drive hot unplug (no reboot required) |
+| snapshot.discScsiHotPlug | no | bool | This volume is capable of SCSI drive hot plug (no reboot required) |
+| snapshot.discScsiHotUnplug | no | bool | This volume is capable of SCSI drive hot unplug (no reboot required) |
+| snapshot.licenceType | no | string | The snapshot's licence type: LINUX, WINDOWS, WINDOWS2016, or UNKNOWN. |
 
 After retrieving a snapshot, you can change its properties and call the `updateSnapshot` method:
 
 ```
-updateSnapshot(String dataCenterId, String snapshotId, Snapshot.Properties snapshot)
+updateSnapshot(String snapshotId, Snapshot.Properties snapshot)
 ```
 
 ---

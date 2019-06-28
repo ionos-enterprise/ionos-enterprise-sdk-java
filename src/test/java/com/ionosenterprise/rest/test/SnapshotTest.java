@@ -118,7 +118,7 @@ public class SnapshotTest extends BaseTest {
             IllegalAccessException, IllegalArgumentException, InvocationTargetException, InterruptedException {
 
         Snapshot.Properties properties = SnapshotResource.getEditSnapshot().getProperties();
-        Snapshot snapshot = ionosEnterpriseApi.getSnapshot().updateSnapshot(dataCenterId, snapshotId, properties);
+        Snapshot snapshot = ionosEnterpriseApi.getSnapshot().updateSnapshot(snapshotId, properties);
         waitTillProvisioned(snapshot.getRequestId());
         assertEquals(snapshot.getProperties().getName(), properties.getName());
         assertEquals(snapshot.getProperties().getDescription(), properties.getDescription());
@@ -129,7 +129,7 @@ public class SnapshotTest extends BaseTest {
             IllegalAccessException, IllegalArgumentException, InvocationTargetException, InterruptedException {
 
         Snapshot.Properties properties = SnapshotResource.getEditLvsSnapshot().getProperties();
-        Snapshot snapshot = ionosEnterpriseApi.getSnapshot().updateSnapshot(dataCenterId, snapshotId, properties);
+        Snapshot snapshot = ionosEnterpriseApi.getSnapshot().updateSnapshot(snapshotId, properties);
         waitTillProvisioned(snapshot.getRequestId());
         assertEquals(snapshot.getProperties().getName(), properties.getName());
         assertEquals(snapshot.getProperties().getDescription(), properties.getDescription());
