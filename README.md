@@ -1,10 +1,12 @@
 # SDK for Java
 
 Version: **ionos-enterprise-sdk-java v5.0.0**
+Legacy: **v4.1.0 v4.0.0**
 
 ## Table of Contents
 
 * [Description](#description)
+* [What's New?](#whats-new)
 * [Getting Started](#getting-started)
 * [Installation](#installation)
 * [Usage](#usage)
@@ -51,6 +53,15 @@ Version: **ionos-enterprise-sdk-java v5.0.0**
 This Java library is a wrapper for the 1&1 IONOS Enterprise REST API. All API operations are performed over SSL and are authenticated using your 1&1 IONOS Enterprise portal credentials. The API can be accessed within an instance running in 1&1 IONOS Enterprise or directly over the Internet from any application that can send an HTTPS request and receive an HTTPS response.
 
 This guide will show you how to programmatically perform common management tasks using the 1&1 IONOS Enterprise SDK for Java.
+
+## What's New?
+
+The default endpoint for consuming the 1&1 IONOS Enterprise Cloud API points to version 5:
+`IONOS_ENTERPRISE_API_URL=https://api.ionos.com/cloudapi/v5/`.
+
+Was fixed security alerts of the SDK dependencies reported by the GitHub by using current latest versions.
+
+New features of the 1&1 IONOS Enterprise Cloud API version 5 can be found [here](https://devops.ionos.com/api/cloud/v5/#whats-new)
 
 ## Getting Started
 
@@ -191,7 +202,7 @@ This example will create a composite data center with an associated server, NIC,
 
 ### How to: Create a Server
 
-This example creates a server and assigns it an OS, cores, and memory. We urge you to refer to the [documentation](https://devops.ionos.com/api/rest/) to see the complete list attributes available.
+This example creates a server and assigns it an OS, cores, and memory. We urge you to refer to the [documentation](https://devops.ionos.com/api/cloud/v5/) to see the complete list attributes available.
 
     Server server = new Server();
     server.getProperties().setName("SDK Test Server");
@@ -2135,7 +2146,7 @@ You can engage with us on the [1&1 IONOS Enterprise DevOps Central](https://devo
 **Additional Resources**
 
 * [1&1 IONOS Enterprise SDK for Java](https://devops.ionos.com/libraries/java/) guide.
-* [1&1 IONOS Enterprise REST API](https://devops.ionos.com/api/rest/) documentation.
+* [1&1 IONOS Enterprise REST API](https://devops.ionos.com/api/cloud/v5/) documentation.
 * Ask a question or discuss at [1&1 IONOS Enterprise DevOps Central](https://devops.ionos.com/community/).
 * Report an [issue here](https://github.com/ionos-enterprise/ionos-enterprise-sdk-java/issues).
 
