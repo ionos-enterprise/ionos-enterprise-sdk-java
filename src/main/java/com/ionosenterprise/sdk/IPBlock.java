@@ -100,7 +100,7 @@ public class IPBlock extends BaseAPI {
    }
 
    /**
-    * Update the name of a an IP block.
+    * Update the name of an IP block.
     *
     * @param ipBlock object has the following properties:
     * <br>
