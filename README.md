@@ -1606,6 +1606,10 @@ The following table describes the request arguments:
 | createSnapshot | no | bool | Indicates if the group is allowed to create snapshots. |
 | reserveIp | no | bool | Indicates if the group is allowed to reserve IP addresses. |
 | accessActivityLog | no | bool | Indicates if the group is allowed to access activity log. |
+| createPcc | no | bool | Indicates if the group is allowed to create PPCs. |
+| s3Privilege | no | bool | Indicates if the group is allowed to manage S3. |
+| createBackupUnit | no | bool | Indicates if the group is allowed to create backup units. |
+| createInternetAccess | no | bool | Indicates if the group is allowed to create public LANs. |
 
     createGroup(Group group)
 
@@ -1625,6 +1629,10 @@ The following table describes the request arguments:
 | group.createSnapshot | no | bool | Indicates if the group is allowed to create snapshots. |
 | group.reserveIp | no | bool | Indicates if the group is allowed to reserve IP addresses. |
 | group.accessActivityLog | no | bool | Indicates if the group is allowed to access activity log. |
+| createPcc | no | bool | Indicates if the group is allowed to create PPCs. |
+| s3Privilege | no | bool | Indicates if the group is allowed to manage S3. |
+| createBackupUnit | no | bool | Indicates if the group is allowed to create backup units. |
+| createInternetAccess | no | bool | Indicates if the group is allowed to create public LANs. |
 
       updateGroup(String groupId, Group.Properties group)
 
@@ -1773,8 +1781,9 @@ The following table describes the request arguments:
 | user.firstname | **yes** | string | A name for the user. |
 | user.lastname | **yes**  | bool | A name for the user. |
 | user.email | **yes**  | bool | An e-mail address for the user. |
-| user.administrator | **yes** | bool | Assigns the user have administrative rights. |
-| user.forceSecAuth | **yes** | bool | Indicates if secure (two-factor) authentication should be forced for the user. |
+| user.administrator | no | bool | Assigns the user have administrative rights. |
+| user.forceSecAuth | no | bool | Indicates if secure (two-factor) authentication should be forced for the user. |
+| user.active | no | bool | Indicates if user is active. Contract Owner/Admins can set a user to active/inactive instead of deleting them. |
 
     updateUser(String userId,User.Properties user)
 

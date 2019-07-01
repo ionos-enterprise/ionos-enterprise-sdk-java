@@ -60,14 +60,18 @@ public class GroupTest extends BaseTest {
         Group group = GroupResource.getGroup();
         Group newGroup = ionosEnterpriseApi.getGroup().createGroup(group);
         assertNotNull(newGroup);
-        groupId = newGroup.getId();
-        waitTillProvisioned(newGroup.getRequestId());
-
         assertEquals(newGroup.getProperties().getName(), group.getProperties().getName());
         assertEquals(newGroup.getProperties().getCreateDataCenter(), group.getProperties().getCreateDataCenter());
         assertEquals(newGroup.getProperties().getCreateSnapshot(), group.getProperties().getCreateSnapshot());
         assertEquals(newGroup.getProperties().getReserveIp(), group.getProperties().getReserveIp());
         assertEquals(newGroup.getProperties().getAccessActivityLog(), group.getProperties().getAccessActivityLog());
+        assertEquals(newGroup.getProperties().getCreatePcc(), group.getProperties().getCreatePcc());
+        assertEquals(newGroup.getProperties().getS3Privilege(), group.getProperties().getS3Privilege());
+        assertEquals(newGroup.getProperties().getCreateBackupUnit(), group.getProperties().getCreateBackupUnit());
+        assertEquals(newGroup.getProperties().getCreateInternetAccess(), group.getProperties().getCreateInternetAccess());
+
+        groupId = newGroup.getId();
+        waitTillProvisioned(newGroup.getRequestId());
     }
 
     @Test
@@ -88,6 +92,10 @@ public class GroupTest extends BaseTest {
         assertEquals(group.getProperties().getCreateSnapshot(), properties.getCreateSnapshot());
         assertEquals(group.getProperties().getReserveIp(), properties.getReserveIp());
         assertEquals(group.getProperties().getAccessActivityLog(), properties.getAccessActivityLog());
+        assertEquals(group.getProperties().getCreatePcc(), properties.getCreatePcc());
+        assertEquals(group.getProperties().getS3Privilege(), properties.getS3Privilege());
+        assertEquals(group.getProperties().getCreateBackupUnit(), properties.getCreateBackupUnit());
+        assertEquals(group.getProperties().getCreateInternetAccess(), properties.getCreateInternetAccess());
     }
 
     @Test
