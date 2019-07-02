@@ -31,6 +31,7 @@
 package com.ionosenterprise.sdk;
 
 import com.ionosenterprise.rest.client.RestClientException;
+import com.ionosenterprise.rest.domain.SingleSignOnUrl;
 import com.ionosenterprise.rest.domain.Users;
 
 import java.io.IOException;
@@ -42,8 +43,6 @@ import java.util.Map;
  * @author denis@stackpointcloud.com
  */
 public class User extends BaseAPI {
-
-    private String credentials;
 
     public User() throws Exception {
         super("um/users","");
@@ -137,5 +136,16 @@ public class User extends BaseAPI {
      */
     public void removeUserFromGroup(String groupId,String userId) throws RestClientException, IOException {
         client.delete(getUrlBase().concat(parentResource).concat("/").concat(groupId).concat("/").concat(resource).concat("/").concat(userId),   202);
+    }
+
+    /**
+     * Retrieves the URL to open CMC in a browser in context of the given user
+     *
+     * @param userId The unique ID of the user.
+     * @return SingleSignOnUrl object containing the ssoUrl field
+     */
+    public SingleSignOnUrl getSSOUrl(String userId) throws RestClientException, IOException {
+        return client.get(getUrlBase().concat(resource).concat("/").concat(userId).concat("/s3ssourl"), null,
+                SingleSignOnUrl.class);
     }
 }

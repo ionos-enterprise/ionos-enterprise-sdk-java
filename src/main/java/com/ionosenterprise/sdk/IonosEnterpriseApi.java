@@ -54,6 +54,7 @@ public class IonosEnterpriseApi {
         this.share = new Share();
         this.user = new User();
         this.resource = new Resource();
+        this.s3Key = new S3Key();
     }
 
     private Datacenter dataCenter;
@@ -73,6 +74,7 @@ public class IonosEnterpriseApi {
     private Share share;
     private User user;
     private Resource resource;
+    private S3Key s3Key;
 
     /**
      * @return the dataCenter
@@ -80,13 +82,6 @@ public class IonosEnterpriseApi {
     public Datacenter getDataCenter() {
         this.dataCenter.setCredentials(credentials);
         return dataCenter;
-    }
-
-    /**
-     * @param dataCenter the dataCenter to set
-     */
-    public void setDataCenter(Datacenter dataCenter) {
-        this.dataCenter = dataCenter;
     }
 
     /**
@@ -98,25 +93,11 @@ public class IonosEnterpriseApi {
     }
 
     /**
-     * @param server the server to set
-     */
-    public void setServer(Server server) {
-        this.server = server;
-    }
-
-    /**
      * @return the volume
      */
     public Volume getVolume() {
         this.volume.setCredentials(credentials);
         return volume;
-    }
-
-    /**
-     * @param volume the volume to set
-     */
-    public void setVolume(Volume volume) {
-        this.volume = volume;
     }
 
     /**
@@ -128,25 +109,11 @@ public class IonosEnterpriseApi {
     }
 
     /**
-     * @param snapshot the snapshot to set
-     */
-    public void setSnapshot(Snapshot snapshot) {
-        this.snapshot = snapshot;
-    }
-
-    /**
      * @return the loadbalancer
      */
     public Loadbalancer getLoadbalancer() {
         this.loadbalancer.setCredentials(credentials);
         return loadbalancer;
-    }
-
-    /**
-     * @param loadbalancer the loadbalancer to set
-     */
-    public void setLoadbalancer(Loadbalancer loadbalancer) {
-        this.loadbalancer = loadbalancer;
     }
 
     /**
@@ -158,25 +125,11 @@ public class IonosEnterpriseApi {
     }
 
     /**
-     * @param nic the nic to set
-     */
-    public void setNic(Nic nic) {
-        this.nic = nic;
-    }
-
-    /**
      * @return the firewallRule
      */
     public FirewallRule getFirewallRule() {
         this.firewallRule.setCredentials(credentials);
         return firewallRule;
-    }
-
-    /**
-     * @param firewallRule the firewallRule to set
-     */
-    public void setFirewallRule(FirewallRule firewallRule) {
-        this.firewallRule = firewallRule;
     }
 
     /**
@@ -188,25 +141,11 @@ public class IonosEnterpriseApi {
     }
 
     /**
-     * @param image the image to set
-     */
-    public void setImage(Image image) {
-        this.image = image;
-    }
-
-    /**
      * @return the ipBlock
      */
     public IPBlock getIpBlock() {
         this.ipBlock.setCredentials(credentials);
         return ipBlock;
-    }
-
-    /**
-     * @param ipBlock the ipBlock to set
-     */
-    public void setIpBlock(IPBlock ipBlock) {
-        this.ipBlock = ipBlock;
     }
 
     /**
@@ -218,13 +157,6 @@ public class IonosEnterpriseApi {
     }
 
     /**
-     * @param request the request to set
-     */
-    public void setRequest(Request request) {
-        this.request = request;
-    }
-
-    /**
      * @return the lan
      */
     public Lan getLan() {
@@ -233,32 +165,21 @@ public class IonosEnterpriseApi {
     }
 
     /**
-     * @param lan the lan to set
+     * @param username the username to be set
+     * @param password the password to be set
      */
-    public void setLan(Lan lan) {
-        this.lan = lan;
-    }
-
-    /**
-     * @param credentials the credentials to set
-     */
-    public void setCredentials(String credentials) {
-        this.credentials = credentials;
-    }
-
     public void setCredentials(String username, String password) {
         byte[] bytesEncoded = Base64.encodeBase64((username + ":" + password).getBytes());
 
         this.credentials = new String(bytesEncoded);
     }
 
+    /**
+     * @return the location
+     */
     public Location getLocation() {
         this.location.setCredentials(credentials);
         return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
     }
 
     /**
@@ -277,38 +198,34 @@ public class IonosEnterpriseApi {
         return group;
     }
 
-    public void setGroup(Group group) {
-        this.group.setCredentials(credentials);
-        this.group = group;
-    }
-
+    /**
+     * @return the resource
+     */
     public Resource getResource() {
         this.resource.setCredentials(credentials);
         return resource;
     }
 
-    public void setResource(Resource resource) {
-        this.resource.setCredentials(credentials);
-        this.resource = resource;
-    }
-
+    /**
+     * @return the user
+     */
     public User getUser() {
         this.user.setCredentials(credentials);
         return user;
     }
 
-    public void setUser(User user) {
-        this.user.setCredentials(credentials);
-        this.user = user;
-    }
-
+    /**
+     * @return the share
+     */
     public Share getShare() {
         this.share.setCredentials(credentials);
         return share;
     }
 
-    public void setShare(Share share) {
-        this.share.setCredentials(credentials);
-        this.share = share;
+    /**
+     * @return the s3Key
+     */
+    public S3Key getS3Key() {
+        return s3Key;
     }
 }

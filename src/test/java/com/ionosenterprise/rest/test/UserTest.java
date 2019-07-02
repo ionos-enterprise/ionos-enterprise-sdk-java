@@ -32,6 +32,7 @@ package com.ionosenterprise.rest.test;
 
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Group;
+import com.ionosenterprise.rest.domain.SingleSignOnUrl;
 import com.ionosenterprise.rest.domain.User;
 import com.ionosenterprise.rest.domain.Users;
 import com.ionosenterprise.rest.test.resource.CommonResource;
@@ -86,6 +87,18 @@ public class UserTest extends BaseTest {
     public void t3_testGetUser() throws RestClientException, IOException {
         User user = ionosEnterpriseApi.getUser().getUser(userId);
         assertNotNull(user);
+        assertNotNull(user.getProperties());
+        assertNotNull(user.getProperties().getFirstname());
+        assertNotNull(user.getProperties().getLastname());
+        assertNotNull(user.getProperties().getEmail());
+        assertNotNull(user.getProperties().getS3CanonicalUserId());
+    }
+
+    @Test
+    public void t31_testGetSSOUrl() throws RestClientException, IOException {
+        SingleSignOnUrl ssoUrl = ionosEnterpriseApi.getUser().getSSOUrl(userId);
+        assertNotNull(ssoUrl);
+        assertNotNull(ssoUrl.getSsoUrl());
     }
 
     @Test
