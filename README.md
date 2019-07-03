@@ -37,6 +37,7 @@ Legacy: **v4.1.0 v4.0.0**
     * [Users](#users)
     * [Resources](#resources)
     * [Contract Resources](#contract-resources)
+    * [Backup Units](#backup-units)
 * [Examples](#examples)
     * [POM](#pom)
     * [Wait for Resources](#wait-for-resources)
@@ -1872,6 +1873,87 @@ The following table describes the request arguments:
 Retrieves information about the resource limits for a particular contract and the current resource usage.
 
     getContract()
+
+---
+
+### Backup Units
+
+#### List Backup Units
+
+Retrieve a list of all the backup units the supplied credentials have access to.
+
+    getAllBackupUnits()
+
+---
+
+#### Get Backup Unit
+
+Retrieves details about a specific backup unit.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| backupunitId | **yes** | string | The backup unit's ID. |
+
+    getBackupUnit(String backupunitId)
+
+---
+
+#### Get Backup Unit SSO URL
+
+The ProfitBricks backup system features a web-based GUI. Once you have created a backup unit, you can access the GUI 
+with a Single Sign On (SSO) URL that can be retrieved from the Cloud API using this request.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| backupunitId | **yes** | string | The backup unit's ID. |
+
+    getSSOUrl(String backupunitId)
+
+---
+
+#### Create Backup Unit
+
+Use this to create a new backup unit.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| name | **yes** | string | Alphanumeric name you want assigned to the backup unit. |
+| password | **yes**  | bool | Alphanumeric password you want assigned to the backup unit. |
+| email | **yes**  | bool | The e-mail address you want assigned to the backup unit. |
+
+    createBackupUnit(BackupUnit backupUnit)
+
+---
+
+#### Update Backup Unit
+
+Update a specific backup unit.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| backupunitId | **yes** | string | The backup unit's ID. |
+| password | no  | bool | Alphanumeric password you want assigned to the backup unit. |
+| email | no  | bool | The e-mail address you want assigned to the backup unit. |
+
+    updateBackupUnit(String backupunitId, BackupUnit.Properties backupUnitProperties)
+
+---
+
+#### Delete Backup Unit
+
+A backup unit may be deleted using a DELETE request. Deleting a backup unit is a dangerous operation. A successful 
+DELETE request will remove the backup plans inside a backup unit, ALL backups associated with the backup unit, the 
+backup user and finally the backup unit itself.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| backupunitId | **yes** | string | The backup unit's ID. |
+
+    deleteBackupUnit(String backupunitId)
 
 ---
 
