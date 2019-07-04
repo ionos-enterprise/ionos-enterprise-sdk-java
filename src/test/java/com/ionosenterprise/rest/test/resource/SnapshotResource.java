@@ -38,6 +38,7 @@ import com.ionosenterprise.rest.domain.Snapshot;
 public class SnapshotResource {
     private static Snapshot snapshot;
     private static Snapshot editSnapshot;
+    private static Snapshot editLvsSnapshot;
 
     public static Snapshot getSnapshot() {
         if (snapshot == null) {
@@ -55,5 +56,24 @@ public class SnapshotResource {
             editSnapshot.getProperties().setDescription("Java SDK test snapshot - RENAME");
         }
         return editSnapshot;
+    }
+
+    public static Snapshot getEditLvsSnapshot() {
+        if (editLvsSnapshot == null) {
+            editLvsSnapshot = new Snapshot();
+            editLvsSnapshot.getProperties().setName("Java SDK Test - EDIT LVS");
+            editLvsSnapshot.getProperties().setDescription("Java SDK test snapshot - EDIT LVS");
+            editLvsSnapshot.getProperties().setCpuHotPlug(true);
+            editLvsSnapshot.getProperties().setCpuHotUnplug(true);
+            editLvsSnapshot.getProperties().setRamHotPlug(true);
+            editLvsSnapshot.getProperties().setRamHotUnplug(true);
+            editLvsSnapshot.getProperties().setNicHotPlug(true);
+            editLvsSnapshot.getProperties().setNicHotUnplug(true);
+            editLvsSnapshot.getProperties().setDiscScsiHotPlug(true);
+            editLvsSnapshot.getProperties().setDiscScsiHotUnplug(true);
+            editLvsSnapshot.getProperties().setDiscVirtioHotPlug(true);
+            editLvsSnapshot.getProperties().setDiscVirtioHotUnplug(true);
+        }
+        return editLvsSnapshot;
     }
 }

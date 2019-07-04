@@ -118,14 +118,27 @@ public class SnapshotTest extends BaseTest {
             IllegalAccessException, IllegalArgumentException, InvocationTargetException, InterruptedException {
 
         Snapshot.Properties properties = SnapshotResource.getEditSnapshot().getProperties();
-        Snapshot snapshot = ionosEnterpriseApi.getSnapshot().updateSnapshot(dataCenterId, snapshotId, properties);
+        Snapshot snapshot = ionosEnterpriseApi.getSnapshot().updateSnapshot(snapshotId, properties);
         waitTillProvisioned(snapshot.getRequestId());
         assertEquals(snapshot.getProperties().getName(), properties.getName());
         assertEquals(snapshot.getProperties().getDescription(), properties.getDescription());
     }
 
     @Test
-    public void t6_getSnapshotFail() throws IOException {
+    public void t6_updateLvsSnapshot() throws RestClientException, IOException, NoSuchMethodException,
+            IllegalAccessException, IllegalArgumentException, InvocationTargetException, InterruptedException {
+
+        Snapshot.Properties properties = SnapshotResource.getEditLvsSnapshot().getProperties();
+        Snapshot snapshot = ionosEnterpriseApi.getSnapshot().updateSnapshot(snapshotId, properties);
+        waitTillProvisioned(snapshot.getRequestId());
+        assertEquals(snapshot.getProperties().getName(), properties.getName());
+        assertEquals(snapshot.getProperties().getDescription(), properties.getDescription());
+        assertEquals(snapshot.getProperties().getCpuHotPlug(), properties.getCpuHotPlug());
+        assertEquals(snapshot.getProperties().getCpuHotUnplug(), properties.getCpuHotUnplug());
+    }
+
+    @Test
+    public void t7_getSnapshotFail() throws IOException {
         try {
             ionosEnterpriseApi.getSnapshot().getSnapshot(CommonResource.getBadId());
         } catch (RestClientException ex) {
@@ -134,7 +147,7 @@ public class SnapshotTest extends BaseTest {
     }
 
     @Test
-    public void t7_createSnapshotFail() throws IOException, IllegalAccessException, IllegalArgumentException,
+    public void t8_createSnapshotFail() throws IOException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException {
 
         try {

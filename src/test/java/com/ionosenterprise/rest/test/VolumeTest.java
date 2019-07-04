@@ -90,7 +90,7 @@ public class VolumeTest extends BaseTest {
     }
 
     @Test
-    public void t2_testGetVolume() throws RestClientException, IOException, InterruptedException {
+    public void t2_testGetVolume() throws RestClientException, IOException {
         Volume volume = ionosEnterpriseApi.getVolume().getVolume(dataCenterId, volumeId);
         assertNotNull(volume);
         Volume.Properties properties = VolumeResource.getVolume().getProperties();
@@ -111,7 +111,19 @@ public class VolumeTest extends BaseTest {
     }
 
     @Test
-    public void t4_testAttachVolume() throws RestClientException, IOException, InterruptedException,
+    public void t4_testUpdateLvsVolume() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException,
+            RestClientException, IOException {
+
+        Volume.Properties properties = VolumeResource.getEditLvsVolume().getProperties();
+        Volume after = ionosEnterpriseApi.getVolume().updateVolume(dataCenterId, volumeId, properties);
+        assertEquals(after.getProperties().getName(), properties.getName());
+        assertEquals(after.getProperties().getCpuHotPlug(), properties.getCpuHotPlug());
+        assertEquals(after.getProperties().getRamHotPlug(), properties.getRamHotPlug());
+        assertEquals(after.getProperties().getNicHotPlug(), properties.getNicHotPlug());
+    }
+
+    @Test
+    public void t5_testAttachVolume() throws RestClientException, IOException, InterruptedException,
             NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
         Volume attachedVolume = ionosEnterpriseApi.getVolume().attachVolume(dataCenterId, serverId, volumeId);
@@ -120,18 +132,18 @@ public class VolumeTest extends BaseTest {
     }
 
     @Test
-    public void t5_testGetAllAttachedVolumes() throws RestClientException, IOException {
+    public void t6_testGetAllAttachedVolumes() throws RestClientException, IOException {
         Volumes volumes = ionosEnterpriseApi.getVolume().getAllVolumes(dataCenterId, serverId);
         assertNotNull(volumes);
     }
 
     @Test
-    public void t6_testDetachVolume() throws RestClientException, IOException {
+    public void t7_testDetachVolume() throws RestClientException, IOException {
         ionosEnterpriseApi.getVolume().detachVolume(dataCenterId, serverId, volumeId);
     }
 
     @Test
-    public void t7_testFailVolumeCreate() throws InvocationTargetException, NoSuchMethodException,
+    public void t8_testFailVolumeCreate() throws InvocationTargetException, NoSuchMethodException,
             IllegalAccessException, IOException {
 
         try {
@@ -142,7 +154,7 @@ public class VolumeTest extends BaseTest {
     }
 
     @Test
-    public void t8_testGetFailVolume() throws IOException {
+    public void t9_testGetFailVolume() throws IOException {
         try {
             ionosEnterpriseApi.getVolume().getVolume(dataCenterId, CommonResource.getBadId());
         } catch (RestClientException ex) {
