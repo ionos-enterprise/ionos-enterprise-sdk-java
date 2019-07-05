@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BackupUnits extends BaseResource {
-    private List<User> items =  new ArrayList<User>();
+    private List<BackupUnit> items =  new ArrayList<BackupUnit>();
 
-    public List<User> getItems() {
+    public List<BackupUnit> getItems() {
         return items;
     }
 
-    public void setItems(List<User> items) {
+    public void setItems(List<BackupUnit> items) {
         this.items = items;
     }
 }
