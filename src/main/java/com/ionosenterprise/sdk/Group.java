@@ -39,9 +39,9 @@ import java.lang.reflect.InvocationTargetException;
  *
  * @author denis@stackpointcloud.com
  */
-public class Group extends BaseAPI {
-    public Group() throws Exception {
-        super("um/groups", null);
+public class Group extends AbstractBaseAPI {
+    public Group() {
+        super("um/groups");
     }
 
     /**
@@ -50,7 +50,8 @@ public class Group extends BaseAPI {
      * @return Groups object with a list of Groups
      */
     public Groups getAllGroups() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat(depth), null, Groups.class);
+        return client.get(getUrlBase().concat(getResourcePath()).concat(getDepth()),
+                null, Groups.class);
     }
 
     /**
@@ -60,7 +61,8 @@ public class Group extends BaseAPI {
      * @return Group object with properties and metadata
      */
     public com.ionosenterprise.rest.domain.Group getGroup(String groupId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat("/").concat(groupId).concat(depth), null, com.ionosenterprise.rest.domain.Group.class);
+        return client.get(getUrlBase().concat(getResourcePath()).concat("/").concat(groupId)
+                        .concat(getDepth()), null, com.ionosenterprise.rest.domain.Group.class);
     }
 
     /**
@@ -69,11 +71,12 @@ public class Group extends BaseAPI {
      * @param groupId The unique ID of the group.
      */
     public void deleteGroup(String groupId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(resource).concat("/").concat(groupId),202);
+        client.delete(getUrlBase().concat(getResourcePath()).concat("/").concat(groupId),202);
     }
 
     /**
      * Create a single Group, you can add child items to trigger a composite provision.
+     *
      * @param  group object has the following properties:
      * <br>
      * name= A name that was given to the group.
@@ -87,8 +90,12 @@ public class Group extends BaseAPI {
      * accessActivityLog= The group has permission to access the activity log.
      * @return Group object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.Group createGroup(com.ionosenterprise.rest.domain.Group group) throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        return client.create(getUrlBase().concat(resource), group, com.ionosenterprise.rest.domain.Group.class, 202);
+    public com.ionosenterprise.rest.domain.Group createGroup(com.ionosenterprise.rest.domain.Group group)
+            throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException, NoSuchMethodException {
+
+        return client.create(getUrlBase().concat(getResourcePath()), group,
+                com.ionosenterprise.rest.domain.Group.class, 202);
     }
 
     /**
@@ -97,7 +104,11 @@ public class Group extends BaseAPI {
      * @param groupId The unique ID of the group.
      * @return Group object with properties and metadata
      */
-    public com.ionosenterprise.rest.domain.Group updateGroup(String groupId, Object object) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return client.put(getUrlBase().concat(resource).concat("/").concat(groupId), object, com.ionosenterprise.rest.domain.Group.class, 202);
+    public com.ionosenterprise.rest.domain.Group updateGroup(String groupId, Object object)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        return client.put(getUrlBase().concat(getResourcePath()).concat("/").concat(groupId),
+                object, com.ionosenterprise.rest.domain.Group.class, 202);
     }
 }

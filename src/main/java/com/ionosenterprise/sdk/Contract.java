@@ -37,9 +37,10 @@ import java.io.IOException;
 /**
  * @author denis@stackpointcloud.com
  */
-public class Contract extends BaseAPI {
-    public Contract() throws Exception {
-        super("contracts", "");
+public class Contract extends AbstractBaseAPI {
+
+    public Contract() {
+        super("contracts");
     }
 
     /**
@@ -48,6 +49,7 @@ public class Contract extends BaseAPI {
      * @return Contract object with properties and metadata.
      */
     public com.ionosenterprise.rest.domain.Contract getContract() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat(depth), null, com.ionosenterprise.rest.domain.Contract.class);
+        return client.get(getUrlBase().concat(getResourcePath()).concat(getDepth()),
+                null, com.ionosenterprise.rest.domain.Contract.class);
     }
 }

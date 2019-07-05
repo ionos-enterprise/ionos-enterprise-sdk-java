@@ -36,14 +36,15 @@ import com.ionosenterprise.rest.domain.PBObject;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 
 /**
  * @author jasmin@stackpointcloud.com
  */
-public class Nic extends BaseAPI {
+public class Nic extends AbstractBaseAPI {
 
-    public Nic() throws Exception {
-        super("nics", "servers");
+    public Nic() {
+        super("datacenters/%s/servers/%s/nics");
     }
 
     /**
@@ -54,9 +55,8 @@ public class Nic extends BaseAPI {
      * @return Nics object with a list of Nics datacenter.
      */
     public Nics getAllNics(String dataCenterId, String serverId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
-                .concat(parentResource).concat("/").concat(serverId).concat("/")
-                .concat(resource).concat(depth), null, Nics.class);
+        return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId, serverId))).concat(getDepth()),
+                null, Nics.class);
     }
 
     /**
@@ -67,10 +67,11 @@ public class Nic extends BaseAPI {
      * @param nicId The unique ID of the nic
      * @return Nic object with properties and metadata
      */
-    public com.ionosenterprise.rest.domain.Nic getNic(String dataCenterId, String serverId, String nicId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
-                .concat(parentResource).concat("/").concat(serverId).concat("/")
-                .concat(resource).concat("/").concat(nicId).concat(depth), null, com.ionosenterprise.rest.domain.Nic.class);
+    public com.ionosenterprise.rest.domain.Nic getNic(String dataCenterId, String serverId, String nicId)
+            throws RestClientException, IOException {
+
+        return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId, serverId)))
+                .concat("/").concat(nicId).concat(getDepth()), null, com.ionosenterprise.rest.domain.Nic.class);
     }
 
     /**
@@ -105,10 +106,13 @@ public class Nic extends BaseAPI {
      * <br>
      * @return Nic object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.Nic createNic(String dataCenterId, String serverId, com.ionosenterprise.rest.domain.Nic nic) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
-                .concat(parentResource).concat("/").concat(serverId).concat("/")
-                .concat(resource), nic, com.ionosenterprise.rest.domain.Nic.class, 202);
+    public com.ionosenterprise.rest.domain.Nic createNic(String dataCenterId, String serverId,
+                                                         com.ionosenterprise.rest.domain.Nic nic)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        return client.create(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId, serverId))), nic,
+                com.ionosenterprise.rest.domain.Nic.class, 202);
     }
 
     /**
@@ -139,10 +143,12 @@ public class Nic extends BaseAPI {
      * <br>
      * @return Nic object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.Nic updateNic(String dataCenterId, String serverId, String nicId, Object nic) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return client.update(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
-                .concat(parentResource).concat("/").concat(serverId).concat("/")
-                .concat(resource).concat("/").concat(nicId), nic, com.ionosenterprise.rest.domain.Nic.class, 202);
+    public com.ionosenterprise.rest.domain.Nic updateNic(String dataCenterId, String serverId, String nicId, Object nic)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        return client.update(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId, serverId))).concat("/")
+                        .concat(nicId), nic, com.ionosenterprise.rest.domain.Nic.class, 202);
     }
 
     /**
@@ -153,9 +159,8 @@ public class Nic extends BaseAPI {
      * @param nicId The unique ID of the nic
      */
     public void deleteNic(String dataCenterId, String serverId, String nicId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
-                .concat(parentResource).concat("/").concat(serverId).concat("/")
-                .concat(resource).concat("/").concat(nicId), 202);
+        client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId, serverId))).concat("/")
+                .concat(nicId), 202);
     }
 
     /**
@@ -166,11 +171,16 @@ public class Nic extends BaseAPI {
      * @param loadBalancerId The unique ID of the load balancer.
      * @param nicId The unique ID of the nic.
      */
-    public com.ionosenterprise.rest.domain.Nic assignNicToLoadBalancer(String dataCenterId, String loadBalancerId, String nicId) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public com.ionosenterprise.rest.domain.Nic assignNicToLoadBalancer(String dataCenterId, String loadBalancerId,
+                                                                       String nicId)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
         PBObject payload = new PBObject();
         payload.setId(nicId);
 
-        return client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/").concat("loadbalancers").concat("/").concat(loadBalancerId).concat("/").
+        return client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+                .concat("loadbalancers").concat("/").concat(loadBalancerId).concat("/").
                 concat("balancednics"), payload, com.ionosenterprise.rest.domain.Nic.class, 202);
     }
 
@@ -181,8 +191,11 @@ public class Nic extends BaseAPI {
      * @param loadBalancerId The unique ID of the load balancer.
      * @param nicId The unique ID of the nic.
      */
-    public void unassignNicFromLoadBalancer(String dataCenterId, String loadBalancerId, String nicId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/").concat("loadbalancers").concat("/").concat(loadBalancerId).concat("/").
+    public void unassignNicFromLoadBalancer(String dataCenterId, String loadBalancerId, String nicId)
+            throws RestClientException, IOException {
+
+        client.delete(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+                .concat("loadbalancers").concat("/").concat(loadBalancerId).concat("/").
                 concat("balancednics").concat("/").concat(nicId), 202);
     }
 
@@ -194,8 +207,9 @@ public class Nic extends BaseAPI {
      * @return Nics object with list of balanced nics
      */
     public Nics getAllBalancedNics(String dataCenterId, String loadBalancerId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/").concat("loadbalancers").concat("/").concat(loadBalancerId).concat("/").
-                concat("balancednics").concat(depth), null, Nics.class);
+        return client.get(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+                .concat("loadbalancers").concat("/").concat(loadBalancerId).concat("/").
+                concat("balancednics").concat(getDepth()), null, Nics.class);
     }
 
     /**
@@ -203,12 +217,15 @@ public class Nic extends BaseAPI {
      *
      * @param dataCenterId The unique ID of the data center
      * @param loadBalancerId The unique ID of the load balancer.
-     * @param serverId The unique ID of the server.
      * @param nicId The unique ID of the nic.
      * @return Nic object with properties and metadata
      */
-    public com.ionosenterprise.rest.domain.Nic getBalancedNic(String dataCenterId, String loadBalancerId, String serverId, String nicId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/").concat("loadbalancers").concat("/").concat(loadBalancerId).concat("/").
-                concat("balancednics").concat("/").concat(nicId).concat(depth), null, com.ionosenterprise.rest.domain.Nic.class);
+    public com.ionosenterprise.rest.domain.Nic getBalancedNic(String dataCenterId, String loadBalancerId, String nicId)
+            throws RestClientException, IOException {
+
+        return client.get(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+                .concat("loadbalancers").concat("/").concat(loadBalancerId).concat("/").
+                concat("balancednics").concat("/").concat(nicId).concat(getDepth()),
+                null, com.ionosenterprise.rest.domain.Nic.class);
     }
 }

@@ -40,10 +40,10 @@ import java.lang.reflect.InvocationTargetException;
  *
  * @author jasmin@stackpointcloud.com
  */
-public class IPBlock extends BaseAPI {
+public class IPBlock extends AbstractLabelAPI {
 
-   public IPBlock() throws Exception {
-      super("ipblocks", null);
+   public IPBlock() {
+      super("ipblocks");
    }
 
     /**
@@ -52,7 +52,7 @@ public class IPBlock extends BaseAPI {
      * @return IPBlocks object with a list of IPBlocks in datacenter.
      */
    public IPBlocks getAllIPBlocks() throws RestClientException, IOException {
-      return client.get(getUrlBase().concat(resource).concat(depth), null, IPBlocks.class);
+      return client.get(getUrlBase().concat(getResourcePath()).concat(getDepth()), null, IPBlocks.class);
    }
 
     /**
@@ -62,7 +62,8 @@ public class IPBlock extends BaseAPI {
      * @return IPBlock object with properties and metadata.
      */
    public com.ionosenterprise.rest.domain.IPBlock getIPBlock(String ipBlockId) throws RestClientException, IOException {
-      return client.get(getUrlBase().concat(resource).concat("/").concat(ipBlockId).concat(depth), null, com.ionosenterprise.rest.domain.IPBlock.class);
+      return client.get(getUrlBase().concat(getResourcePath()).concat("/").concat(ipBlockId).concat(getDepth()),
+              null, com.ionosenterprise.rest.domain.IPBlock.class);
    }
 
    /**
@@ -82,8 +83,12 @@ public class IPBlock extends BaseAPI {
      * <br>
      * @return IPBlock object with properties and metadata.
      */
-   public com.ionosenterprise.rest.domain.IPBlock createIPBlock(com.ionosenterprise.rest.domain.IPBlock ipBlock) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      return client.create(getUrlBase().concat(resource), ipBlock, com.ionosenterprise.rest.domain.IPBlock.class, 202);
+   public com.ionosenterprise.rest.domain.IPBlock createIPBlock(com.ionosenterprise.rest.domain.IPBlock ipBlock)
+           throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+           IllegalArgumentException, InvocationTargetException {
+
+      return client.create(getUrlBase().concat(getResourcePath()), ipBlock,
+              com.ionosenterprise.rest.domain.IPBlock.class, 202);
    }
 
     /**
@@ -92,6 +97,6 @@ public class IPBlock extends BaseAPI {
      * @param ipBlockId The unique ID of the IP block.
      */
    public void deleteIPBlock(String ipBlockId) throws RestClientException, IOException {
-      client.delete(getUrlBase().concat(resource).concat("/").concat(ipBlockId), 202);
+      client.delete(getUrlBase().concat(getResourcePath()).concat("/").concat(ipBlockId), 202);
    }
 }

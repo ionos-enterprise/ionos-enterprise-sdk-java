@@ -29,68 +29,35 @@
  */
 package com.ionosenterprise.rest.client;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-import java.lang.reflect.Constructor;
-/**
- * @author jasmin@stackpointcloud.com
- */
 public class RestClientBuilder {
-
-   protected HttpClient client;
-
-   protected ObjectMapper mapper;
 
    protected RequestInterceptor interceptor;
 
-   protected Class<? extends RestClient> clazz;
-
-   protected RestClientBuilder() {
+   private RestClientBuilder() {
    }
 
-   public RestClientBuilder httpClient(HttpClient client) {
-      this.client = client;
-      return this;
+   public static RestClientBuilder create() {
+      return new RestClientBuilder();
    }
 
-   public RestClientBuilder objectMapper(ObjectMapper mapper) {
-      this.mapper = mapper;
-      return this;
-   }
-
-   public RestClientBuilder requestInterceptor(RequestInterceptor interceptor) {
+   public com.ionosenterprise.rest.client.RestClientBuilder withInterceptor(RequestInterceptor interceptor) {
       this.interceptor = interceptor;
       return this;
    }
 
-   public RestClientBuilder restClientClass(Class<? extends RestClient> clazz) {
-      this.clazz = clazz;
-      return this;
-   }
-
    public RestClient build() {
-      if (clazz == null)
-         clazz = RestClient.class;
-      if (mapper == null) {
-         mapper = new ObjectMapper();
-         mapper.setSerializationInclusion(Include.NON_NULL);
-      }
-      if (client == null)
-         client = HttpClientBuilder.create().useSystemProperties().build();
-      return createRestClient(this, clazz);
-   }
+      RestClient restClient = new RestClient();
+      restClient.setInterceptor(this.interceptor);
+      restClient.setClient(HttpClientBuilder.create().useSystemProperties().build());
 
-   protected <T extends RestClient> T createRestClient(RestClientBuilder builder, Class<T> restClientClass) {
-      try {
-         Constructor<T> constructor = restClientClass.getDeclaredConstructor(RestClientBuilder.class);
-         constructor.setAccessible(true);
-         return constructor.newInstance(builder);
-      } catch (Exception e) {
-         throw new RuntimeException(e);
-      }
-   }
+      ObjectMapper objectMapper = new ObjectMapper();
+      objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+      restClient.setMapper(objectMapper);
 
+      return restClient;
+   }
 }

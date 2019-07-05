@@ -35,15 +35,15 @@ import com.ionosenterprise.rest.domain.Shares;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 
 /**
  * @author denis@stackpointcloud.com
  */
-public class Share extends BaseAPI {
-    private String credentials;
+public class Share extends AbstractBaseAPI {
 
-    public Share() throws Exception {
-        super("shares", "um/groups");
+    public Share() {
+        super("um/groups/%s/shares");
     }
 
     /**
@@ -52,7 +52,7 @@ public class Share extends BaseAPI {
      * @return Shares object with a list of Shares
      */
     public Shares getAllShares(String groupId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(parentResource).concat("/").concat(groupId).concat("/").concat(resource).concat(depth), null, Shares.class);
+        return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(groupId))).concat(getDepth()), null, Shares.class);
     }
 
     /**
@@ -61,8 +61,11 @@ public class Share extends BaseAPI {
      * @param shareId The unique ID of the share.
      * @return Share object with properties and metadata
      */
-    public com.ionosenterprise.rest.domain.Share getShare(String groupId, String shareId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(parentResource).concat("/").concat(groupId).concat("/").concat(resource).concat("/").concat(shareId).concat(depth), null, com.ionosenterprise.rest.domain.Share.class);
+    public com.ionosenterprise.rest.domain.Share getShare(String groupId, String shareId)
+            throws RestClientException, IOException {
+
+        return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(groupId))).concat("/").concat(shareId)
+                        .concat(getDepth()),null, com.ionosenterprise.rest.domain.Share.class);
     }
 
     /**
@@ -71,7 +74,7 @@ public class Share extends BaseAPI {
      * @param shareId The unique ID of the share.
      */
     public void deleteShare(String groupId, String shareId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(parentResource).concat("/").concat(groupId).concat("/").concat(resource).concat("/").concat(shareId),202);
+        client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(groupId))).concat("/").concat(shareId),202);
     }
 
     /**
@@ -84,8 +87,13 @@ public class Share extends BaseAPI {
      * sharePrivilege= The group has permission to share this resource.
      * @return Share object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.Share createShare(String groupId, String resourceId, com.ionosenterprise.rest.domain.Share share) throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        return client.create(getUrlBase().concat(parentResource).concat("/").concat(groupId).concat("/").concat(resource).concat("/").concat(resourceId), share, com.ionosenterprise.rest.domain.Share.class, 202);
+    public com.ionosenterprise.rest.domain.Share createShare(String groupId, String resourceId,
+                                                             com.ionosenterprise.rest.domain.Share share)
+            throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException, NoSuchMethodException {
+
+        return client.create(getUrlBase().concat(getResourcePath(Arrays.asList(groupId))).concat("/")
+                        .concat(resourceId), share, com.ionosenterprise.rest.domain.Share.class, 202);
     }
 
     /**
@@ -94,7 +102,11 @@ public class Share extends BaseAPI {
      * @param shareId The unique ID of the share.
      * @return Share object with properties and metadata
      */
-    public com.ionosenterprise.rest.domain.Share updateShare(String groupId, String shareId, Object object) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return client.put(getUrlBase().concat(parentResource).concat("/").concat(groupId).concat("/").concat(resource).concat("/").concat(shareId), object, com.ionosenterprise.rest.domain.Share.class, 202);
+    public com.ionosenterprise.rest.domain.Share updateShare(String groupId, String shareId, Object object)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        return client.put(getUrlBase().concat(getResourcePath(Arrays.asList(groupId))).concat("/").concat(shareId),
+                object, com.ionosenterprise.rest.domain.Share.class, 202);
     }
 }

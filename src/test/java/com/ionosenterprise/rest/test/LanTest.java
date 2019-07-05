@@ -34,22 +34,20 @@ import com.ionosenterprise.rest.domain.*;
 import com.ionosenterprise.rest.test.resource.CommonResource;
 import com.ionosenterprise.rest.test.resource.DataCenterResource;
 import com.ionosenterprise.rest.test.resource.LanResource;
-import static com.ionosenterprise.rest.test.DatacenterTest.waitTillProvisioned;
-
-import com.ionosenterprise.sdk.IonosEnterpriseApi;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import org.junit.AfterClass;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
 
 /**
  * @author jasmin@stackpointcloud.com
@@ -116,8 +114,7 @@ public class LanTest extends BaseTest {
             IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
         Lan.Properties properties = LanResource.getEditLan().getProperties();
-        Lan updatedLan = ionosEnterpriseApi.getLan().updateLan(dataCenterId, lanId,
-                properties.getName(), properties.isIsPublic());
+        Lan updatedLan = ionosEnterpriseApi.getLan().updateLan(dataCenterId, lanId, properties);
         waitTillProvisioned(updatedLan.getRequestId());
         assertEquals(updatedLan.getProperties().getName(), properties.getName());
         assertEquals(updatedLan.getProperties().isIsPublic(), properties.isIsPublic());
@@ -186,7 +183,11 @@ public class LanTest extends BaseTest {
         List<IpFailover> failovers = new ArrayList<IpFailover>();
         failovers.add(ipFailover);
 
-        Lan updatedLan = ionosEnterpriseApi.getLan().updateLan(dataCenterId, lan1Id, Boolean.TRUE, failovers);
+        com.ionosenterprise.rest.domain.Lan.Properties lanProperties =
+                new com.ionosenterprise.rest.domain.Lan().new Properties();
+        lanProperties.setIsPublic(true);
+        lanProperties.setIpFailover(failovers);
+        Lan updatedLan = ionosEnterpriseApi.getLan().updateLan(dataCenterId, lan1Id, lanProperties);
         waitTillProvisioned(updatedLan.getRequestId());
 
         Server server2 = new Server();

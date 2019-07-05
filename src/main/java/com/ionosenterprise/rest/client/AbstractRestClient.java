@@ -29,7 +29,6 @@
  */
 package com.ionosenterprise.rest.client;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.Charsets;
@@ -37,15 +36,12 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLEncoder;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,39 +49,25 @@ import java.util.Map;
  */
 public abstract class AbstractRestClient {
 
-   protected final Logger logger = LoggerFactory.getLogger(getClass());
+   private HttpClient client;
+   private ObjectMapper mapper;
+   private RequestInterceptor interceptor;
 
-   protected final HttpClient client;
+   protected <T> T bindObject(HttpResponse response, Class<T> entityClass) throws IOException, NoSuchMethodException,
+           IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-   protected final ObjectMapper mapper;
-
-   protected final RequestInterceptor interceptor;
-
-   protected AbstractRestClient(RestClientBuilder builder) {
-      this.client = builder.client;
-      this.mapper = builder.mapper;
-      this.interceptor = builder.interceptor;
-
-   }
-
-   public static RestClientBuilder builder() {
-      return new RestClientBuilder();
-   }
-
-   protected <T> T bindObject(HttpResponse response, Class<T> entityClass) throws IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       String source = contentAsString(response);
       if (source == null) {
          return null;
       }
 
       T toReturn = mapper.readValue(source, entityClass);
-      String location = response.getFirstHeader("Location").getValue();
+      String location = response.getFirstHeader("Location") != null
+              ? response.getFirstHeader("Location").getValue() : null;
       Method m = toReturn.getClass().getMethod("setRequestId", String.class);
-      if (m == null) {
-         return null;
+      if (m != null) {
+         m.invoke(toReturn, location);
       }
-
-      m.invoke(toReturn, location);
 
       return toReturn;
    }
@@ -94,52 +76,26 @@ public abstract class AbstractRestClient {
       return mapper.readValue(source, entityClass);
    }
 
-   protected <T> List<T> bindJsonArray(String source, TypeReference<List<T>> type) throws IOException {
-      return mapper.readValue(source, type);
-   }
-
-   protected JsonNode toJson(Object object) throws IOException {
+   protected JsonNode toJson(Object object) {
       if (object instanceof JsonNode) {
          return (JsonNode) object;
       }
       return mapper.valueToTree(object);
    }
 
-   protected Object WrappWithProperties(Object object){
+   protected Object wrappWithProperties(Object object){
       PropertiesFix wrapper = new PropertiesFix();
       wrapper.setProperties(object);
 
       return wrapper;
    }
 
-   protected <T> JsonNode toJsonArray(List<T> data) throws IOException {
-      return mapper.convertValue(data, JsonNode.class);
-   }
-
-   protected byte[] contentAsBytes(HttpResponse response) throws IOException {
-      return IOUtils.toByteArray(response.getEntity().getContent());
-   }
-
-   protected HttpResponse execute(RequestInterceptor interceptor, HttpRequestBase request)
-           throws IOException {
-      request = userAgentHeader(request);
-      if (interceptor != null) {
-         interceptor.intercept(request);
-      } else if (this.interceptor != null) {
-         this.interceptor.intercept(request);
-      }
-      return client.execute(request);
-   }
-
-   protected HttpResponse execute(RequestInterceptor interceptor, HttpRequestBase request, int expectedStatus)
+   protected HttpResponse execute(HttpRequestBase request, int expectedStatus)
            throws RestClientException {
 
-      String method = request.getMethod();
-      String path = request.getURI().toString();
-      //logger.info("Send -> " + method + " " + path);
       HttpResponse response = null;
       try {
-         response = execute(interceptor, request);
+         response = execute(request);
       } catch (Exception e) {
          throw new RestClientException(e, response);
       }
@@ -161,13 +117,6 @@ public abstract class AbstractRestClient {
          throw new RestClientException(sb.toString(), response);
       }
       return response;
-   }
-
-   protected int successStatus(String method) {
-      if (method.equalsIgnoreCase("POST")) {
-         return 201;
-      }
-      return 200;
    }
 
    protected String appendParams(String path, Map<String, String> params) {
@@ -204,13 +153,6 @@ public abstract class AbstractRestClient {
       return request;
    }
 
-   protected <T extends HttpUriRequest> T userAgentHeader(T request) {
-      String artifactId = getClass().getPackage().getImplementationTitle();
-      String version = getClass().getPackage().getImplementationVersion();
-      request.addHeader("User-Agent", artifactId + "/" + version);
-      return request;
-   }
-
    protected <T extends HttpUriRequest> T contentTypePartialJson(T request) {
       request.addHeader("Content-Type", "application/json");
       return request;
@@ -241,15 +183,44 @@ public abstract class AbstractRestClient {
       return new HttpDelete(url);
    }
 
-   public String contentAsString(HttpResponse response) throws IOException {
+   protected String contentAsString(HttpResponse response) throws IOException {
       if (response != null && response.getEntity() != null) {
          return IOUtils.toString(response.getEntity().getContent(), Charsets.UTF_8);
       }
       return null;
    }
 
+   private HttpResponse execute(HttpRequestBase request)
+           throws IOException {
+      request = userAgentHeader(request);
 
-   public class PropertiesFix{
+      if (this.interceptor != null) {
+         this.interceptor.intercept(request);
+      }
+
+      return client.execute(request);
+   }
+
+   private <T extends HttpUriRequest> T userAgentHeader(T request) {
+      String artifactId = getClass().getPackage().getImplementationTitle();
+      String version = getClass().getPackage().getImplementationVersion();
+      request.addHeader("User-Agent", artifactId + "/" + version);
+      return request;
+   }
+
+   public void setClient(HttpClient client) {
+      this.client = client;
+   }
+
+   public void setMapper(ObjectMapper mapper) {
+      this.mapper = mapper;
+   }
+
+   public void setInterceptor(RequestInterceptor interceptor) {
+      this.interceptor = interceptor;
+   }
+
+   public class PropertiesFix {
       private Object properties;
 
       public Object getProperties() {

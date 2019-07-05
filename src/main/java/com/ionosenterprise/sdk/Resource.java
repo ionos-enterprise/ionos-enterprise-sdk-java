@@ -38,11 +38,10 @@ import java.io.IOException;
 /**
  * @author denis@stackpointcloud.com
  */
-public class Resource extends BaseAPI {
-    private String credentials;
+public class Resource extends AbstractBaseAPI {
 
-    public Resource() throws Exception {
-        super("um/resources", "");
+    public Resource() {
+        super("um/resources");
     }
 
     /**
@@ -51,8 +50,7 @@ public class Resource extends BaseAPI {
      * @return Resources object with a list of resources
      */
     public Resources getAllResources() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource)
-                .concat(depth), null, Resources.class);
+        return client.get(getUrlBase().concat(getResourcePath()).concat(getDepth()), null, Resources.class);
     }
 
     /**
@@ -60,25 +58,26 @@ public class Resource extends BaseAPI {
      *
      * @return Resources object with a list of resources
      */
-    public Resources getAllByType(com.ionosenterprise.rest.domain.Resource.ResourceType type) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource)
-                .concat("/")
-                .concat(type.name())
-                .concat(depth), null, Resources.class);
+    public Resources getAllByType(com.ionosenterprise.rest.domain.Resource.ResourceType type)
+            throws RestClientException, IOException {
+
+        return client.get(getUrlBase().concat(getResourcePath()).concat("/").concat(type.name()).concat(getDepth()),
+                null, Resources.class);
     }
 
     /**
      * You can retrieve a resource
+     *
      * @param type The type of the specific resource.
      * @param resourceId The ID of the specific resource.
      * @return Resource object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.Resource getByType(com.ionosenterprise.rest.domain.Resource.ResourceType type, String resourceId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource)
-                .concat("/")
-                .concat(type.name())
-                .concat("/")
-                .concat(resourceId)
-                .concat(depth), null, com.ionosenterprise.rest.domain.Resource.class);
+    public com.ionosenterprise.rest.domain.Resource getByType(
+            com.ionosenterprise.rest.domain.Resource.ResourceType type, String resourceId)
+            throws RestClientException, IOException {
+
+        return client.get(getUrlBase().concat(getResourcePath()).concat("/").concat(type.name())
+                .concat("/").concat(resourceId).concat(getDepth()),
+                null, com.ionosenterprise.rest.domain.Resource.class);
     }
 }

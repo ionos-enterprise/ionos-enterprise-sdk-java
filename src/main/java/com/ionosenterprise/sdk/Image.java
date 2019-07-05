@@ -40,10 +40,10 @@ import java.lang.reflect.InvocationTargetException;
  *
  * @author jasmin@stackpointcloud.com
  */
-public class Image extends BaseAPI {
+public class Image extends AbstractBaseAPI {
 
-    public Image() throws Exception {
-        super("images", null);
+    public Image() {
+        super("images");
     }
 
     /**
@@ -52,7 +52,7 @@ public class Image extends BaseAPI {
      * @return Images object with a list of Images
      */
     public Images getAllImages() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat(depth), null, Images.class);
+        return client.get(getUrlBase().concat(getResourcePath()).concat(getDepth()), null, Images.class);
     }
 
     /**
@@ -62,7 +62,8 @@ public class Image extends BaseAPI {
      * @return Image object with properties and metadata
      */
     public com.ionosenterprise.rest.domain.Image getImage(String imageId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat("/").concat(imageId).concat(depth), null, com.ionosenterprise.rest.domain.Image.class);
+        return client.get(getUrlBase().concat(getResourcePath()).concat("/").concat(imageId).concat(getDepth()),
+                null, com.ionosenterprise.rest.domain.Image.class);
     }
 
     /**
@@ -71,7 +72,7 @@ public class Image extends BaseAPI {
      * @param imageId The unique ID of the image.
      */
     public void deleteImage(String imageId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(resource).concat("/").concat(imageId));
+        client.delete(getUrlBase().concat(getResourcePath()).concat("/").concat(imageId), 200);
     }
 
     /**
@@ -80,8 +81,12 @@ public class Image extends BaseAPI {
      * @param imageId The unique ID of the image.
      * @return Image object with properties and metadata
      */
-    public com.ionosenterprise.rest.domain.Image updateImage(String imageId, Object object) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return client.update(getUrlBase().concat(resource).concat("/").concat(imageId), object, com.ionosenterprise.rest.domain.Image.class, 202);
+    public com.ionosenterprise.rest.domain.Image updateImage(String imageId, Object object)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        return client.update(getUrlBase().concat(getResourcePath()).concat("/").concat(imageId), object,
+                com.ionosenterprise.rest.domain.Image.class, 202);
     }
 
 }

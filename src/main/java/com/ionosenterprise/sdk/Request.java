@@ -39,10 +39,10 @@ import java.io.IOException;
 /**
  * @author jasmin@stackpointcloud.com
  */
-public class Request extends BaseAPI {
+public class Request extends AbstractBaseAPI {
 
-    public Request() throws Exception {
-        super("status", "requests");
+    public Request() {
+        super("requests");
     }
 
     /**
@@ -62,7 +62,7 @@ public class Request extends BaseAPI {
      * Retrieves all requests
      */
     public Requests listRequests() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(parentResource).concat(depth), null, Requests.class);
+        return client.get(getUrlBase().concat(getResourcePath()).concat(getDepth()), null, Requests.class);
     }
 
     /**
@@ -71,7 +71,8 @@ public class Request extends BaseAPI {
      * @param requestId The unique ID of the request.
      */
     public com.ionosenterprise.rest.domain.Request getRequest(String requestId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(parentResource).concat("/").concat(requestId).concat(depth), null, com.ionosenterprise.rest.domain.Request.class);
+        return client.get(getUrlBase().concat(getResourcePath()).concat("/").concat(requestId).concat(getDepth()),
+                null, com.ionosenterprise.rest.domain.Request.class);
     }
 
 }

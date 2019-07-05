@@ -39,10 +39,10 @@ import java.io.IOException;
  * @author jasmin@stackpointcloud.com
  *
  */
-public class Location extends BaseAPI {
+public class Location extends AbstractBaseAPI {
 
-    public Location() throws Exception {
-        super("locations", "");
+    public Location() {
+        super("locations");
     }
     
     /**
@@ -52,16 +52,17 @@ public class Location extends BaseAPI {
      * @return Locations
      */
     public Locations getAllLocations() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat(depth), null, Locations.class);
+        return client.get(getUrlBase().concat(getResourcePath()).concat(getDepth()), null, Locations.class);
     }
 
-      /**
+    /**
      * Retrieves the attributes of a given location.
      *
      * @param id The resource's unique identifier consisting of country/city.
      * @return Location object with properties and metadata
      */
     public com.ionosenterprise.rest.domain.Location getLocation(String id) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat("/").concat(id).concat(depth), null, com.ionosenterprise.rest.domain.Location.class);
+        return client.get(getUrlBase().concat(getResourcePath()).concat("/").concat(id).concat(getDepth()),
+                null, com.ionosenterprise.rest.domain.Location.class);
     }
 }

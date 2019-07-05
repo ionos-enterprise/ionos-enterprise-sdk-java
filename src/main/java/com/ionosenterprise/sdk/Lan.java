@@ -31,42 +31,45 @@
 package com.ionosenterprise.sdk;
 
 import com.ionosenterprise.rest.client.RestClientException;
-import com.ionosenterprise.rest.domain.IpFailover;
 import com.ionosenterprise.rest.domain.Lans;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
+import java.util.Arrays;
 
 /**
  *
  * @author jasmin@stackpointcloud.com
  */
-public class Lan extends BaseAPI {
+public class Lan extends AbstractBaseAPI {
 
-    public Lan() throws Exception {
-        super("lans", "datacenters");
+    public Lan() {
+        super("datacenters/%s/lans");
     }
 
     /**
      * Retrieve a list of LANs within the data center.
      *
      * @param dataCenterId The unique ID of the data center
-     * @return Lans object with a list of Lans datacenter.
+     * @return Lans object with a list of DataCenter LANs .
      */
     public Lans getAllLans(String dataCenterId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource).concat(depth), null, Lans.class);
+        return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat(getDepth()),
+                null, Lans.class);
     }
 
     /**
      * Retrieves the attributes of a given LAN.
      *
      * @param dataCenterId The unique ID of the data center
-     * @param lanId The unique ID of the nic
+     * @param lanId The unique ID of the LAN
      * @return Lan object with properties and metadata
      */
-    public com.ionosenterprise.rest.domain.Lan getLan(String dataCenterId, String lanId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource).concat("/").concat(lanId).concat(depth), null, com.ionosenterprise.rest.domain.Lan.class);
+    public com.ionosenterprise.rest.domain.Lan getLan(String dataCenterId, String lanId)
+            throws RestClientException, IOException {
+
+        return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/").concat(lanId)
+                        .concat(getDepth()), null, com.ionosenterprise.rest.domain.Lan.class);
     }
 
     /**
@@ -87,66 +90,45 @@ public class Lan extends BaseAPI {
      * <br>
      * @return Lan object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.Lan createLan(String dataCenterId, com.ionosenterprise.rest.domain.Lan lan) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource), lan, com.ionosenterprise.rest.domain.Lan.class, 202);
+    public com.ionosenterprise.rest.domain.Lan createLan(String dataCenterId, com.ionosenterprise.rest.domain.Lan lan)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        return client.create(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))), lan,
+                com.ionosenterprise.rest.domain.Lan.class, 202);
     }
 
     /**
      * Perform updates to attributes of a LAN.
      *
      * @param dataCenterId The unique ID of the data center.
-     * @param lanId The unique ID of the data center.
-     * @param isPublic Boolean indicating if the LAN faces the public Internet
-     * or not.
+     * @param lanId The unique ID of the LAN
+     * @param  lan lan properties object that has the following properties:
+     * <br>
+     * isPublic = Boolean indicating if the LAN faces the public Internet or not.
+     * <br>
+     * name = The name of the LAN.
+     * <br>
+     * ipFailover = Attributes related to IP failover groups.
      * @return Lan object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.Lan updateLan(String dataCenterId, String lanId, Boolean isPublic) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        com.ionosenterprise.rest.domain.Lan.Properties pbObject = new com.ionosenterprise.rest.domain.Lan().new Properties();
-        pbObject.setIsPublic(isPublic);
-        return client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource).concat("/").concat(lanId), pbObject, com.ionosenterprise.rest.domain.Lan.class, 202);
+    public com.ionosenterprise.rest.domain.Lan updateLan(String dataCenterId, String lanId,
+                                                         com.ionosenterprise.rest.domain.Lan.Properties lan)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        return client.update(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
+                        .concat(lanId), lan, com.ionosenterprise.rest.domain.Lan.class, 202);
     }
 
     /**
-     * Perform updates to attributes of a LAN.
-     *
-     * @param dataCenterId The unique ID of the data center.
-     * @param lanId The unique ID of the data center.
-     * @param name The name of the LAN
-     * @param isPublic Boolean indicating if the LAN faces the public Internet
-     * or not.
-     * @return Lan object with properties and metadata.
-     */
-    public com.ionosenterprise.rest.domain.Lan updateLan(String dataCenterId, String lanId, String name, Boolean isPublic) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        com.ionosenterprise.rest.domain.Lan.Properties pbObject = new com.ionosenterprise.rest.domain.Lan().new Properties();
-        pbObject.setIsPublic(isPublic);
-        pbObject.setName(name);
-        return client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource).concat("/").concat(lanId), pbObject, com.ionosenterprise.rest.domain.Lan.class, 202);
-    }
-
-    /**
-     * Perform updates to attributes of a LAN.
-     *
-     * @param dataCenterId The unique ID of the data center.
-     * @param lanId The unique ID of the data center.
-     * @param isPublic Boolean indicating if the LAN faces the public Internet
-     * or not.
-     * @param ipFailover Attributes related to IP failover groups.
-     * @return Lan object with properties and metadata.
-     */
-    public com.ionosenterprise.rest.domain.Lan updateLan(String dataCenterId, String lanId, Boolean isPublic, List<IpFailover> ipFailover) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        com.ionosenterprise.rest.domain.Lan.Properties pbObject = new com.ionosenterprise.rest.domain.Lan().new Properties();
-        pbObject.setIsPublic(isPublic);
-        pbObject.setIpFailover(ipFailover);
-        return client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource).concat("/").concat(lanId), pbObject, com.ionosenterprise.rest.domain.Lan.class, 202);
-    }
-
-    /**
-     * Retrieve a list of LANs within the data center.
+     * Deletion of a LAN within the data center.
      *
      * @param dataCenterId The unique ID of the data center
      * @param lanId The unique ID of the Lan
      */
     public void deleteLan(String dataCenterId, String lanId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/").concat(resource).concat("/").concat(lanId), 202);
+        client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
+                .concat(lanId), 202);
     }
 }

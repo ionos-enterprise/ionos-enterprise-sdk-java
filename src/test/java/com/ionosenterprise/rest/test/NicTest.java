@@ -32,23 +32,16 @@ package com.ionosenterprise.rest.test;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.*;
 import com.ionosenterprise.rest.test.resource.*;
-
-import static com.ionosenterprise.rest.test.DatacenterTest.waitTillProvisioned;
-
-import com.ionosenterprise.sdk.IonosEnterpriseApi;
-
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import org.junit.AfterClass;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
+import static org.junit.Assert.*;
 
 /**
  * @author jasmin@stackpointcloud.com
@@ -133,7 +126,7 @@ public class NicTest extends BaseTest {
 
     @Test
     public void t6_listAssignedNic() throws RestClientException, IOException {
-        Nic nic = ionosEnterpriseApi.getNic().getBalancedNic(dataCenterId, loadBalancerId, serverId, nicId);
+        Nic nic = ionosEnterpriseApi.getNic().getBalancedNic(dataCenterId, loadBalancerId, nicId);
         assertNotNull(nic);
     }
 

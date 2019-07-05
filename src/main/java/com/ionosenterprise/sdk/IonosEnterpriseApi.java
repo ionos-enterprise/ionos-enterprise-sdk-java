@@ -54,6 +54,7 @@ public class IonosEnterpriseApi {
         this.share = new Share();
         this.user = new User();
         this.resource = new Resource();
+        this.label = new Label();
     }
 
     private Datacenter dataCenter;
@@ -73,6 +74,7 @@ public class IonosEnterpriseApi {
     private Share share;
     private User user;
     private Resource resource;
+    private Label label;
 
     /**
      * @return the dataCenter
@@ -310,5 +312,12 @@ public class IonosEnterpriseApi {
     public void setShare(Share share) {
         this.share.setCredentials(credentials);
         this.share = share;
+    }
+
+    /**
+     * @return the label
+     */
+    public Label getLabel() {
+        return label;
     }
 }

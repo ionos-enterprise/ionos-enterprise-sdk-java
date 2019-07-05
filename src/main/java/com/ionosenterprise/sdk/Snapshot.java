@@ -42,10 +42,10 @@ import java.util.Map;
  *
  * @author jasmin@stackpointcloud.com
  */
-public class Snapshot extends BaseAPI {
+public class Snapshot extends AbstractLabelAPI {
 
-    public Snapshot() throws Exception {
-        super("snapshots", "");
+    public Snapshot() {
+        super("snapshots");
     }
 
     /**
@@ -54,7 +54,7 @@ public class Snapshot extends BaseAPI {
      * @return Snapshots object with a list of Snapshots
      */
     public Snapshots getAllSnapshots() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat(depth), null, Snapshots.class);
+        return client.get(getUrlBase().concat(getResourcePath()).concat(getDepth()), null, Snapshots.class);
     }
 
     /**
@@ -67,12 +67,17 @@ public class Snapshot extends BaseAPI {
      * @param description The description of the snapshot.
      * @return Snapshot object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.Snapshot createSnapshot(String dataCenterId, String volumeId, String name, String description) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public com.ionosenterprise.rest.domain.Snapshot createSnapshot(String dataCenterId, String volumeId,
+                                                                   String name, String description)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
         Map<String, String> params = new HashMap<String, String>();
         params.put("name", name);
         params.put("description", description);
-        return client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
-                .concat("volumes").concat("/").concat(volumeId).concat("/").concat("create-snapshot"), params, com.ionosenterprise.rest.domain.Snapshot.class, 202);
+        return client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId)
+                .concat("/").concat("volumes").concat("/").concat(volumeId).concat("/").concat("create-snapshot"),
+                params, com.ionosenterprise.rest.domain.Snapshot.class, 202);
     }
 
     /**
@@ -84,11 +89,13 @@ public class Snapshot extends BaseAPI {
      * @param volumeId The unique ID of the volume.
      * @param snapshotId The unique ID of the snapshot.
      */
-    public void restoreSnapshot(String dataCenterId, String volumeId, String snapshotId) throws RestClientException, IOException {
+    public void restoreSnapshot(String dataCenterId, String volumeId, String snapshotId)
+            throws RestClientException, IOException {
+
         Map<String, String> params = new HashMap<String, String>();
         params.put("snapshotId", snapshotId);
-        client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
-                .concat("volumes").concat("/").concat(volumeId).concat("/").concat("restore-snapshot"), params, 202);
+        client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/").concat("volumes")
+                .concat("/").concat(volumeId).concat("/").concat("restore-snapshot"), params, 202);
     }
 
     /**
@@ -98,7 +105,8 @@ public class Snapshot extends BaseAPI {
      * @return Snapshot object with properties and metadata
      */
     public com.ionosenterprise.rest.domain.Snapshot getSnapshot(String snapshotId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat("/").concat(snapshotId).concat(depth), null, com.ionosenterprise.rest.domain.Snapshot.class);
+        return client.get(getUrlBase().concat(getResourcePath()).concat("/").concat(snapshotId).concat(getDepth()),
+                null, com.ionosenterprise.rest.domain.Snapshot.class);
     }
 
     /**
@@ -157,8 +165,13 @@ public class Snapshot extends BaseAPI {
      * <br>
      * @return Snapshot object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.Snapshot updateSnapshot(String snapshotId, com.ionosenterprise.rest.domain.Snapshot.Properties snapshot) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return client.update(getUrlBase().concat(resource).concat("/").concat(snapshotId), snapshot, com.ionosenterprise.rest.domain.Snapshot.class, 202);
+    public com.ionosenterprise.rest.domain.Snapshot updateSnapshot(
+            String snapshotId, com.ionosenterprise.rest.domain.Snapshot.Properties snapshot)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        return client.update(getUrlBase().concat(getResourcePath()).concat("/").concat(snapshotId), snapshot,
+                com.ionosenterprise.rest.domain.Snapshot.class, 202);
     }
 
      /**
@@ -167,6 +180,6 @@ public class Snapshot extends BaseAPI {
      * @param snapshotId The unique ID of the snapshot
      */
     public void deleteSnapshot(String snapshotId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(resource).concat("/").concat(snapshotId), 202);
+        client.delete(getUrlBase().concat(getResourcePath()).concat("/").concat(snapshotId), 202);
     }
 }
