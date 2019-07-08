@@ -1361,6 +1361,23 @@ createIPBlock(IPBlock ipBlock)
 
 ---
 
+#### Update an IP Block
+
+Update the name of an IP block
+
+**Request Arguments**
+
+| Name | Required | Type | Description |
+|---|---|---|---|
+| ipBlockId | **yes** | string | The ID of the IP block. |
+| ipBlock.name | no | string | A descriptive name for the IP block |
+
+```
+updateIPBlock(String ipBlockId, IPBlock.Properties ipBlock)
+```
+
+---
+
 #### Delete an IP Block
 
 Deletes the specified IP Block.

@@ -104,6 +104,14 @@ public class IPBlockTest extends BaseTest {
         }
     }
 
+    @Test
+    public void t5_updateIpBlock() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException,
+            RestClientException, IOException {
+        IPBlock ipBlock = ionosEnterpriseApi.getIpBlock().updateIPBlock(
+                ipBlockId, IpBlockResource.getEditIpBlock().getProperties());
+        assertEquals(ipBlock.getProperties().getName(), IpBlockResource.getEditIpBlock().getProperties().getName());
+    }
+
     @AfterClass
     public static void cleanUp() throws RestClientException, IOException {
         ionosEnterpriseApi.getIpBlock().deleteIPBlock(ipBlockId);
