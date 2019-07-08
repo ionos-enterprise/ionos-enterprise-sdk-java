@@ -102,7 +102,7 @@ public class IPBlock extends BaseAPI {
    /**
     * Update the name of an IP block.
     *
-    * @param ipBlock object has the following properties:
+    * @param ipBlockProperties object has the following properties:
     * <br>
     * <br>
     * name = A descriptive name for the IP block
@@ -111,10 +111,10 @@ public class IPBlock extends BaseAPI {
     * @return IPBlock object with properties and metadata.
     */
    public com.ionosenterprise.rest.domain.IPBlock updateIPBlock(String ipBlockId,
-                                                                com.ionosenterprise.rest.domain.IPBlock.Properties ipBlock)
+                                                                com.ionosenterprise.rest.domain.IPBlock.Properties ipBlockProperties)
            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
            IllegalArgumentException, InvocationTargetException {
-      return client.update(getUrlBase().concat(resource).concat("/").concat(ipBlockId), ipBlock,
+      return client.update(getUrlBase().concat(resource).concat("/").concat(ipBlockId), ipBlockProperties,
               com.ionosenterprise.rest.domain.IPBlock.class, 202);
    }
 }
