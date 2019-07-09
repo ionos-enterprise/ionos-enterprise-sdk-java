@@ -29,9 +29,6 @@
  */
 package com.ionosenterprise.rest.domain;
 
-/**
- * @author jasmin@stackpointcloud.com
- */
 public enum AvailabilityZone {
 
     AUTO, ZONE_1, ZONE_2, ZONE_3, UNRECOGNIZED;

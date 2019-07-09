@@ -19,10 +19,6 @@ package com.ionosenterprise.rest.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author denis@stackpointcloud.com
- */
 public class Users extends BaseResource {
     private List<User> items =  new ArrayList<User>();
 

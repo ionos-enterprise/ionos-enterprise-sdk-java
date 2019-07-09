@@ -31,9 +31,6 @@ package com.ionosenterprise.rest.client;
 
 import org.apache.http.client.methods.HttpRequestBase;
 
-/**
- * @author jasmin@stackpointcloud.com
- */
 public class RequestInterceptor {
 
    public void intercept(HttpRequestBase request) {

@@ -48,9 +48,6 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author jasmin@stackpointcloud.com
- */
 public abstract class AbstractRestClient {
 
    protected final Logger logger = LoggerFactory.getLogger(getClass());

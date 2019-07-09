@@ -31,9 +31,6 @@ package com.ionosenterprise.rest.test.resource;
 
 import com.ionosenterprise.rest.domain.Nic;
 
-/**
- * @author denis@stackpointcloud.com
- */
 public class NicResource {
     private static Nic nic;
     private static Nic badNic;

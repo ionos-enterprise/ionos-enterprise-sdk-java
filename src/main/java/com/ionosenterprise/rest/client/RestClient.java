@@ -41,9 +41,7 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
-/**
- * @author jasmin@stackpointcloud.com
- */
+
 public class RestClient extends AbstractRestClient {
 
     protected RestClient(RestClientBuilder builder) {

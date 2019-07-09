@@ -30,10 +30,6 @@
 
 package com.ionosenterprise.rest.domain;
 
-/**
- *
- * @author jasmin@stackpointcloud.com
- */
 public enum LicenceType {
 
    WINDOWS,WINDOWS2016, LINUX, OTHER, UNKNOWN, UNRECOGNIZED;

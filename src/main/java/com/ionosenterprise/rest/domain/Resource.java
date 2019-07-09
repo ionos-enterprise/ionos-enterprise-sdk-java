@@ -31,9 +31,6 @@ package com.ionosenterprise.rest.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-/**
- * @author denis@stackpointcloud.com
- */
 public class Resource extends BaseResource {
 
     private Properties properties = new Properties();

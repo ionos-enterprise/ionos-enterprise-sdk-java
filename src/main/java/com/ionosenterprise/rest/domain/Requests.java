@@ -33,10 +33,6 @@ package com.ionosenterprise.rest.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author jasmin@stackpointcloud.com
- */
 public class Requests extends BaseResource {
 
    public List<Request> items = new ArrayList<Request>();

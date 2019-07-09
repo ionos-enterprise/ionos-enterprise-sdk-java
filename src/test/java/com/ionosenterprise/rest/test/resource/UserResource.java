@@ -31,10 +31,6 @@ package com.ionosenterprise.rest.test.resource;
 
 import com.ionosenterprise.rest.domain.User;
 
-/**
- *
- * @author denis@stackpointcloud.com
- */
 public class UserResource {
     private static User user;
     private static User editUser;

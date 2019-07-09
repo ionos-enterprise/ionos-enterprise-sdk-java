@@ -35,9 +35,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author jasmin@stackpointcloud.com
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Location extends BaseResource {
 

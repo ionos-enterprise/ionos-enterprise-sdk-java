@@ -26,10 +26,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import static org.junit.Assert.assertNotNull;
 
-/**
- *
- * @author jasmin@stackpointcloud.com
- */
 public class CompositeCreateTest extends BaseTest {
 
     private static String dataCenterId;
@@ -38,7 +34,7 @@ public class CompositeCreateTest extends BaseTest {
     public void createCompositeDataCenter() throws RestClientException, IOException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
 
-        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(
+        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenterApi().createDataCenter(
                 DataCenterResource.getCompositeDataCenter());
         assertNotNull(newDatacenter);
         dataCenterId = newDatacenter.getId();
@@ -47,6 +43,6 @@ public class CompositeCreateTest extends BaseTest {
 
     @AfterClass
     public static void cleanup() throws RestClientException, IOException {
-        ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
+        ionosEnterpriseApi.getDataCenterApi().deleteDataCenter(dataCenterId);
     }
 }

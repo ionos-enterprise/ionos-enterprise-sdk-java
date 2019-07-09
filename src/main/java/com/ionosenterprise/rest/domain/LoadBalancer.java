@@ -32,10 +32,6 @@ package com.ionosenterprise.rest.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- *
- * @author jasmin@stackpointcloud.com
- */
 public class LoadBalancer extends BaseResource {
 
    /**

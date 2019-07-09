@@ -32,27 +32,18 @@ package com.ionosenterprise.rest.test;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.*;
 import com.ionosenterprise.rest.test.resource.*;
-
-import static com.ionosenterprise.rest.test.DatacenterTest.waitTillProvisioned;
-
-import com.ionosenterprise.sdk.IonosEnterpriseApi;
-
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-
 import org.junit.AfterClass;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-/**
- * @author jasmin@stackpointcloud.com
- */
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class LoadBalancerTest extends BaseTest {
 
@@ -65,14 +56,14 @@ public class LoadBalancerTest extends BaseTest {
     public static void setUp() throws RestClientException, IOException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
 
-        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(
+        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenterApi().createDataCenter(
                 DataCenterResource.getDataCenter());
         assertNotNull(newDatacenter);
         dataCenterId = newDatacenter.getId();
         waitTillProvisioned(newDatacenter.getRequestId());
 
         LoadBalancer loadBalancer = LoadBalancerResource.getLoadBalancer();
-        LoadBalancer newLoadBalancer = ionosEnterpriseApi.getLoadbalancer().createLoadBalancer(dataCenterId,
+        LoadBalancer newLoadBalancer = ionosEnterpriseApi.getLoadbalancerApi().createLoadBalancer(dataCenterId,
                 loadBalancer);
         assertNotNull(newLoadBalancer);
         assertEquals(newLoadBalancer.getProperties().getName(), loadBalancer.getProperties().getName());
@@ -80,12 +71,12 @@ public class LoadBalancerTest extends BaseTest {
         loadBalancerId = newLoadBalancer.getId();
         waitTillProvisioned(newLoadBalancer.getRequestId());
 
-        Server newServer = ionosEnterpriseApi.getServer().createServer(dataCenterId, ServerResource.getServer());
+        Server newServer = ionosEnterpriseApi.getServerApi().createServer(dataCenterId, ServerResource.getServer());
         assertNotNull(newServer);
         serverId = newServer.getId();
         waitTillProvisioned(newServer.getRequestId());
 
-        Nic newNic = ionosEnterpriseApi.getNic().createNic(dataCenterId, serverId, NicResource.getNic());
+        Nic newNic = ionosEnterpriseApi.getNicApi().createNic(dataCenterId, serverId, NicResource.getNic());
         assertNotNull(newNic);
         nicId = newNic.getId();
         waitTillProvisioned(newNic.getRequestId());
@@ -93,13 +84,13 @@ public class LoadBalancerTest extends BaseTest {
 
     @Test
     public void t1_getAllLoadBalancers() throws RestClientException, IOException {
-        LoadBalancers loadbalancers = ionosEnterpriseApi.getLoadbalancer().getAllLoadBalancers(dataCenterId);
+        LoadBalancers loadbalancers = ionosEnterpriseApi.getLoadbalancerApi().getAllLoadBalancers(dataCenterId);
         assertNotNull(loadbalancers);
     }
 
     @Test
     public void t2_getLoadBalancer() throws RestClientException, IOException {
-        LoadBalancer loadBalancer = ionosEnterpriseApi.getLoadbalancer().getLoadBalancer(dataCenterId, loadBalancerId);
+        LoadBalancer loadBalancer = ionosEnterpriseApi.getLoadbalancerApi().getLoadBalancer(dataCenterId, loadBalancerId);
         assertNotNull(loadBalancer);
         assertEquals(loadBalancerId, loadBalancer.getId());
     }
@@ -109,7 +100,7 @@ public class LoadBalancerTest extends BaseTest {
             IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
         LoadBalancer.Properties properties = LoadBalancerResource.getEditLoadBalancer().getProperties();
-        LoadBalancer loadBalancer = ionosEnterpriseApi.getLoadbalancer().updateLoadBalancer(
+        LoadBalancer loadBalancer = ionosEnterpriseApi.getLoadbalancerApi().updateLoadBalancer(
                 dataCenterId, loadBalancerId, properties);
         assertNotNull(loadBalancer);
         assertEquals(loadBalancer.getProperties().getName(), properties.getName());
@@ -119,7 +110,7 @@ public class LoadBalancerTest extends BaseTest {
     public void t4_assignNicToLoadBalancer() throws RestClientException, IOException, InterruptedException,
             NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-        Nic nic = ionosEnterpriseApi.getNic().assignNicToLoadBalancer(dataCenterId, loadBalancerId, nicId);
+        Nic nic = ionosEnterpriseApi.getNicApi().assignNicToLoadBalancer(dataCenterId, loadBalancerId, nicId);
         assertNotNull(nic);
         assertEquals(nic.getId(), nicId);
         waitTillProvisioned(nic.getRequestId());
@@ -127,25 +118,25 @@ public class LoadBalancerTest extends BaseTest {
 
     @Test
     public void t5_listAssignedNics() throws RestClientException, IOException {
-        Nics nics = ionosEnterpriseApi.getNic().getAllBalancedNics(dataCenterId, loadBalancerId);
+        Nics nics = ionosEnterpriseApi.getNicApi().getAllBalancedNics(dataCenterId, loadBalancerId);
         assertNotNull(nics);
     }
 
     @Test
     public void t6_listAssignedNic() throws RestClientException, IOException {
-        Nic nic = ionosEnterpriseApi.getNic().getBalancedNic(dataCenterId, loadBalancerId, serverId, nicId);
+        Nic nic = ionosEnterpriseApi.getNicApi().getBalancedNic(dataCenterId, loadBalancerId, serverId, nicId);
         assertNotNull(nic);
     }
 
     @Test
     public void t7_deleteLoadBalancer() throws RestClientException, IOException {
-        ionosEnterpriseApi.getLoadbalancer().deleteLoadBalaner(dataCenterId, loadBalancerId);
+        ionosEnterpriseApi.getLoadbalancerApi().deleteLoadBalaner(dataCenterId, loadBalancerId);
     }
 
     @Test
     public void t8_getFaildLoadBalancer() throws IOException {
         try {
-            ionosEnterpriseApi.getLoadbalancer().getLoadBalancer(dataCenterId, CommonResource.getBadId());
+            ionosEnterpriseApi.getLoadbalancerApi().getLoadBalancer(dataCenterId, CommonResource.getBadId());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
@@ -156,7 +147,7 @@ public class LoadBalancerTest extends BaseTest {
             InvocationTargetException, NoSuchMethodException
     {
         try {
-            ionosEnterpriseApi.getLoadbalancer().createLoadBalancer(dataCenterId,
+            ionosEnterpriseApi.getLoadbalancerApi().createLoadBalancer(dataCenterId,
                     LoadBalancerResource.getBadLoadBalancer());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
@@ -165,6 +156,6 @@ public class LoadBalancerTest extends BaseTest {
 
     @AfterClass
     public static void cleanup() throws RestClientException, IOException {
-        ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
+        ionosEnterpriseApi.getDataCenterApi().deleteDataCenter(dataCenterId);
     }
 }

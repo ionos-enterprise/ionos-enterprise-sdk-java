@@ -31,9 +31,6 @@ package com.ionosenterprise.rest.test.resource;
 
 import com.ionosenterprise.rest.domain.LoadBalancer;
 
-/**
- * @author denis@stackpointcloud.com
- */
 public class LoadBalancerResource {
     private static LoadBalancer loadBalancer;
     private static LoadBalancer badLoadBalancer;

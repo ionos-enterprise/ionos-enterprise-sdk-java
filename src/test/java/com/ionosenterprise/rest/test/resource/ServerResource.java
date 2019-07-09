@@ -29,15 +29,8 @@
  */
 package com.ionosenterprise.rest.test.resource;
 
-import com.ionosenterprise.rest.domain.*;
+import com.ionosenterprise.rest.domain.Server;
 
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- *
- * @author denis@stackpointcloud.com
- */
 public class ServerResource {
     private static Server server;
     private static Server compositeServer;

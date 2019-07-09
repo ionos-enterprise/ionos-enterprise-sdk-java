@@ -29,10 +29,6 @@
  */
 package com.ionosenterprise.rest.test.resource;
 
-/**
- *
- * @author denis@stackpointcloud.com
- */
 public class CommonResource {
     private  static String badId = "00000000-0000-0000-0000-000000000000";
 

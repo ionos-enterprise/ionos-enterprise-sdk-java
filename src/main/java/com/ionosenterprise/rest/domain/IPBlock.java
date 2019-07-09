@@ -35,10 +35,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.ArrayList;
 import java.util.List;
 
- /**
-  *
-  * @author jasmin@stackpointcloud.com
-  */
  public class IPBlock extends BaseResource {
 
      private Properties properties = new Properties();

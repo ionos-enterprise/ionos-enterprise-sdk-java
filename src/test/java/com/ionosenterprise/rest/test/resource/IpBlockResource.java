@@ -31,10 +31,6 @@ package com.ionosenterprise.rest.test.resource;
 
 import com.ionosenterprise.rest.domain.IPBlock;
 
-/**
- *
- * @author denis@stackpointcloud.com
- */
 public class IpBlockResource {
     private static IPBlock ipBlock;
     private static IPBlock ipBadBlock;

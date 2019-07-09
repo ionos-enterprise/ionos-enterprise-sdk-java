@@ -18,10 +18,6 @@ package com.ionosenterprise.rest.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author denis@stackpointcloud.com
- */
 public class Groups extends BaseResource {
     private List<Group> items =  new ArrayList<Group>();
 

@@ -32,10 +32,6 @@ package com.ionosenterprise.rest.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author jasmin@stackpointcloud.com
- */
 public class Images extends BaseResource {
 
    private List<Image> items = new ArrayList<Image>();

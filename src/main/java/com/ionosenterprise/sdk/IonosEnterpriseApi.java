@@ -37,206 +37,206 @@ public class IonosEnterpriseApi {
     private String credentials;
 
     public IonosEnterpriseApi() throws Exception {
-        this.dataCenter = new Datacenter();
-        this.server = new Server();
-        this.volume = new Volume();
-        this.snapshot = new Snapshot();
-        this.loadbalancer = new Loadbalancer();
-        this.nic = new Nic();
-        this.firewallRule = new FirewallRule();
-        this.image = new Image();
-        this.ipBlock = new IPBlock();
-        this.request = new Request();
-        this.lan = new Lan();
-        this.location = new Location();
-        this.contract = new Contract();
-        this.group = new Group();
-        this.share = new Share();
-        this.user = new User();
-        this.resource = new Resource();
+        this.dataCenterApi = new DataCenterApi();
+        this.serverApi = new ServerApi();
+        this.volumeApi = new VolumeApi();
+        this.snapshotApi = new SnapshotApi();
+        this.loadbalancerApi = new LoadbalancerApi();
+        this.nicApi = new NicApi();
+        this.firewallRuleApi = new FirewallRuleApi();
+        this.imageApi = new ImageApi();
+        this.ipBlockApi = new IPBlockApi();
+        this.requestApi = new RequestApi();
+        this.lanApi = new LanApi();
+        this.locationApi = new LocationApi();
+        this.contractApi = new ContractApi();
+        this.groupApi = new GroupApi();
+        this.shareApi = new ShareApi();
+        this.userApi = new UserApi();
+        this.resourceApi = new ResourceApi();
     }
 
-    private Datacenter dataCenter;
-    private Server server;
-    private Volume volume;
-    private Snapshot snapshot;
-    private Loadbalancer loadbalancer;
-    private Nic nic;
-    private FirewallRule firewallRule;
-    private Image image;
-    private IPBlock ipBlock;
-    private Request request;
-    private Lan lan;
-    private Location location;
-    private Contract contract;
-    private Group group;
-    private Share share;
-    private User user;
-    private Resource resource;
+    private DataCenterApi dataCenterApi;
+    private ServerApi serverApi;
+    private VolumeApi volumeApi;
+    private SnapshotApi snapshotApi;
+    private LoadbalancerApi loadbalancerApi;
+    private NicApi nicApi;
+    private FirewallRuleApi firewallRuleApi;
+    private ImageApi imageApi;
+    private IPBlockApi ipBlockApi;
+    private RequestApi requestApi;
+    private LanApi lanApi;
+    private LocationApi locationApi;
+    private ContractApi contractApi;
+    private GroupApi groupApi;
+    private ShareApi shareApi;
+    private UserApi userApi;
+    private ResourceApi resourceApi;
 
     /**
-     * @return the dataCenter
+     * @return the dataCenterApi
      */
-    public Datacenter getDataCenter() {
-        this.dataCenter.setCredentials(credentials);
-        return dataCenter;
-    }
-
-    /**
-     * @param dataCenter the dataCenter to set
-     */
-    public void setDataCenter(Datacenter dataCenter) {
-        this.dataCenter = dataCenter;
+    public DataCenterApi getDataCenterApi() {
+        this.dataCenterApi.setCredentials(credentials);
+        return dataCenterApi;
     }
 
     /**
-     * @return the server
+     * @param dataCenterApi the dataCenterApi to set
      */
-    public Server getServer() {
-        this.server.setCredentials(credentials);
-        return server;
+    public void setDataCenterApi(DataCenterApi dataCenterApi) {
+        this.dataCenterApi = dataCenterApi;
     }
 
     /**
-     * @param server the server to set
+     * @return the serverApi
      */
-    public void setServer(Server server) {
-        this.server = server;
+    public ServerApi getServerApi() {
+        this.serverApi.setCredentials(credentials);
+        return serverApi;
     }
 
     /**
-     * @return the volume
+     * @param serverApi the serverApi to set
      */
-    public Volume getVolume() {
-        this.volume.setCredentials(credentials);
-        return volume;
+    public void setServerApi(ServerApi serverApi) {
+        this.serverApi = serverApi;
     }
 
     /**
-     * @param volume the volume to set
+     * @return the volumeApi
      */
-    public void setVolume(Volume volume) {
-        this.volume = volume;
+    public VolumeApi getVolumeApi() {
+        this.volumeApi.setCredentials(credentials);
+        return volumeApi;
     }
 
     /**
-     * @return the snapshot
+     * @param volumeApi the volumeApi to set
      */
-    public Snapshot getSnapshot() {
-        this.snapshot.setCredentials(credentials);
-        return snapshot;
+    public void setVolumeApi(VolumeApi volumeApi) {
+        this.volumeApi = volumeApi;
     }
 
     /**
-     * @param snapshot the snapshot to set
+     * @return the snapshotApi
      */
-    public void setSnapshot(Snapshot snapshot) {
-        this.snapshot = snapshot;
+    public SnapshotApi getSnapshotApi() {
+        this.snapshotApi.setCredentials(credentials);
+        return snapshotApi;
     }
 
     /**
-     * @return the loadbalancer
+     * @param snapshotApi the snapshotApi to set
      */
-    public Loadbalancer getLoadbalancer() {
-        this.loadbalancer.setCredentials(credentials);
-        return loadbalancer;
+    public void setSnapshotApi(SnapshotApi snapshotApi) {
+        this.snapshotApi = snapshotApi;
     }
 
     /**
-     * @param loadbalancer the loadbalancer to set
+     * @return the loadbalancerApi
      */
-    public void setLoadbalancer(Loadbalancer loadbalancer) {
-        this.loadbalancer = loadbalancer;
+    public LoadbalancerApi getLoadbalancerApi() {
+        this.loadbalancerApi.setCredentials(credentials);
+        return loadbalancerApi;
     }
 
     /**
-     * @return the nic
+     * @param loadbalancerApi the loadbalancerApi to set
      */
-    public Nic getNic() {
-        this.nic.setCredentials(credentials);
-        return nic;
+    public void setLoadbalancerApi(LoadbalancerApi loadbalancerApi) {
+        this.loadbalancerApi = loadbalancerApi;
     }
 
     /**
-     * @param nic the nic to set
+     * @return the nicApi
      */
-    public void setNic(Nic nic) {
-        this.nic = nic;
+    public NicApi getNicApi() {
+        this.nicApi.setCredentials(credentials);
+        return nicApi;
     }
 
     /**
-     * @return the firewallRule
+     * @param nicApi the nicApi to set
      */
-    public FirewallRule getFirewallRule() {
-        this.firewallRule.setCredentials(credentials);
-        return firewallRule;
+    public void setNicApi(NicApi nicApi) {
+        this.nicApi = nicApi;
     }
 
     /**
-     * @param firewallRule the firewallRule to set
+     * @return the firewallRuleApi
      */
-    public void setFirewallRule(FirewallRule firewallRule) {
-        this.firewallRule = firewallRule;
+    public FirewallRuleApi getFirewallRuleApi() {
+        this.firewallRuleApi.setCredentials(credentials);
+        return firewallRuleApi;
+    }
+
+    /**
+     * @param firewallRuleApi the firewallRuleApi to set
+     */
+    public void setFirewallRuleApi(FirewallRuleApi firewallRuleApi) {
+        this.firewallRuleApi = firewallRuleApi;
     }
 
     /**
      * @return the image
      */
-    public Image getImage() {
-        this.image.setCredentials(credentials);
-        return image;
+    public ImageApi getImageApi() {
+        this.imageApi.setCredentials(credentials);
+        return imageApi;
     }
 
     /**
-     * @param image the image to set
+     * @param imageApi the imageApi to set
      */
-    public void setImage(Image image) {
-        this.image = image;
+    public void setImageApi(ImageApi imageApi) {
+        this.imageApi = imageApi;
     }
 
     /**
-     * @return the ipBlock
+     * @return the ipBlockApi
      */
-    public IPBlock getIpBlock() {
-        this.ipBlock.setCredentials(credentials);
-        return ipBlock;
+    public IPBlockApi getIpBlockApi() {
+        this.ipBlockApi.setCredentials(credentials);
+        return ipBlockApi;
     }
 
     /**
-     * @param ipBlock the ipBlock to set
+     * @param ipBlockApi the ipBlockApi to set
      */
-    public void setIpBlock(IPBlock ipBlock) {
-        this.ipBlock = ipBlock;
+    public void setIpBlockApi(IPBlockApi ipBlockApi) {
+        this.ipBlockApi = ipBlockApi;
     }
 
     /**
-     * @return the request
+     * @return the requestApi
      */
-    public Request getRequest() {
-        this.request.setCredentials(credentials);
-        return request;
+    public RequestApi getRequestApi() {
+        this.requestApi.setCredentials(credentials);
+        return requestApi;
     }
 
     /**
-     * @param request the request to set
+     * @param requestApi the requestApi to set
      */
-    public void setRequest(Request request) {
-        this.request = request;
+    public void setRequestApi(RequestApi requestApi) {
+        this.requestApi = requestApi;
     }
 
     /**
-     * @return the lan
+     * @return the lanApi
      */
-    public Lan getLan() {
-        this.lan.setCredentials(credentials);
-        return lan;
+    public LanApi getLanApi() {
+        this.lanApi.setCredentials(credentials);
+        return lanApi;
     }
 
     /**
-     * @param lan the lan to set
+     * @param lanApi the lanApi to set
      */
-    public void setLan(Lan lan) {
-        this.lan = lan;
+    public void setLanApi(LanApi lanApi) {
+        this.lanApi = lanApi;
     }
 
     /**
@@ -252,63 +252,63 @@ public class IonosEnterpriseApi {
         this.credentials = new String(bytesEncoded);
     }
 
-    public Location getLocation() {
-        this.location.setCredentials(credentials);
-        return location;
+    public LocationApi getLocationApi() {
+        this.locationApi.setCredentials(credentials);
+        return locationApi;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    /**
-     * @return the contract
-     */
-    public Contract getContract() {
-        this.contract.setCredentials(credentials);
-        return contract;
+    public void setLocationApi(LocationApi locationApi) {
+        this.locationApi = locationApi;
     }
 
     /**
-     * @return the group
+     * @return the contractApi
      */
-    public Group getGroup() {
-        this.group.setCredentials(credentials);
-        return group;
+    public ContractApi getContractApi() {
+        this.contractApi.setCredentials(credentials);
+        return contractApi;
     }
 
-    public void setGroup(Group group) {
-        this.group.setCredentials(credentials);
-        this.group = group;
+    /**
+     * @return the groupApi
+     */
+    public GroupApi getGroupApi() {
+        this.groupApi.setCredentials(credentials);
+        return groupApi;
     }
 
-    public Resource getResource() {
-        this.resource.setCredentials(credentials);
-        return resource;
+    public void setGroupApi(GroupApi groupApi) {
+        this.groupApi.setCredentials(credentials);
+        this.groupApi = groupApi;
     }
 
-    public void setResource(Resource resource) {
-        this.resource.setCredentials(credentials);
-        this.resource = resource;
+    public ResourceApi getResourceApi() {
+        this.resourceApi.setCredentials(credentials);
+        return resourceApi;
     }
 
-    public User getUser() {
-        this.user.setCredentials(credentials);
-        return user;
+    public void setResourceApi(ResourceApi resourceApi) {
+        this.resourceApi.setCredentials(credentials);
+        this.resourceApi = resourceApi;
     }
 
-    public void setUser(User user) {
-        this.user.setCredentials(credentials);
-        this.user = user;
+    public UserApi getUserApi() {
+        this.userApi.setCredentials(credentials);
+        return userApi;
     }
 
-    public Share getShare() {
-        this.share.setCredentials(credentials);
-        return share;
+    public void setUserApi(UserApi userApi) {
+        this.userApi.setCredentials(credentials);
+        this.userApi = userApi;
     }
 
-    public void setShare(Share share) {
-        this.share.setCredentials(credentials);
-        this.share = share;
+    public ShareApi getShareApi() {
+        this.shareApi.setCredentials(credentials);
+        return shareApi;
+    }
+
+    public void setShareApi(ShareApi shareApi) {
+        this.shareApi.setCredentials(credentials);
+        this.shareApi = shareApi;
     }
 }

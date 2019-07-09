@@ -35,9 +35,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.lang.reflect.Constructor;
-/**
- * @author jasmin@stackpointcloud.com
- */
+
 public class RestClientBuilder {
 
    protected HttpClient client;

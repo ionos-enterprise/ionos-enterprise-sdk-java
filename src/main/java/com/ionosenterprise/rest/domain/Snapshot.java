@@ -31,9 +31,6 @@ package com.ionosenterprise.rest.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-/**
- * @author jasmin@stackpointcloud.com
- */
 public class Snapshot extends BaseResource {
 
     /**

@@ -33,9 +33,6 @@ package com.ionosenterprise.rest.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by jasmingacic on 13/03/2017.
- */
 public class Locations extends BaseResource {
 
     private List<Location> items = new ArrayList<Location>();

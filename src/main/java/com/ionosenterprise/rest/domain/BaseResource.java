@@ -35,10 +35,6 @@ import com.ionosenterprise.sdk.IonosEnterpriseApi;
 
 import java.util.Date;
 
-/**
- *
- * @author jasmin@stackpointcloud.com
- */
 public class BaseResource {
 
    private String id;
@@ -122,7 +118,7 @@ public class BaseResource {
          return null;
 
       IonosEnterpriseApi ionosEnterpriseApi = new IonosEnterpriseApi();
-      return ionosEnterpriseApi.getRequest().getRequestStatus(requestId);
+      return ionosEnterpriseApi.getRequestApi().getRequestStatus(requestId);
    }
 
    @JsonIgnoreProperties(ignoreUnknown = true)

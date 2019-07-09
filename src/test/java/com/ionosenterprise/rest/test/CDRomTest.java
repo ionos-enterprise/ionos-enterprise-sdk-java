@@ -44,10 +44,6 @@ import java.io.IOException;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-/**
- *
- * @author jasmin@stackpointcloud.com
- */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CDRomTest extends BaseTest {
 
@@ -57,17 +53,17 @@ public class CDRomTest extends BaseTest {
 
     @BeforeClass
     public static void t1_createCDRom() throws Exception {
-        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(DataCenterResource.getDataCenter());
+        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenterApi().createDataCenter(DataCenterResource.getDataCenter());
         assertNotNull(newDatacenter);
         dataCenterId = newDatacenter.getId();
         waitTillProvisioned(newDatacenter.getRequestId());
 
-        Server newServer = ionosEnterpriseApi.getServer().createServer(dataCenterId, ServerResource.getServer());
+        Server newServer = ionosEnterpriseApi.getServerApi().createServer(dataCenterId, ServerResource.getServer());
         assertNotNull(newServer);
         serverId = newServer.getId();
         waitTillProvisioned(newServer.getRequestId());
 
-        CDRom rom = ionosEnterpriseApi.getServer().attachCDRom(dataCenterId, serverId, getImageId());
+        CDRom rom = ionosEnterpriseApi.getServerApi().attachCDRom(dataCenterId, serverId, getImageId());
         assertNotNull(rom);
         romId = rom.getId();
         waitTillProvisioned(rom.getRequestId());
@@ -75,29 +71,29 @@ public class CDRomTest extends BaseTest {
 
     @Test
     public void t2_ListCDRoms() throws RestClientException, IOException {
-        CDRoms roms = ionosEnterpriseApi.getServer().getAllAttachedCDRoms(dataCenterId, serverId);
+        CDRoms roms = ionosEnterpriseApi.getServerApi().getAllAttachedCDRoms(dataCenterId, serverId);
         assertNotNull(roms);
         assertTrue(roms.getItems().size() > 0);
     }
 
     @Test
     public void t3_GetCDRom() throws RestClientException, IOException {
-        CDRom rom = ionosEnterpriseApi.getServer().getAttachedCDRom(dataCenterId, serverId, romId);
+        CDRom rom = ionosEnterpriseApi.getServerApi().getAttachedCDRom(dataCenterId, serverId, romId);
         assertNotNull(rom);
     }
 
     @Test
     public void t4_DetachCDRom() throws RestClientException, IOException {
-        ionosEnterpriseApi.getServer().detachCDRom(dataCenterId, serverId, romId);
+        ionosEnterpriseApi.getServerApi().detachCDRom(dataCenterId, serverId, romId);
     }
 
     @AfterClass
     public static void cleanup() throws RestClientException, IOException {
-        ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
+        ionosEnterpriseApi.getDataCenterApi().deleteDataCenter(dataCenterId);
     }
 
     protected static String getImageId() throws RestClientException, IOException {
-        Images images = ionosEnterpriseApi.getImage().getAllImages();
+        Images images = ionosEnterpriseApi.getImageApi().getAllImages();
         for (Image image : images.getItems()) {
             if (image.getProperties().getName().toLowerCase().contains("centos".toLowerCase()) && image.getProperties().getLocation().equals("us/las")
                     && image.getProperties().getIsPublic() && image.getProperties().getImageType().equals("CDROM")) {
