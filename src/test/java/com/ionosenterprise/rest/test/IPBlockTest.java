@@ -31,24 +31,18 @@ package com.ionosenterprise.rest.test;
 
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.*;
-import com.ionosenterprise.rest.test.resource.CommonResource;
-import com.ionosenterprise.rest.test.resource.DataCenterResource;
-import com.ionosenterprise.rest.test.resource.IpBlockResource;
+import com.ionosenterprise.rest.test.resource.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.AfterClass;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import static org.junit.Assert.*;
 
 /**
  * @author jasmin@stackpointcloud.com
@@ -113,24 +107,20 @@ public class IPBlockTest extends BaseTest {
     @Test
     public void t5_testIpBlockConsumerDetails() throws InvocationTargetException, NoSuchMethodException,
             IllegalAccessException, RestClientException, IOException, InterruptedException {
+
         DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(
                 DataCenterResource.getDataCenter());
         assertNotNull(newDatacenter);
         waitTillProvisioned(newDatacenter.getRequestId());
         dataCenterId = newDatacenter.getId();
 
-        Server server = new Server();
-        server.getProperties().setName("SDK TEST SERVER");
-        server.getProperties().setRam(1024);
-        server.getProperties().setCores(1);
+        Server server = ServerResource.getServer();
         Server newServer = ionosEnterpriseApi.getServer().createServer(dataCenterId, server);
         assertNotNull(newServer);
         waitTillProvisioned(newServer.getRequestId());
         String serverId = newServer.getId();
 
-        Lan lan = new Lan();
-        lan.getProperties().setName("SDK TEST Lan");
-        lan.getProperties().setIsPublic(true);
+        Lan lan = LanResource.getLan();
         Lan newLan = ionosEnterpriseApi.getLan().createLan(dataCenterId, lan);
         assertNotNull(newLan);
         waitTillProvisioned(newLan.getRequestId());
@@ -139,12 +129,7 @@ public class IPBlockTest extends BaseTest {
         IPBlock iPBlock = ionosEnterpriseApi.getIpBlock().getIPBlock(ipBlockId);
         assertNotNull(iPBlock);
 
-        Nic nic = new Nic();
-        nic.getProperties().setName("SDK TEST NIC");
-        nic.getProperties().setLan(lanId);
-        nic.getProperties().setNat(Boolean.FALSE);
-        nic.getProperties().setIps(iPBlock.getProperties().getIps());
-        nic.getEntities().setFirewallrules(null);
+        Nic nic = NicResource.getNicForLanIdAndIPBlock(lanId, iPBlock);
         Nic newNic = ionosEnterpriseApi.getNic().createNic(dataCenterId, serverId, nic);
         assertNotNull(newNic);
         waitTillProvisioned(newNic.getRequestId());
