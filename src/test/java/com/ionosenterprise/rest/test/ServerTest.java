@@ -35,19 +35,17 @@ import com.ionosenterprise.rest.domain.Server;
 import com.ionosenterprise.rest.domain.Servers;
 import com.ionosenterprise.rest.test.resource.DataCenterResource;
 import com.ionosenterprise.rest.test.resource.ServerResource;
-import static com.ionosenterprise.rest.test.DatacenterTest.waitTillProvisioned;
-
-import com.ionosenterprise.sdk.IonosEnterpriseApi;
-
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author jasmin@stackpointcloud.com
@@ -89,12 +87,10 @@ public class ServerTest extends BaseTest {
     public void t4_UpdateServer() throws RestClientException, IOException, NoSuchMethodException,
             IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-        String newName = ServerResource.getEditServer().getProperties().getName();
-        Server.Properties object = new Server().new Properties();
-        object.setName(newName);
+        Server.Properties properties = ServerResource.getEditServer().getProperties();
 
-        Server updatedServer = ionosEnterpriseApi.getServer().updateServer(dataCenterId, serverId, object);
-        assertEquals(newName, updatedServer.getProperties().getName());
+        Server updatedServer = ionosEnterpriseApi.getServer().updateServer(dataCenterId, serverId, properties);
+        assertEquals(properties.getName(), updatedServer.getProperties().getName());
     }
 
     @Test
@@ -114,6 +110,7 @@ public class ServerTest extends BaseTest {
 
     @AfterClass
     public static void cleanup() throws RestClientException, IOException {
+        ionosEnterpriseApi.getServer().deleteServer(dataCenterId, serverId);
         ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
     }
 }

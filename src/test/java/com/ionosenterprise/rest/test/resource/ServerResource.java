@@ -29,10 +29,7 @@
  */
 package com.ionosenterprise.rest.test.resource;
 
-import com.ionosenterprise.rest.domain.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.ionosenterprise.rest.domain.Server;
 
 /**
  *
@@ -40,8 +37,6 @@ import java.util.List;
  */
 public class ServerResource {
     private static Server server;
-    private static Server compositeServer;
-    private static Server badServer;
     private static Server editServer;
 
     public static Server getServer() {

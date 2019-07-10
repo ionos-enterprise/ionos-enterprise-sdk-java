@@ -65,6 +65,7 @@ import java.util.List;
          private String location;
          private Integer size;
          private String name;
+         private List<IPConsumer> ipConsumers;
 
          /**
           * @return the ips
@@ -123,6 +124,20 @@ import java.util.List;
           */
          public void setName(String name) {
              this.name = name;
+         }
+
+         /**
+          * @return the ipConsumers
+          */
+         public List<IPConsumer> getIpConsumers() {
+             return ipConsumers;
+         }
+
+         /**
+          * @param ipConsumers the ipConsumers to be set
+          */
+         public void setIpConsumers(List<IPConsumer> ipConsumers) {
+             this.ipConsumers = ipConsumers;
          }
      }
  }

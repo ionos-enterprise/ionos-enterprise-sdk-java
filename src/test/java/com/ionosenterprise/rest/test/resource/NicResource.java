@@ -29,6 +29,7 @@
  */
 package com.ionosenterprise.rest.test.resource;
 
+import com.ionosenterprise.rest.domain.IPBlock;
 import com.ionosenterprise.rest.domain.Nic;
 
 /**
@@ -38,6 +39,7 @@ public class NicResource {
     private static Nic nic;
     private static Nic badNic;
     private static Nic editNic;
+    private static Nic nicForIPBlockTests;
 
     public static Nic getNic() {
         if (nic == null) {
@@ -64,5 +66,17 @@ public class NicResource {
             badNic.getProperties().setName("Java SDK Test");
         }
         return badNic;
+    }
+
+    public static Nic getNicForLanIdAndIPBlock(String lanId, IPBlock iPBlock) {
+        if (nicForIPBlockTests == null){
+            nicForIPBlockTests = new Nic();
+            nicForIPBlockTests.getProperties().setName("SDK TEST NIC");
+            nicForIPBlockTests.getProperties().setLan(lanId);
+            nicForIPBlockTests.getProperties().setNat(Boolean.FALSE);
+            nicForIPBlockTests.getProperties().setIps(iPBlock.getProperties().getIps());
+            nicForIPBlockTests.getEntities().setFirewallrules(null);
+        }
+        return nicForIPBlockTests;
     }
 }
