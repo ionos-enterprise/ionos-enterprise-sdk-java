@@ -104,6 +104,8 @@ public class User extends BaseAPI {
      * forceSecAuth=Indicates if secure (two-factor) authentication was enabled for the user.
      * <br>
      * secAuthActive=Indicates if secure (two-factor) authentication is enabled for the user.
+     * <br>
+     * active=Indicates if the user is enabled.
      * @return User object with properties and metadata.
      */
     public com.ionosenterprise.rest.domain.User createUser(com.ionosenterprise.rest.domain.User user)
@@ -117,14 +119,29 @@ public class User extends BaseAPI {
      * Updates a specific user.
      *
      * @param userId The unique ID of the user.
+     * @param userProps object has the following properties:
+     * <br>
+     * firstname= The first name of the user.
+     * <br>
+     * lastname=The last name of the user.
+     * <br>
+     * email=The e-mail address of the user.
+     * <br>
+     * administrator=Indicates if the user has administrative rights.
+     * <br>
+     * forceSecAuth=Indicates if secure (two-factor) authentication was enabled for the user.
+     * <br>
+     * secAuthActive=Indicates if secure (two-factor) authentication is enabled for the user.
+     * <br>
+     * active=Indicates if the user is enabled.
      * @return User object with properties and metadata
      */
     public com.ionosenterprise.rest.domain.User updateUser(String userId,
-                                                           com.ionosenterprise.rest.domain.User.Properties object)
+                                                           com.ionosenterprise.rest.domain.User.Properties userProps)
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        return client.put(getUrlBase().concat(resource).concat("/").concat(userId), object,
+        return client.put(getUrlBase().concat(resource).concat("/").concat(userId), userProps,
                 com.ionosenterprise.rest.domain.User.class, 202);
     }
 
