@@ -47,10 +47,10 @@ public class UserResource {
             user.getProperties().setFirstname("John");
             user.getProperties().setLastname("Doe");
             user.getProperties().setPassword("secretpassword111");
-            user.getProperties().setEmail("no-reply" + System.currentTimeMillis() + "@example.com");
             user.getProperties().setAdministrator(true);
         }
 
+        user.getProperties().setEmail("no-reply" + System.currentTimeMillis() + "@example.com");
         return user;
     }
 
@@ -59,11 +59,11 @@ public class UserResource {
             editUser = new User();
             editUser.getProperties().setFirstname("Jane");
             editUser.getProperties().setLastname("Doe");
-            editUser.getProperties().setEmail("no-reply" + System.currentTimeMillis() + ".edit@example.com");
             editUser.getProperties().setAdministrator(false);
             editUser.getProperties().setForceSecAuth(false);
         }
 
+        editUser.getProperties().setEmail("no-reply" + System.currentTimeMillis() + ".edit@example.com");
         return editUser;
     }
 
@@ -73,10 +73,10 @@ public class UserResource {
             userOfGroup.getProperties().setFirstname("User");
             userOfGroup.getProperties().setLastname("OfGroup");
             userOfGroup.getProperties().setPassword("secretpassword222");
-            userOfGroup.getProperties().setEmail("no-reply" + System.currentTimeMillis() + ".of_group@example.com");
             userOfGroup.getProperties().setAdministrator(false);
         }
 
+        userOfGroup.getProperties().setEmail("no-reply" + System.currentTimeMillis() + ".of_group@example.com");
         return userOfGroup;
     }
 
@@ -86,10 +86,10 @@ public class UserResource {
             contractUserWithoutAdminPriv.getProperties().setFirstname("ContractUser");
             contractUserWithoutAdminPriv.getProperties().setLastname("WithoutAdminPriv");
             contractUserWithoutAdminPriv.getProperties().setPassword("secretpassword333");
-            contractUserWithoutAdminPriv.getProperties().setEmail(
-                    "no-reply" + System.currentTimeMillis() + ".without_admin_priv@example.com");
         }
 
+        contractUserWithoutAdminPriv.getProperties().setEmail(
+                "no-reply" + System.currentTimeMillis() + ".without_admin_priv@example.com");
         return contractUserWithoutAdminPriv;
     }
 }

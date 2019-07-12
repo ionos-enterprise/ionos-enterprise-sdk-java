@@ -92,6 +92,7 @@ public class User extends BaseResource {
         private Boolean forceSecAuth;
         private Boolean secAuthActive;
         private Boolean active;
+        private String s3CanonicalUserId;
 
         public String getFirstname() {
             return firstname;
@@ -155,6 +156,14 @@ public class User extends BaseResource {
 
         public void setActive(Boolean active) {
             this.active = active;
+        }
+
+        public String getS3CanonicalUserId() {
+            return s3CanonicalUserId;
+        }
+
+        public void setS3CanonicalUserId(String s3CanonicalUserId) {
+            this.s3CanonicalUserId = s3CanonicalUserId;
         }
     }
 

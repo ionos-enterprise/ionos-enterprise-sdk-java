@@ -35,6 +35,7 @@ Legacy: **v4.1.0 v4.0.0**
     * [Groups](#groups)
     * [Shares](#shares)
     * [Users](#users)
+    * [User S3 Keys](#user-s3-keys)
     * [Resources](#resources)
     * [Contract Resources](#contract-resources)
 * [Examples](#examples)
@@ -1766,6 +1767,18 @@ Retrieves a single user.
 
 ---
 
+#### Get the ssoUrl of a User
+
+Retrieves the URL to open CMC in a browser in context of the given user
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| userId | **yes** | string | The ID of the user. |
+
+    getSSOUrl(String userId)
+
+---
+
 #### Create a User
 
 Creates a new user.
@@ -1854,6 +1867,72 @@ Removes a user from a group.
 | userId | **yes** | string | The ID of the user. |
 
     removeUserFromGroup(String groupId,String userId)
+
+---
+
+### User S3 Keys
+
+#### List S3 Keys
+
+Retrieve a list of all the S3 keys for a specific user.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| userId | **yes** | string | The ID of the user. |
+
+    getAllS3Keys(String userId)
+
+---
+
+#### Get a S3 Key
+
+Retrieve details about a specific S3 key.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| userId | **yes** | string | The ID of the user. |
+| s3KeyId | **yes** | string | The ID of the specific S3 key. |
+
+    getS3Key(String userId, String s3KeyId)
+
+---
+
+#### Create a S3 Key
+
+Creates a new S3 key for a particular user.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| userId | **yes** | string | The ID of the user. |
+
+    creates3Key(String userId)
+
+---
+
+#### Update a S3 Key
+
+This operation allows you to enable or disable a specific S3 key by changing the Boolean value for active.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| userId | **yes** | string | The ID of the user. |
+| s3KeyId | **yes** | string | The ID of the specific S3 key. |
+| s3Key.active | **yes** | bool | New status of the S3 key. |
+
+    updateS3Key(String userId, String s3KeyId, S3Key.Properties s3KeyProperties)
+
+---
+
+#### Delete a S3 Key
+
+Removes a specific S3 key.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| userId | **yes** | string | The ID of the user. |
+| s3KeyId | **yes** | string | The ID of the specific S3 key. |
+
+    deleteS3Key(String userId, String s3KeyId)
 
 ---
 
