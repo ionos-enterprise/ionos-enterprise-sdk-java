@@ -54,6 +54,7 @@ public class IonosEnterpriseApi {
         this.share = new Share();
         this.user = new User();
         this.resource = new Resource();
+        this.backupUnit = new BackupUnit();
         this.s3Key = new S3Key();
     }
 
@@ -74,6 +75,7 @@ public class IonosEnterpriseApi {
     private Share share;
     private User user;
     private Resource resource;
+    private BackupUnit backupUnit;
     private S3Key s3Key;
 
     /**
@@ -227,5 +229,12 @@ public class IonosEnterpriseApi {
      */
     public S3Key getS3Key() {
         return s3Key;
+    }
+
+    /**
+     * @return the backupUnit
+     */
+    public BackupUnit getBackupUnit() {
+        return backupUnit;
     }
 }
