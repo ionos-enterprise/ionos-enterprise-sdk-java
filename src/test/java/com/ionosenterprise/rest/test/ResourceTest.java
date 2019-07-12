@@ -6,17 +6,14 @@ import com.ionosenterprise.rest.test.resource.DataCenterResource;
 import com.ionosenterprise.rest.test.resource.IpBlockResource;
 import com.ionosenterprise.rest.test.resource.SnapshotResource;
 import com.ionosenterprise.rest.test.resource.VolumeResource;
-import com.ionosenterprise.sdk.IonosEnterpriseApi;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.TimeUnit;
-import org.junit.AfterClass;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import org.junit.BeforeClass;
-import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class ResourceTest extends BaseTest {
 
@@ -100,10 +97,11 @@ public class ResourceTest extends BaseTest {
     }
 
     @AfterClass
-    public static void cleanUp() throws RestClientException, IOException {
+    public static void cleanUp() throws RestClientException, IOException, InterruptedException {
+        ionosEnterpriseApi.getVolume().deleteVolume(dataCenterId, volumeId);
+        String requestId = ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
+        waitTillProvisioned(requestId);
         ionosEnterpriseApi.getIpBlock().deleteIPBlock(ipBlockId);
         ionosEnterpriseApi.getSnapshot().deleteSnapshot(snapshotId);
-        ionosEnterpriseApi.getVolume().deleteVolume(dataCenterId, volumeId);
-        ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
     }
 }

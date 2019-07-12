@@ -110,8 +110,9 @@ public class Datacenter extends AbstractLabelAPI {
       * This will remove all objects within the data center and remove the data center object itself.
       *
       * @param  id The unique ID of the data center.
+      * @return a String representing the requestId
       */
-    public void deleteDataCenter(String id) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(getResourcePath()).concat("/").concat(id), 202);
+    public String deleteDataCenter(String id) throws RestClientException, IOException {
+        return client.delete(getUrlBase().concat(getResourcePath()).concat("/").concat(id), 202);
     }
 }

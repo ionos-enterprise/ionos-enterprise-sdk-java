@@ -126,9 +126,10 @@ public class Lan extends AbstractBaseAPI {
      *
      * @param dataCenterId The unique ID of the data center
      * @param lanId The unique ID of the Lan
+     * @return a String representing the requestId
      */
-    public void deleteLan(String dataCenterId, String lanId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
+    public String deleteLan(String dataCenterId, String lanId) throws RestClientException, IOException {
+        return client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
                 .concat(lanId), 202);
     }
 }

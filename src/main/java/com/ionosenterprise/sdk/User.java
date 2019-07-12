@@ -81,9 +81,10 @@ public class User extends AbstractBaseAPI {
      * Deletes a specific user.
      *
      * @param userId The unique ID of the user.
+     * @return a String representing the requestId
      */
-    public void deleteUser(String userId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(getResourcePath()).concat("/").concat(userId),202);
+    public String deleteUser(String userId) throws RestClientException, IOException {
+        return client.delete(getUrlBase().concat(getResourcePath()).concat("/").concat(userId),202);
     }
 
     /**
@@ -149,10 +150,10 @@ public class User extends AbstractBaseAPI {
      *
      * @param groupId The unique ID of the group.
      * @param userId The unique ID of the user.
-     * @return User object with properties and metadata
+     * @return a String representing the requestId
      */
-    public void removeUserFromGroup(String groupId,String userId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat("um/groups").concat("/").concat(groupId).concat("/").concat("users")
+    public String removeUserFromGroup(String groupId,String userId) throws RestClientException, IOException {
+        return client.delete(getUrlBase().concat("um/groups").concat("/").concat(groupId).concat("/").concat("users")
                 .concat("/").concat(userId),   202);
     }
 }

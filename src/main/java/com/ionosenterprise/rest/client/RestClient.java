@@ -119,9 +119,12 @@ public class RestClient extends AbstractRestClient {
         consume(response);
     }
 
-    public void delete(String path, int expectedStatus) throws RestClientException, IOException {
+    public String delete(String path, int expectedStatus) throws RestClientException, IOException {
         HttpDelete delete = newHttpDelete(path);
-        consume(execute(delete, expectedStatus));
+        HttpResponse response = execute(delete, expectedStatus);
+        consume(response);
+        return response.getFirstHeader("Location") != null
+                ? response.getFirstHeader("Location").getValue() : null;
     }
 
     public <T> T update(String path, Object object, Class<T> entityClass, int expectedStatus)

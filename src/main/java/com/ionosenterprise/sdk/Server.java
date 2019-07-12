@@ -131,10 +131,11 @@ public class Server extends AbstractLabelAPI {
      *
      * @param dataCenterId The unique ID of the data center
      * @param serverId     The unique ID of the server
+     * @return a String representing the requestId
      */
-    public void deleteServer(String dataCenterId, String serverId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/").concat(serverId),
-                202);
+    public String deleteServer(String dataCenterId, String serverId) throws RestClientException, IOException {
+        return client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
+                        .concat(serverId),202);
 
     }
 
@@ -270,12 +271,13 @@ public class Server extends AbstractLabelAPI {
      * @param dataCenterId The unique ID of the data center
      * @param serverId     The unique ID of the server
      * @param cdromId      The unique ID of the CD ROM Image
+     * @return a String representing the requestId
      */
-    public void detachCDRom(String dataCenterId, String serverId, String cdromId)
+    public String detachCDRom(String dataCenterId, String serverId, String cdromId)
             throws RestClientException, IOException {
 
-        client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/").concat(serverId)
-                .concat("/").concat("cdroms").concat("/").concat(cdromId), 202);
+        return client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
+                .concat(serverId).concat("/").concat("cdroms").concat("/").concat(cdromId), 202);
     }
 
 }

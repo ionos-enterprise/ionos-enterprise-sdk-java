@@ -72,9 +72,11 @@ public class Share extends AbstractBaseAPI {
      * Deletes a specific share.
      * @param groupId The unique ID of the group.
      * @param shareId The unique ID of the share.
+     * @return a String representing the requestId
      */
-    public void deleteShare(String groupId, String shareId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(groupId))).concat("/").concat(shareId),202);
+    public String deleteShare(String groupId, String shareId) throws RestClientException, IOException {
+        return client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(groupId))).concat("/").concat(shareId),
+                202);
     }
 
     /**

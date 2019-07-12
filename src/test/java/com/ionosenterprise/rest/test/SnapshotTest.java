@@ -41,7 +41,6 @@ import org.junit.runners.MethodSorters;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
@@ -210,10 +209,9 @@ public class SnapshotTest extends BaseTest {
 
     @AfterClass
     public static void cleanUp() throws RestClientException, IOException, InterruptedException {
-        TimeUnit.MINUTES.sleep(1);
-
+        String requestId = ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
+        waitTillProvisioned(requestId);
         ionosEnterpriseApi.getSnapshot().deleteLabel(Arrays.asList(snapshotId), labelId);
         ionosEnterpriseApi.getSnapshot().deleteSnapshot(snapshotId);
-        ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
     }
 }

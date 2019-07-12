@@ -157,9 +157,10 @@ public class Nic extends AbstractBaseAPI {
      * @param dataCenterId The unique ID of the data center
      * @param serverId The unique ID of the server
      * @param nicId The unique ID of the nic
+     * @return a String representing the requestId
      */
-    public void deleteNic(String dataCenterId, String serverId, String nicId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId, serverId))).concat("/")
+    public String deleteNic(String dataCenterId, String serverId, String nicId) throws RestClientException, IOException {
+        return client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId, serverId))).concat("/")
                 .concat(nicId), 202);
     }
 
@@ -190,11 +191,12 @@ public class Nic extends AbstractBaseAPI {
      * @param dataCenterId The unique ID of the data center
      * @param loadBalancerId The unique ID of the load balancer.
      * @param nicId The unique ID of the nic.
+     * @return a String representing the requestId
      */
-    public void unassignNicFromLoadBalancer(String dataCenterId, String loadBalancerId, String nicId)
+    public String unassignNicFromLoadBalancer(String dataCenterId, String loadBalancerId, String nicId)
             throws RestClientException, IOException {
 
-        client.delete(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+        return client.delete(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
                 .concat("loadbalancers").concat("/").concat(loadBalancerId).concat("/").
                 concat("balancednics").concat("/").concat(nicId), 202);
     }

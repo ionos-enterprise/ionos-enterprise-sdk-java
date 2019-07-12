@@ -44,7 +44,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -210,10 +209,8 @@ public class LanTest extends BaseTest {
 
     @AfterClass
     public static void cleanup() throws RestClientException, IOException, InterruptedException {
-        ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
-
-        TimeUnit.MINUTES.sleep(1);
-
+        String requestId = ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
+        waitTillProvisioned(requestId);
         ionosEnterpriseApi.getIpBlock().deleteIPBlock(ipBlockId);
     }
 }

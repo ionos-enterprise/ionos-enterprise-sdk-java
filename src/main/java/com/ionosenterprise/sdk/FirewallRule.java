@@ -145,11 +145,12 @@ public class FirewallRule extends AbstractBaseAPI {
      * @param serverId The unique ID of the server
      * @param nicId The unique ID of the nic
      * @param firewallRuleId The unique ID of the firewallRule
+     * @return a String representing the requestId
      */
-    public void deleteFirewallRule(String dataCenterId, String serverId, String nicId, String firewallRuleId)
+    public String deleteFirewallRule(String dataCenterId, String serverId, String nicId, String firewallRuleId)
             throws RestClientException, IOException {
 
-        client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId, serverId, nicId)))
+        return client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId, serverId, nicId)))
                         .concat("/").concat(firewallRuleId),202);
     }
 

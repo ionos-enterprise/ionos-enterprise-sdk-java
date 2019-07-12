@@ -138,9 +138,10 @@ public class Loadbalancer extends AbstractBaseAPI {
      *
      * @param dataCenterId The unique ID of the data center
      * @param loadBalancerId The unique ID of the LoadBalancer
+     * @return a String representing the requestId
      */
-    public void deleteLoadBalaner(String dataCenterId, String loadBalancerId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
+    public String deleteLoadBalaner(String dataCenterId, String loadBalancerId) throws RestClientException, IOException {
+        return client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
                 .concat(loadBalancerId), 202);
     }
 }

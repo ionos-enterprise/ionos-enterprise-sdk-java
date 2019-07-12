@@ -69,9 +69,10 @@ public class Group extends AbstractBaseAPI {
      * Deletes a specific group.
      *
      * @param groupId The unique ID of the group.
+     * @return a String representing the requestId
      */
-    public void deleteGroup(String groupId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(getResourcePath()).concat("/").concat(groupId),202);
+    public String deleteGroup(String groupId) throws RestClientException, IOException {
+        return client.delete(getUrlBase().concat(getResourcePath()).concat("/").concat(groupId),202);
     }
 
     /**

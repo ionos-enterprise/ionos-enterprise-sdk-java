@@ -95,8 +95,9 @@ public class IPBlock extends AbstractLabelAPI {
      * Deletes the specified IP Block.
      *
      * @param ipBlockId The unique ID of the IP block.
+     * @return a String representing the requestId
      */
-   public void deleteIPBlock(String ipBlockId) throws RestClientException, IOException {
-      client.delete(getUrlBase().concat(getResourcePath()).concat("/").concat(ipBlockId), 202);
+   public String deleteIPBlock(String ipBlockId) throws RestClientException, IOException {
+      return client.delete(getUrlBase().concat(getResourcePath()).concat("/").concat(ipBlockId), 202);
    }
 }

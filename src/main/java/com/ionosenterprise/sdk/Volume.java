@@ -159,16 +159,16 @@ public class Volume extends AbstractLabelAPI {
     * @param dataCenterId
     * @param serverId
     * @param volumeId
-    * @throws RestClientException
-    * @throws IOException
+    * @return a String representing the requestId
     */
-   public void detachVolume(String dataCenterId, String serverId, String volumeId)
+   public String detachVolume(String dataCenterId, String serverId, String volumeId)
            throws RestClientException, IOException {
 
       PBObject object = new PBObject();
       object.setId(volumeId);
-      client.delete(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/").concat("servers")
-              .concat("/").concat(serverId).concat("/").concat("volumes").concat("/").concat(volumeId), 202);
+      return client.delete(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
+              .concat("servers").concat("/").concat(serverId).concat("/").concat("volumes").concat("/")
+              .concat(volumeId), 202);
    }
 
     /**
@@ -178,13 +178,11 @@ public class Volume extends AbstractLabelAPI {
      *
      * @param dataCenterId
      * @param volumeId
-     * @return
-     * @throws RestClientException
-     * @throws IOException
+     * @return a String representing the requestId
      */
-    public void deleteVolume(String dataCenterId, String volumeId) throws RestClientException, IOException {
-       client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/").concat(volumeId),
-               202);
+    public String deleteVolume(String dataCenterId, String volumeId) throws RestClientException, IOException {
+       return client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
+                       .concat(volumeId),202);
     }
 
 }
