@@ -38,13 +38,15 @@ import com.ionosenterprise.rest.domain.User;
 public class UserResource {
     private static User user;
     private static User editUser;
+    private static User userOfGroup;
+    private static User contractUserWithoutAdminPriv;
 
     public static User getUser() {
         if (user == null) {
             user = new User();
             user.getProperties().setFirstname("John");
             user.getProperties().setLastname("Doe");
-            user.getProperties().setPassword("secretpassword123");
+            user.getProperties().setPassword("secretpassword111");
             user.getProperties().setEmail("no-reply" + System.currentTimeMillis() + "@example.com");
             user.getProperties().setAdministrator(true);
         }
@@ -63,5 +65,31 @@ public class UserResource {
         }
 
         return editUser;
+    }
+
+    public static User getUserOfGroup() {
+        if (userOfGroup == null) {
+            userOfGroup = new User();
+            userOfGroup.getProperties().setFirstname("User");
+            userOfGroup.getProperties().setLastname("OfGroup");
+            userOfGroup.getProperties().setPassword("secretpassword222");
+            userOfGroup.getProperties().setEmail("no-reply" + System.currentTimeMillis() + ".of_group@example.com");
+            userOfGroup.getProperties().setAdministrator(false);
+        }
+
+        return userOfGroup;
+    }
+
+    public static User getContractUserWithoutAdminPriv() {
+        if (contractUserWithoutAdminPriv == null) {
+            contractUserWithoutAdminPriv = new User();
+            contractUserWithoutAdminPriv.getProperties().setFirstname("ContractUser");
+            contractUserWithoutAdminPriv.getProperties().setLastname("WithoutAdminPriv");
+            contractUserWithoutAdminPriv.getProperties().setPassword("secretpassword333");
+            contractUserWithoutAdminPriv.getProperties().setEmail(
+                    "no-reply" + System.currentTimeMillis() + ".without_admin_priv@example.com");
+        }
+
+        return contractUserWithoutAdminPriv;
     }
 }

@@ -84,13 +84,14 @@ public class User extends BaseResource {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public class Properties {
-        private  String firstname;
-        private  String lastname;
-        private  String email;
-        private  String password;
-        private  Boolean administrator;
-        private  Boolean forceSecAuth;
-        private  Boolean secAuthActive;
+        private String firstname;
+        private String lastname;
+        private String email;
+        private String password;
+        private Boolean administrator;
+        private Boolean forceSecAuth;
+        private Boolean secAuthActive;
+        private Boolean active;
 
         public String getFirstname() {
             return firstname;
@@ -146,6 +147,14 @@ public class User extends BaseResource {
 
         public void setPassword(String password) {
             this.password = password;
+        }
+
+        public Boolean getActive() {
+            return active;
+        }
+
+        public void setActive(Boolean active) {
+            this.active = active;
         }
     }
 
