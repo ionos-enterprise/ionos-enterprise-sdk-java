@@ -30,30 +30,25 @@
 package com.ionosenterprise.rest.test;
 
 import com.ionosenterprise.rest.client.RestClientException;
-import com.ionosenterprise.rest.domain.*;
+import com.ionosenterprise.rest.domain.DataCenter;
+import com.ionosenterprise.rest.domain.Snapshot;
+import com.ionosenterprise.rest.domain.Snapshots;
+import com.ionosenterprise.rest.domain.Volume;
 import com.ionosenterprise.rest.test.resource.CommonResource;
 import com.ionosenterprise.rest.test.resource.DataCenterResource;
 import com.ionosenterprise.rest.test.resource.SnapshotResource;
 import com.ionosenterprise.rest.test.resource.VolumeResource;
-
-import static com.ionosenterprise.rest.test.DatacenterTest.waitTillProvisioned;
-
-import com.ionosenterprise.sdk.IonosEnterpriseApi;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.AfterClass;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import static org.junit.Assert.*;
 
 /**
  * @author jasmin@stackpointcloud.com
@@ -84,10 +79,11 @@ public class SnapshotTest extends BaseTest {
 
         Snapshot.Properties properties = SnapshotResource.getSnapshot().getProperties();
         Snapshot snapshot = ionosEnterpriseApi.getSnapshot().createSnapshot(dataCenterId, volumeId,
-                properties.getName(), properties.getDescription());
+                properties.getName(), properties.getDescription(), properties.getLicenceType().name());
         assertNotNull(snapshot);
         assertEquals(snapshot.getProperties().getName(), properties.getName());
         assertEquals(snapshot.getProperties().getDescription(), properties.getDescription());
+        assertEquals(snapshot.getProperties().getLicenceType(), properties.getLicenceType());
         snapshotId = snapshot.getId();
         waitTillProvisioned(snapshot.getRequestId());
     }
@@ -99,6 +95,7 @@ public class SnapshotTest extends BaseTest {
         Snapshot.Properties properties = SnapshotResource.getSnapshot().getProperties();
         assertEquals(snapshot.getProperties().getName(), properties.getName());
         assertEquals(snapshot.getProperties().getDescription(), properties.getDescription());
+        assertEquals(snapshot.getProperties().getLicenceType(), properties.getLicenceType());
     }
 
     @Test
@@ -151,7 +148,11 @@ public class SnapshotTest extends BaseTest {
             InvocationTargetException, NoSuchMethodException {
 
         try {
-            ionosEnterpriseApi.getSnapshot().createSnapshot(dataCenterId, volumeId, "", "");
+            Snapshot snapshot = SnapshotResource.getSnapshot();
+            ionosEnterpriseApi.getSnapshot().createSnapshot(dataCenterId, volumeId,
+                    "",
+                    snapshot.getProperties().getDescription(),
+                    snapshot.getProperties().getLicenceType().name());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
         }

@@ -29,6 +29,7 @@
  */
 package com.ionosenterprise.rest.test.resource;
 
+import com.ionosenterprise.rest.domain.LicenceType;
 import com.ionosenterprise.rest.domain.Snapshot;
 
 /**
@@ -45,6 +46,7 @@ public class SnapshotResource {
             snapshot = new Snapshot();
             snapshot.getProperties().setName("Java SDK Test");
             snapshot.getProperties().setDescription("Java SDK test snapshot");
+            snapshot.getProperties().setLicenceType(LicenceType.LINUX);
         }
         return snapshot;
     }

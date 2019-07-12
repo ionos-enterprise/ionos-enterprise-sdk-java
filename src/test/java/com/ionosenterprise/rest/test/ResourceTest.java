@@ -6,11 +6,9 @@ import com.ionosenterprise.rest.test.resource.DataCenterResource;
 import com.ionosenterprise.rest.test.resource.IpBlockResource;
 import com.ionosenterprise.rest.test.resource.SnapshotResource;
 import com.ionosenterprise.rest.test.resource.VolumeResource;
-import com.ionosenterprise.sdk.IonosEnterpriseApi;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.TimeUnit;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -43,7 +41,7 @@ public class ResourceTest extends BaseTest {
 
         Snapshot.Properties properties = SnapshotResource.getSnapshot().getProperties();
         Snapshot snapshot = ionosEnterpriseApi.getSnapshot().createSnapshot(dataCenterId, volumeId,
-                properties.getName(), properties.getDescription());
+                properties.getName(), properties.getDescription(), properties.getLicenceType().name());
         assertNotNull(snapshot);
         snapshotId = snapshot.getId();
         waitTillProvisioned(snapshot.getRequestId());

@@ -65,14 +65,23 @@ public class Snapshot extends BaseAPI {
      * @param volumeId The unique ID of the volume.
      * @param name The name of the snapshot.
      * @param description The description of the snapshot.
+     * @param licenseType The license type of the snapshot.
      * @return Snapshot object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.Snapshot createSnapshot(String dataCenterId, String volumeId, String name, String description) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public com.ionosenterprise.rest.domain.Snapshot createSnapshot(String dataCenterId, String volumeId, String name,
+                                                                   String description, String licenseType)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+                IllegalArgumentException, InvocationTargetException {
+
         Map<String, String> params = new HashMap<String, String>();
         params.put("name", name);
         params.put("description", description);
-        return client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
-                .concat("volumes").concat("/").concat(volumeId).concat("/").concat("create-snapshot"), params, com.ionosenterprise.rest.domain.Snapshot.class, 202);
+        params.put("licenseType", licenseType);
+
+        return client.create(
+                getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/").concat("volumes")
+                        .concat("/").concat(volumeId).concat("/").concat("create-snapshot"),
+                params, com.ionosenterprise.rest.domain.Snapshot.class, 202);
     }
 
     /**

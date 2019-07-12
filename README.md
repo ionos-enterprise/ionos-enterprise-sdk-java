@@ -1465,8 +1465,9 @@ Creates a snapshot of a volume within the data center. You can use a snapshot to
 |---|---|---|---|
 | dataCenterId | **yes** | string | The ID of the datacenter. |
 | volumeId | **yes** | string | The ID of the volume. |
-| name |  no | string | The name of the snapshot. |
+| name |  **yes** | string | The name of the snapshot. |
 | description | no | string | The description of the snapshot. |
+| licenceType | no | string | Set to one of the values: [WINDOWS, WINDOWS2016, LINUX, OTHER, UNKNOWN] |
 
 After retrieving a volume, you can call the `createSnapshot` method directly on the object:
 
