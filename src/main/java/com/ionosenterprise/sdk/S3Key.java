@@ -13,7 +13,7 @@ public class S3Key extends BaseAPI {
     }
 
     /**
-     * Retrieve the list of S3Keys for an user.
+     * Retrieve the list of S3Keys for a user.
      *
      * @param userId
      * @return
@@ -24,7 +24,7 @@ public class S3Key extends BaseAPI {
     }
 
     /**
-     * Retrieves a specified S3Key of an user.
+     * Retrieves a specified S3Key of a user.
      *
      * @param userId
      * @param s3KeyId
@@ -38,7 +38,7 @@ public class S3Key extends BaseAPI {
     }
 
     /**
-     * Create a S3Key for an user.
+     * Create a S3Key for a user.
      *
      * @param userId
      * @return
@@ -51,7 +51,7 @@ public class S3Key extends BaseAPI {
     }
 
     /**
-     * Activate/deactivate a S3Key of an user.
+     * Activate/deactivate a S3Key of a user.
      *
      * @param userId
      * @param s3KeyId
@@ -69,7 +69,7 @@ public class S3Key extends BaseAPI {
     }
 
     /**
-     * Delete a S3Key of an user.
+     * Delete a S3Key of a user.
      *
      * @param userId
      * @param s3KeyId

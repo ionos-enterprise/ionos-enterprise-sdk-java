@@ -1731,7 +1731,7 @@ Retrieves a list of all users.
 
 ---
 
-#### Get an User
+#### Get a User
 
 Retrieves a single user.
 
@@ -1743,7 +1743,7 @@ Retrieves a single user.
 
 ---
 
-#### Get the ssoUrl of an User
+#### Get the ssoUrl of a User
 
 Retrieves the URL to open CMC in a browser in context of the given user
 
@@ -1755,7 +1755,7 @@ Retrieves the URL to open CMC in a browser in context of the given user
 
 ---
 
-#### Create an User
+#### Create a User
 
 Creates a new user.
 
@@ -1774,7 +1774,7 @@ The following table describes the request arguments:
 
 ---
 
-#### Update an User
+#### Update a User
 
 Updates an existing user.
 
@@ -1793,9 +1793,9 @@ The following table describes the request arguments:
 
 ---
 
-#### Delete an User
+#### Delete a User
 
-Removes an user.
+Removes a user.
 
 | Name | Required | Type | Description |
 |---|:-:|---|---|
@@ -1834,7 +1834,7 @@ The following table describes the request arguments:
 
 #### Remove User from a Group
 
-Removes an user from a group.
+Removes a user from a group.
 
 | Name | Required | Type | Description |
 |---|:-:|---|---|
