@@ -30,20 +30,27 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Nics;
 import com.ionosenterprise.rest.domain.PBObject;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
 /**
  * @author jasmin@stackpointcloud.com
  */
 public class Nic extends AbstractBaseApi {
 
-    public Nic() {
-        super("datacenters/%s/servers/%s/nics");
+    public Nic(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "datacenters/%s/servers/%s/nics";
     }
 
     /**
@@ -55,7 +62,7 @@ public class Nic extends AbstractBaseApi {
      */
     public Nics getAllNics(String dataCenterId, String serverId) throws RestClientException, IOException {
         return client.get(getResourcePathBuilder().withPathParams(dataCenterId, serverId).withDepth().build(),
-                null, Nics.class);
+                Collections.EMPTY_MAP, Nics.class);
     }
 
     /**
@@ -70,7 +77,7 @@ public class Nic extends AbstractBaseApi {
             throws RestClientException, IOException {
 
         return client.get(getResourcePathBuilder().withPathParams(dataCenterId, serverId).appendPathSegment(nicId)
-                .withDepth().build(), null, com.ionosenterprise.rest.domain.Nic.class);
+                .withDepth().build(), Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.Nic.class);
     }
 
     /**
@@ -111,7 +118,7 @@ public class Nic extends AbstractBaseApi {
             IllegalArgumentException, InvocationTargetException {
 
         return client.create(getResourcePathBuilder().withPathParams(dataCenterId, serverId).build(), nic,
-                com.ionosenterprise.rest.domain.Nic.class, 202);
+                com.ionosenterprise.rest.domain.Nic.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -147,7 +154,7 @@ public class Nic extends AbstractBaseApi {
             IllegalArgumentException, InvocationTargetException {
 
         return client.update(getResourcePathBuilder().withPathParams(dataCenterId, serverId).appendPathSegment(nicId)
-                .build(), nic, com.ionosenterprise.rest.domain.Nic.class, 202);
+                .build(), nic, com.ionosenterprise.rest.domain.Nic.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -160,7 +167,7 @@ public class Nic extends AbstractBaseApi {
      */
     public String deleteNic(String dataCenterId, String serverId, String nicId) throws RestClientException, IOException {
         return client.delete(getResourcePathBuilder().withPathParams(dataCenterId, serverId).appendPathSegment(nicId)
-                .build(), 202);
+                .build(), HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -181,7 +188,7 @@ public class Nic extends AbstractBaseApi {
 
         return client.create(getResourcePathBuilder("datacenters/%s/loadbalancers/%s/balancednics")
                 .withPathParams(dataCenterId, loadBalancerId).build(), payload,
-                com.ionosenterprise.rest.domain.Nic.class, 202);
+                com.ionosenterprise.rest.domain.Nic.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -196,7 +203,7 @@ public class Nic extends AbstractBaseApi {
             throws RestClientException, IOException {
 
         return client.delete(getResourcePathBuilder("datacenters/%s/loadbalancers/%s/balancednics")
-                .withPathParams(dataCenterId, loadBalancerId).appendPathSegment(nicId).build(), 202);
+                .withPathParams(dataCenterId, loadBalancerId).appendPathSegment(nicId).build(), HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -208,7 +215,7 @@ public class Nic extends AbstractBaseApi {
      */
     public Nics getAllBalancedNics(String dataCenterId, String loadBalancerId) throws RestClientException, IOException {
         return client.get(getResourcePathBuilder("datacenters/%s/loadbalancers/%s/balancednics")
-                .withPathParams(dataCenterId, loadBalancerId).withDepth().build(), null, Nics.class);
+                .withPathParams(dataCenterId, loadBalancerId).withDepth().build(), Collections.EMPTY_MAP, Nics.class);
     }
 
     /**
@@ -224,6 +231,6 @@ public class Nic extends AbstractBaseApi {
 
         return client.get(getResourcePathBuilder("datacenters/%s/loadbalancers/%s/balancednics")
                         .withPathParams(dataCenterId, loadBalancerId).appendPathSegment(nicId).withDepth().build(),
-                null, com.ionosenterprise.rest.domain.Nic.class);
+                Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.Nic.class);
     }
 }

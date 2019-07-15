@@ -30,19 +30,25 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.RequestStatus;
 import com.ionosenterprise.rest.domain.Requests;
 
 import java.io.IOException;
+import java.util.Collections;
 
 /**
  * @author jasmin@stackpointcloud.com
  */
 public class Request extends AbstractBaseApi {
 
-    public Request() {
-        super("requests");
+    public Request(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "requests";
     }
 
     /**
@@ -53,7 +59,7 @@ public class Request extends AbstractBaseApi {
      */
     public RequestStatus getRequestStatus(String url) throws RestClientException, IOException {
         if (url != null) {
-            return client.get(url, null, RequestStatus.class);
+            return client.get(url, Collections.EMPTY_MAP, RequestStatus.class);
         }
         return null;
     }
@@ -62,7 +68,7 @@ public class Request extends AbstractBaseApi {
      * Retrieves all requests
      */
     public Requests listRequests() throws RestClientException, IOException {
-        return client.get(getResourcePathBuilder().withDepth().build(), null, Requests.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), Collections.EMPTY_MAP, Requests.class);
     }
 
     /**
@@ -72,7 +78,7 @@ public class Request extends AbstractBaseApi {
      */
     public com.ionosenterprise.rest.domain.Request getRequest(String requestId) throws RestClientException, IOException {
         return client.get(getResourcePathBuilder().appendPathSegment(requestId).withDepth().build(),
-                null, com.ionosenterprise.rest.domain.Request.class);
+                Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.Request.class);
     }
 
 }

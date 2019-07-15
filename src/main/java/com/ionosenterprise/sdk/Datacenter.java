@@ -30,20 +30,27 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.DataCenter;
 import com.ionosenterprise.rest.domain.DataCenters;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
 /**
  * @author jasmin@stackpointcloud.com
  */
 public class Datacenter extends AbstractLabelApi {
 
-    public Datacenter() {
-        super("datacenters");
+    public Datacenter(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "datacenters";
     }
 
     /**
@@ -52,7 +59,7 @@ public class Datacenter extends AbstractLabelApi {
      * @return DataCenter object with properties and metadata.
      */
     public DataCenters getAllDataCenters() throws RestClientException, IOException {
-        return client.get(getResourcePathBuilder().withDepth().build(), null, DataCenters.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), Collections.EMPTY_MAP, DataCenters.class);
     }
 
      /**
@@ -63,7 +70,7 @@ public class Datacenter extends AbstractLabelApi {
       */
     public DataCenter getDataCenter(String id) throws RestClientException, IOException {
         return client.get(getResourcePathBuilder().appendPathSegment(id).withDepth().build(),
-                null, DataCenter.class);
+                Collections.EMPTY_MAP, DataCenter.class);
     }
 
      /**
@@ -82,7 +89,7 @@ public class Datacenter extends AbstractLabelApi {
     public DataCenter createDataCenter(DataCenter datacenter) throws RestClientException, IOException,
             IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 
-        return client.create(getResourcePathBuilder().build(), datacenter, DataCenter.class, 202);
+        return client.create(getResourcePathBuilder().build(), datacenter, DataCenter.class, HttpStatus.SC_ACCEPTED);
     }
     
     /**
@@ -102,7 +109,7 @@ public class Datacenter extends AbstractLabelApi {
             InvocationTargetException {
 
         return client.update(getResourcePathBuilder().appendPathSegment(id).build(),
-                datacenter, DataCenter.class, 202);
+                datacenter, DataCenter.class, HttpStatus.SC_ACCEPTED);
     }
 
      /**
@@ -112,6 +119,6 @@ public class Datacenter extends AbstractLabelApi {
       * @return a String representing the requestId
       */
     public String deleteDataCenter(String id) throws RestClientException, IOException {
-        return client.delete(getResourcePathBuilder().appendPathSegment(id).build(), 202);
+        return client.delete(getResourcePathBuilder().appendPathSegment(id).build(), HttpStatus.SC_ACCEPTED);
     }
 }

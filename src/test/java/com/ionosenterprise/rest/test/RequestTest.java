@@ -36,15 +36,16 @@ import com.ionosenterprise.rest.domain.RequestStatus;
 import com.ionosenterprise.rest.domain.Requests;
 import com.ionosenterprise.rest.test.resource.CommonResource;
 import com.ionosenterprise.rest.test.resource.DataCenterResource;
-import com.ionosenterprise.sdk.IonosEnterpriseApi;
+import org.apache.http.HttpStatus;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import org.junit.AfterClass;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 /**
  * @author jasmin@stackpointcloud.com
@@ -90,7 +91,7 @@ public class RequestTest extends BaseTest {
         try{
             ionosEnterpriseApi.getRequest().getRequest(CommonResource.getBadId());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 

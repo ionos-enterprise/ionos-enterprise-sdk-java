@@ -30,11 +30,14 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Lans;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
 /**
  *
@@ -42,8 +45,12 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class Lan extends AbstractBaseApi {
 
-    public Lan() {
-        super("datacenters/%s/lans");
+    public Lan(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "datacenters/%s/lans";
     }
 
     /**
@@ -54,7 +61,7 @@ public class Lan extends AbstractBaseApi {
      */
     public Lans getAllLans(String dataCenterId) throws RestClientException, IOException {
         return client.get(getResourcePathBuilder().withPathParams(dataCenterId).withDepth().build(),
-                null, Lans.class);
+                Collections.EMPTY_MAP, Lans.class);
     }
 
     /**
@@ -69,7 +76,7 @@ public class Lan extends AbstractBaseApi {
 
         return client.get(
                 getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(lanId).withDepth().build(),
-                null, com.ionosenterprise.rest.domain.Lan.class);
+                Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.Lan.class);
     }
 
     /**
@@ -95,7 +102,7 @@ public class Lan extends AbstractBaseApi {
             IllegalArgumentException, InvocationTargetException {
 
         return client.create(getResourcePathBuilder().withPathParams(dataCenterId).build(), lan,
-                com.ionosenterprise.rest.domain.Lan.class, 202);
+                com.ionosenterprise.rest.domain.Lan.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -118,7 +125,7 @@ public class Lan extends AbstractBaseApi {
             IllegalArgumentException, InvocationTargetException {
 
         return client.update(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(lanId).build(),
-                lan, com.ionosenterprise.rest.domain.Lan.class, 202);
+                lan, com.ionosenterprise.rest.domain.Lan.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -130,6 +137,6 @@ public class Lan extends AbstractBaseApi {
      */
     public String deleteLan(String dataCenterId, String lanId) throws RestClientException, IOException {
         return client.delete(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(lanId).build(),
-                202);
+                HttpStatus.SC_ACCEPTED);
     }
 }

@@ -1,18 +1,21 @@
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Label;
 import com.ionosenterprise.rest.domain.Labels;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
-public class AbstractLabelApi extends AbstractBaseApi {
+public abstract class AbstractLabelApi extends AbstractBaseApi {
 
     private static final String LABELS_PATH_SEGMENT = "/labels";
 
-    public AbstractLabelApi(String pathFormat) {
-        super(pathFormat);
+    public AbstractLabelApi(RestClient client) {
+        super(client);
     }
 
     /**
@@ -26,7 +29,7 @@ public class AbstractLabelApi extends AbstractBaseApi {
      */
     public Labels getAllLabels(String resourceId, String... pathParams) throws RestClientException, IOException {
         return client.get(getResourcePathBuilder().withPathParams(pathParams).appendPathSegment(resourceId)
-                .appendPathSegment(LABELS_PATH_SEGMENT).withDepth().build(), null, Labels.class);
+                .appendPathSegment(LABELS_PATH_SEGMENT).withDepth().build(), Collections.EMPTY_MAP, Labels.class);
     }
 
     /**
@@ -44,7 +47,7 @@ public class AbstractLabelApi extends AbstractBaseApi {
 
         return client.get(getResourcePathBuilder().withPathParams(pathParams).appendPathSegment(resourceId)
                 .appendPathSegment(LABELS_PATH_SEGMENT).appendPathSegment(labelKey).withDepth().build(),
-                null, Label.class);
+                Collections.EMPTY_MAP, Label.class);
     }
 
     /**
@@ -64,7 +67,7 @@ public class AbstractLabelApi extends AbstractBaseApi {
             NoSuchMethodException, IllegalAccessException, RestClientException, IOException {
 
         return client.create(getResourcePathBuilder().withPathParams(pathParams).appendPathSegment(resourceId)
-                .appendPathSegment(LABELS_PATH_SEGMENT).build(), label, Label.class, 201);
+                .appendPathSegment(LABELS_PATH_SEGMENT).build(), label, Label.class, HttpStatus.SC_CREATED);
     }
 
     /**
@@ -89,7 +92,7 @@ public class AbstractLabelApi extends AbstractBaseApi {
 
         return client.put(getResourcePathBuilder().withPathParams(pathParams).appendPathSegment(resourceId)
                 .appendPathSegment(LABELS_PATH_SEGMENT).appendPathSegment(labelKey).build(),
-                labelProperties, Label.class, 200);
+                labelProperties, Label.class, HttpStatus.SC_OK);
     }
 
     /**
@@ -105,6 +108,6 @@ public class AbstractLabelApi extends AbstractBaseApi {
             throws RestClientException, IOException {
 
         client.delete(getResourcePathBuilder().withPathParams(pathParams).appendPathSegment(resourceId)
-                .appendPathSegment(LABELS_PATH_SEGMENT).appendPathSegment(labelKey).build(), 200);
+                .appendPathSegment(LABELS_PATH_SEGMENT).appendPathSegment(labelKey).build(), HttpStatus.SC_OK);
     }
 }

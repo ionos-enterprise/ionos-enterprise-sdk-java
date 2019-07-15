@@ -30,11 +30,14 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Snapshots;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,8 +47,12 @@ import java.util.Map;
  */
 public class Snapshot extends AbstractLabelApi {
 
-    public Snapshot() {
-        super("snapshots");
+    public Snapshot(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "snapshots";
     }
 
     /**
@@ -54,7 +61,7 @@ public class Snapshot extends AbstractLabelApi {
      * @return Snapshots object with a list of Snapshots
      */
     public Snapshots getAllSnapshots() throws RestClientException, IOException {
-        return client.get(getResourcePathBuilder().withDepth().build(), null, Snapshots.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), Collections.EMPTY_MAP, Snapshots.class);
     }
 
     /**
@@ -77,7 +84,7 @@ public class Snapshot extends AbstractLabelApi {
         params.put("description", description);
         return client.create(getResourcePathBuilder("datacenters/%s/volumes/%s/create-snapshot")
                 .withPathParams(dataCenterId, volumeId).build(), params, com.ionosenterprise.rest.domain.Snapshot.class,
-                202);
+                HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -95,7 +102,7 @@ public class Snapshot extends AbstractLabelApi {
         Map<String, String> params = new HashMap<String, String>();
         params.put("snapshotId", snapshotId);
         client.create(getResourcePathBuilder("datacenters/%s/volumes/%s/restore-snapshot")
-                .withPathParams(dataCenterId, volumeId).build(), params, 202);
+                .withPathParams(dataCenterId, volumeId).build(), params, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -106,7 +113,7 @@ public class Snapshot extends AbstractLabelApi {
      */
     public com.ionosenterprise.rest.domain.Snapshot getSnapshot(String snapshotId) throws RestClientException, IOException {
         return client.get(getResourcePathBuilder().appendPathSegment(snapshotId).withDepth().build(),
-                null, com.ionosenterprise.rest.domain.Snapshot.class);
+                Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.Snapshot.class);
     }
 
     /**
@@ -171,7 +178,7 @@ public class Snapshot extends AbstractLabelApi {
             IllegalArgumentException, InvocationTargetException {
 
         return client.update(getResourcePathBuilder().appendPathSegment(snapshotId).build(), snapshot,
-                com.ionosenterprise.rest.domain.Snapshot.class, 202);
+                com.ionosenterprise.rest.domain.Snapshot.class, HttpStatus.SC_ACCEPTED);
     }
 
      /**
@@ -180,6 +187,6 @@ public class Snapshot extends AbstractLabelApi {
      * @param snapshotId The unique ID of the snapshot
      */
     public void deleteSnapshot(String snapshotId) throws RestClientException, IOException {
-        client.delete(getResourcePathBuilder().appendPathSegment(snapshotId).build(), 202);
+        client.delete(getResourcePathBuilder().appendPathSegment(snapshotId).build(), HttpStatus.SC_ACCEPTED);
     }
 }

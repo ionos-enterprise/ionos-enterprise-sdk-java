@@ -35,6 +35,7 @@ import com.ionosenterprise.rest.test.resource.CommonResource;
 import com.ionosenterprise.rest.test.resource.DataCenterResource;
 import com.ionosenterprise.rest.test.resource.LabelResource;
 import com.ionosenterprise.rest.test.resource.ServerResource;
+import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -144,7 +145,7 @@ public class ServerTest extends BaseTest {
         try {
             ionosEnterpriseApi.getServer().getLabel(CommonResource.getBadId(), serverId, dataCenterId);
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 
@@ -165,7 +166,7 @@ public class ServerTest extends BaseTest {
         try {
             ionosEnterpriseApi.getServer().createLabel(label, serverId, dataCenterId);
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_UNPROCESSABLE_ENTITY);
         }
     }
 

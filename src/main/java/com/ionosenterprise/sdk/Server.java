@@ -30,22 +30,29 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.CDRom;
 import com.ionosenterprise.rest.domain.CDRoms;
 import com.ionosenterprise.rest.domain.PBObject;
 import com.ionosenterprise.rest.domain.Servers;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
 /**
  * @author jasmin@stackpointcloud.com
  */
 public class Server extends AbstractLabelApi {
 
-    public Server() {
-        super("datacenters/%s/servers");
+    public Server(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "datacenters/%s/servers";
     }
 
     /**
@@ -56,7 +63,7 @@ public class Server extends AbstractLabelApi {
      */
     public Servers getAllServers(String dataCenterId) throws RestClientException, IOException {
         return client.get(getResourcePathBuilder().withPathParams(dataCenterId).withDepth().build(),
-                null, Servers.class);
+                Collections.EMPTY_MAP, Servers.class);
     }
 
     /**
@@ -70,7 +77,7 @@ public class Server extends AbstractLabelApi {
             throws RestClientException, IOException {
 
         return client.get(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId).withDepth()
-                        .build(),null, com.ionosenterprise.rest.domain.Server.class);
+                        .build(),Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.Server.class);
     }
 
     /**
@@ -119,7 +126,7 @@ public class Server extends AbstractLabelApi {
             IllegalArgumentException, InvocationTargetException {
 
         return client.create(getResourcePathBuilder().withPathParams(dataCenterId).build(), server,
-                com.ionosenterprise.rest.domain.Server.class, 202);
+                com.ionosenterprise.rest.domain.Server.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -133,7 +140,7 @@ public class Server extends AbstractLabelApi {
      */
     public String deleteServer(String dataCenterId, String serverId) throws RestClientException, IOException {
         return client.delete(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId).build(),
-                202);
+                HttpStatus.SC_ACCEPTED);
 
     }
 
@@ -179,7 +186,7 @@ public class Server extends AbstractLabelApi {
             IllegalArgumentException, InvocationTargetException {
 
         return client.update(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId).build(),
-                server, com.ionosenterprise.rest.domain.Server.class, 202);
+                server, com.ionosenterprise.rest.domain.Server.class, HttpStatus.SC_ACCEPTED);
 
     }
 
@@ -192,7 +199,7 @@ public class Server extends AbstractLabelApi {
      */
     public void rebootServer(String dataCenterId, String serverId) throws RestClientException, IOException {
         client.execute(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
-                .appendPathSegment("/reboot").build(), 202);
+                .appendPathSegment("/reboot").build(), HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -203,7 +210,7 @@ public class Server extends AbstractLabelApi {
      */
     public void startServer(String dataCenterId, String serverId) throws RestClientException, IOException {
         client.execute(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
-                .appendPathSegment("/start").build(), 202);
+                .appendPathSegment("/start").build(), HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -215,7 +222,7 @@ public class Server extends AbstractLabelApi {
      */
     public void stopServer(String dataCenterId, String serverId) throws RestClientException, IOException {
         client.execute(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
-                .appendPathSegment("/stop").build(), 202);
+                .appendPathSegment("/stop").build(), HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -230,7 +237,7 @@ public class Server extends AbstractLabelApi {
      */
     public CDRoms getAllAttachedCDRoms(String dataCenterId, String serverId) throws RestClientException, IOException {
         return client.get(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
-                .appendPathSegment("/cdroms").withDepth().build(), null, CDRoms.class);
+                .appendPathSegment("/cdroms").withDepth().build(), Collections.EMPTY_MAP, CDRoms.class);
     }
 
     /**
@@ -244,7 +251,8 @@ public class Server extends AbstractLabelApi {
             throws RestClientException, IOException {
 
         return client.get(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
-                .appendPathSegment("/cdroms").appendPathSegment(cdromId).withDepth().build(), null, CDRom.class);
+                .appendPathSegment("/cdroms").appendPathSegment(cdromId).withDepth().build(), Collections.EMPTY_MAP,
+                CDRom.class);
     }
 
     /**
@@ -260,7 +268,7 @@ public class Server extends AbstractLabelApi {
         PBObject object = new PBObject();
         object.setId(imageId);
         return client.create(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
-                .appendPathSegment("/cdroms").build(), object, CDRom.class, 202);
+                .appendPathSegment("/cdroms").build(), object, CDRom.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -275,7 +283,7 @@ public class Server extends AbstractLabelApi {
             throws RestClientException, IOException {
 
         return client.delete(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
-                .appendPathSegment("/cdroms").appendPathSegment(cdromId).build(), 202);
+                .appendPathSegment("/cdroms").appendPathSegment(cdromId).build(), HttpStatus.SC_ACCEPTED);
     }
 
 }

@@ -32,6 +32,7 @@ package com.ionosenterprise.rest.test;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.*;
 import com.ionosenterprise.rest.test.resource.*;
+import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -114,7 +115,7 @@ public class FirewallRuleTest extends BaseTest {
         try {
             ionosEnterpriseApi.getFirewallRule().getFirewallRule(dataCenterId, serverId, nicId, CommonResource.getBadId());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 
@@ -126,7 +127,7 @@ public class FirewallRuleTest extends BaseTest {
             ionosEnterpriseApi.getFirewallRule().createFirewallRule(dataCenterId, serverId,nicId,
                     FirewallRuleResource.getBadFirewallRule());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_UNPROCESSABLE_ENTITY);
         }
 
     }

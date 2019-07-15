@@ -30,36 +30,25 @@
 
 package com.ionosenterprise.sdk;
 
-import com.ionosenterprise.rest.client.RequestInterceptor;
 import com.ionosenterprise.rest.client.ResourcePathBuilder;
 import com.ionosenterprise.rest.client.RestClient;
-import com.ionosenterprise.rest.client.RestClientBuilder;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.http.client.methods.HttpRequestBase;
 
 /**
  * @author jasmin@stackpointcloud.com
  */
 public abstract class AbstractBaseApi {
 
-    private static final String IONOS_ENTERPRISE_API_URL = "https://api.ionos.com/cloudapi/v5/";
-
-    private String pathFormat;
-
     protected RestClient client;
 
-    public AbstractBaseApi(String pathFormat) {
-        this.pathFormat = pathFormat;
-
-        RequestInterceptor authorize = getAuthorizeRequestInterceptor(null);
-        client = RestClientBuilder.create().withInterceptor(authorize).build();
+    public AbstractBaseApi(RestClient client) {
+        this.client = client;
     }
 
     /**
      * @return the ResourcePathBuilder
      */
     protected ResourcePathBuilder getResourcePathBuilder() {
-        return ResourcePathBuilder.create(pathFormat, getUrlBase());
+        return ResourcePathBuilder.create(getPathFormat());
     }
 
     /**
@@ -67,55 +56,8 @@ public abstract class AbstractBaseApi {
      * @return the ResourcePathBuilder
      */
     protected ResourcePathBuilder getResourcePathBuilder(String pathFormat) {
-        return ResourcePathBuilder.create(pathFormat, getUrlBase());
+        return ResourcePathBuilder.create(pathFormat);
     }
 
-    /**
-     * @param credentials the credentials to set
-     */
-    protected void setCredentials(String credentials) {
-        RequestInterceptor authorize = getAuthorizeRequestInterceptor(credentials);
-        client.setInterceptor(authorize);
-    }
-
-    private String getUrlBase() {
-        String urlBase;
-        if (System.getenv("IONOS_ENTERPRISE_API_URL") != null) {
-            urlBase = System.getenv("IONOS_ENTERPRISE_API_URL");
-            if (!urlBase.endsWith("/")) {
-                urlBase += ("/");
-            }
-        } else {
-            urlBase = IONOS_ENTERPRISE_API_URL;
-        }
-
-        return urlBase;
-    }
-
-    private RequestInterceptor getAuthorizeRequestInterceptor(final String credentials) {
-        return new RequestInterceptor() {
-            @Override
-            public void intercept(HttpRequestBase request) {
-                String authorizationCredentials = credentials;
-                if (authorizationCredentials == null) {
-                    if (System.getenv("IONOS_ENTERPRISE_USERNAME") != null
-                            && System.getenv("IONOS_ENTERPRISE_PASSWORD") != null) {
-                        byte[] bytesEncoded = Base64.encodeBase64((System.getenv("IONOS_ENTERPRISE_USERNAME")
-                                + ":" + System.getenv("IONOS_ENTERPRISE_PASSWORD")).getBytes());
-                        authorizationCredentials = new String(bytesEncoded);
-                    }
-                }
-
-                if (authorizationCredentials == null) {
-                    try {
-                        throw new Exception("Credentials not set.");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                request.addHeader("Authorization", "Basic ".concat(authorizationCredentials));
-            }
-        };
-    }
+    protected abstract String getPathFormat();
 }

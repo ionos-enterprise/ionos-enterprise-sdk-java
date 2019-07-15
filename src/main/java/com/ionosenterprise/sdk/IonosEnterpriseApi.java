@@ -30,31 +30,41 @@
 
 package com.ionosenterprise.sdk;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ionosenterprise.rest.client.RequestInterceptor;
+import com.ionosenterprise.rest.client.RestClient;
+import com.ionosenterprise.rest.client.RestClientUtil;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 public class IonosEnterpriseApi {
 
-    private String credentials;
+    private RestClient client;
 
-    public IonosEnterpriseApi() throws Exception {
-        this.dataCenter = new Datacenter();
-        this.server = new Server();
-        this.volume = new Volume();
-        this.snapshot = new Snapshot();
-        this.loadbalancer = new Loadbalancer();
-        this.nic = new Nic();
-        this.firewallRule = new FirewallRule();
-        this.image = new Image();
-        this.ipBlock = new IPBlock();
-        this.request = new Request();
-        this.lan = new Lan();
-        this.location = new Location();
-        this.contract = new Contract();
-        this.group = new Group();
-        this.share = new Share();
-        this.user = new User();
-        this.resource = new Resource();
-        this.label = new Label();
+    public IonosEnterpriseApi() {
+        initRestClient();
+
+        this.dataCenter = new Datacenter(client);
+        this.server = new Server(client);
+        this.volume = new Volume(client);
+        this.snapshot = new Snapshot(client);
+        this.loadbalancer = new Loadbalancer(client);
+        this.nic = new Nic(client);
+        this.firewallRule = new FirewallRule(client);
+        this.image = new Image(client);
+        this.ipBlock = new IPBlock(client);
+        this.request = new Request(client);
+        this.lan = new Lan(client);
+        this.location = new Location(client);
+        this.contract = new Contract(client);
+        this.group = new Group(client);
+        this.share = new Share(client);
+        this.user = new User(client);
+        this.resource = new Resource(client);
+        this.label = new Label(client);
     }
 
     private Datacenter dataCenter;
@@ -80,194 +90,90 @@ public class IonosEnterpriseApi {
      * @return the dataCenter
      */
     public Datacenter getDataCenter() {
-        this.dataCenter.setCredentials(credentials);
         return dataCenter;
-    }
-
-    /**
-     * @param dataCenter the dataCenter to set
-     */
-    public void setDataCenter(Datacenter dataCenter) {
-        this.dataCenter = dataCenter;
     }
 
     /**
      * @return the server
      */
     public Server getServer() {
-        this.server.setCredentials(credentials);
         return server;
-    }
-
-    /**
-     * @param server the server to set
-     */
-    public void setServer(Server server) {
-        this.server = server;
     }
 
     /**
      * @return the volume
      */
     public Volume getVolume() {
-        this.volume.setCredentials(credentials);
         return volume;
-    }
-
-    /**
-     * @param volume the volume to set
-     */
-    public void setVolume(Volume volume) {
-        this.volume = volume;
     }
 
     /**
      * @return the snapshot
      */
     public Snapshot getSnapshot() {
-        this.snapshot.setCredentials(credentials);
         return snapshot;
-    }
-
-    /**
-     * @param snapshot the snapshot to set
-     */
-    public void setSnapshot(Snapshot snapshot) {
-        this.snapshot = snapshot;
     }
 
     /**
      * @return the loadbalancer
      */
     public Loadbalancer getLoadbalancer() {
-        this.loadbalancer.setCredentials(credentials);
         return loadbalancer;
-    }
-
-    /**
-     * @param loadbalancer the loadbalancer to set
-     */
-    public void setLoadbalancer(Loadbalancer loadbalancer) {
-        this.loadbalancer = loadbalancer;
     }
 
     /**
      * @return the nic
      */
     public Nic getNic() {
-        this.nic.setCredentials(credentials);
         return nic;
-    }
-
-    /**
-     * @param nic the nic to set
-     */
-    public void setNic(Nic nic) {
-        this.nic = nic;
     }
 
     /**
      * @return the firewallRule
      */
     public FirewallRule getFirewallRule() {
-        this.firewallRule.setCredentials(credentials);
         return firewallRule;
-    }
-
-    /**
-     * @param firewallRule the firewallRule to set
-     */
-    public void setFirewallRule(FirewallRule firewallRule) {
-        this.firewallRule = firewallRule;
     }
 
     /**
      * @return the image
      */
     public Image getImage() {
-        this.image.setCredentials(credentials);
         return image;
-    }
-
-    /**
-     * @param image the image to set
-     */
-    public void setImage(Image image) {
-        this.image = image;
     }
 
     /**
      * @return the ipBlock
      */
     public IPBlock getIpBlock() {
-        this.ipBlock.setCredentials(credentials);
         return ipBlock;
-    }
-
-    /**
-     * @param ipBlock the ipBlock to set
-     */
-    public void setIpBlock(IPBlock ipBlock) {
-        this.ipBlock = ipBlock;
     }
 
     /**
      * @return the request
      */
     public Request getRequest() {
-        this.request.setCredentials(credentials);
         return request;
-    }
-
-    /**
-     * @param request the request to set
-     */
-    public void setRequest(Request request) {
-        this.request = request;
     }
 
     /**
      * @return the lan
      */
     public Lan getLan() {
-        this.lan.setCredentials(credentials);
         return lan;
     }
 
     /**
-     * @param lan the lan to set
+     * @return the location
      */
-    public void setLan(Lan lan) {
-        this.lan = lan;
-    }
-
-    /**
-     * @param credentials the credentials to set
-     */
-    public void setCredentials(String credentials) {
-        this.credentials = credentials;
-    }
-
-    public void setCredentials(String username, String password) {
-        byte[] bytesEncoded = Base64.encodeBase64((username + ":" + password).getBytes());
-
-        this.credentials = new String(bytesEncoded);
-    }
-
     public Location getLocation() {
-        this.location.setCredentials(credentials);
         return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
     }
 
     /**
      * @return the contract
      */
     public Contract getContract() {
-        this.contract.setCredentials(credentials);
         return contract;
     }
 
@@ -275,43 +181,28 @@ public class IonosEnterpriseApi {
      * @return the group
      */
     public Group getGroup() {
-        this.group.setCredentials(credentials);
         return group;
     }
 
-    public void setGroup(Group group) {
-        this.group.setCredentials(credentials);
-        this.group = group;
-    }
-
+    /**
+     * @return the resource
+     */
     public Resource getResource() {
-        this.resource.setCredentials(credentials);
         return resource;
     }
 
-    public void setResource(Resource resource) {
-        this.resource.setCredentials(credentials);
-        this.resource = resource;
-    }
-
+    /**
+     * @return the user
+     */
     public User getUser() {
-        this.user.setCredentials(credentials);
         return user;
     }
 
-    public void setUser(User user) {
-        this.user.setCredentials(credentials);
-        this.user = user;
-    }
-
+    /**
+     * @return the share
+     */
     public Share getShare() {
-        this.share.setCredentials(credentials);
         return share;
-    }
-
-    public void setShare(Share share) {
-        this.share.setCredentials(credentials);
-        this.share = share;
     }
 
     /**
@@ -319,5 +210,55 @@ public class IonosEnterpriseApi {
      */
     public Label getLabel() {
         return label;
+    }
+
+    /**
+     * Set the credentials for the rest client.
+     *
+     * @param username the username to be set
+     * @param password the password to be set
+     */
+    public void setCredentials(String username, String password) {
+        byte[] bytesEncoded = Base64.encodeBase64((username + ":" + password).getBytes());
+
+        String credentials = new String(bytesEncoded);
+        RequestInterceptor authorize = getAuthorizeRequestInterceptor(credentials);
+        client.setHttpClientInterceptor(authorize);
+    }
+
+    private void initRestClient() {
+        RequestInterceptor interceptor = getAuthorizeRequestInterceptor(null);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        CloseableHttpClient httpClient = HttpClientBuilder.create().useSystemProperties().build();
+        RestClientUtil restClientUtil = new RestClientUtil(httpClient, interceptor, objectMapper);
+        this.client = new RestClient(restClientUtil);
+    }
+
+    private RequestInterceptor getAuthorizeRequestInterceptor(final String credentials) {
+        return new RequestInterceptor() {
+            @Override
+            public void intercept(HttpRequestBase request) {
+                String authorizationCredentials = credentials;
+                if (authorizationCredentials == null) {
+                    if (System.getenv("IONOS_ENTERPRISE_USERNAME") != null
+                            && System.getenv("IONOS_ENTERPRISE_PASSWORD") != null) {
+                        byte[] bytesEncoded = Base64.encodeBase64((System.getenv("IONOS_ENTERPRISE_USERNAME")
+                                + ":" + System.getenv("IONOS_ENTERPRISE_PASSWORD")).getBytes());
+                        authorizationCredentials = new String(bytesEncoded);
+                    }
+                }
+
+                if (authorizationCredentials == null) {
+                    try {
+                        throw new Exception("Credentials not set.");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                request.addHeader("Authorization", "Basic ".concat(authorizationCredentials));
+            }
+        };
     }
 }

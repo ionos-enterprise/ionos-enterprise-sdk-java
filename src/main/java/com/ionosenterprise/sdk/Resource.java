@@ -30,18 +30,24 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Resources;
 
 import java.io.IOException;
+import java.util.Collections;
 
 /**
  * @author denis@stackpointcloud.com
  */
 public class Resource extends AbstractBaseApi {
 
-    public Resource() {
-        super("um/resources");
+    public Resource(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "um/resources";
     }
 
     /**
@@ -50,7 +56,7 @@ public class Resource extends AbstractBaseApi {
      * @return Resources object with a list of resources
      */
     public Resources getAllResources() throws RestClientException, IOException {
-        return client.get(getResourcePathBuilder().withDepth().build(), null, Resources.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), Collections.EMPTY_MAP, Resources.class);
     }
 
     /**
@@ -62,7 +68,7 @@ public class Resource extends AbstractBaseApi {
             throws RestClientException, IOException {
 
         return client.get(getResourcePathBuilder().appendPathSegment(type.name()).withDepth().build(),
-                null, Resources.class);
+                Collections.EMPTY_MAP, Resources.class);
     }
 
     /**
@@ -77,6 +83,6 @@ public class Resource extends AbstractBaseApi {
             throws RestClientException, IOException {
 
         return client.get(getResourcePathBuilder().appendPathSegment(type.name()).appendPathSegment(resourceId)
-                        .withDepth().build(),null, com.ionosenterprise.rest.domain.Resource.class);
+                        .withDepth().build(),Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.Resource.class);
     }
 }

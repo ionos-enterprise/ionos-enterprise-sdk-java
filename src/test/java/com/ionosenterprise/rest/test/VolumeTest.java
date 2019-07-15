@@ -32,6 +32,7 @@ package com.ionosenterprise.rest.test;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.*;
 import com.ionosenterprise.rest.test.resource.*;
+import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -144,7 +145,7 @@ public class VolumeTest extends BaseTest {
         try {
             ionosEnterpriseApi.getVolume().createVolume(dataCenterId, VolumeResource.getBadVolume());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_UNPROCESSABLE_ENTITY);
         }
     }
 
@@ -153,7 +154,7 @@ public class VolumeTest extends BaseTest {
         try {
             ionosEnterpriseApi.getVolume().getVolume(dataCenterId, CommonResource.getBadId());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 
@@ -191,7 +192,7 @@ public class VolumeTest extends BaseTest {
         try {
             ionosEnterpriseApi.getVolume().getLabel(CommonResource.getBadId(), volumeId, dataCenterId);
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 
@@ -212,7 +213,7 @@ public class VolumeTest extends BaseTest {
         try {
             ionosEnterpriseApi.getVolume().createLabel(label, volumeId, dataCenterId);
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_UNPROCESSABLE_ENTITY);
         }
     }
 

@@ -30,11 +30,14 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.IPBlocks;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
 /**
  *
@@ -42,17 +45,21 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class IPBlock extends AbstractLabelApi {
 
-   public IPBlock() {
-      super("ipblocks");
+   public IPBlock(RestClient client) {
+      super(client);
    }
 
-    /**
+   protected String getPathFormat() {
+      return "ipblocks";
+   }
+
+   /**
      * Retrieve a list of IP Blocks.
      *
      * @return IPBlocks object with a list of IPBlocks in datacenter.
      */
    public IPBlocks getAllIPBlocks() throws RestClientException, IOException {
-      return client.get(getResourcePathBuilder().withDepth().build(), null, IPBlocks.class);
+      return client.get(getResourcePathBuilder().withDepth().build(), Collections.EMPTY_MAP, IPBlocks.class);
    }
 
     /**
@@ -63,7 +70,7 @@ public class IPBlock extends AbstractLabelApi {
      */
    public com.ionosenterprise.rest.domain.IPBlock getIPBlock(String ipBlockId) throws RestClientException, IOException {
       return client.get(getResourcePathBuilder().appendPathSegment(ipBlockId).withDepth().build(),
-              null, com.ionosenterprise.rest.domain.IPBlock.class);
+              Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.IPBlock.class);
    }
 
    /**
@@ -88,7 +95,7 @@ public class IPBlock extends AbstractLabelApi {
            IllegalArgumentException, InvocationTargetException {
 
       return client.create(getResourcePathBuilder().build(), ipBlock,
-              com.ionosenterprise.rest.domain.IPBlock.class, 202);
+              com.ionosenterprise.rest.domain.IPBlock.class, HttpStatus.SC_ACCEPTED);
    }
 
     /**
@@ -98,6 +105,6 @@ public class IPBlock extends AbstractLabelApi {
      * @return a String representing the requestId
      */
    public String deleteIPBlock(String ipBlockId) throws RestClientException, IOException {
-      return client.delete(getResourcePathBuilder().appendPathSegment(ipBlockId).build(), 202);
+      return client.delete(getResourcePathBuilder().appendPathSegment(ipBlockId).build(), HttpStatus.SC_ACCEPTED);
    }
 }

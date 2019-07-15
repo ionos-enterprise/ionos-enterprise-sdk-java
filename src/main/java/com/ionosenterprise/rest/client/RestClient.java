@@ -33,6 +33,7 @@ import com.ionosenterprise.rest.domain.PBObject;
 import org.apache.commons.io.Charsets;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
@@ -43,22 +44,28 @@ import java.util.Map;
 /**
  * @author jasmin@stackpointcloud.com
  */
-public class RestClient extends AbstractRestClient {
+public class RestClient {
+
+    private RestClientUtil restClientUtil;
+
+    public RestClient(RestClientUtil restClientUtil) {
+        this.restClientUtil = restClientUtil;
+    }
 
     public <T> T get(String path, Map<String, String> queryParams, Class<T> entityClass)
             throws RestClientException, IOException {
 
-        HttpGet get = newHttpGet(appendParams(path, queryParams));
-        HttpResponse response = execute(get, 200);
+        HttpGet get = restClientUtil.newHttpGet(restClientUtil.appendParams(path, queryParams));
+        HttpResponse response = restClientUtil.execute(get, HttpStatus.SC_OK);
         String content = null;
         try {
-            content = contentAsString(response);
+            content = restClientUtil.contentAsString(response);
         } catch (IOException e) {
             consume(response);
         }
 
         if (content != null) {
-            return bindObject(content, entityClass);
+            return restClientUtil.bindObject(content, entityClass);
         } else {
             return null;
         }
@@ -67,10 +74,10 @@ public class RestClient extends AbstractRestClient {
     public void create(String path, Map<String, String> params, int expectedStatus) throws IOException,
             RestClientException {
 
-        HttpPost post = contentTypeUrlEncoded(newHttpPost(path));
-        HttpEntity entity = new StringEntity(queryString(params).substring(1), Charsets.UTF_8);
+        HttpPost post = restClientUtil.contentTypeUrlEncoded(restClientUtil.newHttpPost(path));
+        HttpEntity entity = new StringEntity(restClientUtil.queryString(params).substring(1), Charsets.UTF_8);
         post.setEntity(entity);
-        HttpResponse response = execute(post, expectedStatus);
+        HttpResponse response = restClientUtil.execute(post, expectedStatus);
         consume(response);
     }
 
@@ -78,34 +85,34 @@ public class RestClient extends AbstractRestClient {
             throws IOException, RestClientException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        HttpPost post = contentTypeUrlEncoded(newHttpPost(path));
-        HttpEntity entity = new StringEntity(queryString(params).substring(1), Charsets.UTF_8);
+        HttpPost post = restClientUtil.contentTypeUrlEncoded(restClientUtil.newHttpPost(path));
+        HttpEntity entity = new StringEntity(restClientUtil.queryString(params).substring(1), Charsets.UTF_8);
         post.setEntity(entity);
-        HttpResponse response = execute(post, expectedStatus);
-        return bindObject(response, entityClass);
+        HttpResponse response = restClientUtil.execute(post, expectedStatus);
+        return restClientUtil.bindObject(response, entityClass);
     }
 
     public <T> T create(String path, T object, Class<T> entityClass, int expectedStatus)
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        HttpPost post = contentTypeJson(newHttpPost(path));
-        HttpEntity entity = new StringEntity(toJson(object).toString(), Charsets.UTF_8);
+        HttpPost post = restClientUtil.contentTypeJson(restClientUtil.newHttpPost(path));
+        HttpEntity entity = new StringEntity(restClientUtil.toJson(object).toString(), Charsets.UTF_8);
         post.setEntity(entity);
-        HttpResponse response = execute(post, expectedStatus);
-        return bindObject(response, entityClass);
+        HttpResponse response = restClientUtil.execute(post, expectedStatus);
+        return restClientUtil.bindObject(response, entityClass);
     }
 
     public <T> T create(String path, PBObject object, Class<T> entityClass, int expectedStatus)
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        HttpPost post = contentTypeJson(newHttpPost(path));
-        HttpEntity entity = new StringEntity(toJson(object).toString(), Charsets.UTF_8);
+        HttpPost post = restClientUtil.contentTypeJson(restClientUtil.newHttpPost(path));
+        HttpEntity entity = new StringEntity(restClientUtil.toJson(object).toString(), Charsets.UTF_8);
         post.setEntity(entity);
-        HttpResponse response = execute(post, expectedStatus);
+        HttpResponse response = restClientUtil.execute(post, expectedStatus);
         if (response != null) {
-            return bindObject(response, entityClass);
+            return restClientUtil.bindObject(response, entityClass);
         } else {
             return null;
         }
@@ -114,14 +121,14 @@ public class RestClient extends AbstractRestClient {
     public void execute(String path, int expectedStatus) throws RestClientException,
             IOException {
 
-        HttpPost post = newHttpPost(path);
-        HttpResponse response = execute(post, expectedStatus);
+        HttpPost post = restClientUtil.newHttpPost(path);
+        HttpResponse response = restClientUtil.execute(post, expectedStatus);
         consume(response);
     }
 
     public String delete(String path, int expectedStatus) throws RestClientException, IOException {
-        HttpDelete delete = newHttpDelete(path);
-        HttpResponse response = execute(delete, expectedStatus);
+        HttpDelete delete = restClientUtil.newHttpDelete(path);
+        HttpResponse response = restClientUtil.execute(delete, expectedStatus);
         consume(response);
         return response.getFirstHeader("Location") != null
                 ? response.getFirstHeader("Location").getValue() : null;
@@ -131,12 +138,12 @@ public class RestClient extends AbstractRestClient {
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        HttpPatch patch = contentTypePartialJson(newHttpPatch(path));
-        HttpEntity entity = new StringEntity(toJson(object).toString(), Charsets.UTF_8);
+        HttpPatch patch = restClientUtil.contentTypeJson(restClientUtil.newHttpPatch(path));
+        HttpEntity entity = new StringEntity(restClientUtil.toJson(object).toString(), Charsets.UTF_8);
         patch.setEntity(entity);
-        HttpResponse response = execute(patch, expectedStatus);
+        HttpResponse response = restClientUtil.execute(patch, expectedStatus);
         if (response != null) {
-            return bindObject(response, entityClass);
+            return restClientUtil.bindObject(response, entityClass);
         } else {
             return null;
         }
@@ -146,15 +153,20 @@ public class RestClient extends AbstractRestClient {
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        HttpPut patch = contentTypePartialJson(newHttpPut(path));
-        HttpEntity entity = new StringEntity(toJson(wrappWithProperties(object)).toString(), Charsets.UTF_8);
+        HttpPut patch = restClientUtil.contentTypeJson(restClientUtil.newHttpPut(path));
+        HttpEntity entity = new StringEntity(restClientUtil.toJson(
+                restClientUtil.wrappWithProperties(object)).toString(), Charsets.UTF_8);
         patch.setEntity(entity);
-        HttpResponse response = execute(patch, expectedStatus);
+        HttpResponse response = restClientUtil.execute(patch, expectedStatus);
         if (response != null) {
-            return bindObject(response, entityClass);
+            return restClientUtil.bindObject(response, entityClass);
         } else {
             return null;
         }
+    }
+
+    public void setHttpClientInterceptor(RequestInterceptor interceptor) {
+        restClientUtil.setInterceptor(interceptor);
     }
 
     private void consume(HttpResponse response) throws IOException {

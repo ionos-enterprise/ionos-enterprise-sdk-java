@@ -30,11 +30,14 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Images;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
 /**
  *
@@ -42,8 +45,12 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class Image extends AbstractBaseApi {
 
-    public Image() {
-        super("images");
+    public Image(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "images";
     }
 
     /**
@@ -52,7 +59,7 @@ public class Image extends AbstractBaseApi {
      * @return Images object with a list of Images
      */
     public Images getAllImages() throws RestClientException, IOException {
-        return client.get(getResourcePathBuilder().withDepth().build(), null, Images.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), Collections.EMPTY_MAP, Images.class);
     }
 
     /**
@@ -63,7 +70,7 @@ public class Image extends AbstractBaseApi {
      */
     public com.ionosenterprise.rest.domain.Image getImage(String imageId) throws RestClientException, IOException {
         return client.get(getResourcePathBuilder().appendPathSegment(imageId).withDepth().build(),
-                null, com.ionosenterprise.rest.domain.Image.class);
+                Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.Image.class);
     }
 
     /**
@@ -72,7 +79,7 @@ public class Image extends AbstractBaseApi {
      * @param imageId The unique ID of the image.
      */
     public void deleteImage(String imageId) throws RestClientException, IOException {
-        client.delete(getResourcePathBuilder().appendPathSegment(imageId).build(), 200);
+        client.delete(getResourcePathBuilder().appendPathSegment(imageId).build(), HttpStatus.SC_OK);
     }
 
     /**
@@ -86,7 +93,7 @@ public class Image extends AbstractBaseApi {
             IllegalArgumentException, InvocationTargetException {
 
         return client.update(getResourcePathBuilder().appendPathSegment(imageId).build(), object,
-                com.ionosenterprise.rest.domain.Image.class, 202);
+                com.ionosenterprise.rest.domain.Image.class, HttpStatus.SC_ACCEPTED);
     }
 
 }

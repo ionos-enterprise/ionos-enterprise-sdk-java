@@ -30,19 +30,26 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.FirewallRules;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
 /**
  * @author jasmin@stackpointcloud.com
  */
 public class FirewallRule extends AbstractBaseApi {
 
-    public FirewallRule() {
-        super("datacenters/%s/servers/%s/nics/%s/firewallrules");
+    public FirewallRule(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "datacenters/%s/servers/%s/nics/%s/firewallrules";
     }
 
     /**
@@ -58,7 +65,7 @@ public class FirewallRule extends AbstractBaseApi {
             throws RestClientException, IOException {
 
         return client.get(getResourcePathBuilder().withPathParams(dataCenterId, serverId, nicId).withDepth().build(),
-                null, FirewallRules.class);
+                Collections.EMPTY_MAP, FirewallRules.class);
     }
 
     /**
@@ -76,7 +83,7 @@ public class FirewallRule extends AbstractBaseApi {
 
         return client.get(getResourcePathBuilder().withPathParams(dataCenterId, serverId, nicId)
                 .appendPathSegment(firewallRuleId).withDepth().build(),
-                null, com.ionosenterprise.rest.domain.FirewallRule.class);
+                Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.FirewallRule.class);
     }
 
     /**
@@ -134,7 +141,7 @@ public class FirewallRule extends AbstractBaseApi {
             IllegalArgumentException, InvocationTargetException {
 
         return client.create(getResourcePathBuilder().withPathParams(dataCenterId, serverId, nicId).build(),
-                firewallRule, com.ionosenterprise.rest.domain.FirewallRule.class, 202);
+                firewallRule, com.ionosenterprise.rest.domain.FirewallRule.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -150,7 +157,7 @@ public class FirewallRule extends AbstractBaseApi {
             throws RestClientException, IOException {
 
         return client.delete(getResourcePathBuilder().withPathParams(dataCenterId, serverId, nicId)
-                .appendPathSegment(firewallRuleId).build(),202);
+                .appendPathSegment(firewallRuleId).build(),HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -210,6 +217,6 @@ public class FirewallRule extends AbstractBaseApi {
 
         return client.update(getResourcePathBuilder().withPathParams(dataCenterId, serverId, nicId)
                         .appendPathSegment(firewallRuleId).build(), firewallRule,
-                com.ionosenterprise.rest.domain.FirewallRule.class, 202);
+                com.ionosenterprise.rest.domain.FirewallRule.class, HttpStatus.SC_ACCEPTED);
     }
 }

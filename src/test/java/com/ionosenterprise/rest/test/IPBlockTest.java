@@ -37,6 +37,7 @@ import com.ionosenterprise.rest.domain.Labels;
 import com.ionosenterprise.rest.test.resource.CommonResource;
 import com.ionosenterprise.rest.test.resource.IpBlockResource;
 import com.ionosenterprise.rest.test.resource.LabelResource;
+import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -89,11 +90,11 @@ public class IPBlockTest extends BaseTest {
     }
 
     @Test
-    public void t4_getIpBlockFail() throws RestClientException, IOException {
+    public void t4_getIpBlockFail() throws IOException {
         try {
             ionosEnterpriseApi.getIpBlock().getIPBlock(CommonResource.getBadId());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 
@@ -104,7 +105,7 @@ public class IPBlockTest extends BaseTest {
         try {
             ionosEnterpriseApi.getIpBlock().createIPBlock(IpBlockResource.getBadIpBlock());
         }catch (RestClientException ex){
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_UNPROCESSABLE_ENTITY);
         }
     }
 
@@ -142,7 +143,7 @@ public class IPBlockTest extends BaseTest {
         try {
             ionosEnterpriseApi.getIpBlock().getLabel(CommonResource.getBadId(), ipBlockId);
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 
@@ -163,7 +164,7 @@ public class IPBlockTest extends BaseTest {
         try {
             ionosEnterpriseApi.getIpBlock().createLabel(label, ipBlockId);
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_UNPROCESSABLE_ENTITY);
         }
     }
 

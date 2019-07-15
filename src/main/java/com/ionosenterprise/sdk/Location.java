@@ -30,10 +30,12 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Locations;
 
 import java.io.IOException;
+import java.util.Collections;
 
 /**
  * @author jasmin@stackpointcloud.com
@@ -41,10 +43,14 @@ import java.io.IOException;
  */
 public class Location extends AbstractBaseApi {
 
-    public Location() {
-        super("locations");
+    public Location(RestClient client) {
+        super(client);
     }
-    
+
+    protected String getPathFormat() {
+        return "locations";
+    }
+
     /**
      *
      * Locations represent regions where you can provision your Virtual Data Centers.
@@ -52,7 +58,7 @@ public class Location extends AbstractBaseApi {
      * @return Locations
      */
     public Locations getAllLocations() throws RestClientException, IOException {
-        return client.get(getResourcePathBuilder().withDepth().build(), null, Locations.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), Collections.EMPTY_MAP, Locations.class);
     }
 
     /**
@@ -63,6 +69,6 @@ public class Location extends AbstractBaseApi {
      */
     public com.ionosenterprise.rest.domain.Location getLocation(String id) throws RestClientException, IOException {
         return client.get(getResourcePathBuilder().appendPathSegment(id).withDepth().build(),
-                null, com.ionosenterprise.rest.domain.Location.class);
+                Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.Location.class);
     }
 }

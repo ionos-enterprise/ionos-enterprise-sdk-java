@@ -37,6 +37,7 @@ import com.ionosenterprise.rest.domain.Users;
 import com.ionosenterprise.rest.test.resource.CommonResource;
 import com.ionosenterprise.rest.test.resource.GroupResource;
 import com.ionosenterprise.rest.test.resource.UserResource;
+import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -93,7 +94,7 @@ public class UserTest extends BaseTest {
         try {
             ionosEnterpriseApi.getUser().getUser(CommonResource.getBadId());
         }catch (RestClientException ex){
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 

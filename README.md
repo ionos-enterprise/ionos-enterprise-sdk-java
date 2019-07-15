@@ -1886,7 +1886,7 @@ Retrieve all labels you have on your account resources.
 
 #### Get a Label
 
-Retrieve a label bu its URN.
+Retrieve a label buy URN.
 
 | Name | Required | Type | Description |
 |---|:-:|---|---|
@@ -1896,7 +1896,7 @@ Retrieve a label bu its URN.
 
 ---
 
-**Note:** Following request are currently  available for **DataCenter, Server, Volume, Snapshot and IPBlock**. 
+**Note:** Following requests are currently  available for **DataCenter, Server, Volume, Snapshot and IPBlock**. 
 
 #### List Labels for a resource
 

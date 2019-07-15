@@ -30,11 +30,14 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Users;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,8 +46,12 @@ import java.util.Map;
  */
 public class User extends AbstractBaseApi {
 
-    public User() {
-        super("um/users");
+    public User(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "um/users";
     }
 
     /**
@@ -53,7 +60,7 @@ public class User extends AbstractBaseApi {
      * @return Users object with a list of Users
      */
     public Users getAllUsers() throws RestClientException, IOException {
-        return client.get(getResourcePathBuilder().withDepth().build(), null, Users.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), Collections.EMPTY_MAP, Users.class);
     }
 
     /**
@@ -63,7 +70,7 @@ public class User extends AbstractBaseApi {
      */
     public Users getAllGroupUsers(String groupId) throws RestClientException, IOException {
         return client.get(getResourcePathBuilder("um/groups/%s/users").withPathParams(groupId).withDepth()
-                .build(), null, Users.class);
+                .build(), Collections.EMPTY_MAP, Users.class);
     }
 
     /**
@@ -74,7 +81,7 @@ public class User extends AbstractBaseApi {
      */
     public com.ionosenterprise.rest.domain.User getUser(String userId) throws RestClientException, IOException {
         return client.get(getResourcePathBuilder().appendPathSegment(userId).withDepth().build(),
-                null, com.ionosenterprise.rest.domain.User.class);
+                Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.User.class);
     }
 
     /**
@@ -84,7 +91,7 @@ public class User extends AbstractBaseApi {
      * @return a String representing the requestId
      */
     public String deleteUser(String userId) throws RestClientException, IOException {
-        return client.delete(getResourcePathBuilder().appendPathSegment(userId).build(),202);
+        return client.delete(getResourcePathBuilder().appendPathSegment(userId).build(),HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -109,7 +116,7 @@ public class User extends AbstractBaseApi {
             InvocationTargetException, NoSuchMethodException {
 
         return client.create(getResourcePathBuilder().build(), user,
-                com.ionosenterprise.rest.domain.User.class, 202);
+                com.ionosenterprise.rest.domain.User.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -124,7 +131,7 @@ public class User extends AbstractBaseApi {
             IllegalArgumentException, InvocationTargetException {
 
         return client.put(getResourcePathBuilder().appendPathSegment(userId).build(), object,
-                com.ionosenterprise.rest.domain.User.class, 202);
+                com.ionosenterprise.rest.domain.User.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -141,7 +148,7 @@ public class User extends AbstractBaseApi {
         Map<String, String> params = new HashMap<String, String>();
         params.put("id", userId);
         return client.create(getResourcePathBuilder("um/groups/%s/users").withPathParams(groupId).build(),
-                params, com.ionosenterprise.rest.domain.User.class, 202);
+                params, com.ionosenterprise.rest.domain.User.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -153,6 +160,6 @@ public class User extends AbstractBaseApi {
      */
     public String removeUserFromGroup(String groupId,String userId) throws RestClientException, IOException {
         return client.delete(getResourcePathBuilder("um/groups/%s/users").withPathParams(groupId)
-                .appendPathSegment(userId).build(),   202);
+                .appendPathSegment(userId).build(),   HttpStatus.SC_ACCEPTED);
     }
 }

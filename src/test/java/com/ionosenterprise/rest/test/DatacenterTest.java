@@ -37,6 +37,7 @@ import com.ionosenterprise.rest.domain.Labels;
 import com.ionosenterprise.rest.test.resource.CommonResource;
 import com.ionosenterprise.rest.test.resource.DataCenterResource;
 import com.ionosenterprise.rest.test.resource.LabelResource;
+import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -95,7 +96,7 @@ public class DatacenterTest extends BaseTest {
         try {
             ionosEnterpriseApi.getDataCenter().getDataCenter(CommonResource.getBadId());
         }catch (RestClientException ex){
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 
@@ -106,7 +107,7 @@ public class DatacenterTest extends BaseTest {
         try {
             ionosEnterpriseApi.getDataCenter().createDataCenter(DataCenterResource.getBadDataCenter());
         }catch (RestClientException ex){
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_UNPROCESSABLE_ENTITY);
         }
     }
 
@@ -153,7 +154,7 @@ public class DatacenterTest extends BaseTest {
         try {
             ionosEnterpriseApi.getDataCenter().getLabel(CommonResource.getBadId(), dataCenterId);
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 
@@ -174,7 +175,7 @@ public class DatacenterTest extends BaseTest {
         try {
             ionosEnterpriseApi.getDataCenter().createLabel(label, dataCenterId);
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_UNPROCESSABLE_ENTITY);
         }
     }
 
