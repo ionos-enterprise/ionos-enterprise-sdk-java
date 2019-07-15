@@ -39,6 +39,7 @@ Legacy: **v4.1.0 v4.0.0**
     * [Resources](#resources)
     * [Contract Resources](#contract-resources)
     * [Backup Units](#backup-units)
+    * [Labels](#labels)
 * [Examples](#examples)
     * [POM](#pom)
     * [Wait for Resources](#wait-for-resources)
@@ -886,11 +887,10 @@ Retrieves the attributes of a given load balanced NIC.
 |---|---|---|---|
 | dataCenterId | **yes** | string | The ID of the data center. |
 | loadBalancerId | **yes** | string | The ID of the load balancer. |
-| serverId | **yes** | string | The ID of the server. |
 | nicId | **yes** | string | The ID of the load balancer. |
 
 ```
-getBalancedNic(String dataCenterId, String loadBalancerId, String serverId, String nicId)
+getBalancedNic(String dataCenterId, String loadBalancerId, String nicId)
 ```
 
 ---
@@ -1140,8 +1140,8 @@ Performs updates to the attributes of a LAN.
 |---|---|---|---|
 | dataCenterId | **yes** | string | The ID of the data center. |
 | lanId | **yes** | string | The ID of the LAN. |
-| isPublic | no | bool | Boolean indicating if the LAN faces the public Internet or not. |
-| ipFailover | no | collection | Attributes related to IP failover groups. |
+| lan.isPublic | no | bool | Boolean indicating if the LAN faces the public Internet or not. |
+| lan.ipFailover | no | collection | Attributes related to IP failover groups. |
 
 The ipFailover collection contains two attributes:
 
@@ -1153,7 +1153,7 @@ The ipFailover collection contains two attributes:
 After retrieving a LAN, you can change its properties and call the `updateLan` method:
 
 ```
-updateLan(String dataCenterId, String lanId, Boolean isPublic)
+updateLan(String dataCenterId, String lanId, Lan.Properties lan)
 ```
 
 ---
@@ -2059,6 +2059,101 @@ backup user and finally the backup unit itself.
 | backupunitId | **yes** | string | The backup unit's ID. |
 
     deleteBackupUnit(String backupunitId)
+
+---
+
+### Labels
+
+#### List Labels
+
+Retrieve all labels you have on your account resources.
+
+    getAllLabels()
+
+---
+
+#### Get a Label
+
+Retrieve a label buy URN.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| urn | **yes** | string | The unique URN of the label. |
+
+    getLabel(String urn)
+
+---
+
+**Note:** Following requests are currently  available for **DataCenter, Server, Volume, Snapshot and IPBlock**. 
+
+#### List Labels for a resource
+
+Returns the rest response containing all labels for single resource.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| resourceId | **yes** | string | ID of the resource for which to get the labels. |
+| pathParams | **yes** if any | array | List of path parameters from the path to the resource. |
+
+    getAllLabels(String resourceId, String... pathParams)
+
+---
+
+#### Get a Label for a resource
+
+Returns the rest response containing a label fetching using resource path and label URN.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| labelKey | **yes** | string | The unique URN of the label. |
+| resourceId | **yes** | string | ID of the resource for which to get the labels. |
+| pathParams | **yes** if any | array | List of path parameters from the path to the resource. |
+
+    getLabel(String labelKey, String resourceId, String... pathParams)
+
+---
+
+#### Create a Label
+
+Create label on a particular resource.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| label.key | **yes** | string | The key of the label which has to be unique for a resource. |
+| label.value | **yes** | string | The value of the label. |
+| resourceId | **yes** | string | ID of the resource for which to get the labels. |
+| pathParams | **yes** if any | array | List of path parameters from the path to the resource. |
+
+    createLabel(Label label, String resourceId, String... pathParams)
+
+---
+
+#### Update a Label
+
+Update the value of the label.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| labelKey | **yes** | string | The unique URN of the label. |
+| labelProperties.value | **yes** | string | The new value of the label. |
+| resourceId | **yes** | string | ID of the resource for which to get the labels. |
+| pathParams | **yes** if any | array | List of path parameters from the path to the resource. |
+
+    updateLabel(String labelKey, Label.Properties labelProperties, String resourceId, String... pathParams)
+
+---
+
+#### Delete a Label
+
+Delete a label form a particular resource.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| labelKey | **yes** | string | The unique URN of the label. |
+| resourceId | **yes** | string | ID of the resource for which to get the labels. |
+| pathParams | **yes** if any | array | List of path parameters from the path to the resource. |
+
+    deleteLabel(String labelKey, String resourceId, String... pathParams)
 
 ---
 

@@ -30,11 +30,14 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Snapshots;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,10 +45,14 @@ import java.util.Map;
  *
  * @author jasmin@stackpointcloud.com
  */
-public class Snapshot extends BaseAPI {
+public class Snapshot extends AbstractLabelApi {
 
-    public Snapshot() throws Exception {
-        super("snapshots", "");
+    public Snapshot(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "snapshots";
     }
 
     /**
@@ -54,7 +61,7 @@ public class Snapshot extends BaseAPI {
      * @return Snapshots object with a list of Snapshots
      */
     public Snapshots getAllSnapshots() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat(depth), null, Snapshots.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), Collections.EMPTY_MAP, Snapshots.class);
     }
 
     /**
@@ -68,20 +75,19 @@ public class Snapshot extends BaseAPI {
      * @param licenseType The license type of the snapshot.
      * @return Snapshot object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.Snapshot createSnapshot(String dataCenterId, String volumeId, String name,
-                                                                   String description, String licenseType)
+    public com.ionosenterprise.rest.domain.Snapshot createSnapshot(String dataCenterId, String volumeId,
+                                                                   String name, String description, String licenseType)
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
-                IllegalArgumentException, InvocationTargetException {
+            IllegalArgumentException, InvocationTargetException {
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("name", name);
         params.put("description", description);
         params.put("licenseType", licenseType);
 
-        return client.create(
-                getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/").concat("volumes")
-                        .concat("/").concat(volumeId).concat("/").concat("create-snapshot"),
-                params, com.ionosenterprise.rest.domain.Snapshot.class, 202);
+        return client.create(getResourcePathBuilder("datacenters/%s/volumes/%s/create-snapshot")
+                .withPathParams(dataCenterId, volumeId).build(), params, com.ionosenterprise.rest.domain.Snapshot.class,
+                HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -93,11 +99,13 @@ public class Snapshot extends BaseAPI {
      * @param volumeId The unique ID of the volume.
      * @param snapshotId The unique ID of the snapshot.
      */
-    public void restoreSnapshot(String dataCenterId, String volumeId, String snapshotId) throws RestClientException, IOException {
+    public void restoreSnapshot(String dataCenterId, String volumeId, String snapshotId)
+            throws RestClientException, IOException {
+
         Map<String, String> params = new HashMap<String, String>();
         params.put("snapshotId", snapshotId);
-        client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
-                .concat("volumes").concat("/").concat(volumeId).concat("/").concat("restore-snapshot"), params, 202);
+        client.create(getResourcePathBuilder("datacenters/%s/volumes/%s/restore-snapshot")
+                .withPathParams(dataCenterId, volumeId).build(), params, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -107,7 +115,8 @@ public class Snapshot extends BaseAPI {
      * @return Snapshot object with properties and metadata
      */
     public com.ionosenterprise.rest.domain.Snapshot getSnapshot(String snapshotId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat("/").concat(snapshotId).concat(depth), null, com.ionosenterprise.rest.domain.Snapshot.class);
+        return client.get(getResourcePathBuilder().appendPathSegment(snapshotId).withDepth().build(),
+                Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.Snapshot.class);
     }
 
     /**
@@ -166,8 +175,13 @@ public class Snapshot extends BaseAPI {
      * <br>
      * @return Snapshot object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.Snapshot updateSnapshot(String snapshotId, com.ionosenterprise.rest.domain.Snapshot.Properties snapshot) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return client.update(getUrlBase().concat(resource).concat("/").concat(snapshotId), snapshot, com.ionosenterprise.rest.domain.Snapshot.class, 202);
+    public com.ionosenterprise.rest.domain.Snapshot updateSnapshot(
+            String snapshotId, com.ionosenterprise.rest.domain.Snapshot.Properties snapshot)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        return client.update(getResourcePathBuilder().appendPathSegment(snapshotId).build(), snapshot,
+                com.ionosenterprise.rest.domain.Snapshot.class, HttpStatus.SC_ACCEPTED);
     }
 
      /**
@@ -176,6 +190,6 @@ public class Snapshot extends BaseAPI {
      * @param snapshotId The unique ID of the snapshot
      */
     public void deleteSnapshot(String snapshotId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(resource).concat("/").concat(snapshotId), 202);
+        client.delete(getResourcePathBuilder().appendPathSegment(snapshotId).build(), HttpStatus.SC_ACCEPTED);
     }
 }

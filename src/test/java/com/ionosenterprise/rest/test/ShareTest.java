@@ -1,12 +1,15 @@
 package com.ionosenterprise.rest.test;
 
 import com.ionosenterprise.rest.client.RestClientException;
-import com.ionosenterprise.rest.domain.*;
+import com.ionosenterprise.rest.domain.DataCenter;
+import com.ionosenterprise.rest.domain.Group;
+import com.ionosenterprise.rest.domain.Share;
+import com.ionosenterprise.rest.domain.Shares;
 import com.ionosenterprise.rest.test.resource.CommonResource;
 import com.ionosenterprise.rest.test.resource.DataCenterResource;
 import com.ionosenterprise.rest.test.resource.GroupResource;
 import com.ionosenterprise.rest.test.resource.ShareResource;
-import com.ionosenterprise.sdk.IonosEnterpriseApi;
+import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -15,7 +18,6 @@ import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -65,7 +67,7 @@ public class ShareTest extends BaseTest {
         try {
             ionosEnterpriseApi.getShare().getShare(groupId, CommonResource.getBadId());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 

@@ -32,6 +32,7 @@ package com.ionosenterprise.rest.test;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.*;
 import com.ionosenterprise.rest.test.resource.*;
+import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -41,7 +42,6 @@ import org.junit.runners.MethodSorters;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -100,7 +100,7 @@ public class LanTest extends BaseTest {
         try {
             ionosEnterpriseApi.getLan().getLan(dataCenterId, CommonResource.getBadId());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 
@@ -109,8 +109,7 @@ public class LanTest extends BaseTest {
             IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
         Lan.Properties properties = LanResource.getEditLan().getProperties();
-        Lan updatedLan = ionosEnterpriseApi.getLan().updateLan(dataCenterId, lanId,
-                properties.getName(), properties.isIsPublic());
+        Lan updatedLan = ionosEnterpriseApi.getLan().updateLan(dataCenterId, lanId, properties);
         waitTillProvisioned(updatedLan.getRequestId());
         assertEquals(updatedLan.getProperties().getName(), properties.getName());
         assertEquals(updatedLan.getProperties().isIsPublic(), properties.isIsPublic());
@@ -157,8 +156,11 @@ public class LanTest extends BaseTest {
         IpFailover ipFailover = new IpFailover();
         ipFailover.setIp(iPBlock.getProperties().getIps().get(0));
         ipFailover.setNicUuid(newNic.getId());
-        Lan updatedLan = ionosEnterpriseApi.getLan().updateLan(dataCenterId, lan1Id, Boolean.TRUE,
-                Arrays.asList(ipFailover));
+        com.ionosenterprise.rest.domain.Lan.Properties lanProperties =
+                new com.ionosenterprise.rest.domain.Lan().new Properties();
+        lanProperties.setIsPublic(true);
+        lanProperties.setIpFailover(Arrays.asList(ipFailover));
+        Lan updatedLan = ionosEnterpriseApi.getLan().updateLan(dataCenterId, lan1Id, lanProperties);
         waitTillProvisioned(updatedLan.getRequestId());
 
         Server server2 = ServerResource.getServer();
@@ -175,10 +177,8 @@ public class LanTest extends BaseTest {
 
     @AfterClass
     public static void cleanup() throws RestClientException, IOException, InterruptedException {
-        ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
-
-        TimeUnit.MINUTES.sleep(1);
-
+        String requestId = ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
+        waitTillProvisioned(requestId);
         ionosEnterpriseApi.getIpBlock().deleteIPBlock(ipBlockId);
     }
 }

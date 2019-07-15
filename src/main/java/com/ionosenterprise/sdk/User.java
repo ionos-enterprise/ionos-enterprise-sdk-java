@@ -30,21 +30,28 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.PBObject;
 import com.ionosenterprise.rest.domain.SingleSignOnUrl;
 import com.ionosenterprise.rest.domain.Users;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
 /**
  * @author denis@stackpointcloud.com
  */
-public class User extends BaseAPI {
+public class User extends AbstractBaseApi {
 
-    public User() throws Exception {
-        super("um/users","");
+    public User(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "um/users";
     }
 
     /**
@@ -53,7 +60,7 @@ public class User extends BaseAPI {
      * @return Users object with a list of Users
      */
     public Users getAllUsers() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat(depth), null, Users.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), Collections.EMPTY_MAP, Users.class);
     }
 
     /**
@@ -63,9 +70,8 @@ public class User extends BaseAPI {
      * @return Users object with a list of Users
      */
     public Users getAllGroupUsers(String groupId) throws RestClientException, IOException {
-        return client.get(
-                getUrlBase().concat("um/groups").concat("/").concat(groupId).concat("/").concat("users").concat(depth),
-                null, Users.class);
+        return client.get(getResourcePathBuilder("um/groups/%s/users").withPathParams(groupId).withDepth()
+                .build(), Collections.EMPTY_MAP, Users.class);
     }
 
     /**
@@ -75,17 +81,18 @@ public class User extends BaseAPI {
      * @return User object with properties and metadata
      */
     public com.ionosenterprise.rest.domain.User getUser(String userId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat("/").concat(userId).concat(depth), null,
-                com.ionosenterprise.rest.domain.User.class);
+        return client.get(getResourcePathBuilder().appendPathSegment(userId).withDepth().build(),
+                Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.User.class);
     }
 
     /**
      * Deletes a specific user.
      *
      * @param userId The unique ID of the user.
+     * @return a String representing the requestId
      */
-    public void deleteUser(String userId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(resource).concat("/").concat(userId),202);
+    public String deleteUser(String userId) throws RestClientException, IOException {
+        return client.delete(getResourcePathBuilder().appendPathSegment(userId).build(),HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -111,7 +118,8 @@ public class User extends BaseAPI {
             throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException {
 
-        return client.create(getUrlBase().concat(resource), user, com.ionosenterprise.rest.domain.User.class, 202);
+        return client.create(getResourcePathBuilder().build(), user,
+                com.ionosenterprise.rest.domain.User.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -140,8 +148,8 @@ public class User extends BaseAPI {
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        return client.put(getUrlBase().concat(resource).concat("/").concat(userId), userProps,
-                com.ionosenterprise.rest.domain.User.class, 202);
+        return client.put(getResourcePathBuilder().appendPathSegment(userId).build(), userProps,
+                com.ionosenterprise.rest.domain.User.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -155,11 +163,10 @@ public class User extends BaseAPI {
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException  {
 
-
         PBObject object = new PBObject();
         object.setId(userId);
-        return client.create(getUrlBase().concat("um/groups").concat("/").concat(groupId).concat("/").concat("users"),
-                object, com.ionosenterprise.rest.domain.User.class, 202);
+        return client.create(getResourcePathBuilder("um/groups/%s/users").withPathParams(groupId).build(),
+                object, com.ionosenterprise.rest.domain.User.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -167,11 +174,11 @@ public class User extends BaseAPI {
      *
      * @param groupId The unique ID of the group.
      * @param userId The unique ID of the user.
-     * @return User object with properties and metadata
+     * @return a String representing the requestId
      */
-    public void removeUserFromGroup(String groupId,String userId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat("um/groups").concat("/").concat(groupId).concat("/").concat("users")
-                .concat("/").concat(userId),   202);
+    public String removeUserFromGroup(String groupId,String userId) throws RestClientException, IOException {
+        return client.delete(getResourcePathBuilder("um/groups/%s/users").withPathParams(groupId)
+                .appendPathSegment(userId).build(),   HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -181,7 +188,7 @@ public class User extends BaseAPI {
      * @return SingleSignOnUrl object containing the ssoUrl field
      */
     public SingleSignOnUrl getSSOUrl(String userId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat("/").concat(userId).concat("/s3ssourl"), null,
-                SingleSignOnUrl.class);
+        return client.get(getResourcePathBuilder().appendPathSegment(userId).appendPathSegment("/s3ssourl").build(),
+                Collections.EMPTY_MAP, SingleSignOnUrl.class);
     }
 }

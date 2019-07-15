@@ -30,22 +30,29 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.CDRom;
 import com.ionosenterprise.rest.domain.CDRoms;
 import com.ionosenterprise.rest.domain.PBObject;
 import com.ionosenterprise.rest.domain.Servers;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
 /**
  * @author jasmin@stackpointcloud.com
  */
-public class Server extends BaseAPI {
+public class Server extends AbstractLabelApi {
 
-    public Server() throws Exception {
-        super("servers", "datacenters");
+    public Server(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "datacenters/%s/servers";
     }
 
     /**
@@ -55,9 +62,8 @@ public class Server extends BaseAPI {
      * @return Servers object with a list of servers in the specified datacenter.
      */
     public Servers getAllServers(String dataCenterId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-                .concat("/").concat(resource)
-                .concat(depth), null, Servers.class);
+        return client.get(getResourcePathBuilder().withPathParams(dataCenterId).withDepth().build(),
+                Collections.EMPTY_MAP, Servers.class);
     }
 
     /**
@@ -70,9 +76,8 @@ public class Server extends BaseAPI {
     public com.ionosenterprise.rest.domain.Server getServer(String dataCenterId, String serverId)
             throws RestClientException, IOException {
 
-        return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-                .concat("/").concat(resource).concat("/").concat(serverId)
-                .concat(depth), null, com.ionosenterprise.rest.domain.Server.class);
+        return client.get(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId).withDepth()
+                        .build(),Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.Server.class);
     }
 
     /**
@@ -120,8 +125,8 @@ public class Server extends BaseAPI {
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        return client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-                .concat("/").concat(resource), server, com.ionosenterprise.rest.domain.Server.class, 202);
+        return client.create(getResourcePathBuilder().withPathParams(dataCenterId).build(), server,
+                com.ionosenterprise.rest.domain.Server.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -131,10 +136,11 @@ public class Server extends BaseAPI {
      *
      * @param dataCenterId The unique ID of the data center
      * @param serverId     The unique ID of the server
+     * @return a String representing the requestId
      */
-    public void deleteServer(String dataCenterId, String serverId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-                .concat("/").concat(resource).concat("/").concat(serverId), 202);
+    public String deleteServer(String dataCenterId, String serverId) throws RestClientException, IOException {
+        return client.delete(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId).build(),
+                HttpStatus.SC_ACCEPTED);
 
     }
 
@@ -177,9 +183,8 @@ public class Server extends BaseAPI {
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        return client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId).concat("/")
-                .concat(resource).concat("/").concat(serverId), server,
-                com.ionosenterprise.rest.domain.Server.class, 202);
+        return client.update(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId).build(),
+                server, com.ionosenterprise.rest.domain.Server.class, HttpStatus.SC_ACCEPTED);
 
     }
 
@@ -191,8 +196,8 @@ public class Server extends BaseAPI {
      * @param serverId     The unique ID of the server
      */
     public void rebootServer(String dataCenterId, String serverId) throws RestClientException, IOException {
-        client.execute(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-                .concat("/").concat(resource).concat("/").concat(serverId).concat("/").concat("reboot"), 202);
+        client.execute(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
+                .appendPathSegment("/reboot").build(), HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -202,20 +207,20 @@ public class Server extends BaseAPI {
      * @param serverId     The unique ID of the server
      */
     public void startServer(String dataCenterId, String serverId) throws RestClientException, IOException {
-        client.execute(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-                .concat("/").concat(resource).concat("/").concat(serverId).concat("/").concat("start"), 202);
+        client.execute(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
+                .appendPathSegment("/start").build(), HttpStatus.SC_ACCEPTED);
     }
 
     /**
      * This will stop a server. The machine will be forcefully powered off, billing will cease, and the public IP,
-     * if one is allocated, will be deallocate.
+     * if one is allocated, will be deallocated.
      *
      * @param dataCenterId The unique ID of the data center
      * @param serverId     The unique ID of the server
      */
     public void stopServer(String dataCenterId, String serverId) throws RestClientException, IOException {
-        client.execute(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-                .concat("/").concat(resource).concat("/").concat(serverId).concat("/").concat("stop"), 202);
+        client.execute(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
+                .appendPathSegment("/stop").build(), HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -229,9 +234,8 @@ public class Server extends BaseAPI {
      * @param serverId     The unique ID of the server
      */
     public CDRoms getAllAttachedCDRoms(String dataCenterId, String serverId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-                        .concat("/").concat(resource).concat("/").concat(serverId).concat("/").concat("cdroms").concat(depth),
-                null, CDRoms.class);
+        return client.get(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
+                .appendPathSegment("/cdroms").withDepth().build(), Collections.EMPTY_MAP, CDRoms.class);
     }
 
     /**
@@ -241,13 +245,12 @@ public class Server extends BaseAPI {
      * @param serverId     The unique ID of the server
      * @param cdromId      The unique ID of the CD ROM
      */
-    public CDRom getAttachedCDRom(String dataCenterId, String serverId, String cdromId) throws RestClientException,
-            IOException {
+    public CDRom getAttachedCDRom(String dataCenterId, String serverId, String cdromId)
+            throws RestClientException, IOException {
 
-        return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-                        .concat("/").concat(resource).concat("/").concat(serverId).concat("/").concat("cdroms")
-                        .concat("/").concat(cdromId),
-                null, CDRom.class);
+        return client.get(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
+                .appendPathSegment("/cdroms").appendPathSegment(cdromId).withDepth().build(), Collections.EMPTY_MAP,
+                CDRom.class);
     }
 
     /**
@@ -262,9 +265,8 @@ public class Server extends BaseAPI {
 
         PBObject object = new PBObject();
         object.setId(imageId);
-        return client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-                .concat("/").concat(resource).concat("/").concat(serverId).concat("/").concat("cdroms"), object,
-                CDRom.class, 202);
+        return client.create(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
+                .appendPathSegment("/cdroms").build(), object, CDRom.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -273,11 +275,13 @@ public class Server extends BaseAPI {
      * @param dataCenterId The unique ID of the data center
      * @param serverId     The unique ID of the server
      * @param cdromId      The unique ID of the CD ROM Image
+     * @return a String representing the requestId
      */
-    public void detachCDRom(String dataCenterId, String serverId, String cdromId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-                .concat("/").concat(resource).concat("/").concat(serverId).concat("/").concat("cdroms").concat("/")
-                .concat(cdromId), 202);
+    public String detachCDRom(String dataCenterId, String serverId, String cdromId)
+            throws RestClientException, IOException {
+
+        return client.delete(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
+                .appendPathSegment("/cdroms").appendPathSegment(cdromId).build(), HttpStatus.SC_ACCEPTED);
     }
 
 }

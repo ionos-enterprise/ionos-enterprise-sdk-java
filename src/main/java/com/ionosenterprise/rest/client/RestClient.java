@@ -31,9 +31,9 @@ package com.ionosenterprise.rest.client;
 
 import com.ionosenterprise.rest.domain.PBObject;
 import org.apache.commons.io.Charsets;
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
@@ -44,159 +44,132 @@ import java.util.Map;
 /**
  * @author jasmin@stackpointcloud.com
  */
-public class RestClient extends AbstractRestClient {
+public class RestClient {
 
-    protected RestClient(RestClientBuilder builder) {
-        super(builder);
+    private RestClientUtil restClientUtil;
+
+    public RestClient(RestClientUtil restClientUtil) {
+        this.restClientUtil = restClientUtil;
     }
 
-    protected String get(RequestInterceptor interceptor, String path, Map<String, String> queryParams,
-                         int expectedStatus) throws RestClientException, IOException {
+    public <T> T get(String path, Map<String, String> queryParams, Class<T> entityClass)
+            throws RestClientException, IOException {
 
-        HttpGet get = newHttpGet(appendParams(path, queryParams));
-        HttpResponse response = execute(interceptor, get, expectedStatus);
+        HttpGet get = restClientUtil.newHttpGet(restClientUtil.appendParams(path, queryParams));
+        HttpResponse response = restClientUtil.execute(get, HttpStatus.SC_OK);
         String content = null;
         try {
-            content = contentAsString(response);
+            content = restClientUtil.contentAsString(response);
         } catch (IOException e) {
             consume(response);
         }
-        return content;
-    }
 
-    public <T> T get(RequestInterceptor interceptor, String path, Map<String, String> queryParams,
-                     Class<T> entityClass, int expectedStatus) throws RestClientException, IOException {
-        String content = get(interceptor, path, queryParams, expectedStatus);
         if (content != null) {
-            return bindObject(content, entityClass);
+            return restClientUtil.bindObject(content, entityClass);
         } else {
             return null;
         }
     }
 
-    public <T> T get(String path, Map<String, String> params, Class<T> entityClass) throws RestClientException,
+    public void create(String path, Map<String, String> params, int expectedStatus) throws IOException,
+            RestClientException {
+
+        HttpPost post = restClientUtil.contentTypeUrlEncoded(restClientUtil.newHttpPost(path));
+        HttpEntity entity = new StringEntity(restClientUtil.queryString(params).substring(1), Charsets.UTF_8);
+        post.setEntity(entity);
+        HttpResponse response = restClientUtil.execute(post, expectedStatus);
+        consume(response);
+    }
+
+    public <T> T create(String path, Map<String, String> params, Class<T> entityClass, int expectedStatus)
+            throws IOException, RestClientException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        HttpPost post = restClientUtil.contentTypeUrlEncoded(restClientUtil.newHttpPost(path));
+        HttpEntity entity = new StringEntity(restClientUtil.queryString(params).substring(1), Charsets.UTF_8);
+        post.setEntity(entity);
+        HttpResponse response = restClientUtil.execute(post, expectedStatus);
+        return restClientUtil.bindObject(response, entityClass);
+    }
+
+    public <T> T create(String path, T object, Class<T> entityClass, int expectedStatus)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        HttpPost post = restClientUtil.contentTypeJson(restClientUtil.newHttpPost(path));
+        HttpEntity entity = new StringEntity(restClientUtil.toJson(object).toString(), Charsets.UTF_8);
+        post.setEntity(entity);
+        HttpResponse response = restClientUtil.execute(post, expectedStatus);
+        return restClientUtil.bindObject(response, entityClass);
+    }
+
+    public <T> T create(String path, PBObject object, Class<T> entityClass, int expectedStatus)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        HttpPost post = restClientUtil.contentTypeJson(restClientUtil.newHttpPost(path));
+        HttpEntity entity = new StringEntity(restClientUtil.toJson(object).toString(), Charsets.UTF_8);
+        post.setEntity(entity);
+        HttpResponse response = restClientUtil.execute(post, expectedStatus);
+        if (response != null) {
+            return restClientUtil.bindObject(response, entityClass);
+        } else {
+            return null;
+        }
+    }
+
+    public void execute(String path, int expectedStatus) throws RestClientException,
             IOException {
-        return get(null, path, params, entityClass, 200);
-    }
 
-    public void create(String path, Map<String, String> params, int expectedStatus) throws IOException, RestClientException {
-        HttpPost post = contentTypeUrlEncoded(newHttpPost(path));
-        HttpEntity entity = new StringEntity(queryString(params).substring(1), Charsets.UTF_8);
-        post.setEntity(entity);
-
-        HttpResponse response = execute(interceptor, post, expectedStatus);
+        HttpPost post = restClientUtil.newHttpPost(path);
+        HttpResponse response = restClientUtil.execute(post, expectedStatus);
         consume(response);
     }
 
-    public <T> T create(String path, Map<String, String> params, Class<T> entityClass, int expectedStatus) throws IOException, RestClientException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        HttpPost post = contentTypeUrlEncoded(newHttpPost(path));
-        HttpEntity entity = new StringEntity(queryString(params).substring(1), Charsets.UTF_8);
-        post.setEntity(entity);
-        HttpResponse response = execute(interceptor, post, expectedStatus);
-        return bindObject(response, entityClass);
-    }
-
-    public Header create(RequestInterceptor interceptor, String path, Object object, int expectedStatus)
-            throws RestClientException, IOException {
-        HttpPost post = contentTypeJson(newHttpPost(path));
-        HttpEntity entity = new StringEntity(toJson(object).toString(), Charsets.UTF_8);
-        post.setEntity(entity);
-        HttpResponse response = execute(interceptor, post, expectedStatus);
+    public String delete(String path, int expectedStatus) throws RestClientException, IOException {
+        HttpDelete delete = restClientUtil.newHttpDelete(path);
+        HttpResponse response = restClientUtil.execute(delete, expectedStatus);
         consume(response);
-        return response.getFirstHeader("Location");
+        return response.getFirstHeader("Location") != null
+                ? response.getFirstHeader("Location").getValue() : null;
     }
 
-    public <T> T create(RequestInterceptor interceptor, String path, T object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        HttpPost post = contentTypeJson(newHttpPost(path));
-        HttpEntity entity = new StringEntity(toJson(object).toString(), Charsets.UTF_8);
-        post.setEntity(entity);
-        HttpResponse response = execute(interceptor, post, expectedStatus);
-        return bindObject(response, entityClass);
-    }
+    public <T> T update(String path, Object object, Class<T> entityClass, int expectedStatus)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
 
-    public <T> T create(RequestInterceptor interceptor, String path, PBObject object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        HttpPost post = contentTypeJson(newHttpPost(path));
-        HttpEntity entity = new StringEntity(toJson(object).toString(), Charsets.UTF_8);
-        post.setEntity(entity);
-        HttpResponse response = execute(interceptor, post, expectedStatus);
-        if (response != null) {
-            return bindObject(response, entityClass);
-        } else {
-            return null;
-        }
-    }
-
-    public <T> T create(String path, T object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return RestClient.this.create(null, path, object, entityClass, expectedStatus);
-    }
-
-    public <T> T create(String path, PBObject object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return RestClient.this.create(null, path, object, entityClass, expectedStatus);
-    }
-
-    public Header create(String path, Object object, int expectedStatus) throws RestClientException, IOException {
-        return RestClient.this.create(null, path, object, expectedStatus);
-    }
-
-    public void execute(RequestInterceptor interceptor, String path, int expectedStatus) throws RestClientException, IOException {
-        HttpPost post = newHttpPost(path);
-        HttpResponse response = execute(interceptor, post, expectedStatus);
-        consume(response);
-    }
-
-    public void execute(String path, int expectedStatus) throws RestClientException, IOException {
-        execute(null, path, expectedStatus);
-    }
-
-    public void delete(RequestInterceptor interceptor, String path, int expectedStatus) throws RestClientException,
-            IOException {
-        HttpDelete delete = newHttpDelete(path);
-        consume(execute(interceptor, delete, expectedStatus));
-    }
-
-    public void delete(String path, int expectedStatus) throws RestClientException, IOException {
-        delete(null, path, expectedStatus);
-    }
-
-    public void delete(String path) throws RestClientException, IOException {
-        delete(null, path, 200);
-    }
-
-    public <T> T update(RequestInterceptor interceptor, String path, Object object, Class<T> entityClass, int expectedStatus)
-            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        HttpPatch patch = contentTypePartialJson(newHttpPatch(path));
-        HttpEntity entity = new StringEntity(toJson(object).toString(), Charsets.UTF_8);
+        HttpPatch patch = restClientUtil.contentTypeJson(restClientUtil.newHttpPatch(path));
+        HttpEntity entity = new StringEntity(restClientUtil.toJson(object).toString(), Charsets.UTF_8);
         patch.setEntity(entity);
-        HttpResponse response = execute(interceptor, patch, expectedStatus);
+        HttpResponse response = restClientUtil.execute(patch, expectedStatus);
         if (response != null) {
-            return bindObject(response, entityClass);
+            return restClientUtil.bindObject(response, entityClass);
         } else {
             return null;
         }
     }
 
-    public <T> T put(RequestInterceptor interceptor, String path, Object object, Class<T> entityClass, int expectedStatus)
-            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        HttpPut patch = contentTypePartialJson(newHttpPut(path));
-        HttpEntity entity = new StringEntity(toJson(WrappWithProperties(object)).toString(), Charsets.UTF_8);
+    public <T> T put(String path, Object object, Class<T> entityClass, int expectedStatus)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        HttpPut patch = restClientUtil.contentTypeJson(restClientUtil.newHttpPut(path));
+        HttpEntity entity = new StringEntity(restClientUtil.toJson(
+                restClientUtil.wrappWithProperties(object)).toString(), Charsets.UTF_8);
         patch.setEntity(entity);
-        HttpResponse response = execute(interceptor, patch, expectedStatus);
+        HttpResponse response = restClientUtil.execute(patch, expectedStatus);
         if (response != null) {
-            return bindObject(response, entityClass);
+            return restClientUtil.bindObject(response, entityClass);
         } else {
             return null;
         }
     }
 
-    public <T> T update(String path, Object object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return update(null, path, object, entityClass, expectedStatus);
+    public void setHttpClientInterceptor(RequestInterceptor interceptor) {
+        restClientUtil.setInterceptor(interceptor);
     }
 
-    public <T> T put(String path, Object object, Class<T> entityClass, int expectedStatus) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return put(null, path, object, entityClass, expectedStatus);
-    }
-
-    public void consume(HttpResponse response) throws IOException {
+    private void consume(HttpResponse response) throws IOException {
         if (response != null && response.getEntity() != null) {
             EntityUtils.consume(response.getEntity());
         }

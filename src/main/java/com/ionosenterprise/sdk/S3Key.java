@@ -1,15 +1,22 @@
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.S3Keys;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
-public class S3Key extends BaseAPI {
+public class S3Key extends AbstractBaseApi {
 
-    public S3Key() throws Exception {
-        super("s3keys", "um/users");
+    public S3Key(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "um/users/%s/s3keys";
     }
 
     /**
@@ -19,8 +26,8 @@ public class S3Key extends BaseAPI {
      * @return
      */
     public S3Keys getAllS3Keys(String userId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(parentResource).concat("/").concat(userId).concat("/").concat(resource)
-                .concat(depth), null, S3Keys.class);
+        return client.get(getResourcePathBuilder().withPathParams(userId).withDepth().build(), Collections.EMPTY_MAP,
+                S3Keys.class);
     }
 
     /**
@@ -33,8 +40,8 @@ public class S3Key extends BaseAPI {
     public com.ionosenterprise.rest.domain.S3Key getS3Key(String userId, String s3KeyId)
             throws RestClientException, IOException {
 
-        return client.get(getUrlBase().concat(parentResource).concat("/").concat(userId).concat("/").concat(resource)
-                .concat("/").concat(s3KeyId).concat(depth), null, com.ionosenterprise.rest.domain.S3Key.class);
+        return client.get(getResourcePathBuilder().withPathParams(userId).appendPathSegment(s3KeyId).withDepth()
+                .build(), Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.S3Key.class);
     }
 
     /**
@@ -46,8 +53,9 @@ public class S3Key extends BaseAPI {
     public com.ionosenterprise.rest.domain.S3Key creates3Key(String userId) throws InvocationTargetException,
             NoSuchMethodException, IllegalAccessException, RestClientException, IOException {
 
-        return client.create(getUrlBase().concat(parentResource).concat("/").concat(userId).concat("/").concat(resource),
-                new com.ionosenterprise.rest.domain.S3Key(), com.ionosenterprise.rest.domain.S3Key.class, 201);
+        return client.create(getResourcePathBuilder().withPathParams(userId).build(),
+                new com.ionosenterprise.rest.domain.S3Key(), com.ionosenterprise.rest.domain.S3Key.class,
+                HttpStatus.SC_CREATED);
     }
 
     /**
@@ -59,12 +67,12 @@ public class S3Key extends BaseAPI {
      * @return
      */
     public com.ionosenterprise.rest.domain.S3Key updateS3Key(String userId, String s3KeyId,
-                                                             com.ionosenterprise.rest.domain.S3Key.Properties s3KeyProperties)
-            throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, RestClientException, IOException {
+            com.ionosenterprise.rest.domain.S3Key.Properties s3KeyProperties)
+            throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, RestClientException,
+            IOException {
 
-        return client.put(getUrlBase().concat(parentResource).concat("/").concat(userId)
-                .concat("/").concat(resource).concat("/").concat(s3KeyId), s3KeyProperties,
-                com.ionosenterprise.rest.domain.S3Key.class, 202);
+        return client.put(getResourcePathBuilder().withPathParams(userId).appendPathSegment(s3KeyId).build(),
+                s3KeyProperties, com.ionosenterprise.rest.domain.S3Key.class, HttpStatus.SC_ACCEPTED);
 
     }
 
@@ -77,7 +85,7 @@ public class S3Key extends BaseAPI {
      * @throws IOException
      */
     public void deleteS3Key(String userId, String s3KeyId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(parentResource).concat("/").concat(userId).concat("/").concat(resource)
-                .concat("/").concat(s3KeyId), 202);
+        client.delete(getResourcePathBuilder().withPathParams(userId).appendPathSegment(s3KeyId).build(),
+                HttpStatus.SC_ACCEPTED);
     }
 }

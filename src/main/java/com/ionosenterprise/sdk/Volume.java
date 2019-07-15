@@ -30,21 +30,28 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.PBObject;
 import com.ionosenterprise.rest.domain.Volumes;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
 /**
  *
  * @author jasmin@stackpointcloud.com
  */
-public class Volume extends BaseAPI {
+public class Volume extends AbstractLabelApi {
 
-   public Volume() throws Exception {
-      super("volumes", "datacenters");
+   public Volume(RestClient client) {
+      super(client);
+   }
+
+   protected String getPathFormat() {
+      return "datacenters/%s/volumes";
    }
 
    /**
@@ -56,13 +63,12 @@ public class Volume extends BaseAPI {
     * @throws IOException
     */
    public Volumes getAllVolumes(String dataCenterId) throws RestClientException, IOException {
-      return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat(resource)
-              .concat(depth), null, Volumes.class);
+      return client.get(getResourcePathBuilder().withPathParams(dataCenterId).withDepth().build(),
+              Collections.EMPTY_MAP, Volumes.class);
    }
 
    /**
-    * Retrieve a list of volumes attached to the server
+    * Retrieve a list of volumes attached to the server within the datacenter.
     *
     * @param dataCenterId
     * @param serverId
@@ -71,9 +77,8 @@ public class Volume extends BaseAPI {
     * @throws IOException
     */
    public Volumes getAllVolumes(String dataCenterId, String serverId) throws RestClientException, IOException {
-      return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat("servers").concat("/").concat(serverId).concat("/").concat(resource)
-              .concat(depth), null, Volumes.class);
+      return client.get(getResourcePathBuilder("datacenters/%s/servers/%s/volumes")
+              .withPathParams(dataCenterId, serverId).withDepth().build(), Collections.EMPTY_MAP, Volumes.class);
    }
 
    /**
@@ -85,10 +90,11 @@ public class Volume extends BaseAPI {
     * @throws RestClientException
     * @throws IOException
     */
-   public com.ionosenterprise.rest.domain.Volume getVolume(String dataCenterId, String volumeId) throws RestClientException, IOException {
-      return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat(resource).concat("/").concat(volumeId)
-              .concat(depth), null, com.ionosenterprise.rest.domain.Volume.class);
+   public com.ionosenterprise.rest.domain.Volume getVolume(String dataCenterId, String volumeId)
+           throws RestClientException, IOException {
+
+      return client.get(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(volumeId).withDepth()
+              .build(), Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.Volume.class);
    }
 
    /**
@@ -100,9 +106,13 @@ public class Volume extends BaseAPI {
     * @throws RestClientException
     * @throws IOException
     */
-   public com.ionosenterprise.rest.domain.Volume createVolume(String dataCenterId, com.ionosenterprise.rest.domain.Volume volume) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      return client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat(resource), volume, com.ionosenterprise.rest.domain.Volume.class, 202);
+   public com.ionosenterprise.rest.domain.Volume createVolume(String dataCenterId,
+                                                              com.ionosenterprise.rest.domain.Volume volume)
+           throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+           IllegalArgumentException, InvocationTargetException {
+
+      return client.create(getResourcePathBuilder().withPathParams(dataCenterId).build(), volume,
+              com.ionosenterprise.rest.domain.Volume.class, HttpStatus.SC_ACCEPTED);
    }
 
    /**
@@ -115,16 +125,38 @@ public class Volume extends BaseAPI {
     * @throws RestClientException
     * @throws IOException
     */
-   public com.ionosenterprise.rest.domain.Volume attachVolume(String dataCenterId, String serverId, String volumeId) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+   public com.ionosenterprise.rest.domain.Volume attachVolume(String dataCenterId, String serverId, String volumeId)
+           throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+           IllegalArgumentException, InvocationTargetException {
+
       PBObject object = new PBObject();
       object.setId(volumeId);
-      return client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat("servers").concat("/").concat(serverId).concat("/").concat(resource), object, com.ionosenterprise.rest.domain.Volume.class, 202);
+      return client.create(getResourcePathBuilder("datacenters/%s/servers/%s/volumes")
+                      .withPathParams(dataCenterId, serverId).build(), object,
+              com.ionosenterprise.rest.domain.Volume.class, HttpStatus.SC_ACCEPTED);
    }
 
-   public com.ionosenterprise.rest.domain.Volume updateVolume(String dataCenterId, String volumeId, Object volume) throws RestClientException, IOException,NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-      return client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat(resource).concat("/").concat(volumeId), volume, com.ionosenterprise.rest.domain.Volume.class, 202);
+   /**
+    * Update volume within a datacenter.
+    *
+    * @param dataCenterId
+    * @param volumeId
+    * @param volumeProperties
+    * @return
+    * @throws RestClientException
+    * @throws IOException
+    * @throws NoSuchMethodException
+    * @throws IllegalAccessException
+    * @throws IllegalArgumentException
+    * @throws InvocationTargetException
+    */
+   public com.ionosenterprise.rest.domain.Volume updateVolume(String dataCenterId, String volumeId,
+            com.ionosenterprise.rest.domain.Volume.Properties volumeProperties)
+           throws RestClientException, IOException,NoSuchMethodException, IllegalAccessException,
+           IllegalArgumentException, InvocationTargetException {
+
+      return client.update(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(volumeId).build(),
+              volumeProperties, com.ionosenterprise.rest.domain.Volume.class, HttpStatus.SC_ACCEPTED);
    }
 
    /**
@@ -133,28 +165,29 @@ public class Volume extends BaseAPI {
     * @param dataCenterId
     * @param serverId
     * @param volumeId
-    * @throws RestClientException
-    * @throws IOException
+    * @return a String representing the requestId
     */
-   public void detachVolume(String dataCenterId, String serverId, String volumeId) throws RestClientException, IOException {
+   public String detachVolume(String dataCenterId, String serverId, String volumeId)
+           throws RestClientException, IOException {
+
       PBObject object = new PBObject();
       object.setId(volumeId);
-      client.delete(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat("servers").concat("/").concat(serverId).concat("/").concat(resource).concat("/").concat(volumeId), 202);
+      return client.delete(getResourcePathBuilder("datacenters/%s/servers/%s/volumes")
+              .withPathParams(dataCenterId, serverId).appendPathSegment(volumeId).build(), HttpStatus.SC_ACCEPTED);
    }
 
     /**
-    * Deletes the specified volume. This will result in the volume being removed from your data center. Use this with caution.
-    *
-    * @param dataCenterId
-    * @param volumeId
-    * @return
-    * @throws RestClientException
-    * @throws IOException
-    */
-   public void deleteVolume(String dataCenterId, String volumeId) throws RestClientException, IOException {
-      client.delete(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-              .concat("/").concat(resource).concat("/").concat(volumeId), 202);
-   }
+     * Deletes the specified volume.
+     * This will result in the volume being removed from your data center.
+     * Use this with caution.
+     *
+     * @param dataCenterId
+     * @param volumeId
+     * @return a String representing the requestId
+     */
+    public String deleteVolume(String dataCenterId, String volumeId) throws RestClientException, IOException {
+       return client.delete(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(volumeId).build(),
+               HttpStatus.SC_ACCEPTED);
+    }
 
 }

@@ -30,21 +30,28 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.LoadBalancer;
 import com.ionosenterprise.rest.domain.LoadBalancers;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
 /**
  *
  * @author jasmin@stackpointcloud.com
  */
-public class Loadbalancer extends BaseAPI {
+public class Loadbalancer extends AbstractBaseApi {
 
-    public Loadbalancer() throws Exception {
-        super("loadbalancers", "datacenters");
+    public Loadbalancer(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "datacenters/%s/loadbalancers";
     }
 
     /**
@@ -54,9 +61,8 @@ public class Loadbalancer extends BaseAPI {
      * @return LoadBalancers object with a list of LoadBalancer in datacenter.
      */
     public LoadBalancers getAllLoadBalancers(String dataCenterId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-                .concat("/").concat(resource)
-                .concat(depth), null, LoadBalancers.class);
+        return client.get(getResourcePathBuilder().withPathParams(dataCenterId).withDepth().build(),
+                Collections.EMPTY_MAP, LoadBalancers.class);
     }
 
     /**
@@ -66,14 +72,15 @@ public class Loadbalancer extends BaseAPI {
      * @param loadBalancerId The unique ID of the nic
      * @return LoadBalancer object with properties and metadata
      */
-    public LoadBalancer getLoadBalancer(String dataCenterId, String loadBalancerId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-                .concat("/").concat(resource).concat("/").concat(loadBalancerId)
-                .concat(depth), null, LoadBalancer.class);
+    public LoadBalancer getLoadBalancer(String dataCenterId, String loadBalancerId)
+            throws RestClientException, IOException {
+
+        return client.get(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(loadBalancerId)
+                .withDepth().build(), Collections.EMPTY_MAP, LoadBalancer.class);
     }
 
     /**
-     * Creates a load balancer within the data center. Load balancers can be
+     * Creates a load balancer within the data center. LoadBalancers can be
      * used for public or private IP traffic.
      *
      * @param dataCenterId The unique ID of the data center
@@ -96,9 +103,12 @@ public class Loadbalancer extends BaseAPI {
      * <br>
      * @return LoadBalancer object with properties and metadata.
      */
-    public LoadBalancer createLoadBalancer(String dataCenterId, LoadBalancer loadBalancer) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return client.create(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-                .concat("/").concat(resource), loadBalancer, LoadBalancer.class, 202);
+    public LoadBalancer createLoadBalancer(String dataCenterId, LoadBalancer loadBalancer)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        return client.create(getResourcePathBuilder().withPathParams(dataCenterId).build(), loadBalancer,
+                LoadBalancer.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -120,9 +130,13 @@ public class Loadbalancer extends BaseAPI {
      * <br>
      * @return LoadBalancer object with properties and metadata.
      */
-    public LoadBalancer updateLoadBalancer(String dataCenterId, String loadBalancerId, LoadBalancer.Properties loadBalancer) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return client.update(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-                .concat("/").concat(resource).concat("/").concat(loadBalancerId), loadBalancer, LoadBalancer.class, 202);
+    public LoadBalancer updateLoadBalancer(String dataCenterId, String loadBalancerId,
+                                           LoadBalancer.Properties loadBalancer)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        return client.update(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(loadBalancerId)
+                .build(), loadBalancer, LoadBalancer.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -130,9 +144,10 @@ public class Loadbalancer extends BaseAPI {
      *
      * @param dataCenterId The unique ID of the data center
      * @param loadBalancerId The unique ID of the LoadBalancer
+     * @return a String representing the requestId
      */
-    public void deleteLoadBalaner(String dataCenterId, String loadBalancerId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(parentResource).concat("/").concat(dataCenterId)
-                .concat("/").concat(resource).concat("/").concat(loadBalancerId), 202);
+    public String deleteLoadBalaner(String dataCenterId, String loadBalancerId) throws RestClientException, IOException {
+        return client.delete(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(loadBalancerId)
+                .build(), HttpStatus.SC_ACCEPTED);
     }
 }

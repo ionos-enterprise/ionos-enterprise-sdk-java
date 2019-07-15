@@ -6,6 +6,7 @@ import com.ionosenterprise.rest.domain.S3Keys;
 import com.ionosenterprise.rest.domain.User;
 import com.ionosenterprise.rest.test.resource.CommonResource;
 import com.ionosenterprise.rest.test.resource.UserResource;
+import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -61,7 +62,7 @@ public class S3KeyTest extends BaseTest {
         try {
             ionosEnterpriseApi.getS3Key().getS3Key(userId, CommonResource.getBadId());
         }catch (RestClientException ex){
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 

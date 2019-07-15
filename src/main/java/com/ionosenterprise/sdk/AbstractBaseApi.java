@@ -27,47 +27,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ionosenterprise.rest.test;
 
-import com.ionosenterprise.rest.client.RestClientException;
-import com.ionosenterprise.rest.domain.Image;
-import com.ionosenterprise.rest.domain.Images;
-import com.ionosenterprise.rest.test.resource.CommonResource;
-import org.apache.http.HttpStatus;
-import org.junit.BeforeClass;
-import org.junit.Test;
+package com.ionosenterprise.sdk;
 
-import java.io.IOException;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import com.ionosenterprise.rest.client.ResourcePathBuilder;
+import com.ionosenterprise.rest.client.RestClient;
 
 /**
  * @author jasmin@stackpointcloud.com
  */
-public class ImageTest extends BaseTest {
+public abstract class AbstractBaseApi {
 
-    private static String imageId;
+    protected RestClient client;
 
-    @BeforeClass
-    public static void getAllImages() throws RestClientException, IOException {
-        Images images = ionosEnterpriseApi.getImage().getAllImages();
-        assertNotNull(images);
-        imageId = images.getItems().get(0).getId();
+    public AbstractBaseApi(RestClient client) {
+        this.client = client;
     }
 
-    @Test
-    public void getImage() throws RestClientException, IOException {
-        Image image = ionosEnterpriseApi.getImage().getImage(imageId);
-        assertNotNull(image);
+    /**
+     * @return the ResourcePathBuilder
+     */
+    protected ResourcePathBuilder getResourcePathBuilder() {
+        return ResourcePathBuilder.create(getPathFormat());
     }
 
-    @Test
-    public void getFailImage() throws IOException {
-        try {
-            ionosEnterpriseApi.getImage().getImage(CommonResource.getBadId());
-        } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
-        }
+    /**
+     * @param pathFormat the template of the uri
+     * @return the ResourcePathBuilder
+     */
+    protected ResourcePathBuilder getResourcePathBuilder(String pathFormat) {
+        return ResourcePathBuilder.create(pathFormat);
     }
+
+    protected abstract String getPathFormat();
 }

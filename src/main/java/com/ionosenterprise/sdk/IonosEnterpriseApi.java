@@ -30,32 +30,43 @@
 
 package com.ionosenterprise.sdk;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ionosenterprise.rest.client.RequestInterceptor;
+import com.ionosenterprise.rest.client.RestClient;
+import com.ionosenterprise.rest.client.RestClientUtil;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 public class IonosEnterpriseApi {
 
-    private String credentials;
+    private RestClient client;
 
-    public IonosEnterpriseApi() throws Exception {
-        this.dataCenter = new Datacenter();
-        this.server = new Server();
-        this.volume = new Volume();
-        this.snapshot = new Snapshot();
-        this.loadbalancer = new Loadbalancer();
-        this.nic = new Nic();
-        this.firewallRule = new FirewallRule();
-        this.image = new Image();
-        this.ipBlock = new IPBlock();
-        this.request = new Request();
-        this.lan = new Lan();
-        this.location = new Location();
-        this.contract = new Contract();
-        this.group = new Group();
-        this.share = new Share();
-        this.user = new User();
-        this.resource = new Resource();
-        this.backupUnit = new BackupUnit();
-        this.s3Key = new S3Key();
+    public IonosEnterpriseApi() {
+        initRestClient();
+
+        this.dataCenter = new Datacenter(client);
+        this.server = new Server(client);
+        this.volume = new Volume(client);
+        this.snapshot = new Snapshot(client);
+        this.loadbalancer = new Loadbalancer(client);
+        this.nic = new Nic(client);
+        this.firewallRule = new FirewallRule(client);
+        this.image = new Image(client);
+        this.ipBlock = new IPBlock(client);
+        this.request = new Request(client);
+        this.lan = new Lan(client);
+        this.location = new Location(client);
+        this.contract = new Contract(client);
+        this.group = new Group(client);
+        this.share = new Share(client);
+        this.user = new User(client);
+        this.resource = new Resource(client);
+        this.label = new Label(client);
+        this.backupUnit = new BackupUnit(client);
+        this.s3Key = new S3Key(client);
     }
 
     private Datacenter dataCenter;
@@ -75,6 +86,7 @@ public class IonosEnterpriseApi {
     private Share share;
     private User user;
     private Resource resource;
+    private Label label;
     private BackupUnit backupUnit;
     private S3Key s3Key;
 
@@ -82,7 +94,6 @@ public class IonosEnterpriseApi {
      * @return the dataCenter
      */
     public Datacenter getDataCenter() {
-        this.dataCenter.setCredentials(credentials);
         return dataCenter;
     }
 
@@ -90,7 +101,6 @@ public class IonosEnterpriseApi {
      * @return the server
      */
     public Server getServer() {
-        this.server.setCredentials(credentials);
         return server;
     }
 
@@ -98,7 +108,6 @@ public class IonosEnterpriseApi {
      * @return the volume
      */
     public Volume getVolume() {
-        this.volume.setCredentials(credentials);
         return volume;
     }
 
@@ -106,7 +115,6 @@ public class IonosEnterpriseApi {
      * @return the snapshot
      */
     public Snapshot getSnapshot() {
-        this.snapshot.setCredentials(credentials);
         return snapshot;
     }
 
@@ -114,7 +122,6 @@ public class IonosEnterpriseApi {
      * @return the loadbalancer
      */
     public Loadbalancer getLoadbalancer() {
-        this.loadbalancer.setCredentials(credentials);
         return loadbalancer;
     }
 
@@ -122,7 +129,6 @@ public class IonosEnterpriseApi {
      * @return the nic
      */
     public Nic getNic() {
-        this.nic.setCredentials(credentials);
         return nic;
     }
 
@@ -130,7 +136,6 @@ public class IonosEnterpriseApi {
      * @return the firewallRule
      */
     public FirewallRule getFirewallRule() {
-        this.firewallRule.setCredentials(credentials);
         return firewallRule;
     }
 
@@ -138,7 +143,6 @@ public class IonosEnterpriseApi {
      * @return the image
      */
     public Image getImage() {
-        this.image.setCredentials(credentials);
         return image;
     }
 
@@ -146,7 +150,6 @@ public class IonosEnterpriseApi {
      * @return the ipBlock
      */
     public IPBlock getIpBlock() {
-        this.ipBlock.setCredentials(credentials);
         return ipBlock;
     }
 
@@ -154,7 +157,6 @@ public class IonosEnterpriseApi {
      * @return the request
      */
     public Request getRequest() {
-        this.request.setCredentials(credentials);
         return request;
     }
 
@@ -162,25 +164,13 @@ public class IonosEnterpriseApi {
      * @return the lan
      */
     public Lan getLan() {
-        this.lan.setCredentials(credentials);
         return lan;
-    }
-
-    /**
-     * @param username the username to be set
-     * @param password the password to be set
-     */
-    public void setCredentials(String username, String password) {
-        byte[] bytesEncoded = Base64.encodeBase64((username + ":" + password).getBytes());
-
-        this.credentials = new String(bytesEncoded);
     }
 
     /**
      * @return the location
      */
     public Location getLocation() {
-        this.location.setCredentials(credentials);
         return location;
     }
 
@@ -188,7 +178,6 @@ public class IonosEnterpriseApi {
      * @return the contract
      */
     public Contract getContract() {
-        this.contract.setCredentials(credentials);
         return contract;
     }
 
@@ -196,7 +185,6 @@ public class IonosEnterpriseApi {
      * @return the group
      */
     public Group getGroup() {
-        this.group.setCredentials(credentials);
         return group;
     }
 
@@ -204,7 +192,6 @@ public class IonosEnterpriseApi {
      * @return the resource
      */
     public Resource getResource() {
-        this.resource.setCredentials(credentials);
         return resource;
     }
 
@@ -212,7 +199,6 @@ public class IonosEnterpriseApi {
      * @return the user
      */
     public User getUser() {
-        this.user.setCredentials(credentials);
         return user;
     }
 
@@ -220,8 +206,14 @@ public class IonosEnterpriseApi {
      * @return the share
      */
     public Share getShare() {
-        this.share.setCredentials(credentials);
         return share;
+    }
+
+    /**
+     * @return the label
+     */
+    public Label getLabel() {
+        return label;
     }
 
     /**
@@ -236,5 +228,55 @@ public class IonosEnterpriseApi {
      */
     public BackupUnit getBackupUnit() {
         return backupUnit;
+    }
+
+    /**
+     * Set the credentials for the rest client.
+     *
+     * @param username the username to be set
+     * @param password the password to be set
+     */
+    public void setCredentials(String username, String password) {
+        byte[] bytesEncoded = Base64.encodeBase64((username + ":" + password).getBytes());
+
+        String credentials = new String(bytesEncoded);
+        RequestInterceptor authorize = getAuthorizeRequestInterceptor(credentials);
+        client.setHttpClientInterceptor(authorize);
+    }
+
+    private void initRestClient() {
+        RequestInterceptor interceptor = getAuthorizeRequestInterceptor(null);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        CloseableHttpClient httpClient = HttpClientBuilder.create().useSystemProperties().build();
+        RestClientUtil restClientUtil = new RestClientUtil(httpClient, interceptor, objectMapper);
+        this.client = new RestClient(restClientUtil);
+    }
+
+    private RequestInterceptor getAuthorizeRequestInterceptor(final String credentials) {
+        return new RequestInterceptor() {
+            @Override
+            public void intercept(HttpRequestBase request) {
+                String authorizationCredentials = credentials;
+                if (authorizationCredentials == null) {
+                    if (System.getenv("IONOS_ENTERPRISE_USERNAME") != null
+                            && System.getenv("IONOS_ENTERPRISE_PASSWORD") != null) {
+                        byte[] bytesEncoded = Base64.encodeBase64((System.getenv("IONOS_ENTERPRISE_USERNAME")
+                                + ":" + System.getenv("IONOS_ENTERPRISE_PASSWORD")).getBytes());
+                        authorizationCredentials = new String(bytesEncoded);
+                    }
+                }
+
+                if (authorizationCredentials == null) {
+                    try {
+                        throw new Exception("Credentials not set.");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                request.addHeader("Authorization", "Basic ".concat(authorizationCredentials));
+            }
+        };
     }
 }

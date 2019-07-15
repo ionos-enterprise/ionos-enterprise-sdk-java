@@ -31,72 +31,66 @@ package com.ionosenterprise.rest.test;
 
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.DataCenter;
-import com.ionosenterprise.rest.domain.Request;
-import com.ionosenterprise.rest.domain.RequestStatus;
-import com.ionosenterprise.rest.domain.Requests;
-import com.ionosenterprise.rest.test.resource.CommonResource;
+import com.ionosenterprise.rest.domain.Label;
+import com.ionosenterprise.rest.domain.Labels;
 import com.ionosenterprise.rest.test.resource.DataCenterResource;
-import org.apache.http.HttpStatus;
+import com.ionosenterprise.rest.test.resource.LabelResource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
-/**
- * @author jasmin@stackpointcloud.com
- */
-public class RequestTest extends BaseTest {
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class LabelTest extends BaseTest {
 
-    private static String requestId;
     private static String dataCenterId;
+    private static String labelId;
+    private static String labelIdFromLabelsResposne;
 
     @BeforeClass
-    public static void setUp() throws RestClientException, IOException, IllegalAccessException,
-            IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+    public static void t1_createLabelOnDataCenter() throws RestClientException, IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InterruptedException {
 
-        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(
-                DataCenterResource.getDataCenter());
+        DataCenter dataCenter = DataCenterResource.getDataCenter();
+        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(dataCenter);
         assertNotNull(newDatacenter);
-        requestId = newDatacenter.getRequestId();
         dataCenterId = newDatacenter.getId();
+        waitTillProvisioned(newDatacenter.getRequestId());
+
+        Label label = LabelResource.getLabel();
+        Label newLabel = ionosEnterpriseApi.getDataCenter().createLabel(label, dataCenterId);
+        assertNotNull(newLabel);
+        assertEquals(newLabel.getProperties().getKey(), label.getProperties().getKey());
+        assertEquals(newLabel.getProperties().getValue(), label.getProperties().getValue());
+        labelId = newLabel.getId();
     }
 
     @Test
-    public void listRequests() throws RestClientException, IOException {
-        Requests requests = ionosEnterpriseApi.getRequest().listRequests();
-        assertNotNull(requests);
-        requestId = requests.getItems().get(0).getId();
+    public void t2_testGetAllLabels() throws RestClientException, IOException {
+        Labels labels = ionosEnterpriseApi.getLabel().getAllLabels();
+        assertNotNull(labels);
+        assertTrue(labels.getItems().size() > 0);
+        labelIdFromLabelsResposne = labels.getItems().get(0).getId();
     }
 
     @Test
-    public void getRequest() throws RestClientException, IOException {
-        Request request = ionosEnterpriseApi.getRequest().getRequest(requestId);
-        assertNotNull(request);
-    }
-
-
-    @Test
-    public void getRequestStatus() throws RestClientException, IOException {
-        RequestStatus request = ionosEnterpriseApi.getRequest().getRequestStatus(requestId);
-        assertNotNull(request);
-    }
-
-    @Test
-    public void getRequestFail() throws IOException {
-        try{
-            ionosEnterpriseApi.getRequest().getRequest(CommonResource.getBadId());
-        } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
-        }
+    public void t3_testGetLabel() throws RestClientException, IOException {
+        Label label = ionosEnterpriseApi.getLabel().getLabel(labelIdFromLabelsResposne);
+        assertNotNull(label);
+        Label.Properties properties = LabelResource.getLabel().getProperties();
+        assertEquals(label.getProperties().getKey(), properties.getKey());
+        assertEquals(label.getProperties().getValue(), properties.getValue());
     }
 
     @AfterClass
-    public static void cleanUp() throws RestClientException, IOException {
+    public static void cleanup() throws RestClientException, IOException {
+        ionosEnterpriseApi.getDataCenter().deleteLabel(labelId, dataCenterId);
         ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
     }
 }

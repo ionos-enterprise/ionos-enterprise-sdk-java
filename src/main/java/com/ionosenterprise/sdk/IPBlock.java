@@ -30,29 +30,36 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.IPBlocks;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
 /**
  *
  * @author jasmin@stackpointcloud.com
  */
-public class IPBlock extends BaseAPI {
+public class IPBlock extends AbstractLabelApi {
 
-   public IPBlock() throws Exception {
-      super("ipblocks", null);
+   public IPBlock(RestClient client) {
+      super(client);
    }
 
-    /**
+   protected String getPathFormat() {
+      return "ipblocks";
+   }
+
+   /**
      * Retrieve a list of IP Blocks.
      *
      * @return IPBlocks object with a list of IPBlocks in datacenter.
      */
    public IPBlocks getAllIPBlocks() throws RestClientException, IOException {
-      return client.get(getUrlBase().concat(resource).concat(depth), null, IPBlocks.class);
+      return client.get(getResourcePathBuilder().withDepth().build(), Collections.EMPTY_MAP, IPBlocks.class);
    }
 
     /**
@@ -62,8 +69,8 @@ public class IPBlock extends BaseAPI {
      * @return IPBlock object with properties and metadata.
      */
    public com.ionosenterprise.rest.domain.IPBlock getIPBlock(String ipBlockId) throws RestClientException, IOException {
-      return client.get(getUrlBase().concat(resource).concat("/").concat(ipBlockId).concat(depth), null,
-              com.ionosenterprise.rest.domain.IPBlock.class);
+      return client.get(getResourcePathBuilder().appendPathSegment(ipBlockId).withDepth().build(),
+              Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.IPBlock.class);
    }
 
    /**
@@ -86,17 +93,19 @@ public class IPBlock extends BaseAPI {
    public com.ionosenterprise.rest.domain.IPBlock createIPBlock(com.ionosenterprise.rest.domain.IPBlock ipBlock)
            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
            IllegalArgumentException, InvocationTargetException {
-      return client.create(getUrlBase().concat(resource), ipBlock,
-              com.ionosenterprise.rest.domain.IPBlock.class, 202);
+
+      return client.create(getResourcePathBuilder().build(), ipBlock,
+              com.ionosenterprise.rest.domain.IPBlock.class, HttpStatus.SC_ACCEPTED);
    }
 
     /**
      * Deletes the specified IP Block.
      *
      * @param ipBlockId The unique ID of the IP block.
+     * @return a String representing the requestId
      */
-   public void deleteIPBlock(String ipBlockId) throws RestClientException, IOException {
-      client.delete(getUrlBase().concat(resource).concat("/").concat(ipBlockId), 202);
+   public String deleteIPBlock(String ipBlockId) throws RestClientException, IOException {
+      return client.delete(getResourcePathBuilder().appendPathSegment(ipBlockId).build(), HttpStatus.SC_ACCEPTED);
    }
 
    /**
@@ -114,7 +123,7 @@ public class IPBlock extends BaseAPI {
                                                                 com.ionosenterprise.rest.domain.IPBlock.Properties ipBlockProperties)
            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
            IllegalArgumentException, InvocationTargetException {
-      return client.update(getUrlBase().concat(resource).concat("/").concat(ipBlockId), ipBlockProperties,
+      return client.update(getResourcePathBuilder().appendPathSegment(ipBlockId).build(), ipBlockProperties,
               com.ionosenterprise.rest.domain.IPBlock.class, 202);
    }
 }

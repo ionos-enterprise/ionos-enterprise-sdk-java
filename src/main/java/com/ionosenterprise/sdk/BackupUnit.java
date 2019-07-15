@@ -1,16 +1,23 @@
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.BackupUnits;
 import com.ionosenterprise.rest.domain.SingleSignOnUrl;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
-public class BackupUnit extends BaseAPI {
+public class BackupUnit extends AbstractBaseApi {
 
-    public BackupUnit() throws Exception {
-        super("backupunits", "");
+    public BackupUnit(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "backupunits";
     }
 
     /**
@@ -19,7 +26,7 @@ public class BackupUnit extends BaseAPI {
      * @return BackupUnits object with the list of backup units
      */
     public BackupUnits getAllBackupUnits() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat(depth), null, BackupUnits.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), Collections.EMPTY_MAP, BackupUnits.class);
     }
 
     /**
@@ -29,7 +36,7 @@ public class BackupUnit extends BaseAPI {
      * @return BackupUnit object with properties and metadata
      */
     public com.ionosenterprise.rest.domain.BackupUnit getBackupUnit(String id) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat("/").concat(id).concat(depth), null,
+        return client.get(getResourcePathBuilder().appendPathSegment(id).withDepth().build(), Collections.EMPTY_MAP,
                 com.ionosenterprise.rest.domain.BackupUnit.class);
     }
 
@@ -40,8 +47,8 @@ public class BackupUnit extends BaseAPI {
      * @return SingleSignOnUrl object containing the ssoUrl field
      */
     public SingleSignOnUrl getSSOUrl(String id) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat("/").concat(id).concat("/ssourl"), null,
-                SingleSignOnUrl.class);
+        return client.get(getResourcePathBuilder().appendPathSegment(id).appendPathSegment("/ssourl").build(),
+                Collections.EMPTY_MAP, SingleSignOnUrl.class);
     }
 
     /**
@@ -60,8 +67,8 @@ public class BackupUnit extends BaseAPI {
             com.ionosenterprise.rest.domain.BackupUnit backupUnit) throws InvocationTargetException,
             NoSuchMethodException, IllegalAccessException, RestClientException, IOException {
 
-        return client.create(getUrlBase().concat(resource), backupUnit,
-                com.ionosenterprise.rest.domain.BackupUnit.class, 202);
+        return client.create(getResourcePathBuilder().build(), backupUnit,
+                com.ionosenterprise.rest.domain.BackupUnit.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -79,8 +86,8 @@ public class BackupUnit extends BaseAPI {
             com.ionosenterprise.rest.domain.BackupUnit.Properties backupUnitProperties) throws InvocationTargetException,
             NoSuchMethodException, IllegalAccessException, RestClientException, IOException {
 
-        return client.update(getUrlBase().concat(resource).concat("/").concat(id), backupUnitProperties,
-                com.ionosenterprise.rest.domain.BackupUnit.class, 202);
+        return client.update(getResourcePathBuilder().appendPathSegment(id).build(), backupUnitProperties,
+                com.ionosenterprise.rest.domain.BackupUnit.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -89,6 +96,6 @@ public class BackupUnit extends BaseAPI {
      * @param id The unique ID of the backup unit.
      */
     public void deleteBackupUnit(String id) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(resource).concat("/").concat(id), 202);
+        client.delete(getResourcePathBuilder().appendPathSegment(id).build(), HttpStatus.SC_ACCEPTED);
     }
 }

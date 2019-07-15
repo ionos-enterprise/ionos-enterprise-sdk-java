@@ -30,19 +30,25 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.RequestStatus;
 import com.ionosenterprise.rest.domain.Requests;
 
 import java.io.IOException;
+import java.util.Collections;
 
 /**
  * @author jasmin@stackpointcloud.com
  */
-public class Request extends BaseAPI {
+public class Request extends AbstractBaseApi {
 
-    public Request() throws Exception {
-        super("status", "requests");
+    public Request(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "requests";
     }
 
     /**
@@ -53,7 +59,7 @@ public class Request extends BaseAPI {
      */
     public RequestStatus getRequestStatus(String url) throws RestClientException, IOException {
         if (url != null) {
-            return client.get(url, null, RequestStatus.class);
+            return client.get(url, Collections.EMPTY_MAP, RequestStatus.class);
         }
         return null;
     }
@@ -62,7 +68,7 @@ public class Request extends BaseAPI {
      * Retrieves all requests
      */
     public Requests listRequests() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(parentResource).concat(depth), null, Requests.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), Collections.EMPTY_MAP, Requests.class);
     }
 
     /**
@@ -71,7 +77,8 @@ public class Request extends BaseAPI {
      * @param requestId The unique ID of the request.
      */
     public com.ionosenterprise.rest.domain.Request getRequest(String requestId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(parentResource).concat("/").concat(requestId).concat(depth), null, com.ionosenterprise.rest.domain.Request.class);
+        return client.get(getResourcePathBuilder().appendPathSegment(requestId).withDepth().build(),
+                Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.Request.class);
     }
 
 }

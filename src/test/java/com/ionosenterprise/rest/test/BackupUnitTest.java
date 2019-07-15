@@ -6,6 +6,7 @@ import com.ionosenterprise.rest.domain.BackupUnits;
 import com.ionosenterprise.rest.domain.SingleSignOnUrl;
 import com.ionosenterprise.rest.test.resource.BackupUnitResource;
 import com.ionosenterprise.rest.test.resource.CommonResource;
+import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -58,7 +59,7 @@ public class BackupUnitTest extends BaseTest {
         try {
             ionosEnterpriseApi.getBackupUnit().getBackupUnit(CommonResource.getBadId());
         }catch (RestClientException ex){
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 

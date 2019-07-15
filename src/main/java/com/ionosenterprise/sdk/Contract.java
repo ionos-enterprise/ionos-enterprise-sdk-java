@@ -30,16 +30,23 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 
 import java.io.IOException;
+import java.util.Collections;
 
 /**
  * @author denis@stackpointcloud.com
  */
-public class Contract extends BaseAPI {
-    public Contract() throws Exception {
-        super("contracts", "");
+public class Contract extends AbstractBaseApi {
+
+    public Contract(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "contracts";
     }
 
     /**
@@ -48,6 +55,7 @@ public class Contract extends BaseAPI {
      * @return Contract object with properties and metadata.
      */
     public com.ionosenterprise.rest.domain.Contract getContract() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat(depth), null, com.ionosenterprise.rest.domain.Contract.class);
+        return client.get(getResourcePathBuilder().withDepth().build(),
+                Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.Contract.class);
     }
 }
