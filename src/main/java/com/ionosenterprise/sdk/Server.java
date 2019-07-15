@@ -38,12 +38,11 @@ import com.ionosenterprise.rest.domain.Servers;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 
 /**
  * @author jasmin@stackpointcloud.com
  */
-public class Server extends AbstractLabelAPI {
+public class Server extends AbstractLabelApi {
 
     public Server() {
         super("datacenters/%s/servers");
@@ -56,7 +55,7 @@ public class Server extends AbstractLabelAPI {
      * @return Servers object with a list of servers in the specified datacenter.
      */
     public Servers getAllServers(String dataCenterId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat(getDepth()),
+        return client.get(getResourcePathBuilder().withPathParams(dataCenterId).withDepth().build(),
                 null, Servers.class);
     }
 
@@ -70,9 +69,8 @@ public class Server extends AbstractLabelAPI {
     public com.ionosenterprise.rest.domain.Server getServer(String dataCenterId, String serverId)
             throws RestClientException, IOException {
 
-        return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId)))
-                .concat("/").concat(serverId).concat(getDepth()),
-                null, com.ionosenterprise.rest.domain.Server.class);
+        return client.get(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId).withDepth()
+                        .build(),null, com.ionosenterprise.rest.domain.Server.class);
     }
 
     /**
@@ -120,7 +118,7 @@ public class Server extends AbstractLabelAPI {
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        return client.create(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))), server,
+        return client.create(getResourcePathBuilder().withPathParams(dataCenterId).build(), server,
                 com.ionosenterprise.rest.domain.Server.class, 202);
     }
 
@@ -134,8 +132,8 @@ public class Server extends AbstractLabelAPI {
      * @return a String representing the requestId
      */
     public String deleteServer(String dataCenterId, String serverId) throws RestClientException, IOException {
-        return client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
-                        .concat(serverId),202);
+        return client.delete(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId).build(),
+                202);
 
     }
 
@@ -180,8 +178,8 @@ public class Server extends AbstractLabelAPI {
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        return client.update(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
-                        .concat(serverId), server, com.ionosenterprise.rest.domain.Server.class, 202);
+        return client.update(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId).build(),
+                server, com.ionosenterprise.rest.domain.Server.class, 202);
 
     }
 
@@ -193,8 +191,8 @@ public class Server extends AbstractLabelAPI {
      * @param serverId     The unique ID of the server
      */
     public void rebootServer(String dataCenterId, String serverId) throws RestClientException, IOException {
-        client.execute(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/").concat(serverId)
-                .concat("/").concat("reboot"), 202);
+        client.execute(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
+                .appendPathSegment("/reboot").build(), 202);
     }
 
     /**
@@ -204,8 +202,8 @@ public class Server extends AbstractLabelAPI {
      * @param serverId     The unique ID of the server
      */
     public void startServer(String dataCenterId, String serverId) throws RestClientException, IOException {
-        client.execute(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/").concat(serverId)
-                .concat("/").concat("start"), 202);
+        client.execute(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
+                .appendPathSegment("/start").build(), 202);
     }
 
     /**
@@ -216,8 +214,8 @@ public class Server extends AbstractLabelAPI {
      * @param serverId     The unique ID of the server
      */
     public void stopServer(String dataCenterId, String serverId) throws RestClientException, IOException {
-        client.execute(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/").concat(serverId)
-                .concat("/").concat("stop"), 202);
+        client.execute(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
+                .appendPathSegment("/stop").build(), 202);
     }
 
     /**
@@ -231,8 +229,8 @@ public class Server extends AbstractLabelAPI {
      * @param serverId     The unique ID of the server
      */
     public CDRoms getAllAttachedCDRoms(String dataCenterId, String serverId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/").concat(serverId)
-                        .concat("/").concat("cdroms").concat(getDepth()), null, CDRoms.class);
+        return client.get(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
+                .appendPathSegment("/cdroms").withDepth().build(), null, CDRoms.class);
     }
 
     /**
@@ -245,8 +243,8 @@ public class Server extends AbstractLabelAPI {
     public CDRom getAttachedCDRom(String dataCenterId, String serverId, String cdromId)
             throws RestClientException, IOException {
 
-        return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/").concat(serverId)
-                        .concat("/").concat("cdroms").concat("/").concat(cdromId),null, CDRom.class);
+        return client.get(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
+                .appendPathSegment("/cdroms").appendPathSegment(cdromId).withDepth().build(), null, CDRom.class);
     }
 
     /**
@@ -261,8 +259,8 @@ public class Server extends AbstractLabelAPI {
 
         PBObject object = new PBObject();
         object.setId(imageId);
-        return client.create(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
-                .concat(serverId).concat("/").concat("cdroms"), object, CDRom.class, 202);
+        return client.create(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
+                .appendPathSegment("/cdroms").build(), object, CDRom.class, 202);
     }
 
     /**
@@ -276,8 +274,8 @@ public class Server extends AbstractLabelAPI {
     public String detachCDRom(String dataCenterId, String serverId, String cdromId)
             throws RestClientException, IOException {
 
-        return client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
-                .concat(serverId).concat("/").concat("cdroms").concat("/").concat(cdromId), 202);
+        return client.delete(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(serverId)
+                .appendPathSegment("/cdroms").appendPathSegment(cdromId).build(), 202);
     }
 
 }

@@ -40,7 +40,7 @@ import java.lang.reflect.InvocationTargetException;
  *
  * @author jasmin@stackpointcloud.com
  */
-public class IPBlock extends AbstractLabelAPI {
+public class IPBlock extends AbstractLabelApi {
 
    public IPBlock() {
       super("ipblocks");
@@ -52,7 +52,7 @@ public class IPBlock extends AbstractLabelAPI {
      * @return IPBlocks object with a list of IPBlocks in datacenter.
      */
    public IPBlocks getAllIPBlocks() throws RestClientException, IOException {
-      return client.get(getUrlBase().concat(getResourcePath()).concat(getDepth()), null, IPBlocks.class);
+      return client.get(getResourcePathBuilder().withDepth().build(), null, IPBlocks.class);
    }
 
     /**
@@ -62,7 +62,7 @@ public class IPBlock extends AbstractLabelAPI {
      * @return IPBlock object with properties and metadata.
      */
    public com.ionosenterprise.rest.domain.IPBlock getIPBlock(String ipBlockId) throws RestClientException, IOException {
-      return client.get(getUrlBase().concat(getResourcePath()).concat("/").concat(ipBlockId).concat(getDepth()),
+      return client.get(getResourcePathBuilder().appendPathSegment(ipBlockId).withDepth().build(),
               null, com.ionosenterprise.rest.domain.IPBlock.class);
    }
 
@@ -87,7 +87,7 @@ public class IPBlock extends AbstractLabelAPI {
            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
            IllegalArgumentException, InvocationTargetException {
 
-      return client.create(getUrlBase().concat(getResourcePath()), ipBlock,
+      return client.create(getResourcePathBuilder().build(), ipBlock,
               com.ionosenterprise.rest.domain.IPBlock.class, 202);
    }
 
@@ -98,6 +98,6 @@ public class IPBlock extends AbstractLabelAPI {
      * @return a String representing the requestId
      */
    public String deleteIPBlock(String ipBlockId) throws RestClientException, IOException {
-      return client.delete(getUrlBase().concat(getResourcePath()).concat("/").concat(ipBlockId), 202);
+      return client.delete(getResourcePathBuilder().appendPathSegment(ipBlockId).build(), 202);
    }
 }

@@ -43,7 +43,6 @@ import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -65,7 +64,7 @@ public class LabelTest extends BaseTest {
         waitTillProvisioned(newDatacenter.getRequestId());
 
         Label label = LabelResource.getLabel();
-        Label newLabel = ionosEnterpriseApi.getDataCenter().createLabel(Arrays.asList(dataCenterId), label);
+        Label newLabel = ionosEnterpriseApi.getDataCenter().createLabel(label, dataCenterId);
         assertNotNull(newLabel);
         assertEquals(newLabel.getProperties().getKey(), label.getProperties().getKey());
         assertEquals(newLabel.getProperties().getValue(), label.getProperties().getValue());
@@ -91,7 +90,7 @@ public class LabelTest extends BaseTest {
 
     @AfterClass
     public static void cleanup() throws RestClientException, IOException {
-        ionosEnterpriseApi.getDataCenter().deleteLabel(Arrays.asList(dataCenterId), labelId);
+        ionosEnterpriseApi.getDataCenter().deleteLabel(labelId, dataCenterId);
         ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
     }
 }

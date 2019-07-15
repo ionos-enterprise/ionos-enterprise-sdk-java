@@ -42,7 +42,7 @@ import java.util.Map;
  *
  * @author jasmin@stackpointcloud.com
  */
-public class Snapshot extends AbstractLabelAPI {
+public class Snapshot extends AbstractLabelApi {
 
     public Snapshot() {
         super("snapshots");
@@ -54,7 +54,7 @@ public class Snapshot extends AbstractLabelAPI {
      * @return Snapshots object with a list of Snapshots
      */
     public Snapshots getAllSnapshots() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath()).concat(getDepth()), null, Snapshots.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), null, Snapshots.class);
     }
 
     /**
@@ -75,9 +75,9 @@ public class Snapshot extends AbstractLabelAPI {
         Map<String, String> params = new HashMap<String, String>();
         params.put("name", name);
         params.put("description", description);
-        return client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId)
-                .concat("/").concat("volumes").concat("/").concat(volumeId).concat("/").concat("create-snapshot"),
-                params, com.ionosenterprise.rest.domain.Snapshot.class, 202);
+        return client.create(getResourcePathBuilder("datacenters/%s/volumes/%s/create-snapshot")
+                .withPathParams(dataCenterId, volumeId).build(), params, com.ionosenterprise.rest.domain.Snapshot.class,
+                202);
     }
 
     /**
@@ -94,8 +94,8 @@ public class Snapshot extends AbstractLabelAPI {
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("snapshotId", snapshotId);
-        client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/").concat("volumes")
-                .concat("/").concat(volumeId).concat("/").concat("restore-snapshot"), params, 202);
+        client.create(getResourcePathBuilder("datacenters/%s/volumes/%s/restore-snapshot")
+                .withPathParams(dataCenterId, volumeId).build(), params, 202);
     }
 
     /**
@@ -105,7 +105,7 @@ public class Snapshot extends AbstractLabelAPI {
      * @return Snapshot object with properties and metadata
      */
     public com.ionosenterprise.rest.domain.Snapshot getSnapshot(String snapshotId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath()).concat("/").concat(snapshotId).concat(getDepth()),
+        return client.get(getResourcePathBuilder().appendPathSegment(snapshotId).withDepth().build(),
                 null, com.ionosenterprise.rest.domain.Snapshot.class);
     }
 
@@ -170,7 +170,7 @@ public class Snapshot extends AbstractLabelAPI {
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        return client.update(getUrlBase().concat(getResourcePath()).concat("/").concat(snapshotId), snapshot,
+        return client.update(getResourcePathBuilder().appendPathSegment(snapshotId).build(), snapshot,
                 com.ionosenterprise.rest.domain.Snapshot.class, 202);
     }
 
@@ -180,6 +180,6 @@ public class Snapshot extends AbstractLabelAPI {
      * @param snapshotId The unique ID of the snapshot
      */
     public void deleteSnapshot(String snapshotId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(getResourcePath()).concat("/").concat(snapshotId), 202);
+        client.delete(getResourcePathBuilder().appendPathSegment(snapshotId).build(), 202);
     }
 }

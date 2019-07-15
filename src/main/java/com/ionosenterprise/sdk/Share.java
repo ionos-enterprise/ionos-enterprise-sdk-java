@@ -35,12 +35,11 @@ import com.ionosenterprise.rest.domain.Shares;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 
 /**
  * @author denis@stackpointcloud.com
  */
-public class Share extends AbstractBaseAPI {
+public class Share extends AbstractBaseApi {
 
     public Share() {
         super("um/groups/%s/shares");
@@ -52,7 +51,8 @@ public class Share extends AbstractBaseAPI {
      * @return Shares object with a list of Shares
      */
     public Shares getAllShares(String groupId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(groupId))).concat(getDepth()), null, Shares.class);
+        return client.get(getResourcePathBuilder().withPathParams(groupId).withDepth().build(),
+                null, Shares.class);
     }
 
     /**
@@ -64,8 +64,8 @@ public class Share extends AbstractBaseAPI {
     public com.ionosenterprise.rest.domain.Share getShare(String groupId, String shareId)
             throws RestClientException, IOException {
 
-        return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(groupId))).concat("/").concat(shareId)
-                        .concat(getDepth()),null, com.ionosenterprise.rest.domain.Share.class);
+        return client.get(getResourcePathBuilder().withPathParams(groupId).appendPathSegment(shareId).withDepth()
+                .build(),null, com.ionosenterprise.rest.domain.Share.class);
     }
 
     /**
@@ -75,7 +75,7 @@ public class Share extends AbstractBaseAPI {
      * @return a String representing the requestId
      */
     public String deleteShare(String groupId, String shareId) throws RestClientException, IOException {
-        return client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(groupId))).concat("/").concat(shareId),
+        return client.delete(getResourcePathBuilder().withPathParams(groupId).appendPathSegment(shareId).build(),
                 202);
     }
 
@@ -94,8 +94,8 @@ public class Share extends AbstractBaseAPI {
             throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException {
 
-        return client.create(getUrlBase().concat(getResourcePath(Arrays.asList(groupId))).concat("/")
-                        .concat(resourceId), share, com.ionosenterprise.rest.domain.Share.class, 202);
+        return client.create(getResourcePathBuilder().withPathParams(groupId).appendPathSegment(resourceId).build(),
+                share, com.ionosenterprise.rest.domain.Share.class, 202);
     }
 
     /**
@@ -108,7 +108,7 @@ public class Share extends AbstractBaseAPI {
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        return client.put(getUrlBase().concat(getResourcePath(Arrays.asList(groupId))).concat("/").concat(shareId),
+        return client.put(getResourcePathBuilder().withPathParams(groupId).appendPathSegment(shareId).build(),
                 object, com.ionosenterprise.rest.domain.Share.class, 202);
     }
 }

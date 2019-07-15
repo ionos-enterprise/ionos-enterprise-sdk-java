@@ -36,13 +36,12 @@ import com.ionosenterprise.rest.domain.Volumes;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 
 /**
  *
  * @author jasmin@stackpointcloud.com
  */
-public class Volume extends AbstractLabelAPI {
+public class Volume extends AbstractLabelApi {
 
    public Volume() {
       super("datacenters/%s/volumes");
@@ -57,7 +56,7 @@ public class Volume extends AbstractLabelAPI {
     * @throws IOException
     */
    public Volumes getAllVolumes(String dataCenterId) throws RestClientException, IOException {
-      return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat(getDepth()),
+      return client.get(getResourcePathBuilder().withPathParams(dataCenterId).withDepth().build(),
               null, Volumes.class);
    }
 
@@ -71,9 +70,8 @@ public class Volume extends AbstractLabelAPI {
     * @throws IOException
     */
    public Volumes getAllVolumes(String dataCenterId, String serverId) throws RestClientException, IOException {
-      return client.get(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId)
-              .concat("/").concat("servers").concat("/").concat(serverId).concat("/").concat("volumes")
-              .concat(getDepth()), null, Volumes.class);
+      return client.get(getResourcePathBuilder("datacenters/%s/servers/%s/volumes")
+              .withPathParams(dataCenterId, serverId).withDepth().build(), null, Volumes.class);
    }
 
    /**
@@ -88,8 +86,8 @@ public class Volume extends AbstractLabelAPI {
    public com.ionosenterprise.rest.domain.Volume getVolume(String dataCenterId, String volumeId)
            throws RestClientException, IOException {
 
-      return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/").concat(volumeId)
-              .concat(getDepth()), null, com.ionosenterprise.rest.domain.Volume.class);
+      return client.get(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(volumeId).withDepth()
+              .build(), null, com.ionosenterprise.rest.domain.Volume.class);
    }
 
    /**
@@ -106,7 +104,7 @@ public class Volume extends AbstractLabelAPI {
            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
            IllegalArgumentException, InvocationTargetException {
 
-      return client.create(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))), volume,
+      return client.create(getResourcePathBuilder().withPathParams(dataCenterId).build(), volume,
               com.ionosenterprise.rest.domain.Volume.class, 202);
    }
 
@@ -126,8 +124,8 @@ public class Volume extends AbstractLabelAPI {
 
       PBObject object = new PBObject();
       object.setId(volumeId);
-      return client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId)
-              .concat("/").concat("servers").concat("/").concat(serverId).concat("/").concat("volumes"), object,
+      return client.create(getResourcePathBuilder("datacenters/%s/servers/%s/volumes")
+                      .withPathParams(dataCenterId, serverId).build(), object,
               com.ionosenterprise.rest.domain.Volume.class, 202);
    }
 
@@ -149,8 +147,8 @@ public class Volume extends AbstractLabelAPI {
            throws RestClientException, IOException,NoSuchMethodException, IllegalAccessException,
            IllegalArgumentException, InvocationTargetException {
 
-      return client.update(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
-                      .concat(volumeId), volume, com.ionosenterprise.rest.domain.Volume.class, 202);
+      return client.update(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(volumeId).build(),
+              volume, com.ionosenterprise.rest.domain.Volume.class, 202);
    }
 
    /**
@@ -166,9 +164,8 @@ public class Volume extends AbstractLabelAPI {
 
       PBObject object = new PBObject();
       object.setId(volumeId);
-      return client.delete(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
-              .concat("servers").concat("/").concat(serverId).concat("/").concat("volumes").concat("/")
-              .concat(volumeId), 202);
+      return client.delete(getResourcePathBuilder("datacenters/%s/servers/%s/volumes")
+              .withPathParams(dataCenterId, serverId).appendPathSegment(volumeId).build(), 202);
    }
 
     /**
@@ -181,8 +178,8 @@ public class Volume extends AbstractLabelAPI {
      * @return a String representing the requestId
      */
     public String deleteVolume(String dataCenterId, String volumeId) throws RestClientException, IOException {
-       return client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
-                       .concat(volumeId),202);
+       return client.delete(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(volumeId).build(),
+               202);
     }
 
 }

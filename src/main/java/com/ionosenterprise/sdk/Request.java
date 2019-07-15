@@ -39,7 +39,7 @@ import java.io.IOException;
 /**
  * @author jasmin@stackpointcloud.com
  */
-public class Request extends AbstractBaseAPI {
+public class Request extends AbstractBaseApi {
 
     public Request() {
         super("requests");
@@ -62,7 +62,7 @@ public class Request extends AbstractBaseAPI {
      * Retrieves all requests
      */
     public Requests listRequests() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath()).concat(getDepth()), null, Requests.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), null, Requests.class);
     }
 
     /**
@@ -71,7 +71,7 @@ public class Request extends AbstractBaseAPI {
      * @param requestId The unique ID of the request.
      */
     public com.ionosenterprise.rest.domain.Request getRequest(String requestId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath()).concat("/").concat(requestId).concat(getDepth()),
+        return client.get(getResourcePathBuilder().appendPathSegment(requestId).withDepth().build(),
                 null, com.ionosenterprise.rest.domain.Request.class);
     }
 

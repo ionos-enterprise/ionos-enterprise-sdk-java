@@ -37,7 +37,7 @@ import java.io.IOException;
 /**
  * @author denis@stackpointcloud.com
  */
-public class Contract extends AbstractBaseAPI {
+public class Contract extends AbstractBaseApi {
 
     public Contract() {
         super("contracts");
@@ -49,7 +49,7 @@ public class Contract extends AbstractBaseAPI {
      * @return Contract object with properties and metadata.
      */
     public com.ionosenterprise.rest.domain.Contract getContract() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath()).concat(getDepth()),
+        return client.get(getResourcePathBuilder().withDepth().build(),
                 null, com.ionosenterprise.rest.domain.Contract.class);
     }
 }

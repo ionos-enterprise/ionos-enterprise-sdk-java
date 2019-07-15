@@ -45,7 +45,6 @@ import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -114,7 +113,7 @@ public class IPBlockTest extends BaseTest {
             RestClientException, InvocationTargetException {
 
         Label label = LabelResource.getLabel();
-        Label newLabel = ionosEnterpriseApi.getIpBlock().createLabel(Arrays.asList(ipBlockId), label);
+        Label newLabel = ionosEnterpriseApi.getIpBlock().createLabel(label, ipBlockId);
         assertNotNull(newLabel);
         assertEquals(newLabel.getProperties().getKey(), label.getProperties().getKey());
         assertEquals(newLabel.getProperties().getValue(), label.getProperties().getValue());
@@ -123,14 +122,14 @@ public class IPBlockTest extends BaseTest {
 
     @Test
     public void t6_2_testGetAllLabels() throws RestClientException, IOException {
-        Labels labels = ionosEnterpriseApi.getIpBlock().getAllLabels(Arrays.asList(ipBlockId));
+        Labels labels = ionosEnterpriseApi.getIpBlock().getAllLabels(ipBlockId);
         assertNotNull(labels);
         assertTrue(labels.getItems().size() > 0);
     }
 
     @Test
     public void t6_3_testGetLabel() throws RestClientException, IOException {
-        Label label = ionosEnterpriseApi.getIpBlock().getLabel(Arrays.asList(ipBlockId), labelId);
+        Label label = ionosEnterpriseApi.getIpBlock().getLabel(labelId, ipBlockId);
         assertNotNull(label);
 
         Label.Properties properties = LabelResource.getLabel().getProperties();
@@ -141,7 +140,7 @@ public class IPBlockTest extends BaseTest {
     @Test
     public void t6_4_testGelLabelFail() throws IOException {
         try {
-            ionosEnterpriseApi.getIpBlock().getLabel(Arrays.asList(ipBlockId), CommonResource.getBadId());
+            ionosEnterpriseApi.getIpBlock().getLabel(CommonResource.getBadId(), ipBlockId);
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
@@ -152,8 +151,7 @@ public class IPBlockTest extends BaseTest {
             RestClientException, InvocationTargetException {
 
         Label.Properties  properties = LabelResource.getLabelEdit().getProperties();
-        Label labelUpdatde = ionosEnterpriseApi.getIpBlock().updateLabel(
-                Arrays.asList(ipBlockId), labelId, properties);
+        Label labelUpdatde = ionosEnterpriseApi.getIpBlock().updateLabel(labelId, properties, ipBlockId);
         assertEquals(labelUpdatde.getProperties().getValue(), properties.getValue());
     }
 
@@ -163,7 +161,7 @@ public class IPBlockTest extends BaseTest {
 
         Label label = LabelResource.getLabel();
         try {
-            ionosEnterpriseApi.getIpBlock().createLabel(Arrays.asList(ipBlockId), label);
+            ionosEnterpriseApi.getIpBlock().createLabel(label, ipBlockId);
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
         }
@@ -171,7 +169,7 @@ public class IPBlockTest extends BaseTest {
 
     @AfterClass
     public static void cleanUp() throws RestClientException, IOException {
-        ionosEnterpriseApi.getIpBlock().deleteLabel(Arrays.asList(ipBlockId), labelId);
+        ionosEnterpriseApi.getIpBlock().deleteLabel(labelId, ipBlockId);
         ionosEnterpriseApi.getIpBlock().deleteIPBlock(ipBlockId);
     }
 }

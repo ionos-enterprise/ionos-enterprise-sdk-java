@@ -41,7 +41,7 @@ import java.util.Map;
 /**
  * @author denis@stackpointcloud.com
  */
-public class User extends AbstractBaseAPI {
+public class User extends AbstractBaseApi {
 
     public User() {
         super("um/users");
@@ -53,7 +53,7 @@ public class User extends AbstractBaseAPI {
      * @return Users object with a list of Users
      */
     public Users getAllUsers() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath()).concat(getDepth()), null, Users.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), null, Users.class);
     }
 
     /**
@@ -62,8 +62,8 @@ public class User extends AbstractBaseAPI {
      * @return Users object with a list of Users
      */
     public Users getAllGroupUsers(String groupId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat("um/groups").concat("/").concat(groupId).concat("/").concat("users")
-                .concat(getDepth()), null, Users.class);
+        return client.get(getResourcePathBuilder("um/groups/%s/users").withPathParams(groupId).withDepth()
+                .build(), null, Users.class);
     }
 
     /**
@@ -73,7 +73,7 @@ public class User extends AbstractBaseAPI {
      * @return User object with properties and metadata
      */
     public com.ionosenterprise.rest.domain.User getUser(String userId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath()).concat("/").concat(userId).concat(getDepth()),
+        return client.get(getResourcePathBuilder().appendPathSegment(userId).withDepth().build(),
                 null, com.ionosenterprise.rest.domain.User.class);
     }
 
@@ -84,7 +84,7 @@ public class User extends AbstractBaseAPI {
      * @return a String representing the requestId
      */
     public String deleteUser(String userId) throws RestClientException, IOException {
-        return client.delete(getUrlBase().concat(getResourcePath()).concat("/").concat(userId),202);
+        return client.delete(getResourcePathBuilder().appendPathSegment(userId).build(),202);
     }
 
     /**
@@ -108,7 +108,7 @@ public class User extends AbstractBaseAPI {
             throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException {
 
-        return client.create(getUrlBase().concat(getResourcePath()), user,
+        return client.create(getResourcePathBuilder().build(), user,
                 com.ionosenterprise.rest.domain.User.class, 202);
     }
 
@@ -123,7 +123,7 @@ public class User extends AbstractBaseAPI {
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        return client.put(getUrlBase().concat(getResourcePath()).concat("/").concat(userId), object,
+        return client.put(getResourcePathBuilder().appendPathSegment(userId).build(), object,
                 com.ionosenterprise.rest.domain.User.class, 202);
     }
 
@@ -140,9 +140,8 @@ public class User extends AbstractBaseAPI {
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("id", userId);
-        return client.create(getUrlBase().concat("um/groups").concat("/").concat(groupId).concat("/").concat("users"),
-                params,
-                com.ionosenterprise.rest.domain.User.class, 202);
+        return client.create(getResourcePathBuilder("um/groups/%s/users").withPathParams(groupId).build(),
+                params, com.ionosenterprise.rest.domain.User.class, 202);
     }
 
     /**
@@ -153,7 +152,7 @@ public class User extends AbstractBaseAPI {
      * @return a String representing the requestId
      */
     public String removeUserFromGroup(String groupId,String userId) throws RestClientException, IOException {
-        return client.delete(getUrlBase().concat("um/groups").concat("/").concat(groupId).concat("/").concat("users")
-                .concat("/").concat(userId),   202);
+        return client.delete(getResourcePathBuilder("um/groups/%s/users").withPathParams(groupId)
+                .appendPathSegment(userId).build(),   202);
     }
 }

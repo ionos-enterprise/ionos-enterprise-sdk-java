@@ -35,12 +35,11 @@ import com.ionosenterprise.rest.domain.FirewallRules;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 
 /**
  * @author jasmin@stackpointcloud.com
  */
-public class FirewallRule extends AbstractBaseAPI {
+public class FirewallRule extends AbstractBaseApi {
 
     public FirewallRule() {
         super("datacenters/%s/servers/%s/nics/%s/firewallrules");
@@ -58,8 +57,8 @@ public class FirewallRule extends AbstractBaseAPI {
     public FirewallRules getAllFirewallRules(String dataCenterId, String serverId, String nicId)
             throws RestClientException, IOException {
 
-        return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId, serverId, nicId)))
-                        .concat(getDepth()), null, FirewallRules.class);
+        return client.get(getResourcePathBuilder().withPathParams(dataCenterId, serverId, nicId).withDepth().build(),
+                null, FirewallRules.class);
     }
 
     /**
@@ -75,9 +74,9 @@ public class FirewallRule extends AbstractBaseAPI {
                                                                         String nicId, String firewallRuleId)
             throws RestClientException, IOException {
 
-        return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId, serverId, nicId)))
-                .concat("/").concat(firewallRuleId)
-                .concat(getDepth()), null, com.ionosenterprise.rest.domain.FirewallRule.class);
+        return client.get(getResourcePathBuilder().withPathParams(dataCenterId, serverId, nicId)
+                .appendPathSegment(firewallRuleId).withDepth().build(),
+                null, com.ionosenterprise.rest.domain.FirewallRule.class);
     }
 
     /**
@@ -134,7 +133,7 @@ public class FirewallRule extends AbstractBaseAPI {
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        return client.create(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId, serverId, nicId))),
+        return client.create(getResourcePathBuilder().withPathParams(dataCenterId, serverId, nicId).build(),
                 firewallRule, com.ionosenterprise.rest.domain.FirewallRule.class, 202);
     }
 
@@ -150,8 +149,8 @@ public class FirewallRule extends AbstractBaseAPI {
     public String deleteFirewallRule(String dataCenterId, String serverId, String nicId, String firewallRuleId)
             throws RestClientException, IOException {
 
-        return client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId, serverId, nicId)))
-                        .concat("/").concat(firewallRuleId),202);
+        return client.delete(getResourcePathBuilder().withPathParams(dataCenterId, serverId, nicId)
+                .appendPathSegment(firewallRuleId).build(),202);
     }
 
     /**
@@ -204,13 +203,13 @@ public class FirewallRule extends AbstractBaseAPI {
      * <br>
      * @return FirewallRule object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.FirewallRule updateFirewWallRule(String dataCenterId, String serverId,
+    public com.ionosenterprise.rest.domain.FirewallRule updateFirewallRule(String dataCenterId, String serverId,
             String nicId, String firewallRuleId, com.ionosenterprise.rest.domain.FirewallRule.Properties firewallRule)
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        return client.update(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId, serverId, nicId)))
-                        .concat("/").concat(firewallRuleId),
-                firewallRule, com.ionosenterprise.rest.domain.FirewallRule.class, 202);
+        return client.update(getResourcePathBuilder().withPathParams(dataCenterId, serverId, nicId)
+                        .appendPathSegment(firewallRuleId).build(), firewallRule,
+                com.ionosenterprise.rest.domain.FirewallRule.class, 202);
     }
 }

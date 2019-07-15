@@ -40,7 +40,7 @@ import java.lang.reflect.InvocationTargetException;
  *
  * @author jasmin@stackpointcloud.com
  */
-public class Image extends AbstractBaseAPI {
+public class Image extends AbstractBaseApi {
 
     public Image() {
         super("images");
@@ -52,7 +52,7 @@ public class Image extends AbstractBaseAPI {
      * @return Images object with a list of Images
      */
     public Images getAllImages() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath()).concat(getDepth()), null, Images.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), null, Images.class);
     }
 
     /**
@@ -62,7 +62,7 @@ public class Image extends AbstractBaseAPI {
      * @return Image object with properties and metadata
      */
     public com.ionosenterprise.rest.domain.Image getImage(String imageId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath()).concat("/").concat(imageId).concat(getDepth()),
+        return client.get(getResourcePathBuilder().appendPathSegment(imageId).withDepth().build(),
                 null, com.ionosenterprise.rest.domain.Image.class);
     }
 
@@ -72,7 +72,7 @@ public class Image extends AbstractBaseAPI {
      * @param imageId The unique ID of the image.
      */
     public void deleteImage(String imageId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(getResourcePath()).concat("/").concat(imageId), 200);
+        client.delete(getResourcePathBuilder().appendPathSegment(imageId).build(), 200);
     }
 
     /**
@@ -85,7 +85,7 @@ public class Image extends AbstractBaseAPI {
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        return client.update(getUrlBase().concat(getResourcePath()).concat("/").concat(imageId), object,
+        return client.update(getResourcePathBuilder().appendPathSegment(imageId).build(), object,
                 com.ionosenterprise.rest.domain.Image.class, 202);
     }
 

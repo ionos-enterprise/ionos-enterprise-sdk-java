@@ -5,7 +5,7 @@ import com.ionosenterprise.rest.domain.Labels;
 
 import java.io.IOException;
 
-public class Label extends AbstractBaseAPI {
+public class Label extends AbstractBaseApi {
 
     public Label() {
         super("labels");
@@ -17,8 +17,7 @@ public class Label extends AbstractBaseAPI {
      * @return Labels object with properties and metadata.
      */
     public Labels getAllLabels() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath()).concat(getDepth()),
-                null, Labels.class);
+        return client.get(getResourcePathBuilder().withDepth().build(),null, Labels.class);
     }
 
     /**
@@ -28,7 +27,7 @@ public class Label extends AbstractBaseAPI {
      * @return Label object with properties and metadata.
      */
     public com.ionosenterprise.rest.domain.Label getLabel(String urn) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath()).concat("/").concat(urn)
-                .concat(getDepth()),null, com.ionosenterprise.rest.domain.Label.class);
+        return client.get(getResourcePathBuilder().appendPathSegment(urn).withDepth().build(),
+                null, com.ionosenterprise.rest.domain.Label.class);
     }
 }

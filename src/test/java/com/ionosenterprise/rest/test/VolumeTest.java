@@ -40,7 +40,6 @@ import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -163,7 +162,7 @@ public class VolumeTest extends BaseTest {
             RestClientException, InvocationTargetException {
 
         Label label = LabelResource.getLabel();
-        Label newLabel = ionosEnterpriseApi.getVolume().createLabel(Arrays.asList(dataCenterId, volumeId), label);
+        Label newLabel = ionosEnterpriseApi.getVolume().createLabel(label, volumeId, dataCenterId);
         assertNotNull(newLabel);
         assertEquals(newLabel.getProperties().getKey(), label.getProperties().getKey());
         assertEquals(newLabel.getProperties().getValue(), label.getProperties().getValue());
@@ -172,14 +171,14 @@ public class VolumeTest extends BaseTest {
 
     @Test
     public void t9_2_testGetAllLabels() throws RestClientException, IOException {
-        Labels labels = ionosEnterpriseApi.getVolume().getAllLabels(Arrays.asList(dataCenterId, volumeId));
+        Labels labels = ionosEnterpriseApi.getVolume().getAllLabels(volumeId, dataCenterId);
         assertNotNull(labels);
         assertTrue(labels.getItems().size() > 0);
     }
 
     @Test
     public void t9_3_testGetLabel() throws RestClientException, IOException {
-        Label label = ionosEnterpriseApi.getVolume().getLabel(Arrays.asList(dataCenterId, volumeId), labelId);
+        Label label = ionosEnterpriseApi.getVolume().getLabel(labelId, volumeId, dataCenterId);
         assertNotNull(label);
 
         Label.Properties properties = LabelResource.getLabel().getProperties();
@@ -190,7 +189,7 @@ public class VolumeTest extends BaseTest {
     @Test
     public void t9_4_testGelLabelFail() throws IOException {
         try {
-            ionosEnterpriseApi.getVolume().getLabel(Arrays.asList(dataCenterId, volumeId), CommonResource.getBadId());
+            ionosEnterpriseApi.getVolume().getLabel(CommonResource.getBadId(), volumeId, dataCenterId);
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
@@ -201,8 +200,7 @@ public class VolumeTest extends BaseTest {
             RestClientException, InvocationTargetException {
 
         Label.Properties  properties = LabelResource.getLabelEdit().getProperties();
-        Label labelUpdatde = ionosEnterpriseApi.getVolume().updateLabel(
-                Arrays.asList(dataCenterId, volumeId), labelId, properties);
+        Label labelUpdatde = ionosEnterpriseApi.getVolume().updateLabel(labelId, properties, volumeId, dataCenterId);
         assertEquals(labelUpdatde.getProperties().getValue(), properties.getValue());
     }
 
@@ -212,7 +210,7 @@ public class VolumeTest extends BaseTest {
 
         Label label = LabelResource.getLabel();
         try {
-            ionosEnterpriseApi.getVolume().createLabel(Arrays.asList(dataCenterId, volumeId), label);
+            ionosEnterpriseApi.getVolume().createLabel(label, volumeId, dataCenterId);
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
         }
@@ -220,7 +218,7 @@ public class VolumeTest extends BaseTest {
 
     @AfterClass
     public static void cleanUp() throws RestClientException, IOException {
-        ionosEnterpriseApi.getVolume().deleteLabel(Arrays.asList(dataCenterId, volumeId), labelId);
+        ionosEnterpriseApi.getVolume().deleteLabel(labelId, volumeId, dataCenterId);
         ionosEnterpriseApi.getVolume().deleteVolume(dataCenterId, volumeId);
         ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
     }

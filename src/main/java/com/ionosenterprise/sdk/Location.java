@@ -39,7 +39,7 @@ import java.io.IOException;
  * @author jasmin@stackpointcloud.com
  *
  */
-public class Location extends AbstractBaseAPI {
+public class Location extends AbstractBaseApi {
 
     public Location() {
         super("locations");
@@ -52,7 +52,7 @@ public class Location extends AbstractBaseAPI {
      * @return Locations
      */
     public Locations getAllLocations() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath()).concat(getDepth()), null, Locations.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), null, Locations.class);
     }
 
     /**
@@ -62,7 +62,7 @@ public class Location extends AbstractBaseAPI {
      * @return Location object with properties and metadata
      */
     public com.ionosenterprise.rest.domain.Location getLocation(String id) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath()).concat("/").concat(id).concat(getDepth()),
+        return client.get(getResourcePathBuilder().appendPathSegment(id).withDepth().build(),
                 null, com.ionosenterprise.rest.domain.Location.class);
     }
 }

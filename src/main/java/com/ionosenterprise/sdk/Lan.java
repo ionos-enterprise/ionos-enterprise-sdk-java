@@ -35,13 +35,12 @@ import com.ionosenterprise.rest.domain.Lans;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 
 /**
  *
  * @author jasmin@stackpointcloud.com
  */
-public class Lan extends AbstractBaseAPI {
+public class Lan extends AbstractBaseApi {
 
     public Lan() {
         super("datacenters/%s/lans");
@@ -54,7 +53,7 @@ public class Lan extends AbstractBaseAPI {
      * @return Lans object with a list of DataCenter LANs .
      */
     public Lans getAllLans(String dataCenterId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat(getDepth()),
+        return client.get(getResourcePathBuilder().withPathParams(dataCenterId).withDepth().build(),
                 null, Lans.class);
     }
 
@@ -68,8 +67,9 @@ public class Lan extends AbstractBaseAPI {
     public com.ionosenterprise.rest.domain.Lan getLan(String dataCenterId, String lanId)
             throws RestClientException, IOException {
 
-        return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/").concat(lanId)
-                        .concat(getDepth()), null, com.ionosenterprise.rest.domain.Lan.class);
+        return client.get(
+                getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(lanId).withDepth().build(),
+                null, com.ionosenterprise.rest.domain.Lan.class);
     }
 
     /**
@@ -94,7 +94,7 @@ public class Lan extends AbstractBaseAPI {
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        return client.create(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))), lan,
+        return client.create(getResourcePathBuilder().withPathParams(dataCenterId).build(), lan,
                 com.ionosenterprise.rest.domain.Lan.class, 202);
     }
 
@@ -117,8 +117,8 @@ public class Lan extends AbstractBaseAPI {
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        return client.update(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
-                        .concat(lanId), lan, com.ionosenterprise.rest.domain.Lan.class, 202);
+        return client.update(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(lanId).build(),
+                lan, com.ionosenterprise.rest.domain.Lan.class, 202);
     }
 
     /**
@@ -129,7 +129,7 @@ public class Lan extends AbstractBaseAPI {
      * @return a String representing the requestId
      */
     public String deleteLan(String dataCenterId, String lanId) throws RestClientException, IOException {
-        return client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
-                .concat(lanId), 202);
+        return client.delete(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(lanId).build(),
+                202);
     }
 }

@@ -1904,9 +1904,10 @@ Returns the rest response containing all labels for single resource.
 
 | Name | Required | Type | Description |
 |---|:-:|---|---|
-| pathParams | **yes** | array | List of path parameters from the path to the resource |
+| resourceId | **yes** | string | ID of the resource for which to get the labels. |
+| pathParams | **yes** if any | array | List of path parameters from the path to the resource. |
 
-    getAllLabels(List<String> pathParams)
+    getAllLabels(String resourceId, String... pathParams)
 
 ---
 
@@ -1916,10 +1917,11 @@ Returns the rest response containing a label fetching using resource path and la
 
 | Name | Required | Type | Description |
 |---|:-:|---|---|
-| pathParams | **yes** | array | List of path parameters from the path to the resource |
 | labelKey | **yes** | string | The unique URN of the label. |
+| resourceId | **yes** | string | ID of the resource for which to get the labels. |
+| pathParams | **yes** if any | array | List of path parameters from the path to the resource. |
 
-    getLabel(List<String> pathParams, String labelKey)
+    getLabel(String labelKey, String resourceId, String... pathParams)
 
 ---
 
@@ -1929,11 +1931,12 @@ Create label on a particular resource.
 
 | Name | Required | Type | Description |
 |---|:-:|---|---|
-| pathParams | **yes** | array | List of path parameters from the path to the resource |
 | label.key | **yes** | string | The key of the label which has to be unique for a resource. |
 | label.value | **yes** | string | The value of the label. |
+| resourceId | **yes** | string | ID of the resource for which to get the labels. |
+| pathParams | **yes** if any | array | List of path parameters from the path to the resource. |
 
-    createLabel(List<String> pathParams, Label label)
+    createLabel(Label label, String resourceId, String... pathParams)
 
 ---
 
@@ -1943,11 +1946,12 @@ Update the value of the label.
 
 | Name | Required | Type | Description |
 |---|:-:|---|---|
-| pathParams | **yes** | array | List of path parameters from the path to the resource |
 | labelKey | **yes** | string | The unique URN of the label. |
 | labelProperties.value | **yes** | string | The new value of the label. |
+| resourceId | **yes** | string | ID of the resource for which to get the labels. |
+| pathParams | **yes** if any | array | List of path parameters from the path to the resource. |
 
-    updateLabel(List<String> pathParams, String labelKey, Label.Properties labelProperties)
+    updateLabel(String labelKey, Label.Properties labelProperties, String resourceId, String... pathParams)
 
 ---
 
@@ -1957,10 +1961,11 @@ Delete a label form a particular resource.
 
 | Name | Required | Type | Description |
 |---|:-:|---|---|
-| pathParams | **yes** | array | List of path parameters from the path to the resource |
 | labelKey | **yes** | string | The unique URN of the label. |
+| resourceId | **yes** | string | ID of the resource for which to get the labels. |
+| pathParams | **yes** if any | array | List of path parameters from the path to the resource. |
 
-    deleteLabel(List<String> pathParams, String labelKey)
+    deleteLabel(String labelKey, String resourceId, String... pathParams)
 
 ---
 

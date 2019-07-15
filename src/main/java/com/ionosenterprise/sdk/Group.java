@@ -39,7 +39,7 @@ import java.lang.reflect.InvocationTargetException;
  *
  * @author denis@stackpointcloud.com
  */
-public class Group extends AbstractBaseAPI {
+public class Group extends AbstractBaseApi {
     public Group() {
         super("um/groups");
     }
@@ -50,8 +50,7 @@ public class Group extends AbstractBaseAPI {
      * @return Groups object with a list of Groups
      */
     public Groups getAllGroups() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath()).concat(getDepth()),
-                null, Groups.class);
+        return client.get(getResourcePathBuilder().withDepth().build(),null, Groups.class);
     }
 
     /**
@@ -61,8 +60,8 @@ public class Group extends AbstractBaseAPI {
      * @return Group object with properties and metadata
      */
     public com.ionosenterprise.rest.domain.Group getGroup(String groupId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath()).concat("/").concat(groupId)
-                        .concat(getDepth()), null, com.ionosenterprise.rest.domain.Group.class);
+        return client.get(getResourcePathBuilder().appendPathSegment(groupId).withDepth().build(),
+                null, com.ionosenterprise.rest.domain.Group.class);
     }
 
     /**
@@ -72,7 +71,7 @@ public class Group extends AbstractBaseAPI {
      * @return a String representing the requestId
      */
     public String deleteGroup(String groupId) throws RestClientException, IOException {
-        return client.delete(getUrlBase().concat(getResourcePath()).concat("/").concat(groupId),202);
+        return client.delete(getResourcePathBuilder().appendPathSegment(groupId).build(),202);
     }
 
     /**
@@ -95,7 +94,7 @@ public class Group extends AbstractBaseAPI {
             throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException {
 
-        return client.create(getUrlBase().concat(getResourcePath()), group,
+        return client.create(getResourcePathBuilder().build(), group,
                 com.ionosenterprise.rest.domain.Group.class, 202);
     }
 
@@ -109,7 +108,7 @@ public class Group extends AbstractBaseAPI {
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        return client.put(getUrlBase().concat(getResourcePath()).concat("/").concat(groupId),
+        return client.put(getResourcePathBuilder().appendPathSegment(groupId).build(),
                 object, com.ionosenterprise.rest.domain.Group.class, 202);
     }
 }

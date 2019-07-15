@@ -31,17 +31,16 @@
 package com.ionosenterprise.sdk;
 
 import com.ionosenterprise.rest.client.RequestInterceptor;
+import com.ionosenterprise.rest.client.ResourcePathBuilder;
 import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientBuilder;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.client.methods.HttpRequestBase;
 
-import java.util.List;
-
 /**
  * @author jasmin@stackpointcloud.com
  */
-public abstract class AbstractBaseAPI {
+public abstract class AbstractBaseApi {
 
     private static final String IONOS_ENTERPRISE_API_URL = "https://api.ionos.com/cloudapi/v5/";
 
@@ -49,7 +48,7 @@ public abstract class AbstractBaseAPI {
 
     protected RestClient client;
 
-    public AbstractBaseAPI(String pathFormat) {
+    public AbstractBaseApi(String pathFormat) {
         this.pathFormat = pathFormat;
 
         RequestInterceptor authorize = getAuthorizeRequestInterceptor(null);
@@ -57,41 +56,18 @@ public abstract class AbstractBaseAPI {
     }
 
     /**
-     * @return the urlBase
+     * @return the ResourcePathBuilder
      */
-    protected String getUrlBase() {
-        String urlBase;
-        if (System.getenv("IONOS_ENTERPRISE_API_URL") != null) {
-            urlBase = System.getenv("IONOS_ENTERPRISE_API_URL");
-            if (urlBase.charAt(urlBase.length() - 1) != '/') {
-                urlBase += ("/");
-            }
-        } else {
-            urlBase = IONOS_ENTERPRISE_API_URL;
-        }
-
-        return urlBase;
+    protected ResourcePathBuilder getResourcePathBuilder() {
+        return ResourcePathBuilder.create(pathFormat, getUrlBase());
     }
 
     /**
-     * @return the depth to be used in get requests
+     * @param pathFormat the template of the uri
+     * @return the ResourcePathBuilder
      */
-    protected String getDepth() {
-        return "?depth=".concat("10");
-    }
-
-    /**
-     * Build the pathFormat path form path format given as argument in the resource api constructor and path params.
-     *
-     * @param pathParams the path params used for path format
-     * @return the pathFormat path with path params
-     */
-    protected String getResourcePath(List<String> pathParams){
-        return String.format(pathFormat, pathParams.toArray());
-    }
-
-    protected String getResourcePath(){
-        return pathFormat;
+    protected ResourcePathBuilder getResourcePathBuilder(String pathFormat) {
+        return ResourcePathBuilder.create(pathFormat, getUrlBase());
     }
 
     /**
@@ -100,6 +76,20 @@ public abstract class AbstractBaseAPI {
     protected void setCredentials(String credentials) {
         RequestInterceptor authorize = getAuthorizeRequestInterceptor(credentials);
         client.setInterceptor(authorize);
+    }
+
+    private String getUrlBase() {
+        String urlBase;
+        if (System.getenv("IONOS_ENTERPRISE_API_URL") != null) {
+            urlBase = System.getenv("IONOS_ENTERPRISE_API_URL");
+            if (!urlBase.endsWith("/")) {
+                urlBase += ("/");
+            }
+        } else {
+            urlBase = IONOS_ENTERPRISE_API_URL;
+        }
+
+        return urlBase;
     }
 
     private RequestInterceptor getAuthorizeRequestInterceptor(final String credentials) {

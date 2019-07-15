@@ -38,7 +38,7 @@ import java.io.IOException;
 /**
  * @author denis@stackpointcloud.com
  */
-public class Resource extends AbstractBaseAPI {
+public class Resource extends AbstractBaseApi {
 
     public Resource() {
         super("um/resources");
@@ -50,7 +50,7 @@ public class Resource extends AbstractBaseAPI {
      * @return Resources object with a list of resources
      */
     public Resources getAllResources() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath()).concat(getDepth()), null, Resources.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), null, Resources.class);
     }
 
     /**
@@ -61,7 +61,7 @@ public class Resource extends AbstractBaseAPI {
     public Resources getAllByType(com.ionosenterprise.rest.domain.Resource.ResourceType type)
             throws RestClientException, IOException {
 
-        return client.get(getUrlBase().concat(getResourcePath()).concat("/").concat(type.name()).concat(getDepth()),
+        return client.get(getResourcePathBuilder().appendPathSegment(type.name()).withDepth().build(),
                 null, Resources.class);
     }
 
@@ -76,8 +76,7 @@ public class Resource extends AbstractBaseAPI {
             com.ionosenterprise.rest.domain.Resource.ResourceType type, String resourceId)
             throws RestClientException, IOException {
 
-        return client.get(getUrlBase().concat(getResourcePath()).concat("/").concat(type.name())
-                .concat("/").concat(resourceId).concat(getDepth()),
-                null, com.ionosenterprise.rest.domain.Resource.class);
+        return client.get(getResourcePathBuilder().appendPathSegment(type.name()).appendPathSegment(resourceId)
+                        .withDepth().build(),null, com.ionosenterprise.rest.domain.Resource.class);
     }
 }

@@ -36,13 +36,12 @@ import com.ionosenterprise.rest.domain.LoadBalancers;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 
 /**
  *
  * @author jasmin@stackpointcloud.com
  */
-public class Loadbalancer extends AbstractBaseAPI {
+public class Loadbalancer extends AbstractBaseApi {
 
     public Loadbalancer() {
         super("datacenters/%s/loadbalancers");
@@ -55,7 +54,7 @@ public class Loadbalancer extends AbstractBaseAPI {
      * @return LoadBalancers object with a list of LoadBalancer in datacenter.
      */
     public LoadBalancers getAllLoadBalancers(String dataCenterId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat(getDepth()),
+        return client.get(getResourcePathBuilder().withPathParams(dataCenterId).withDepth().build(),
                 null, LoadBalancers.class);
     }
 
@@ -69,8 +68,8 @@ public class Loadbalancer extends AbstractBaseAPI {
     public LoadBalancer getLoadBalancer(String dataCenterId, String loadBalancerId)
             throws RestClientException, IOException {
 
-        return client.get(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
-                .concat(loadBalancerId).concat(getDepth()), null, LoadBalancer.class);
+        return client.get(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(loadBalancerId)
+                .withDepth().build(), null, LoadBalancer.class);
     }
 
     /**
@@ -101,8 +100,8 @@ public class Loadbalancer extends AbstractBaseAPI {
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        return client.create(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))),
-                loadBalancer, LoadBalancer.class, 202);
+        return client.create(getResourcePathBuilder().withPathParams(dataCenterId).build(), loadBalancer,
+                LoadBalancer.class, 202);
     }
 
     /**
@@ -129,8 +128,8 @@ public class Loadbalancer extends AbstractBaseAPI {
             throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
 
-        return client.update(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
-                        .concat(loadBalancerId), loadBalancer, LoadBalancer.class, 202);
+        return client.update(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(loadBalancerId)
+                .build(), loadBalancer, LoadBalancer.class, 202);
     }
 
     /**
@@ -141,7 +140,7 @@ public class Loadbalancer extends AbstractBaseAPI {
      * @return a String representing the requestId
      */
     public String deleteLoadBalaner(String dataCenterId, String loadBalancerId) throws RestClientException, IOException {
-        return client.delete(getUrlBase().concat(getResourcePath(Arrays.asList(dataCenterId))).concat("/")
-                .concat(loadBalancerId), 202);
+        return client.delete(getResourcePathBuilder().withPathParams(dataCenterId).appendPathSegment(loadBalancerId)
+                .build(), 202);
     }
 }

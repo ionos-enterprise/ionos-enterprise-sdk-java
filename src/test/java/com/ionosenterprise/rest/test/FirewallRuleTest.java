@@ -102,7 +102,7 @@ public class FirewallRuleTest extends BaseTest {
     public void t4_updateFirewallRule() throws RestClientException, IOException, InterruptedException,
             NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-        FirewallRule firewallRule = ionosEnterpriseApi.getFirewallRule().updateFirewWallRule(dataCenterId, serverId,
+        FirewallRule firewallRule = ionosEnterpriseApi.getFirewallRule().updateFirewallRule(dataCenterId, serverId,
                 nicId, firewallRuleId, FirewallRuleResource.getEditFirewallRule().getProperties());
         waitTillProvisioned(firewallRule.getRequestId());
         assertEquals(firewallRule.getProperties().getName(),

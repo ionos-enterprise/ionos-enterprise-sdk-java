@@ -43,7 +43,6 @@ import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -116,7 +115,7 @@ public class ServerTest extends BaseTest {
             RestClientException, InvocationTargetException {
 
         Label label = LabelResource.getLabel();
-        Label newLabel = ionosEnterpriseApi.getServer().createLabel(Arrays.asList(dataCenterId, serverId), label);
+        Label newLabel = ionosEnterpriseApi.getServer().createLabel(label, serverId, dataCenterId);
         assertNotNull(newLabel);
         assertEquals(newLabel.getProperties().getKey(), label.getProperties().getKey());
         assertEquals(newLabel.getProperties().getValue(), label.getProperties().getValue());
@@ -125,14 +124,14 @@ public class ServerTest extends BaseTest {
 
     @Test
     public void t8_2_testGetAllLabels() throws RestClientException, IOException {
-        Labels labels = ionosEnterpriseApi.getServer().getAllLabels(Arrays.asList(dataCenterId, serverId));
+        Labels labels = ionosEnterpriseApi.getServer().getAllLabels(serverId, dataCenterId);
         assertNotNull(labels);
         assertTrue(labels.getItems().size() > 0);
     }
 
     @Test
     public void t8_3_testGetLabel() throws RestClientException, IOException {
-        Label label = ionosEnterpriseApi.getServer().getLabel(Arrays.asList(dataCenterId, serverId), labelId);
+        Label label = ionosEnterpriseApi.getServer().getLabel(labelId, serverId, dataCenterId);
         assertNotNull(label);
 
         Label.Properties properties = LabelResource.getLabel().getProperties();
@@ -143,7 +142,7 @@ public class ServerTest extends BaseTest {
     @Test
     public void t8_4_testGelLabelFail() throws IOException {
         try {
-            ionosEnterpriseApi.getServer().getLabel(Arrays.asList(dataCenterId, serverId), CommonResource.getBadId());
+            ionosEnterpriseApi.getServer().getLabel(CommonResource.getBadId(), serverId, dataCenterId);
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
         }
@@ -154,8 +153,7 @@ public class ServerTest extends BaseTest {
             RestClientException, InvocationTargetException {
 
         Label.Properties  properties = LabelResource.getLabelEdit().getProperties();
-        Label labelUpdatde = ionosEnterpriseApi.getServer().updateLabel(
-                Arrays.asList(dataCenterId, serverId), labelId, properties);
+        Label labelUpdatde = ionosEnterpriseApi.getServer().updateLabel(labelId, properties, serverId, dataCenterId);
         assertEquals(labelUpdatde.getProperties().getValue(), properties.getValue());
     }
 
@@ -165,7 +163,7 @@ public class ServerTest extends BaseTest {
 
         Label label = LabelResource.getLabel();
         try {
-            ionosEnterpriseApi.getServer().createLabel(Arrays.asList(dataCenterId, serverId), label);
+            ionosEnterpriseApi.getServer().createLabel(label, serverId, dataCenterId);
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
         }
@@ -173,7 +171,7 @@ public class ServerTest extends BaseTest {
 
     @AfterClass
     public static void cleanup() throws RestClientException, IOException {
-        ionosEnterpriseApi.getServer().deleteLabel(Arrays.asList(dataCenterId, serverId), labelId);
+        ionosEnterpriseApi.getServer().deleteLabel(labelId, serverId, dataCenterId);
         ionosEnterpriseApi.getServer().deleteServer(dataCenterId, serverId);
         ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
     }
