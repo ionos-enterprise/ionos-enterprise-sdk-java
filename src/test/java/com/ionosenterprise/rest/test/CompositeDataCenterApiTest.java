@@ -26,7 +26,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import static org.junit.Assert.assertNotNull;
 
-public class CompositeCreateTest extends BaseTest {
+public class CompositeDataCenterApiTest extends BaseTest {
 
     private static String dataCenterId;
 

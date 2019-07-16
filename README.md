@@ -35,8 +35,11 @@ Legacy: **v4.1.0 v4.0.0**
     * [Groups](#groups)
     * [Shares](#shares)
     * [Users](#users)
+    * [User S3 Keys](#user-s3-keys)
     * [Resources](#resources)
     * [Contract Resources](#contract-resources)
+    * [Backup Units](#backup-units)
+    * [Labels](#labels)
 * [Examples](#examples)
     * [POM](#pom)
     * [Wait for Resources](#wait-for-resources)
@@ -884,11 +887,10 @@ Retrieves the attributes of a given load balanced NIC.
 |---|---|---|---|
 | dataCenterId | **yes** | string | The ID of the data center. |
 | loadBalancerId | **yes** | string | The ID of the load balancer. |
-| serverId | **yes** | string | The ID of the server. |
 | nicId | **yes** | string | The ID of the load balancer. |
 
 ```
-getBalancedNic(String dataCenterId, String loadBalancerId, String serverId, String nicId)
+getBalancedNic(String dataCenterId, String loadBalancerId, String nicId)
 ```
 
 ---
@@ -1138,8 +1140,8 @@ Performs updates to the attributes of a LAN.
 |---|---|---|---|
 | dataCenterId | **yes** | string | The ID of the data center. |
 | lanId | **yes** | string | The ID of the LAN. |
-| isPublic | no | bool | Boolean indicating if the LAN faces the public Internet or not. |
-| ipFailover | no | collection | Attributes related to IP failover groups. |
+| lan.isPublic | no | bool | Boolean indicating if the LAN faces the public Internet or not. |
+| lan.ipFailover | no | collection | Attributes related to IP failover groups. |
 
 The ipFailover collection contains two attributes:
 
@@ -1151,7 +1153,7 @@ The ipFailover collection contains two attributes:
 After retrieving a LAN, you can change its properties and call the `updateLan` method:
 
 ```
-updateLan(String dataCenterId, String lanId, Boolean isPublic)
+updateLan(String dataCenterId, String lanId, Lan.Properties lan)
 ```
 
 ---
@@ -1464,8 +1466,9 @@ Creates a snapshot of a volume within the data center. You can use a snapshot to
 |---|---|---|---|
 | dataCenterId | **yes** | string | The ID of the datacenter. |
 | volumeId | **yes** | string | The ID of the volume. |
-| name |  no | string | The name of the snapshot. |
+| name |  **yes** | string | The name of the snapshot. |
 | description | no | string | The description of the snapshot. |
+| licenceType | no | string | Set to one of the values: [WINDOWS, WINDOWS2016, LINUX, OTHER, UNKNOWN] |
 
 After retrieving a volume, you can call the `createSnapshot` method directly on the object:
 
@@ -1622,6 +1625,10 @@ The following table describes the request arguments:
 | createSnapshot | no | bool | Indicates if the group is allowed to create snapshots. |
 | reserveIp | no | bool | Indicates if the group is allowed to reserve IP addresses. |
 | accessActivityLog | no | bool | Indicates if the group is allowed to access activity log. |
+| createPcc | no | bool | Indicates if the group is allowed to create PPCs. |
+| s3Privilege | no | bool | Indicates if the group is allowed to manage S3. |
+| createBackupUnit | no | bool | Indicates if the group is allowed to create backup units. |
+| createInternetAccess | no | bool | Indicates if the group is allowed to create public LANs. |
 
     createGroup(Group group)
 
@@ -1641,6 +1648,10 @@ The following table describes the request arguments:
 | group.createSnapshot | no | bool | Indicates if the group is allowed to create snapshots. |
 | group.reserveIp | no | bool | Indicates if the group is allowed to reserve IP addresses. |
 | group.accessActivityLog | no | bool | Indicates if the group is allowed to access activity log. |
+| createPcc | no | bool | Indicates if the group is allowed to create PPCs. |
+| s3Privilege | no | bool | Indicates if the group is allowed to manage S3. |
+| createBackupUnit | no | bool | Indicates if the group is allowed to create backup units. |
+| createInternetAccess | no | bool | Indicates if the group is allowed to create public LANs. |
 
       updateGroup(String groupId, Group.Properties group)
 
@@ -1758,6 +1769,18 @@ Retrieves a single user.
 
 ---
 
+#### Get the ssoUrl of a User
+
+Retrieves the URL to open CMC in a browser in context of the given user
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| userId | **yes** | string | The ID of the user. |
+
+    getSSOUrl(String userId)
+
+---
+
 #### Create a User
 
 Creates a new user.
@@ -1789,8 +1812,9 @@ The following table describes the request arguments:
 | user.firstname | **yes** | string | A name for the user. |
 | user.lastname | **yes**  | bool | A name for the user. |
 | user.email | **yes**  | bool | An e-mail address for the user. |
-| user.administrator | **yes** | bool | Assigns the user have administrative rights. |
-| user.forceSecAuth | **yes** | bool | Indicates if secure (two-factor) authentication should be forced for the user. |
+| user.administrator | no | bool | Assigns the user have administrative rights. |
+| user.forceSecAuth | no | bool | Indicates if secure (two-factor) authentication should be forced for the user. |
+| user.active | no | bool | Indicates if user is active. Contract Owner/Admins can set a user to active/inactive instead of deleting them. |
 
     updateUser(String userId,User.Properties user)
 
@@ -1848,6 +1872,72 @@ Removes a user from a group.
 
 ---
 
+### User S3 Keys
+
+#### List S3 Keys
+
+Retrieve a list of all the S3 keys for a specific user.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| userId | **yes** | string | The ID of the user. |
+
+    getAllS3Keys(String userId)
+
+---
+
+#### Get a S3 Key
+
+Retrieve details about a specific S3 key.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| userId | **yes** | string | The ID of the user. |
+| s3KeyId | **yes** | string | The ID of the specific S3 key. |
+
+    getS3Key(String userId, String s3KeyId)
+
+---
+
+#### Create a S3 Key
+
+Creates a new S3 key for a particular user.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| userId | **yes** | string | The ID of the user. |
+
+    creates3Key(String userId)
+
+---
+
+#### Update a S3 Key
+
+This operation allows you to enable or disable a specific S3 key by changing the Boolean value for active.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| userId | **yes** | string | The ID of the user. |
+| s3KeyId | **yes** | string | The ID of the specific S3 key. |
+| s3Key.active | **yes** | bool | New status of the S3 key. |
+
+    updateS3Key(String userId, String s3KeyId, S3Key.Properties s3KeyProperties)
+
+---
+
+#### Delete a S3 Key
+
+Removes a specific S3 key.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| userId | **yes** | string | The ID of the user. |
+| s3KeyId | **yes** | string | The ID of the specific S3 key. |
+
+    deleteS3Key(String userId, String s3KeyId)
+
+---
+
 ### Resources
 
 #### List Resources
@@ -1888,6 +1978,182 @@ The following table describes the request arguments:
 Retrieves information about the resource limits for a particular contract and the current resource usage.
 
     getContract()
+
+---
+
+### Backup Units
+
+#### List Backup Units
+
+Retrieve a list of all the backup units the supplied credentials have access to.
+
+    getAllBackupUnits()
+
+---
+
+#### Get Backup Unit
+
+Retrieves details about a specific backup unit.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| backupunitId | **yes** | string | The backup unit's ID. |
+
+    getBackupUnit(String backupunitId)
+
+---
+
+#### Get Backup Unit SSO URL
+
+The ProfitBricks backup system features a web-based GUI. Once you have created a backup unit, you can access the GUI 
+with a Single Sign On (SSO) URL that can be retrieved from the Cloud API using this request.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| backupunitId | **yes** | string | The backup unit's ID. |
+
+    getSSOUrl(String backupunitId)
+
+---
+
+#### Create Backup Unit
+
+Use this to create a new backup unit.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| name | **yes** | string | Alphanumeric name you want assigned to the backup unit. |
+| password | **yes**  | bool | Alphanumeric password you want assigned to the backup unit. |
+| email | **yes**  | bool | The e-mail address you want assigned to the backup unit. |
+
+    createBackupUnit(BackupUnit backupUnit)
+
+---
+
+#### Update Backup Unit
+
+Update a specific backup unit.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| backupunitId | **yes** | string | The backup unit's ID. |
+| password | no  | bool | Alphanumeric password you want assigned to the backup unit. |
+| email | no  | bool | The e-mail address you want assigned to the backup unit. |
+
+    updateBackupUnit(String backupunitId, BackupUnit.Properties backupUnitProperties)
+
+---
+
+#### Delete Backup Unit
+
+A backup unit may be deleted using a DELETE request. Deleting a backup unit is a dangerous operation. A successful 
+DELETE request will remove the backup plans inside a backup unit, ALL backups associated with the backup unit, the 
+backup user and finally the backup unit itself.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| backupunitId | **yes** | string | The backup unit's ID. |
+
+    deleteBackupUnit(String backupunitId)
+
+---
+
+### Labels
+
+#### List Labels
+
+Retrieve all labels you have on your account resources.
+
+    getAllLabels()
+
+---
+
+#### Get a Label
+
+Retrieve a label buy URN.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| urn | **yes** | string | The unique URN of the label. |
+
+    getLabel(String urn)
+
+---
+
+**Note:** Following requests are currently  available for **DataCenter, Server, Volume, Snapshot and IPBlock**. 
+
+#### List Labels for a resource
+
+Returns the rest response containing all labels for single resource.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| resourceId | **yes** | string | ID of the resource for which to get the labels. |
+| pathParams | **yes** if any | array | List of path parameters from the path to the resource. |
+
+    getAllLabels(String resourceId, String... pathParams)
+
+---
+
+#### Get a Label for a resource
+
+Returns the rest response containing a label fetching using resource path and label URN.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| labelKey | **yes** | string | The unique URN of the label. |
+| resourceId | **yes** | string | ID of the resource for which to get the labels. |
+| pathParams | **yes** if any | array | List of path parameters from the path to the resource. |
+
+    getLabel(String labelKey, String resourceId, String... pathParams)
+
+---
+
+#### Create a Label
+
+Create label on a particular resource.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| label.key | **yes** | string | The key of the label which has to be unique for a resource. |
+| label.value | **yes** | string | The value of the label. |
+| resourceId | **yes** | string | ID of the resource for which to get the labels. |
+| pathParams | **yes** if any | array | List of path parameters from the path to the resource. |
+
+    createLabel(Label label, String resourceId, String... pathParams)
+
+---
+
+#### Update a Label
+
+Update the value of the label.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| labelKey | **yes** | string | The unique URN of the label. |
+| labelProperties.value | **yes** | string | The new value of the label. |
+| resourceId | **yes** | string | ID of the resource for which to get the labels. |
+| pathParams | **yes** if any | array | List of path parameters from the path to the resource. |
+
+    updateLabel(String labelKey, Label.Properties labelProperties, String resourceId, String... pathParams)
+
+---
+
+#### Delete a Label
+
+Delete a label form a particular resource.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| labelKey | **yes** | string | The unique URN of the label. |
+| resourceId | **yes** | string | ID of the resource for which to get the labels. |
+| pathParams | **yes** if any | array | List of path parameters from the path to the resource. |
+
+    deleteLabel(String labelKey, String resourceId, String... pathParams)
 
 ---
 

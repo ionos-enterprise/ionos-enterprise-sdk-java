@@ -33,6 +33,7 @@ import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Location;
 import com.ionosenterprise.rest.domain.Locations;
 import com.ionosenterprise.rest.test.resource.CommonResource;
+import org.apache.http.HttpStatus;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -69,7 +70,7 @@ public class LocationApiTest extends BaseTest {
         try {
             ionosEnterpriseApi.getLocationApi().getLocation(CommonResource.getBadId());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 }

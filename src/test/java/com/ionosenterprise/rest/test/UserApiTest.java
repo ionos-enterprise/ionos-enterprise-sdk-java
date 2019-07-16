@@ -32,11 +32,13 @@ package com.ionosenterprise.rest.test;
 
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Group;
+import com.ionosenterprise.rest.domain.SingleSignOnUrl;
 import com.ionosenterprise.rest.domain.User;
 import com.ionosenterprise.rest.domain.Users;
 import com.ionosenterprise.rest.test.resource.CommonResource;
 import com.ionosenterprise.rest.test.resource.GroupResource;
 import com.ionosenterprise.rest.test.resource.UserResource;
+import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -53,6 +55,9 @@ public class UserApiTest extends BaseTest {
 
     private static String userId;
     private static String groupId;
+    private static String userOfGroupId;
+    private static String contractUserWithoutAdminPrivId;
+    private static String contractUserWithoutAdminPrivEmail;
 
     @BeforeClass
     public static void t1_createUser() throws RestClientException, IOException, IllegalAccessException,
@@ -66,9 +71,26 @@ public class UserApiTest extends BaseTest {
         User user = UserResource.getUser();
         User newUser = ionosEnterpriseApi.getUserApi().createUser(user);
         assertNotNull(newUser);
+        assertEquals(newUser.getProperties().getEmail(), user.getProperties().getEmail());
         userId = newUser.getId();
         waitTillProvisioned(newUser.getRequestId());
-        assertEquals(newUser.getProperties().getEmail(), user.getProperties().getEmail());
+
+        User userOfGroup = UserResource.getUserOfGroup();
+        User newUserOfGroup = ionosEnterpriseApi.getUserApi().createUser(userOfGroup);
+        assertNotNull(newUserOfGroup);
+        assertEquals(newUserOfGroup.getProperties().getEmail(), userOfGroup.getProperties().getEmail());
+        assertEquals(newUserOfGroup.getProperties().getAdministrator(), userOfGroup.getProperties().getAdministrator());
+        userOfGroupId = newUserOfGroup.getId();
+        waitTillProvisioned(newUserOfGroup.getRequestId());
+
+        User contractUserWithoutAdminPriv = UserResource.getContractUserWithoutAdminPriv();
+        User newContractUserWithoutAdminPriv = ionosEnterpriseApi.getUserApi().createUser(contractUserWithoutAdminPriv);
+        assertNotNull(newContractUserWithoutAdminPriv);
+        assertEquals(newContractUserWithoutAdminPriv.getProperties().getEmail(),
+                contractUserWithoutAdminPriv.getProperties().getEmail());
+        contractUserWithoutAdminPrivId = newContractUserWithoutAdminPriv.getId();
+        contractUserWithoutAdminPrivEmail = newContractUserWithoutAdminPriv.getProperties().getEmail();
+        waitTillProvisioned(newContractUserWithoutAdminPriv.getRequestId());
     }
 
     @Test
@@ -82,6 +104,18 @@ public class UserApiTest extends BaseTest {
     public void t3_testGetUser() throws RestClientException, IOException {
         User user = ionosEnterpriseApi.getUserApi().getUser(userId);
         assertNotNull(user);
+        assertNotNull(user.getProperties());
+        assertNotNull(user.getProperties().getFirstname());
+        assertNotNull(user.getProperties().getLastname());
+        assertNotNull(user.getProperties().getEmail());
+        assertNotNull(user.getProperties().getS3CanonicalUserId());
+    }
+
+    @Test
+    public void t31_testGetSSOUrl() throws RestClientException, IOException {
+        SingleSignOnUrl ssoUrl = ionosEnterpriseApi.getUserApi().getSSOUrl(userId);
+        assertNotNull(ssoUrl);
+        assertNotNull(ssoUrl.getSsoUrl());
     }
 
     @Test
@@ -89,14 +123,16 @@ public class UserApiTest extends BaseTest {
         try {
             ionosEnterpriseApi.getUserApi().getUser(CommonResource.getBadId());
         }catch (RestClientException ex){
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 
     @Test
-    public void t5_updateUser() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public void t5_updateUserAndSetAsInactive() throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
 
         User user = UserResource.getEditUser();
+        user.getProperties().setActive(false);
 
         User updateUser = ionosEnterpriseApi.getUserApi().updateUser(userId, user.getProperties());
         assertEquals(updateUser.getProperties().getFirstname(), user.getProperties().getFirstname());
@@ -104,11 +140,67 @@ public class UserApiTest extends BaseTest {
         assertEquals(updateUser.getProperties().getEmail(), user.getProperties().getEmail());
         assertEquals(updateUser.getProperties().getAdministrator(), user.getProperties().getAdministrator());
         assertEquals(updateUser.getProperties().getForceSecAuth(), user.getProperties().getForceSecAuth());
+        assertEquals(updateUser.getProperties().getActive(), user.getProperties().getActive());
+    }
+
+    @Test
+    public void t6_addUserToGroup() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException,
+            RestClientException, IOException {
+
+        User user = ionosEnterpriseApi.getUserApi().addUserToGroup(groupId, userOfGroupId);
+
+        Group group = ionosEnterpriseApi.getGroupApi().getGroup(groupId);
+        assertNotNull(group);
+        assertNotNull(group.getEntities());
+        assertNotNull(group.getEntities().getUsers());
+        assertTrue(group.getEntities().getUsers().getItems().size() > 0);
+        assertEquals(group.getEntities().getUsers().getItems().get(0).getProperties().getEmail(),
+                user.getProperties().getEmail());
+    }
+
+    @Test
+    public void t7_getAllGroupUsers() throws RestClientException, IOException {
+        Users users = ionosEnterpriseApi.getUserApi().getAllGroupUsers(groupId);
+        assertNotNull(users);
+        assertTrue(users.getItems().size() > 0);
+    }
+
+    @Test
+    public void t8_removeUserFromGroup() throws RestClientException, IOException {
+        ionosEnterpriseApi.getUserApi().removeUserFromGroup(groupId, userOfGroupId);
+
+        Group group = ionosEnterpriseApi.getGroupApi().getGroup(groupId);
+        assertNotNull(group);
+        assertNotNull(group.getEntities());
+        assertNotNull(group.getEntities().getUsers());
+        assertTrue(group.getEntities().getUsers().getItems().size() == 0);
+    }
+
+    @Test
+    public void t9_contractUserWithoutAdminPrivUpdateOwnAccount() throws Exception {
+
+        User user = UserResource.getContractUserWithoutAdminPriv();
+        user.getProperties().setEmail(contractUserWithoutAdminPrivEmail);
+
+        setIonosEnterpriseApiCredentials(user.getProperties().getEmail(), user.getProperties().getPassword());
+
+        String newLastname = "Edited";
+        user.getProperties().setLastname(newLastname);
+        String newEmail = "edited." + user.getProperties().getEmail();
+        user.getProperties().setEmail(newEmail);
+
+        User updateUser = ionosEnterpriseApi.getUserApi().updateUser(contractUserWithoutAdminPrivId, user.getProperties());
+        assertEquals(updateUser.getProperties().getLastname(), user.getProperties().getLastname());
+        contractUserWithoutAdminPrivEmail = updateUser.getProperties().getEmail();
+
+        resetIonosEnterpriseApiCredentials();
     }
 
     @AfterClass
     public static void cleanup() throws RestClientException, IOException {
         ionosEnterpriseApi.getUserApi().deleteUser(userId);
+        ionosEnterpriseApi.getUserApi().deleteUser(userOfGroupId);
+        ionosEnterpriseApi.getUserApi().deleteUser(contractUserWithoutAdminPrivId);
         ionosEnterpriseApi.getGroupApi().deleteGroup(groupId);
     }
 }

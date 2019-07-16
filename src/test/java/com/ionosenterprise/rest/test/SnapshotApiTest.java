@@ -30,14 +30,9 @@
 package com.ionosenterprise.rest.test;
 
 import com.ionosenterprise.rest.client.RestClientException;
-import com.ionosenterprise.rest.domain.DataCenter;
-import com.ionosenterprise.rest.domain.Snapshot;
-import com.ionosenterprise.rest.domain.Snapshots;
-import com.ionosenterprise.rest.domain.Volume;
-import com.ionosenterprise.rest.test.resource.CommonResource;
-import com.ionosenterprise.rest.test.resource.DataCenterResource;
-import com.ionosenterprise.rest.test.resource.SnapshotResource;
-import com.ionosenterprise.rest.test.resource.VolumeResource;
+import com.ionosenterprise.rest.domain.*;
+import com.ionosenterprise.rest.test.resource.*;
+import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -46,7 +41,6 @@ import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
@@ -56,6 +50,7 @@ public class SnapshotApiTest extends BaseTest {
     private static String dataCenterId;
     private static String volumeId;
     private static String snapshotId;
+    private static String labelId;
 
     @BeforeClass
     public static void t1_createSnapshot() throws RestClientException, IOException, InterruptedException,
@@ -76,10 +71,11 @@ public class SnapshotApiTest extends BaseTest {
 
         Snapshot.Properties properties = SnapshotResource.getSnapshot().getProperties();
         Snapshot snapshot = ionosEnterpriseApi.getSnapshotApi().createSnapshot(dataCenterId, volumeId,
-                properties.getName(), properties.getDescription());
+                properties.getName(), properties.getDescription(), properties.getLicenceType().name());
         assertNotNull(snapshot);
         assertEquals(snapshot.getProperties().getName(), properties.getName());
         assertEquals(snapshot.getProperties().getDescription(), properties.getDescription());
+        assertEquals(snapshot.getProperties().getLicenceType(), properties.getLicenceType());
         snapshotId = snapshot.getId();
         waitTillProvisioned(snapshot.getRequestId());
     }
@@ -91,6 +87,7 @@ public class SnapshotApiTest extends BaseTest {
         Snapshot.Properties properties = SnapshotResource.getSnapshot().getProperties();
         assertEquals(snapshot.getProperties().getName(), properties.getName());
         assertEquals(snapshot.getProperties().getDescription(), properties.getDescription());
+        assertEquals(snapshot.getProperties().getLicenceType(), properties.getLicenceType());
     }
 
     @Test
@@ -134,7 +131,7 @@ public class SnapshotApiTest extends BaseTest {
         try {
             ionosEnterpriseApi.getSnapshotApi().getSnapshot(CommonResource.getBadId());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 
@@ -143,17 +140,80 @@ public class SnapshotApiTest extends BaseTest {
             InvocationTargetException, NoSuchMethodException {
 
         try {
-            ionosEnterpriseApi.getSnapshotApi().createSnapshot(dataCenterId, volumeId, "", "");
+            Snapshot snapshot = SnapshotResource.getSnapshot();
+            ionosEnterpriseApi.getSnapshotApi().createSnapshot(dataCenterId, volumeId,
+                    "",
+                    snapshot.getProperties().getDescription(),
+                    snapshot.getProperties().getLicenceType().name());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_UNPROCESSABLE_ENTITY);
+        }
+    }
+
+    @Test
+    public void t9_1_testCreateLabel() throws NoSuchMethodException, IOException, IllegalAccessException,
+            RestClientException, InvocationTargetException {
+
+        Label label = LabelResource.getLabel();
+        Label newLabel = ionosEnterpriseApi.getSnapshotApi().createLabel(label, snapshotId);
+        assertNotNull(newLabel);
+        assertEquals(newLabel.getProperties().getKey(), label.getProperties().getKey());
+        assertEquals(newLabel.getProperties().getValue(), label.getProperties().getValue());
+        labelId = newLabel.getId();
+    }
+
+    @Test
+    public void t9_2_testGetAllLabels() throws RestClientException, IOException {
+        Labels labels = ionosEnterpriseApi.getSnapshotApi().getAllLabels(snapshotId);
+        assertNotNull(labels);
+        assertTrue(labels.getItems().size() > 0);
+    }
+
+    @Test
+    public void t9_3_testGetLabel() throws RestClientException, IOException {
+        Label label = ionosEnterpriseApi.getSnapshotApi().getLabel(labelId, snapshotId);
+        assertNotNull(label);
+
+        Label.Properties properties = LabelResource.getLabel().getProperties();
+        assertEquals(label.getProperties().getKey(), properties.getKey());
+        assertEquals(label.getProperties().getValue(), properties.getValue());
+    }
+
+    @Test
+    public void t9_4_testGelLabelFail() throws IOException {
+        try {
+            ionosEnterpriseApi.getSnapshotApi().getLabel(CommonResource.getBadId(), snapshotId);
+        } catch (RestClientException ex) {
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
+        }
+    }
+
+    @Test
+    public void t9_5_testUpdateLabel() throws NoSuchMethodException, IOException, IllegalAccessException,
+            RestClientException, InvocationTargetException {
+
+        Label.Properties  properties = LabelResource.getLabelEdit().getProperties();
+        Label labelUpdatde = ionosEnterpriseApi.getSnapshotApi().updateLabel(labelId, properties, snapshotId);
+        assertEquals(labelUpdatde.getProperties().getValue(), properties.getValue());
+    }
+
+    @Test
+    public void t9_6_testCreateLabelWithExistingKeyFail() throws NoSuchMethodException, IOException,
+            IllegalAccessException, InvocationTargetException {
+
+        Label label = LabelResource.getLabel();
+        try {
+            ionosEnterpriseApi.getSnapshotApi().createLabel(label, snapshotId);
+        } catch (RestClientException ex) {
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_UNPROCESSABLE_ENTITY);
         }
     }
 
     @AfterClass
     public static void cleanUp() throws RestClientException, IOException, InterruptedException {
-        TimeUnit.MINUTES.sleep(1);
-
+        String requestId = ionosEnterpriseApi.getDataCenterApi().deleteDataCenter(dataCenterId);
+        waitTillProvisioned(requestId);
+        ionosEnterpriseApi.getSnapshotApi().deleteLabel(labelId, snapshotId);
         ionosEnterpriseApi.getSnapshotApi().deleteSnapshot(snapshotId);
-        ionosEnterpriseApi.getDataCenterApi().deleteDataCenter(dataCenterId);
     }
 }

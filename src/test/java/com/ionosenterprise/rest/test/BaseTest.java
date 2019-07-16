@@ -14,14 +14,11 @@ public abstract class BaseTest {
     protected static IonosEnterpriseApi ionosEnterpriseApi;
 
     static {
-        try {
-            ionosEnterpriseApi = new IonosEnterpriseApi();
-            ionosEnterpriseApi.setCredentials(
-                    System.getenv("IONOS_ENTERPRISE_USERNAME"),
-                    System.getenv("IONOS_ENTERPRISE_PASSWORD"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ionosEnterpriseApi = new IonosEnterpriseApi();
+        ionosEnterpriseApi.setCredentials(
+                System.getenv("IONOS_ENTERPRISE_USERNAME"),
+                System.getenv("IONOS_ENTERPRISE_PASSWORD"));
+
     }
 
     protected static void waitTillProvisioned(String requestId) throws InterruptedException, RestClientException,
@@ -52,14 +49,14 @@ public abstract class BaseTest {
         return "";
     }
 
-    protected static void setIonosEnterpriseApiCredentials(String username, String password) throws Exception {
+    protected static void setIonosEnterpriseApiCredentials(String username, String password) {
         if (ionosEnterpriseApi == null){
             ionosEnterpriseApi = new IonosEnterpriseApi();
         }
         ionosEnterpriseApi.setCredentials(username, password);
     }
 
-    protected static void resetIonosEnterpriseApiCredentials() throws Exception {
+    protected static void resetIonosEnterpriseApiCredentials() {
         if (ionosEnterpriseApi == null){
             ionosEnterpriseApi = new IonosEnterpriseApi();
         }

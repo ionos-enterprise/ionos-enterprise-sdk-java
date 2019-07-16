@@ -30,16 +30,23 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Images;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
-public class ImageApi extends BaseApi {
+public class ImageApi extends AbstractBaseApi {
 
-    public ImageApi() throws Exception {
-        super("images", null);
+    public ImageApi(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "images";
     }
 
     /**
@@ -48,7 +55,7 @@ public class ImageApi extends BaseApi {
      * @return Images object with a list of Images
      */
     public Images getAllImages() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat(depth), null, Images.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), Collections.EMPTY_MAP, Images.class);
     }
 
     /**
@@ -58,7 +65,8 @@ public class ImageApi extends BaseApi {
      * @return Image object with properties and metadata
      */
     public com.ionosenterprise.rest.domain.Image getImage(String imageId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat("/").concat(imageId).concat(depth), null, com.ionosenterprise.rest.domain.Image.class);
+        return client.get(getResourcePathBuilder().appendPathSegment(imageId).withDepth().build(),
+                Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.Image.class);
     }
 
     /**
@@ -67,7 +75,7 @@ public class ImageApi extends BaseApi {
      * @param imageId The unique ID of the image.
      */
     public void deleteImage(String imageId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(resource).concat("/").concat(imageId));
+        client.delete(getResourcePathBuilder().appendPathSegment(imageId).build(), HttpStatus.SC_OK);
     }
 
     /**
@@ -76,8 +84,12 @@ public class ImageApi extends BaseApi {
      * @param imageId The unique ID of the image.
      * @return Image object with properties and metadata
      */
-    public com.ionosenterprise.rest.domain.Image updateImage(String imageId, Object object) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return client.update(getUrlBase().concat(resource).concat("/").concat(imageId), object, com.ionosenterprise.rest.domain.Image.class, 202);
+    public com.ionosenterprise.rest.domain.Image updateImage(String imageId, Object object)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        return client.update(getResourcePathBuilder().appendPathSegment(imageId).build(), object,
+                com.ionosenterprise.rest.domain.Image.class, HttpStatus.SC_ACCEPTED);
     }
 
 }

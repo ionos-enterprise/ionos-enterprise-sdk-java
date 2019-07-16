@@ -30,20 +30,25 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
+import com.ionosenterprise.rest.domain.PBObject;
+import com.ionosenterprise.rest.domain.SingleSignOnUrl;
 import com.ionosenterprise.rest.domain.Users;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
 
-public class UserApi extends BaseApi {
+public class UserApi extends AbstractBaseApi {
 
-    private String credentials;
+    public UserApi(RestClient client) {
+        super(client);
+    }
 
-    public UserApi() throws Exception {
-        super("um/users","");
+    protected String getPathFormat() {
+        return "um/users";
     }
 
     /**
@@ -52,16 +57,18 @@ public class UserApi extends BaseApi {
      * @return Users object with a list of Users
      */
     public Users getAllUsers() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat(depth), null, Users.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), Collections.EMPTY_MAP, Users.class);
     }
 
     /**
      * Retrieve a list of Users for a group.
-     *@param groupId The unique ID of the group
+     *
+     * @param groupId The unique ID of the group
      * @return Users object with a list of Users
      */
     public Users getAllGroupUsers(String groupId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat("um/groups").concat("/").concat(groupId).concat("/").concat("users").concat(depth), null, Users.class);
+        return client.get(getResourcePathBuilder("um/groups/%s/users").withPathParams(groupId).withDepth()
+                .build(), Collections.EMPTY_MAP, Users.class);
     }
 
     /**
@@ -71,16 +78,18 @@ public class UserApi extends BaseApi {
      * @return User object with properties and metadata
      */
     public com.ionosenterprise.rest.domain.User getUser(String userId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat("/").concat(userId).concat(depth), null, com.ionosenterprise.rest.domain.User.class);
+        return client.get(getResourcePathBuilder().appendPathSegment(userId).withDepth().build(),
+                Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.User.class);
     }
 
     /**
      * Deletes a specific user.
      *
      * @param userId The unique ID of the user.
+     * @return a String representing the requestId
      */
-    public void deleteUser(String userId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(resource).concat("/").concat(userId),202);
+    public String deleteUser(String userId) throws RestClientException, IOException {
+        return client.delete(getResourcePathBuilder().appendPathSegment(userId).build(),HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -98,41 +107,85 @@ public class UserApi extends BaseApi {
      * forceSecAuth=Indicates if secure (two-factor) authentication was enabled for the user.
      * <br>
      * secAuthActive=Indicates if secure (two-factor) authentication is enabled for the user.
+     * <br>
+     * active=Indicates if the user is enabled.
      * @return User object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.User createUser(com.ionosenterprise.rest.domain.User user) throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        return client.create(getUrlBase().concat(resource), user, com.ionosenterprise.rest.domain.User.class, 202);
+    public com.ionosenterprise.rest.domain.User createUser(com.ionosenterprise.rest.domain.User user)
+            throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException, NoSuchMethodException {
+
+        return client.create(getResourcePathBuilder().build(), user,
+                com.ionosenterprise.rest.domain.User.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
      * Updates a specific user.
      *
      * @param userId The unique ID of the user.
+     * @param userProps object has the following properties:
+     * <br>
+     * firstname= The first name of the user.
+     * <br>
+     * lastname=The last name of the user.
+     * <br>
+     * email=The e-mail address of the user.
+     * <br>
+     * administrator=Indicates if the user has administrative rights.
+     * <br>
+     * forceSecAuth=Indicates if secure (two-factor) authentication was enabled for the user.
+     * <br>
+     * secAuthActive=Indicates if secure (two-factor) authentication is enabled for the user.
+     * <br>
+     * active=Indicates if the user is enabled.
      * @return User object with properties and metadata
      */
-    public com.ionosenterprise.rest.domain.User updateUser(String userId, com.ionosenterprise.rest.domain.User.Properties object) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return client.put(getUrlBase().concat(resource).concat("/").concat(userId), object, com.ionosenterprise.rest.domain.User.class, 202);
+    public com.ionosenterprise.rest.domain.User updateUser(String userId,
+                                                           com.ionosenterprise.rest.domain.User.Properties userProps)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        return client.put(getResourcePathBuilder().appendPathSegment(userId).build(), userProps,
+                com.ionosenterprise.rest.domain.User.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
      * Adds a specific user to a specific group.
+     *
      * @param groupId The unique ID of the group.
      * @param userId The unique ID of the user.
      * @return User object with properties and metadata
      */
-    public com.ionosenterprise.rest.domain.User addUserToGroup(String groupId , String userId) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("groupId", groupId);
-        return client.create(getUrlBase().concat(resource).concat("/").concat(userId),params, com.ionosenterprise.rest.domain.User.class, 202);
+    public com.ionosenterprise.rest.domain.User addUserToGroup(String groupId , String userId)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException  {
+
+        PBObject object = new PBObject();
+        object.setId(userId);
+        return client.create(getResourcePathBuilder("um/groups/%s/users").withPathParams(groupId).build(),
+                object, com.ionosenterprise.rest.domain.User.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
      * Removes a specific user from a specific group.
+     *
      * @param groupId The unique ID of the group.
      * @param userId The unique ID of the user.
-     * @return User object with properties and metadata
+     * @return a String representing the requestId
      */
-    public void removeUserFromGroup(String groupId,String userId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(parentResource).concat("/").concat(groupId).concat("/").concat(resource).concat("/").concat(userId),   202);
+    public String removeUserFromGroup(String groupId,String userId) throws RestClientException, IOException {
+        return client.delete(getResourcePathBuilder("um/groups/%s/users").withPathParams(groupId)
+                .appendPathSegment(userId).build(),   HttpStatus.SC_ACCEPTED);
+    }
+
+    /**
+     * Retrieves the URL to open CMC in a browser in context of the given user
+     *
+     * @param userId The unique ID of the user.
+     * @return SingleSignOnUrl object containing the ssoUrl field
+     */
+    public SingleSignOnUrl getSSOUrl(String userId) throws RestClientException, IOException {
+        return client.get(getResourcePathBuilder().appendPathSegment(userId).appendPathSegment("/s3ssourl").build(),
+                Collections.EMPTY_MAP, SingleSignOnUrl.class);
     }
 }

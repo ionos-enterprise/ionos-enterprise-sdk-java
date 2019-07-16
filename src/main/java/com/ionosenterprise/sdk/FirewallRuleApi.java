@@ -30,16 +30,23 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.FirewallRules;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
-public class FirewallRuleApi extends BaseApi {
+public class FirewallRuleApi extends AbstractBaseApi {
 
-    public FirewallRuleApi() throws Exception {
-        super("firewallrules", "nics");
+    public FirewallRuleApi(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "datacenters/%s/servers/%s/nics/%s/firewallrules";
     }
 
     /**
@@ -51,11 +58,11 @@ public class FirewallRuleApi extends BaseApi {
      * @return FirewallRules object with a list of FirewallRules in a
      * datacenter.
      */
-    public FirewallRules getAllFirewallRules(String dataCenterId, String serverId, String nicId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
-                .concat("servers").concat("/").concat(serverId).concat("/")
-                .concat(parentResource).concat("/").concat(nicId).concat("/")
-                .concat(resource).concat(depth), null, FirewallRules.class);
+    public FirewallRules getAllFirewallRules(String dataCenterId, String serverId, String nicId)
+            throws RestClientException, IOException {
+
+        return client.get(getResourcePathBuilder().withPathParams(dataCenterId, serverId, nicId).withDepth().build(),
+                Collections.EMPTY_MAP, FirewallRules.class);
     }
 
     /**
@@ -67,12 +74,13 @@ public class FirewallRuleApi extends BaseApi {
      * @param firewallRuleId The unique ID of the NIC
      * @return FirewallRule object with properties and metadata
      */
-    public com.ionosenterprise.rest.domain.FirewallRule getFirewallRule(String dataCenterId, String serverId, String nicId, String firewallRuleId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
-                .concat("servers").concat("/").concat(serverId).concat("/")
-                .concat(parentResource).concat("/").concat(nicId).concat("/")
-                .concat(resource).concat("/").concat(firewallRuleId)
-                .concat(depth), null, com.ionosenterprise.rest.domain.FirewallRule.class);
+    public com.ionosenterprise.rest.domain.FirewallRule getFirewallRule(String dataCenterId, String serverId,
+                                                                        String nicId, String firewallRuleId)
+            throws RestClientException, IOException {
+
+        return client.get(getResourcePathBuilder().withPathParams(dataCenterId, serverId, nicId)
+                .appendPathSegment(firewallRuleId).withDepth().build(),
+                Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.FirewallRule.class);
     }
 
     /**
@@ -124,12 +132,13 @@ public class FirewallRuleApi extends BaseApi {
      * <br>
      * @return FirewallRule object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.FirewallRule createFirewallRule(String dataCenterId, String serverId, String nicId, com.ionosenterprise.rest.domain.FirewallRule firewallRule) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return client.create(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
-                .concat("servers").concat("/").concat(serverId).concat("/")
-                .concat(parentResource).concat("/").concat(nicId).concat("/")
-                .concat(resource),
-                firewallRule, com.ionosenterprise.rest.domain.FirewallRule.class, 202);
+    public com.ionosenterprise.rest.domain.FirewallRule createFirewallRule(String dataCenterId, String serverId,
+            String nicId, com.ionosenterprise.rest.domain.FirewallRule firewallRule)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        return client.create(getResourcePathBuilder().withPathParams(dataCenterId, serverId, nicId).build(),
+                firewallRule, com.ionosenterprise.rest.domain.FirewallRule.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -139,13 +148,13 @@ public class FirewallRuleApi extends BaseApi {
      * @param serverId The unique ID of the server
      * @param nicId The unique ID of the nic
      * @param firewallRuleId The unique ID of the firewallRule
+     * @return a String representing the requestId
      */
-    public void deleteFirewallRule(String dataCenterId, String serverId, String nicId, String firewallRuleId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
-                .concat("servers").concat("/").concat(serverId).concat("/")
-                .concat(parentResource).concat("/").concat(nicId).concat("/")
-                .concat(resource).concat("/").concat(firewallRuleId),
-                202);
+    public String deleteFirewallRule(String dataCenterId, String serverId, String nicId, String firewallRuleId)
+            throws RestClientException, IOException {
+
+        return client.delete(getResourcePathBuilder().withPathParams(dataCenterId, serverId, nicId)
+                .appendPathSegment(firewallRuleId).build(),HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -198,11 +207,13 @@ public class FirewallRuleApi extends BaseApi {
      * <br>
      * @return FirewallRule object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.FirewallRule updateFirewWallRule(String dataCenterId, String serverId, String nicId, String firewallRuleId, com.ionosenterprise.rest.domain.FirewallRule.Properties firewallRule) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return client.update(getUrlBase().concat("datacenters").concat("/").concat(dataCenterId).concat("/")
-                .concat("servers").concat("/").concat(serverId).concat("/")
-                .concat(parentResource).concat("/").concat(nicId).concat("/")
-                .concat(resource).concat("/").concat(firewallRuleId),
-                firewallRule, com.ionosenterprise.rest.domain.FirewallRule.class, 202);
+    public com.ionosenterprise.rest.domain.FirewallRule updateFirewallRule(String dataCenterId, String serverId,
+            String nicId, String firewallRuleId, com.ionosenterprise.rest.domain.FirewallRule.Properties firewallRule)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        return client.update(getResourcePathBuilder().withPathParams(dataCenterId, serverId, nicId)
+                        .appendPathSegment(firewallRuleId).build(), firewallRule,
+                com.ionosenterprise.rest.domain.FirewallRule.class, HttpStatus.SC_ACCEPTED);
     }
 }

@@ -31,7 +31,6 @@
 package com.ionosenterprise.rest.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.ionosenterprise.sdk.IonosEnterpriseApi;
 
 import java.util.Date;
 
@@ -111,14 +110,6 @@ public class BaseResource {
     */
    public void setRequestId(String requestId) {
       this.requestId = requestId;
-   }
-
-   public RequestStatus getStatus() throws Exception {
-      if (requestId == null)
-         return null;
-
-      IonosEnterpriseApi ionosEnterpriseApi = new IonosEnterpriseApi();
-      return ionosEnterpriseApi.getRequestApi().getRequestStatus(requestId);
    }
 
    @JsonIgnoreProperties(ignoreUnknown = true)

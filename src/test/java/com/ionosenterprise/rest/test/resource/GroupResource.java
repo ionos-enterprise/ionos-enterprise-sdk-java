@@ -44,6 +44,10 @@ public class GroupResource {
             group.getProperties().setCreateSnapshot(true);
             group.getProperties().setReserveIp(true);
             group.getProperties().setAccessActivityLog(true);
+            group.getProperties().setCreatePcc(true);
+            group.getProperties().setS3Privilege(true);
+            group.getProperties().setCreateBackupUnit(true);
+            group.getProperties().setCreateInternetAccess(true);
         }
 
         return group;

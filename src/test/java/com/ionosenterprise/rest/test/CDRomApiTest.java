@@ -45,7 +45,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class CDRomTest extends BaseTest {
+public class CDRomApiTest extends BaseTest {
 
     private static String dataCenterId;
     private static String serverId;

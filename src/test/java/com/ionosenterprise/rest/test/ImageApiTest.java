@@ -33,6 +33,7 @@ import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Image;
 import com.ionosenterprise.rest.domain.Images;
 import com.ionosenterprise.rest.test.resource.CommonResource;
+import org.apache.http.HttpStatus;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -63,7 +64,7 @@ public class ImageApiTest extends BaseTest {
         try {
             ionosEnterpriseApi.getImageApi().getImage(CommonResource.getBadId());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 }

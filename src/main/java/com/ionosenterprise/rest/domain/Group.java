@@ -71,9 +71,13 @@ public class Group  extends BaseResource
     public class Properties {
         private String name;
         private Boolean createDataCenter;
-        private  Boolean createSnapshot;
+        private Boolean createSnapshot;
         private Boolean reserveIp;
-        private  Boolean accessActivityLog;
+        private Boolean accessActivityLog;
+        private Boolean createPcc;
+        private Boolean s3Privilege;
+        private Boolean createBackupUnit;
+        private Boolean createInternetAccess;
 
         public String getName() {
             return name;
@@ -113,6 +117,38 @@ public class Group  extends BaseResource
 
         public void setAccessActivityLog(Boolean accessActivityLog) {
             this.accessActivityLog = accessActivityLog;
+        }
+
+        public Boolean getCreatePcc() {
+            return createPcc;
+        }
+
+        public void setCreatePcc(Boolean createPcc) {
+            this.createPcc = createPcc;
+        }
+
+        public Boolean getS3Privilege() {
+            return s3Privilege;
+        }
+
+        public void setS3Privilege(Boolean s3Privilege) {
+            this.s3Privilege = s3Privilege;
+        }
+
+        public Boolean getCreateBackupUnit() {
+            return createBackupUnit;
+        }
+
+        public void setCreateBackupUnit(Boolean createBackupUnit) {
+            this.createBackupUnit = createBackupUnit;
+        }
+
+        public Boolean getCreateInternetAccess() {
+            return createInternetAccess;
+        }
+
+        public void setCreateInternetAccess(Boolean createInternetAccess) {
+            this.createInternetAccess = createInternetAccess;
         }
     }
 

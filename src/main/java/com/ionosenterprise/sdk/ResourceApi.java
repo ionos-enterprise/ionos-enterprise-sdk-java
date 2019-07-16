@@ -30,16 +30,21 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Resources;
 
 import java.io.IOException;
+import java.util.Collections;
 
-public class ResourceApi extends BaseApi {
-    private String credentials;
+public class ResourceApi extends AbstractBaseApi {
 
-    public ResourceApi() throws Exception {
-        super("um/resources", "");
+    public ResourceApi(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "um/resources";
     }
 
     /**
@@ -48,8 +53,7 @@ public class ResourceApi extends BaseApi {
      * @return Resources object with a list of resources
      */
     public Resources getAllResources() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource)
-                .concat(depth), null, Resources.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), Collections.EMPTY_MAP, Resources.class);
     }
 
     /**
@@ -57,25 +61,25 @@ public class ResourceApi extends BaseApi {
      *
      * @return Resources object with a list of resources
      */
-    public Resources getAllByType(com.ionosenterprise.rest.domain.Resource.ResourceType type) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource)
-                .concat("/")
-                .concat(type.name())
-                .concat(depth), null, Resources.class);
+    public Resources getAllByType(com.ionosenterprise.rest.domain.Resource.ResourceType type)
+            throws RestClientException, IOException {
+
+        return client.get(getResourcePathBuilder().appendPathSegment(type.name()).withDepth().build(),
+                Collections.EMPTY_MAP, Resources.class);
     }
 
     /**
      * You can retrieve a resource
+     *
      * @param type The type of the specific resource.
      * @param resourceId The ID of the specific resource.
      * @return Resource object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.Resource getByType(com.ionosenterprise.rest.domain.Resource.ResourceType type, String resourceId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource)
-                .concat("/")
-                .concat(type.name())
-                .concat("/")
-                .concat(resourceId)
-                .concat(depth), null, com.ionosenterprise.rest.domain.Resource.class);
+    public com.ionosenterprise.rest.domain.Resource getByType(
+            com.ionosenterprise.rest.domain.Resource.ResourceType type, String resourceId)
+            throws RestClientException, IOException {
+
+        return client.get(getResourcePathBuilder().appendPathSegment(type.name()).appendPathSegment(resourceId)
+                        .withDepth().build(),Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.Resource.class);
     }
 }

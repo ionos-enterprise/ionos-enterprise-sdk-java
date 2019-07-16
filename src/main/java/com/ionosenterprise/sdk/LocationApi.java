@@ -30,17 +30,23 @@
 
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Locations;
 
 import java.io.IOException;
+import java.util.Collections;
 
-public class LocationApi extends BaseApi {
+public class LocationApi extends AbstractBaseApi {
 
-    public LocationApi() throws Exception {
-        super("locations", "");
+    public LocationApi(RestClient client) {
+        super(client);
     }
-    
+
+    protected String getPathFormat() {
+        return "locations";
+    }
+
     /**
      *
      * Locations represent regions where you can provision your Virtual Data Centers.
@@ -48,16 +54,17 @@ public class LocationApi extends BaseApi {
      * @return Locations
      */
     public Locations getAllLocations() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat(depth), null, Locations.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), Collections.EMPTY_MAP, Locations.class);
     }
 
-      /**
+    /**
      * Retrieves the attributes of a given location.
      *
      * @param id The resource's unique identifier consisting of country/city.
      * @return Location object with properties and metadata
      */
     public com.ionosenterprise.rest.domain.Location getLocation(String id) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat("/").concat(id).concat(depth), null, com.ionosenterprise.rest.domain.Location.class);
+        return client.get(getResourcePathBuilder().appendPathSegment(id).withDepth().build(),
+                Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.Location.class);
     }
 }

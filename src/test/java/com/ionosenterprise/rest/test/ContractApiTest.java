@@ -33,23 +33,26 @@ import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Contract;
 import com.ionosenterprise.rest.domain.User;
 import com.ionosenterprise.rest.test.resource.UserResource;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ContractApiTest extends BaseTest {
 
     @Test
-    public void testGetContract() throws RestClientException, IOException, IllegalArgumentException {
+    public void t1_testGetContract() throws RestClientException, IOException, IllegalArgumentException {
         Contract contract = ionosEnterpriseApi.getContractApi().getContract();
         assertNotNull(contract);
     }
 
     @Test
-    public void testContractDetailsForNonAdminUser() throws Exception {
+    public void t2_testContractDetailsForNonAdminUser() throws Exception {
         Contract contractAsOwner = ionosEnterpriseApi.getContractApi().getContract();
         assertNotNull(contractAsOwner);
         assertNotNull(contractAsOwner.getProperties());

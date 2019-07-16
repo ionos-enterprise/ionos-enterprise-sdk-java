@@ -32,6 +32,7 @@ package com.ionosenterprise.rest.test;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.*;
 import com.ionosenterprise.rest.test.resource.*;
+import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -99,7 +100,7 @@ public class FirewallRuleApiTest extends BaseTest {
     public void t4_updateFirewallRule() throws RestClientException, IOException, InterruptedException,
             NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-        FirewallRule firewallRule = ionosEnterpriseApi.getFirewallRuleApi().updateFirewWallRule(dataCenterId, serverId,
+        FirewallRule firewallRule = ionosEnterpriseApi.getFirewallRuleApi().updateFirewallRule(dataCenterId, serverId,
                 nicId, firewallRuleId, FirewallRuleResource.getEditFirewallRule().getProperties());
         waitTillProvisioned(firewallRule.getRequestId());
         assertEquals(firewallRule.getProperties().getName(),
@@ -111,7 +112,7 @@ public class FirewallRuleApiTest extends BaseTest {
         try {
             ionosEnterpriseApi.getFirewallRuleApi().getFirewallRule(dataCenterId, serverId, nicId, CommonResource.getBadId());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 
@@ -123,7 +124,7 @@ public class FirewallRuleApiTest extends BaseTest {
             ionosEnterpriseApi.getFirewallRuleApi().createFirewallRule(dataCenterId, serverId,nicId,
                     FirewallRuleResource.getBadFirewallRule());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_UNPROCESSABLE_ENTITY);
         }
 
     }

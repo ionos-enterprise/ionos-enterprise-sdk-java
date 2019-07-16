@@ -32,6 +32,7 @@ package com.ionosenterprise.rest.test;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.*;
 import com.ionosenterprise.rest.test.resource.*;
+import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -123,7 +124,7 @@ public class NicApiTest extends BaseTest {
 
     @Test
     public void t6_listAssignedNic() throws RestClientException, IOException {
-        Nic nic = ionosEnterpriseApi.getNicApi().getBalancedNic(dataCenterId, loadBalancerId, serverId, nicId);
+        Nic nic = ionosEnterpriseApi.getNicApi().getBalancedNic(dataCenterId, loadBalancerId, nicId);
         assertNotNull(nic);
     }
 
@@ -137,7 +138,7 @@ public class NicApiTest extends BaseTest {
         try {
             ionosEnterpriseApi.getNicApi().getNic(dataCenterId, serverId, CommonResource.getBadId());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 
@@ -148,7 +149,7 @@ public class NicApiTest extends BaseTest {
         try {
             ionosEnterpriseApi.getNicApi().createNic(dataCenterId, serverId, NicResource.getBadNic());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_UNPROCESSABLE_ENTITY);
         }
     }
 

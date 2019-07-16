@@ -33,8 +33,6 @@ import com.ionosenterprise.rest.domain.Server;
 
 public class ServerResource {
     private static Server server;
-    private static Server compositeServer;
-    private static Server badServer;
     private static Server editServer;
 
     public static Server getServer() {

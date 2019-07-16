@@ -30,14 +30,9 @@
 package com.ionosenterprise.rest.test;
 
 import com.ionosenterprise.rest.client.RestClientException;
-import com.ionosenterprise.rest.domain.DataCenter;
-import com.ionosenterprise.rest.domain.Server;
-import com.ionosenterprise.rest.domain.Volume;
-import com.ionosenterprise.rest.domain.Volumes;
-import com.ionosenterprise.rest.test.resource.CommonResource;
-import com.ionosenterprise.rest.test.resource.DataCenterResource;
-import com.ionosenterprise.rest.test.resource.ServerResource;
-import com.ionosenterprise.rest.test.resource.VolumeResource;
+import com.ionosenterprise.rest.domain.*;
+import com.ionosenterprise.rest.test.resource.*;
+import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -55,6 +50,7 @@ public class VolumeApiTest extends BaseTest {
     private static String dataCenterId;
     private static String serverId;
     private static String volumeId;
+    private static String labelId;
 
     @BeforeClass
     public static void setUp() throws RestClientException, IOException, InterruptedException, IllegalAccessException,
@@ -146,7 +142,7 @@ public class VolumeApiTest extends BaseTest {
         try {
             ionosEnterpriseApi.getVolumeApi().createVolume(dataCenterId, VolumeResource.getBadVolume());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_UNPROCESSABLE_ENTITY);
         }
     }
 
@@ -155,12 +151,73 @@ public class VolumeApiTest extends BaseTest {
         try {
             ionosEnterpriseApi.getVolumeApi().getVolume(dataCenterId, CommonResource.getBadId());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
+        }
+    }
+
+    @Test
+    public void t9_1_testCreateLabel() throws NoSuchMethodException, IOException, IllegalAccessException,
+            RestClientException, InvocationTargetException {
+
+        Label label = LabelResource.getLabel();
+        Label newLabel = ionosEnterpriseApi.getVolumeApi().createLabel(label, volumeId, dataCenterId);
+        assertNotNull(newLabel);
+        assertEquals(newLabel.getProperties().getKey(), label.getProperties().getKey());
+        assertEquals(newLabel.getProperties().getValue(), label.getProperties().getValue());
+        labelId = newLabel.getId();
+    }
+
+    @Test
+    public void t9_2_testGetAllLabels() throws RestClientException, IOException {
+        Labels labels = ionosEnterpriseApi.getVolumeApi().getAllLabels(volumeId, dataCenterId);
+        assertNotNull(labels);
+        assertTrue(labels.getItems().size() > 0);
+    }
+
+    @Test
+    public void t9_3_testGetLabel() throws RestClientException, IOException {
+        Label label = ionosEnterpriseApi.getVolumeApi().getLabel(labelId, volumeId, dataCenterId);
+        assertNotNull(label);
+
+        Label.Properties properties = LabelResource.getLabel().getProperties();
+        assertEquals(label.getProperties().getKey(), properties.getKey());
+        assertEquals(label.getProperties().getValue(), properties.getValue());
+    }
+
+    @Test
+    public void t9_4_testGelLabelFail() throws IOException {
+        try {
+            ionosEnterpriseApi.getVolumeApi().getLabel(CommonResource.getBadId(), volumeId, dataCenterId);
+        } catch (RestClientException ex) {
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
+        }
+    }
+
+    @Test
+    public void t9_5_testUpdateLabel() throws NoSuchMethodException, IOException, IllegalAccessException,
+            RestClientException, InvocationTargetException {
+
+        Label.Properties  properties = LabelResource.getLabelEdit().getProperties();
+        Label labelUpdatde = ionosEnterpriseApi.getVolumeApi().updateLabel(labelId, properties, volumeId, dataCenterId);
+        assertEquals(labelUpdatde.getProperties().getValue(), properties.getValue());
+    }
+
+    @Test
+    public void t9_6_testCreateLabelWithExistingKeyFail() throws NoSuchMethodException, IOException,
+            IllegalAccessException, InvocationTargetException {
+
+        Label label = LabelResource.getLabel();
+        try {
+            ionosEnterpriseApi.getVolumeApi().createLabel(label, volumeId, dataCenterId);
+        } catch (RestClientException ex) {
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_UNPROCESSABLE_ENTITY);
         }
     }
 
     @AfterClass
     public static void cleanUp() throws RestClientException, IOException {
+        ionosEnterpriseApi.getVolumeApi().deleteLabel(labelId, volumeId, dataCenterId);
+        ionosEnterpriseApi.getVolumeApi().deleteVolume(dataCenterId, volumeId);
         ionosEnterpriseApi.getDataCenterApi().deleteDataCenter(dataCenterId);
     }
 }

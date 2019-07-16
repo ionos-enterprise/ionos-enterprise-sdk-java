@@ -32,6 +32,7 @@ package com.ionosenterprise.rest.test;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.*;
 import com.ionosenterprise.rest.test.resource.*;
+import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -45,7 +46,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class LoadBalancerTest extends BaseTest {
+public class LoadBalancerApiTest extends BaseTest {
 
     private static String dataCenterId;
     private static String loadBalancerId;
@@ -124,7 +125,7 @@ public class LoadBalancerTest extends BaseTest {
 
     @Test
     public void t6_listAssignedNic() throws RestClientException, IOException {
-        Nic nic = ionosEnterpriseApi.getNicApi().getBalancedNic(dataCenterId, loadBalancerId, serverId, nicId);
+        Nic nic = ionosEnterpriseApi.getNicApi().getBalancedNic(dataCenterId, loadBalancerId, nicId);
         assertNotNull(nic);
     }
 
@@ -138,7 +139,7 @@ public class LoadBalancerTest extends BaseTest {
         try {
             ionosEnterpriseApi.getLoadbalancerApi().getLoadBalancer(dataCenterId, CommonResource.getBadId());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 
@@ -150,7 +151,7 @@ public class LoadBalancerTest extends BaseTest {
             ionosEnterpriseApi.getLoadbalancerApi().createLoadBalancer(dataCenterId,
                     LoadBalancerResource.getBadLoadBalancer());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_UNPROCESSABLE_ENTITY);
         }
     }
 

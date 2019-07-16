@@ -28,18 +28,33 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.ionosenterprise.rest.domain;
+package com.ionosenterprise.sdk;
 
-public enum LicenceType {
+import com.ionosenterprise.rest.client.ResourcePathBuilder;
+import com.ionosenterprise.rest.client.RestClient;
 
-   WINDOWS, WINDOWS2016, LINUX, OTHER, UNKNOWN, UNRECOGNIZED;
+public abstract class AbstractBaseApi {
 
-   public static LicenceType fromValue(String v) {
-      try {
-         return valueOf(v);
-      } catch (IllegalArgumentException ex) {
-         return UNRECOGNIZED;
-      }
-   }
+    protected RestClient client;
 
+    public AbstractBaseApi(RestClient client) {
+        this.client = client;
+    }
+
+    /**
+     * @return the ResourcePathBuilder
+     */
+    protected ResourcePathBuilder getResourcePathBuilder() {
+        return ResourcePathBuilder.create(getPathFormat());
+    }
+
+    /**
+     * @param pathFormat the template of the uri
+     * @return the ResourcePathBuilder
+     */
+    protected ResourcePathBuilder getResourcePathBuilder(String pathFormat) {
+        return ResourcePathBuilder.create(pathFormat);
+    }
+
+    protected abstract String getPathFormat();
 }

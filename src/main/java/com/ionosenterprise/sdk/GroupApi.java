@@ -29,15 +29,23 @@
  */
 package com.ionosenterprise.sdk;
 
+import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Groups;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 
-public class GroupApi extends BaseApi {
-    public GroupApi() throws Exception {
-        super("um/groups", null);
+public class GroupApi extends AbstractBaseApi {
+
+    public GroupApi(RestClient client) {
+        super(client);
+    }
+
+    protected String getPathFormat() {
+        return "um/groups";
     }
 
     /**
@@ -46,7 +54,7 @@ public class GroupApi extends BaseApi {
      * @return Groups object with a list of Groups
      */
     public Groups getAllGroups() throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat(depth), null, Groups.class);
+        return client.get(getResourcePathBuilder().withDepth().build(), Collections.EMPTY_MAP, Groups.class);
     }
 
     /**
@@ -56,20 +64,23 @@ public class GroupApi extends BaseApi {
      * @return Group object with properties and metadata
      */
     public com.ionosenterprise.rest.domain.Group getGroup(String groupId) throws RestClientException, IOException {
-        return client.get(getUrlBase().concat(resource).concat("/").concat(groupId).concat(depth), null, com.ionosenterprise.rest.domain.Group.class);
+        return client.get(getResourcePathBuilder().appendPathSegment(groupId).withDepth().build(),
+                Collections.EMPTY_MAP, com.ionosenterprise.rest.domain.Group.class);
     }
 
     /**
      * Deletes a specific group.
      *
      * @param groupId The unique ID of the group.
+     * @return a String representing the requestId
      */
-    public void deleteGroup(String groupId) throws RestClientException, IOException {
-        client.delete(getUrlBase().concat(resource).concat("/").concat(groupId),202);
+    public String deleteGroup(String groupId) throws RestClientException, IOException {
+        return client.delete(getResourcePathBuilder().appendPathSegment(groupId).build(),HttpStatus.SC_ACCEPTED);
     }
 
     /**
      * Create a single Group, you can add child items to trigger a composite provision.
+     *
      * @param  group object has the following properties:
      * <br>
      * name= A name that was given to the group.
@@ -83,8 +94,12 @@ public class GroupApi extends BaseApi {
      * accessActivityLog= The group has permission to access the activity log.
      * @return Group object with properties and metadata.
      */
-    public com.ionosenterprise.rest.domain.Group createGroup(com.ionosenterprise.rest.domain.Group group) throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        return client.create(getUrlBase().concat(resource), group, com.ionosenterprise.rest.domain.Group.class, 202);
+    public com.ionosenterprise.rest.domain.Group createGroup(com.ionosenterprise.rest.domain.Group group)
+            throws RestClientException, IOException, IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException, NoSuchMethodException {
+
+        return client.create(getResourcePathBuilder().build(), group,
+                com.ionosenterprise.rest.domain.Group.class, HttpStatus.SC_ACCEPTED);
     }
 
     /**
@@ -93,7 +108,11 @@ public class GroupApi extends BaseApi {
      * @param groupId The unique ID of the group.
      * @return Group object with properties and metadata
      */
-    public com.ionosenterprise.rest.domain.Group updateGroup(String groupId, Object object) throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return client.put(getUrlBase().concat(resource).concat("/").concat(groupId), object, com.ionosenterprise.rest.domain.Group.class, 202);
+    public com.ionosenterprise.rest.domain.Group updateGroup(String groupId, Object object)
+            throws RestClientException, IOException, NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+
+        return client.put(getResourcePathBuilder().appendPathSegment(groupId).build(),
+                object, com.ionosenterprise.rest.domain.Group.class, HttpStatus.SC_ACCEPTED);
     }
 }

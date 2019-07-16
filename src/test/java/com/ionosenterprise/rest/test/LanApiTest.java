@@ -31,9 +31,8 @@ package com.ionosenterprise.rest.test;
 
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.*;
-import com.ionosenterprise.rest.test.resource.CommonResource;
-import com.ionosenterprise.rest.test.resource.DataCenterResource;
-import com.ionosenterprise.rest.test.resource.LanResource;
+import com.ionosenterprise.rest.test.resource.*;
+import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -42,9 +41,7 @@ import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -73,13 +70,6 @@ public class LanApiTest extends BaseTest {
         assertEquals(newLan.getProperties().isIsPublic(), lan.getProperties().isIsPublic());
         lanId = newLan.getId();
         waitTillProvisioned(newLan.getRequestId());
-
-        IPBlock ipb = new IPBlock();
-        ipb.getProperties().setLocation("us/las");
-        ipb.getProperties().setSize(1);
-        IPBlock iPBlock = ionosEnterpriseApi.getIpBlockApi().createIPBlock(ipb);
-        assertNotNull(iPBlock);
-        ipBlockId = iPBlock.getId();
     }
 
     @Test
@@ -102,7 +92,7 @@ public class LanApiTest extends BaseTest {
         try {
             ionosEnterpriseApi.getLanApi().getLan(dataCenterId, CommonResource.getBadId());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 
@@ -111,8 +101,7 @@ public class LanApiTest extends BaseTest {
             IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
         Lan.Properties properties = LanResource.getEditLan().getProperties();
-        Lan updatedLan = ionosEnterpriseApi.getLanApi().updateLan(dataCenterId, lanId,
-                properties.getName(), properties.isIsPublic());
+        Lan updatedLan = ionosEnterpriseApi.getLanApi().updateLan(dataCenterId, lanId, properties);
         waitTillProvisioned(updatedLan.getRequestId());
         assertEquals(updatedLan.getProperties().getName(), properties.getName());
         assertEquals(updatedLan.getProperties().isIsPublic(), properties.isIsPublic());
@@ -122,21 +111,11 @@ public class LanApiTest extends BaseTest {
     public void t6_createLanComposite() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException,
             RestClientException, IOException, InterruptedException {
 
-        DataCenter datacenter = new DataCenter();
-        datacenter.getProperties().setName("SDK TEST DC - Composite Data center");
-        datacenter.getProperties().setLocation("us/las");
-        datacenter.getProperties().setDescription("SDK TEST Description");
-
-        Lan lan = new Lan();
-        lan.getProperties().setName("SDK TEST Lan - Lan");
-        lan.getProperties().setIsPublic(false);
-
+        DataCenter datacenter = DataCenterResource.getDataCenter();
+        Lan lan = LanResource.getLan();
         Lans lans = new Lans();
-        List<Lan> lanList = new ArrayList<Lan>();
-        lanList.add(lan);
-        lans.setItems(lanList);
+        lans.setItems(Arrays.asList(lan));
         datacenter.getEntities().setLans(lans);
-
         DataCenter newDatacenter = ionosEnterpriseApi.getDataCenterApi().createDataCenter(datacenter);
 
         waitTillProvisioned(newDatacenter.getRequestId());
@@ -148,66 +127,49 @@ public class LanApiTest extends BaseTest {
     public void t7_updateLanWithFailover() throws RestClientException, IOException, InterruptedException,
             NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-        Server server1 = new Server();
+        Server server1 = ServerResource.getServer();
         server1.getProperties().setName("SDK TEST SERVER - Server Failover 1");
-        server1.getProperties().setRam(1024);
-        server1.getProperties().setCores(1);
         Server newServer1 = ionosEnterpriseApi.getServerApi().createServer(dataCenterId, server1);
         waitTillProvisioned(newServer1.getRequestId());
         String server1Id = newServer1.getId();
 
-        Lan lan1 = new Lan();
-        lan1.getProperties().setName("SDK TEST Lan - Lan");
-        lan1.getProperties().setIsPublic(false);
-        Lan newLan1 = ionosEnterpriseApi.getLanApi().createLan(dataCenterId, lan1);
-        waitTillProvisioned(newLan1.getRequestId());
-        String lan1Id = newLan1.getId();
+        IPBlock ipb = IpBlockResource.getIpBlock();
+        ipb.getProperties().setSize(1);
+        IPBlock iPBlock = ionosEnterpriseApi.getIpBlockApi().createIPBlock(ipb);
+        assertNotNull(iPBlock);
+        ipBlockId = iPBlock.getId();
 
-        IPBlock iPBlock = ionosEnterpriseApi.getIpBlockApi().getIPBlock(ipBlockId);
-
-        Nic nic = new Nic();
-        nic.getProperties().setName("SDK TEST NIC - Nic");
-        nic.getProperties().setLan(lan1Id);
-        nic.getProperties().setNat(Boolean.FALSE);
-        nic.getProperties().setIps(iPBlock.getProperties().getIps());
-        nic.getEntities().setFirewallrules(null);
+        Nic nic = NicResource.getNicForLanIdAndIPBlock(lanId, iPBlock);
+        nic.getProperties().setName("SDK TEST NIC - Nic1");
         Nic newNic = ionosEnterpriseApi.getNicApi().createNic(dataCenterId, server1Id, nic);
         waitTillProvisioned(newNic.getRequestId());
 
         IpFailover ipFailover = new IpFailover();
         ipFailover.setIp(iPBlock.getProperties().getIps().get(0));
         ipFailover.setNicUuid(newNic.getId());
-
-        List<IpFailover> failovers = new ArrayList<IpFailover>();
-        failovers.add(ipFailover);
-
-        Lan updatedLan = ionosEnterpriseApi.getLanApi().updateLan(dataCenterId, lan1Id, Boolean.TRUE, failovers);
+        com.ionosenterprise.rest.domain.Lan.Properties lanProperties =
+                new com.ionosenterprise.rest.domain.Lan().new Properties();
+        lanProperties.setIsPublic(true);
+        lanProperties.setIpFailover(Arrays.asList(ipFailover));
+        Lan updatedLan = ionosEnterpriseApi.getLanApi().updateLan(dataCenterId, lanId, lanProperties);
         waitTillProvisioned(updatedLan.getRequestId());
 
-        Server server2 = new Server();
+        Server server2 = ServerResource.getServer();
         server2.getProperties().setName("SDK TEST SERVER - Server Failover 2");
-        server2.getProperties().setRam(1024);
-        server2.getProperties().setCores(1);
         Server newServer2 = ionosEnterpriseApi.getServerApi().createServer(dataCenterId, server2);
         waitTillProvisioned(newServer2.getRequestId());
         String server2Id = newServer2.getId();
 
-        Nic nic2 = new Nic();
+        Nic nic2 = NicResource.getNicForLanIdAndIPBlock(lanId, iPBlock);
         nic2.getProperties().setName("SDK TEST NIC - Nic2");
-        nic2.getProperties().setLan(lan1Id);
-        nic2.getProperties().setNat(Boolean.FALSE);
-        nic2.getProperties().setIps(iPBlock.getProperties().getIps());
-        nic2.getEntities().setFirewallrules(null);
         Nic newNic2 = ionosEnterpriseApi.getNicApi().createNic(dataCenterId, server2Id, nic2);
         waitTillProvisioned(newNic2.getRequestId());
     }
 
     @AfterClass
     public static void cleanup() throws RestClientException, IOException, InterruptedException {
-        ionosEnterpriseApi.getDataCenterApi().deleteDataCenter(dataCenterId);
-
-        TimeUnit.MINUTES.sleep(1);
-
+        String requestId = ionosEnterpriseApi.getDataCenterApi().deleteDataCenter(dataCenterId);
+        waitTillProvisioned(requestId);
         ionosEnterpriseApi.getIpBlockApi().deleteIPBlock(ipBlockId);
     }
 }

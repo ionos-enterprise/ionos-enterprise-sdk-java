@@ -40,7 +40,7 @@ public class ResourceApiTest extends BaseTest {
 
         Snapshot.Properties properties = SnapshotResource.getSnapshot().getProperties();
         Snapshot snapshot = ionosEnterpriseApi.getSnapshotApi().createSnapshot(dataCenterId, volumeId,
-                properties.getName(), properties.getDescription());
+                properties.getName(), properties.getDescription(), properties.getLicenceType().name());
         assertNotNull(snapshot);
         snapshotId = snapshot.getId();
         waitTillProvisioned(snapshot.getRequestId());
@@ -97,10 +97,11 @@ public class ResourceApiTest extends BaseTest {
     }
 
     @AfterClass
-    public static void cleanUp() throws RestClientException, IOException {
+    public static void cleanUp() throws RestClientException, IOException, InterruptedException {
+        ionosEnterpriseApi.getVolumeApi().deleteVolume(dataCenterId, volumeId);
+        String requestId = ionosEnterpriseApi.getDataCenterApi().deleteDataCenter(dataCenterId);
+        waitTillProvisioned(requestId);
         ionosEnterpriseApi.getIpBlockApi().deleteIPBlock(ipBlockId);
         ionosEnterpriseApi.getSnapshotApi().deleteSnapshot(snapshotId);
-        ionosEnterpriseApi.getVolumeApi().deleteVolume(dataCenterId, volumeId);
-        ionosEnterpriseApi.getDataCenterApi().deleteDataCenter(dataCenterId);
     }
 }

@@ -30,30 +30,43 @@
 
 package com.ionosenterprise.sdk;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ionosenterprise.rest.client.RequestInterceptor;
+import com.ionosenterprise.rest.client.RestClient;
+import com.ionosenterprise.rest.client.RestClientUtil;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 public class IonosEnterpriseApi {
 
-    private String credentials;
+    private RestClient client;
 
-    public IonosEnterpriseApi() throws Exception {
-        this.dataCenterApi = new DataCenterApi();
-        this.serverApi = new ServerApi();
-        this.volumeApi = new VolumeApi();
-        this.snapshotApi = new SnapshotApi();
-        this.loadbalancerApi = new LoadbalancerApi();
-        this.nicApi = new NicApi();
-        this.firewallRuleApi = new FirewallRuleApi();
-        this.imageApi = new ImageApi();
-        this.ipBlockApi = new IPBlockApi();
-        this.requestApi = new RequestApi();
-        this.lanApi = new LanApi();
-        this.locationApi = new LocationApi();
-        this.contractApi = new ContractApi();
-        this.groupApi = new GroupApi();
-        this.shareApi = new ShareApi();
-        this.userApi = new UserApi();
-        this.resourceApi = new ResourceApi();
+    public IonosEnterpriseApi() {
+        initRestClient();
+
+        this.dataCenterApi = new DataCenterApi(client);
+        this.serverApi = new ServerApi(client);
+        this.volumeApi = new VolumeApi(client);
+        this.snapshotApi = new SnapshotApi(client);
+        this.loadbalancerApi = new LoadbalancerApi(client);
+        this.nicApi = new NicApi(client);
+        this.firewallRuleApi = new FirewallRuleApi(client);
+        this.imageApi = new ImageApi(client);
+        this.ipBlockApi = new IPBlockApi(client);
+        this.requestApi = new RequestApi(client);
+        this.lanApi = new LanApi(client);
+        this.locationApi = new LocationApi(client);
+        this.contractApi = new ContractApi(client);
+        this.groupApi = new GroupApi(client);
+        this.shareApi = new ShareApi(client);
+        this.userApi = new UserApi(client);
+        this.resourceApi = new ResourceApi(client);
+        this.labelApi = new LabelApi(client);
+        this.backupUnitApi = new BackupUnitApi(client);
+        this.s3KeyApi = new S3KeyApi(client);
     }
 
     private DataCenterApi dataCenterApi;
@@ -73,199 +86,98 @@ public class IonosEnterpriseApi {
     private ShareApi shareApi;
     private UserApi userApi;
     private ResourceApi resourceApi;
+    private LabelApi labelApi;
+    private BackupUnitApi backupUnitApi;
+    private S3KeyApi s3KeyApi;
 
     /**
      * @return the dataCenterApi
      */
     public DataCenterApi getDataCenterApi() {
-        this.dataCenterApi.setCredentials(credentials);
         return dataCenterApi;
-    }
-
-    /**
-     * @param dataCenterApi the dataCenterApi to set
-     */
-    public void setDataCenterApi(DataCenterApi dataCenterApi) {
-        this.dataCenterApi = dataCenterApi;
     }
 
     /**
      * @return the serverApi
      */
     public ServerApi getServerApi() {
-        this.serverApi.setCredentials(credentials);
         return serverApi;
-    }
-
-    /**
-     * @param serverApi the serverApi to set
-     */
-    public void setServerApi(ServerApi serverApi) {
-        this.serverApi = serverApi;
     }
 
     /**
      * @return the volumeApi
      */
     public VolumeApi getVolumeApi() {
-        this.volumeApi.setCredentials(credentials);
         return volumeApi;
-    }
-
-    /**
-     * @param volumeApi the volumeApi to set
-     */
-    public void setVolumeApi(VolumeApi volumeApi) {
-        this.volumeApi = volumeApi;
     }
 
     /**
      * @return the snapshotApi
      */
     public SnapshotApi getSnapshotApi() {
-        this.snapshotApi.setCredentials(credentials);
         return snapshotApi;
-    }
-
-    /**
-     * @param snapshotApi the snapshotApi to set
-     */
-    public void setSnapshotApi(SnapshotApi snapshotApi) {
-        this.snapshotApi = snapshotApi;
     }
 
     /**
      * @return the loadbalancerApi
      */
     public LoadbalancerApi getLoadbalancerApi() {
-        this.loadbalancerApi.setCredentials(credentials);
         return loadbalancerApi;
-    }
-
-    /**
-     * @param loadbalancerApi the loadbalancerApi to set
-     */
-    public void setLoadbalancerApi(LoadbalancerApi loadbalancerApi) {
-        this.loadbalancerApi = loadbalancerApi;
     }
 
     /**
      * @return the nicApi
      */
     public NicApi getNicApi() {
-        this.nicApi.setCredentials(credentials);
         return nicApi;
-    }
-
-    /**
-     * @param nicApi the nicApi to set
-     */
-    public void setNicApi(NicApi nicApi) {
-        this.nicApi = nicApi;
     }
 
     /**
      * @return the firewallRuleApi
      */
     public FirewallRuleApi getFirewallRuleApi() {
-        this.firewallRuleApi.setCredentials(credentials);
         return firewallRuleApi;
     }
 
     /**
-     * @param firewallRuleApi the firewallRuleApi to set
-     */
-    public void setFirewallRuleApi(FirewallRuleApi firewallRuleApi) {
-        this.firewallRuleApi = firewallRuleApi;
-    }
-
-    /**
-     * @return the image
+     * @return the imageApi
      */
     public ImageApi getImageApi() {
-        this.imageApi.setCredentials(credentials);
         return imageApi;
-    }
-
-    /**
-     * @param imageApi the imageApi to set
-     */
-    public void setImageApi(ImageApi imageApi) {
-        this.imageApi = imageApi;
     }
 
     /**
      * @return the ipBlockApi
      */
     public IPBlockApi getIpBlockApi() {
-        this.ipBlockApi.setCredentials(credentials);
         return ipBlockApi;
-    }
-
-    /**
-     * @param ipBlockApi the ipBlockApi to set
-     */
-    public void setIpBlockApi(IPBlockApi ipBlockApi) {
-        this.ipBlockApi = ipBlockApi;
     }
 
     /**
      * @return the requestApi
      */
     public RequestApi getRequestApi() {
-        this.requestApi.setCredentials(credentials);
         return requestApi;
-    }
-
-    /**
-     * @param requestApi the requestApi to set
-     */
-    public void setRequestApi(RequestApi requestApi) {
-        this.requestApi = requestApi;
     }
 
     /**
      * @return the lanApi
      */
     public LanApi getLanApi() {
-        this.lanApi.setCredentials(credentials);
         return lanApi;
     }
 
     /**
-     * @param lanApi the lanApi to set
+     * @return the locationApi
      */
-    public void setLanApi(LanApi lanApi) {
-        this.lanApi = lanApi;
-    }
-
-    /**
-     * @param credentials the credentials to set
-     */
-    public void setCredentials(String credentials) {
-        this.credentials = credentials;
-    }
-
-    public void setCredentials(String username, String password) {
-        byte[] bytesEncoded = Base64.encodeBase64((username + ":" + password).getBytes());
-
-        this.credentials = new String(bytesEncoded);
-    }
-
     public LocationApi getLocationApi() {
-        this.locationApi.setCredentials(credentials);
         return locationApi;
-    }
-
-    public void setLocationApi(LocationApi locationApi) {
-        this.locationApi = locationApi;
     }
 
     /**
      * @return the contractApi
      */
     public ContractApi getContractApi() {
-        this.contractApi.setCredentials(credentials);
         return contractApi;
     }
 
@@ -273,42 +185,98 @@ public class IonosEnterpriseApi {
      * @return the groupApi
      */
     public GroupApi getGroupApi() {
-        this.groupApi.setCredentials(credentials);
         return groupApi;
     }
 
-    public void setGroupApi(GroupApi groupApi) {
-        this.groupApi.setCredentials(credentials);
-        this.groupApi = groupApi;
-    }
-
+    /**
+     * @return the resourceApi
+     */
     public ResourceApi getResourceApi() {
-        this.resourceApi.setCredentials(credentials);
         return resourceApi;
     }
 
-    public void setResourceApi(ResourceApi resourceApi) {
-        this.resourceApi.setCredentials(credentials);
-        this.resourceApi = resourceApi;
-    }
-
+    /**
+     * @return the userApi
+     */
     public UserApi getUserApi() {
-        this.userApi.setCredentials(credentials);
         return userApi;
     }
 
-    public void setUserApi(UserApi userApi) {
-        this.userApi.setCredentials(credentials);
-        this.userApi = userApi;
-    }
-
+    /**
+     * @return the shareApi
+     */
     public ShareApi getShareApi() {
-        this.shareApi.setCredentials(credentials);
         return shareApi;
     }
 
-    public void setShareApi(ShareApi shareApi) {
-        this.shareApi.setCredentials(credentials);
-        this.shareApi = shareApi;
+    /**
+     * @return the labelApi
+     */
+    public LabelApi getLabelApi() {
+        return labelApi;
+    }
+
+    /**
+     * @return the s3KeyApi
+     */
+    public S3KeyApi getS3KeyApi() {
+        return s3KeyApi;
+    }
+
+    /**
+     * @return the backupUnitApi
+     */
+    public BackupUnitApi getBackupUnitApi() {
+        return backupUnitApi;
+    }
+
+    /**
+     * Set the credentials for the rest client.
+     *
+     * @param username the username to be set
+     * @param password the password to be set
+     */
+    public void setCredentials(String username, String password) {
+        byte[] bytesEncoded = Base64.encodeBase64((username + ":" + password).getBytes());
+
+        String credentials = new String(bytesEncoded);
+        RequestInterceptor authorize = getAuthorizeRequestInterceptor(credentials);
+        client.setHttpClientInterceptor(authorize);
+    }
+
+    private void initRestClient() {
+        RequestInterceptor interceptor = getAuthorizeRequestInterceptor(null);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        CloseableHttpClient httpClient = HttpClientBuilder.create().useSystemProperties().build();
+        RestClientUtil restClientUtil = new RestClientUtil(httpClient, interceptor, objectMapper);
+        this.client = new RestClient(restClientUtil);
+    }
+
+    private RequestInterceptor getAuthorizeRequestInterceptor(final String credentials) {
+        return new RequestInterceptor() {
+            @Override
+            public void intercept(HttpRequestBase request) {
+                String authorizationCredentials = credentials;
+                if (authorizationCredentials == null) {
+                    if (System.getenv("IONOS_ENTERPRISE_USERNAME") != null
+                            && System.getenv("IONOS_ENTERPRISE_PASSWORD") != null) {
+                        byte[] bytesEncoded = Base64.encodeBase64((System.getenv("IONOS_ENTERPRISE_USERNAME")
+                                + ":" + System.getenv("IONOS_ENTERPRISE_PASSWORD")).getBytes());
+                        authorizationCredentials = new String(bytesEncoded);
+                    }
+                }
+
+                if (authorizationCredentials == null) {
+                    try {
+                        throw new Exception("Credentials not set.");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                request.addHeader("Authorization", "Basic ".concat(authorizationCredentials));
+            }
+        };
     }
 }

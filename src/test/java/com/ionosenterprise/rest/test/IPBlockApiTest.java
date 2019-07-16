@@ -30,10 +30,9 @@
 package com.ionosenterprise.rest.test;
 
 import com.ionosenterprise.rest.client.RestClientException;
-import com.ionosenterprise.rest.domain.IPBlock;
-import com.ionosenterprise.rest.domain.IPBlocks;
-import com.ionosenterprise.rest.test.resource.CommonResource;
-import com.ionosenterprise.rest.test.resource.IpBlockResource;
+import com.ionosenterprise.rest.domain.*;
+import com.ionosenterprise.rest.test.resource.*;
+import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -43,13 +42,14 @@ import org.junit.runners.MethodSorters;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class IPBlockApiTest extends BaseTest {
 
     private static String ipBlockId;
+    private static String labelId;
+    private static String dataCenterId;
 
     @BeforeClass
     public static void t1_createIPBlock() throws RestClientException, IOException, NoSuchMethodException,
@@ -83,11 +83,11 @@ public class IPBlockApiTest extends BaseTest {
     }
 
     @Test
-    public void t4_getIpBlockFail() throws RestClientException, IOException {
+    public void t4_getIpBlockFail() throws IOException {
         try {
             ionosEnterpriseApi.getIpBlockApi().getIPBlock(CommonResource.getBadId());
         } catch (RestClientException ex) {
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 404);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
 
@@ -98,20 +98,124 @@ public class IPBlockApiTest extends BaseTest {
         try {
             ionosEnterpriseApi.getIpBlockApi().createIPBlock(IpBlockResource.getBadIpBlock());
         }catch (RestClientException ex){
-            assertEquals(ex.response().getStatusLine().getStatusCode(), 422);
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_UNPROCESSABLE_ENTITY);
         }
     }
 
     @Test
-    public void t5_updateIpBlock() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException,
+    public void t6_1_testCreateLabel() throws NoSuchMethodException, IOException, IllegalAccessException,
+            RestClientException, InvocationTargetException {
+
+        Label label = LabelResource.getLabel();
+        Label newLabel = ionosEnterpriseApi.getIpBlockApi().createLabel(label, ipBlockId);
+        assertNotNull(newLabel);
+        assertEquals(newLabel.getProperties().getKey(), label.getProperties().getKey());
+        assertEquals(newLabel.getProperties().getValue(), label.getProperties().getValue());
+        labelId = newLabel.getId();
+    }
+
+    @Test
+    public void t6_2_testGetAllLabels() throws RestClientException, IOException {
+        Labels labels = ionosEnterpriseApi.getIpBlockApi().getAllLabels(ipBlockId);
+        assertNotNull(labels);
+        assertTrue(labels.getItems().size() > 0);
+    }
+
+    @Test
+    public void t6_3_testGetLabel() throws RestClientException, IOException {
+        Label label = ionosEnterpriseApi.getIpBlockApi().getLabel(labelId, ipBlockId);
+        assertNotNull(label);
+
+        Label.Properties properties = LabelResource.getLabel().getProperties();
+        assertEquals(label.getProperties().getKey(), properties.getKey());
+        assertEquals(label.getProperties().getValue(), properties.getValue());
+    }
+
+    @Test
+    public void t6_4_testGelLabelFail() throws IOException {
+        try {
+            ionosEnterpriseApi.getIpBlockApi().getLabel(CommonResource.getBadId(), ipBlockId);
+        } catch (RestClientException ex) {
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
+        }
+    }
+
+    @Test
+    public void t6_5_testUpdateLabel() throws NoSuchMethodException, IOException, IllegalAccessException,
+            RestClientException, InvocationTargetException {
+
+        Label.Properties  properties = LabelResource.getLabelEdit().getProperties();
+        Label labelUpdatde = ionosEnterpriseApi.getIpBlockApi().updateLabel(labelId, properties, ipBlockId);
+        assertEquals(labelUpdatde.getProperties().getValue(), properties.getValue());
+    }
+
+    @Test
+    public void t6_6_testCreateLabelWithExistingKeyFail() throws NoSuchMethodException, IOException,
+            IllegalAccessException, InvocationTargetException {
+
+        Label label = LabelResource.getLabel();
+        try {
+            ionosEnterpriseApi.getIpBlockApi().createLabel(label, ipBlockId);
+        } catch (RestClientException ex) {
+            assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_UNPROCESSABLE_ENTITY);
+        }
+    }
+
+    @Test
+    public void t7_testIpBlockConsumerDetails() throws InvocationTargetException, NoSuchMethodException,
+            IllegalAccessException, RestClientException, IOException, InterruptedException {
+
+        DataCenter newDatacenter = ionosEnterpriseApi.getDataCenterApi().createDataCenter(
+                DataCenterResource.getDataCenter());
+        assertNotNull(newDatacenter);
+        waitTillProvisioned(newDatacenter.getRequestId());
+        dataCenterId = newDatacenter.getId();
+
+        Server server = ServerResource.getServer();
+        Server newServer = ionosEnterpriseApi.getServerApi().createServer(dataCenterId, server);
+        assertNotNull(newServer);
+        waitTillProvisioned(newServer.getRequestId());
+        String serverId = newServer.getId();
+
+        Lan lan = LanResource.getLan();
+        Lan newLan = ionosEnterpriseApi.getLanApi().createLan(dataCenterId, lan);
+        assertNotNull(newLan);
+        waitTillProvisioned(newLan.getRequestId());
+        String lanId = newLan.getId();
+
+        IPBlock iPBlock = ionosEnterpriseApi.getIpBlockApi().getIPBlock(ipBlockId);
+        assertNotNull(iPBlock);
+
+        Nic nic = NicResource.getNicForLanIdAndIPBlock(lanId, iPBlock);
+        Nic newNic = ionosEnterpriseApi.getNicApi().createNic(dataCenterId, serverId, nic);
+        assertNotNull(newNic);
+        waitTillProvisioned(newNic.getRequestId());
+
+        IPBlock iPBlockWithConsumerDetails = ionosEnterpriseApi.getIpBlockApi().getIPBlock(ipBlockId);
+        assertNotNull(iPBlockWithConsumerDetails);
+        assertEquals(
+                iPBlockWithConsumerDetails.getProperties().getIpConsumers().size(),
+                iPBlock.getProperties().getIps().size());
+        assertTrue(iPBlock.getProperties().getIps()
+                .contains(iPBlockWithConsumerDetails.getProperties().getIpConsumers().get(0).getIp()));
+        assertTrue(iPBlock.getProperties().getIps()
+                .contains(iPBlockWithConsumerDetails.getProperties().getIpConsumers().get(1).getIp()));
+    }
+
+    @Test
+    public void t8_updateIpBlock() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException,
             RestClientException, IOException {
+
         IPBlock ipBlock = ionosEnterpriseApi.getIpBlockApi().updateIPBlock(
                 ipBlockId, IpBlockResource.getEditIpBlock().getProperties());
         assertEquals(ipBlock.getProperties().getName(), IpBlockResource.getEditIpBlock().getProperties().getName());
     }
 
     @AfterClass
-    public static void cleanUp() throws RestClientException, IOException {
+    public static void cleanUp() throws RestClientException, IOException, InterruptedException {
+        String requestId = ionosEnterpriseApi.getDataCenterApi().deleteDataCenter(dataCenterId);
+        waitTillProvisioned(requestId);
+        ionosEnterpriseApi.getIpBlockApi().deleteLabel(labelId, ipBlockId);
         ionosEnterpriseApi.getIpBlockApi().deleteIPBlock(ipBlockId);
     }
 }
