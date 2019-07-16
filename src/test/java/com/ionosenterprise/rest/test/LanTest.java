@@ -142,6 +142,7 @@ public class LanTest extends BaseTest {
         String server1Id = newServer1.getId();
 
         Lan lan1 = LanResource.getLan();
+        lan1.getProperties().setIsPublic(false);
         Lan newLan1 = ionosEnterpriseApi.getLan().createLan(dataCenterId, lan1);
         waitTillProvisioned(newLan1.getRequestId());
         String lan1Id = newLan1.getId();
