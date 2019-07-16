@@ -30,10 +30,6 @@
 
 package com.ionosenterprise.rest.domain;
 
-/**
- *
- * @author jasmin@stackpointcloud.com
- */
 public enum State {
 
    BUSY, AVAILABLE, INACTIVE, INPROCESS, DELETED, ERROR, UNRECOGNIZED;

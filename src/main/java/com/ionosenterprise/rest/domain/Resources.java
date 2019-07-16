@@ -32,9 +32,6 @@ package com.ionosenterprise.rest.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author denis@stackpointcloud.com
- */
 public class Resources extends BaseResource {
     private List<Resource> items =  new ArrayList<Resource>();
 

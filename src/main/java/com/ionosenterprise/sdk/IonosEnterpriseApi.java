@@ -47,187 +47,187 @@ public class IonosEnterpriseApi {
     public IonosEnterpriseApi() {
         initRestClient();
 
-        this.dataCenter = new Datacenter(client);
-        this.server = new Server(client);
-        this.volume = new Volume(client);
-        this.snapshot = new Snapshot(client);
-        this.loadbalancer = new Loadbalancer(client);
-        this.nic = new Nic(client);
-        this.firewallRule = new FirewallRule(client);
-        this.image = new Image(client);
-        this.ipBlock = new IPBlock(client);
-        this.request = new Request(client);
-        this.lan = new Lan(client);
-        this.location = new Location(client);
-        this.contract = new Contract(client);
-        this.group = new Group(client);
-        this.share = new Share(client);
-        this.user = new User(client);
-        this.resource = new Resource(client);
-        this.label = new Label(client);
-        this.backupUnit = new BackupUnit(client);
-        this.s3Key = new S3Key(client);
+        this.dataCenterApi = new DataCenterApi(client);
+        this.serverApi = new ServerApi(client);
+        this.volumeApi = new VolumeApi(client);
+        this.snapshotApi = new SnapshotApi(client);
+        this.loadbalancerApi = new LoadbalancerApi(client);
+        this.nicApi = new NicApi(client);
+        this.firewallRuleApi = new FirewallRuleApi(client);
+        this.imageApi = new ImageApi(client);
+        this.ipBlockApi = new IPBlockApi(client);
+        this.requestApi = new RequestApi(client);
+        this.lanApi = new LanApi(client);
+        this.locationApi = new LocationApi(client);
+        this.contractApi = new ContractApi(client);
+        this.groupApi = new GroupApi(client);
+        this.shareApi = new ShareApi(client);
+        this.userApi = new UserApi(client);
+        this.resourceApi = new ResourceApi(client);
+        this.labelApi = new LabelApi(client);
+        this.backupUnitApi = new BackupUnitApi(client);
+        this.s3KeyApi = new S3KeyApi(client);
     }
 
-    private Datacenter dataCenter;
-    private Server server;
-    private Volume volume;
-    private Snapshot snapshot;
-    private Loadbalancer loadbalancer;
-    private Nic nic;
-    private FirewallRule firewallRule;
-    private Image image;
-    private IPBlock ipBlock;
-    private Request request;
-    private Lan lan;
-    private Location location;
-    private Contract contract;
-    private Group group;
-    private Share share;
-    private User user;
-    private Resource resource;
-    private Label label;
-    private BackupUnit backupUnit;
-    private S3Key s3Key;
+    private DataCenterApi dataCenterApi;
+    private ServerApi serverApi;
+    private VolumeApi volumeApi;
+    private SnapshotApi snapshotApi;
+    private LoadbalancerApi loadbalancerApi;
+    private NicApi nicApi;
+    private FirewallRuleApi firewallRuleApi;
+    private ImageApi imageApi;
+    private IPBlockApi ipBlockApi;
+    private RequestApi requestApi;
+    private LanApi lanApi;
+    private LocationApi locationApi;
+    private ContractApi contractApi;
+    private GroupApi groupApi;
+    private ShareApi shareApi;
+    private UserApi userApi;
+    private ResourceApi resourceApi;
+    private LabelApi labelApi;
+    private BackupUnitApi backupUnitApi;
+    private S3KeyApi s3KeyApi;
 
     /**
-     * @return the dataCenter
+     * @return the dataCenterApi
      */
-    public Datacenter getDataCenter() {
-        return dataCenter;
-    }
-
-    /**
-     * @return the server
-     */
-    public Server getServer() {
-        return server;
+    public DataCenterApi getDataCenterApi() {
+        return dataCenterApi;
     }
 
     /**
-     * @return the volume
+     * @return the serverApi
      */
-    public Volume getVolume() {
-        return volume;
+    public ServerApi getServerApi() {
+        return serverApi;
     }
 
     /**
-     * @return the snapshot
+     * @return the volumeApi
      */
-    public Snapshot getSnapshot() {
-        return snapshot;
+    public VolumeApi getVolumeApi() {
+        return volumeApi;
     }
 
     /**
-     * @return the loadbalancer
+     * @return the snapshotApi
      */
-    public Loadbalancer getLoadbalancer() {
-        return loadbalancer;
+    public SnapshotApi getSnapshotApi() {
+        return snapshotApi;
     }
 
     /**
-     * @return the nic
+     * @return the loadbalancerApi
      */
-    public Nic getNic() {
-        return nic;
+    public LoadbalancerApi getLoadbalancerApi() {
+        return loadbalancerApi;
     }
 
     /**
-     * @return the firewallRule
+     * @return the nicApi
      */
-    public FirewallRule getFirewallRule() {
-        return firewallRule;
+    public NicApi getNicApi() {
+        return nicApi;
     }
 
     /**
-     * @return the image
+     * @return the firewallRuleApi
      */
-    public Image getImage() {
-        return image;
+    public FirewallRuleApi getFirewallRuleApi() {
+        return firewallRuleApi;
     }
 
     /**
-     * @return the ipBlock
+     * @return the imageApi
      */
-    public IPBlock getIpBlock() {
-        return ipBlock;
+    public ImageApi getImageApi() {
+        return imageApi;
     }
 
     /**
-     * @return the request
+     * @return the ipBlockApi
      */
-    public Request getRequest() {
-        return request;
+    public IPBlockApi getIpBlockApi() {
+        return ipBlockApi;
     }
 
     /**
-     * @return the lan
+     * @return the requestApi
      */
-    public Lan getLan() {
-        return lan;
+    public RequestApi getRequestApi() {
+        return requestApi;
     }
 
     /**
-     * @return the location
+     * @return the lanApi
      */
-    public Location getLocation() {
-        return location;
+    public LanApi getLanApi() {
+        return lanApi;
     }
 
     /**
-     * @return the contract
+     * @return the locationApi
      */
-    public Contract getContract() {
-        return contract;
+    public LocationApi getLocationApi() {
+        return locationApi;
     }
 
     /**
-     * @return the group
+     * @return the contractApi
      */
-    public Group getGroup() {
-        return group;
+    public ContractApi getContractApi() {
+        return contractApi;
     }
 
     /**
-     * @return the resource
+     * @return the groupApi
      */
-    public Resource getResource() {
-        return resource;
+    public GroupApi getGroupApi() {
+        return groupApi;
     }
 
     /**
-     * @return the user
+     * @return the resourceApi
      */
-    public User getUser() {
-        return user;
+    public ResourceApi getResourceApi() {
+        return resourceApi;
     }
 
     /**
-     * @return the share
+     * @return the userApi
      */
-    public Share getShare() {
-        return share;
+    public UserApi getUserApi() {
+        return userApi;
     }
 
     /**
-     * @return the label
+     * @return the shareApi
      */
-    public Label getLabel() {
-        return label;
+    public ShareApi getShareApi() {
+        return shareApi;
     }
 
     /**
-     * @return the s3Key
+     * @return the labelApi
      */
-    public S3Key getS3Key() {
-        return s3Key;
+    public LabelApi getLabelApi() {
+        return labelApi;
     }
 
     /**
-     * @return the backupUnit
+     * @return the s3KeyApi
      */
-    public BackupUnit getBackupUnit() {
-        return backupUnit;
+    public S3KeyApi getS3KeyApi() {
+        return s3KeyApi;
+    }
+
+    /**
+     * @return the backupUnitApi
+     */
+    public BackupUnitApi getBackupUnitApi() {
+        return backupUnitApi;
     }
 
     /**

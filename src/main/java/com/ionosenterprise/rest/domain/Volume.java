@@ -34,9 +34,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author jasmin@stackpointcloud.com
- */
 public class Volume extends BaseResource {
 
     /**

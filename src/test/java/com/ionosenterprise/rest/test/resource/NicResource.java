@@ -32,14 +32,11 @@ package com.ionosenterprise.rest.test.resource;
 import com.ionosenterprise.rest.domain.IPBlock;
 import com.ionosenterprise.rest.domain.Nic;
 
-/**
- * @author denis@stackpointcloud.com
- */
 public class NicResource {
     private static Nic nic;
     private static Nic badNic;
     private static Nic editNic;
-    private static Nic nicForIPBlockTests;
+    private static Nic nicForLanAndIPBlock;
 
     public static Nic getNic() {
         if (nic == null) {
@@ -69,14 +66,14 @@ public class NicResource {
     }
 
     public static Nic getNicForLanIdAndIPBlock(String lanId, IPBlock iPBlock) {
-        if (nicForIPBlockTests == null){
-            nicForIPBlockTests = new Nic();
-            nicForIPBlockTests.getProperties().setName("SDK TEST NIC");
-            nicForIPBlockTests.getProperties().setLan(lanId);
-            nicForIPBlockTests.getProperties().setNat(Boolean.FALSE);
-            nicForIPBlockTests.getProperties().setIps(iPBlock.getProperties().getIps());
-            nicForIPBlockTests.getEntities().setFirewallrules(null);
+        if (nicForLanAndIPBlock == null){
+            nicForLanAndIPBlock = new Nic();
+            nicForLanAndIPBlock.getProperties().setName("SDK TEST NIC");
+            nicForLanAndIPBlock.getProperties().setLan(lanId);
+            nicForLanAndIPBlock.getProperties().setNat(Boolean.FALSE);
+            nicForLanAndIPBlock.getProperties().setIps(iPBlock.getProperties().getIps());
+            nicForLanAndIPBlock.getEntities().setFirewallrules(null);
         }
-        return nicForIPBlockTests;
+        return nicForLanAndIPBlock;
     }
 }

@@ -36,9 +36,6 @@ import com.ionosenterprise.rest.domain.Volume;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author denis@stackpointcloud.com
- */
 public class VolumeResource {
     private static Volume volume;
     private static Volume badVolume;

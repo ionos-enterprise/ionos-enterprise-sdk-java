@@ -29,9 +29,6 @@
  */
 package com.ionosenterprise.rest.domain;
 
-/**
- * @author jasmin@stackpointcloud.com
- */
 public class Server extends BaseResource {
 
     /**

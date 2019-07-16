@@ -34,9 +34,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-/**
- * @author jasmin@stackpointcloud.com
- */
 public class CDRom extends BaseResource {
 
     /**

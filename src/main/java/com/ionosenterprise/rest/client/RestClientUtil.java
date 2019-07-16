@@ -46,9 +46,6 @@ import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.util.Map;
 
-/**
- * @author jasmin@stackpointcloud.com
- */
 public class RestClientUtil {
 
    private HttpClient httpClient;
@@ -190,24 +187,6 @@ public class RestClientUtil {
         return null;
     }
 
-    private HttpResponse execute(HttpRequestBase request)
-           throws IOException {
-        request = userAgentHeader(request);
-
-        if (this.interceptor != null) {
-           this.interceptor.intercept(request);
-        }
-
-        return httpClient.execute(request);
-    }
-
-    private <T extends HttpUriRequest> T userAgentHeader(T request) {
-        String artifactId = getClass().getPackage().getImplementationTitle();
-        String version = getClass().getPackage().getImplementationVersion();
-        request.addHeader(HttpHeaders.USER_AGENT, artifactId + "/" + version);
-        return request;
-    }
-
     public void setInterceptor(RequestInterceptor interceptor) {
         this.interceptor = interceptor;
     }
@@ -222,5 +201,23 @@ public class RestClientUtil {
         public void setProperties(Object properties) {
          this.properties = properties;
       }
+    }
+
+    private HttpResponse execute(HttpRequestBase request)
+            throws IOException {
+        request = userAgentHeader(request);
+
+        if (this.interceptor != null) {
+            this.interceptor.intercept(request);
+        }
+
+        return httpClient.execute(request);
+    }
+
+    private <T extends HttpUriRequest> T userAgentHeader(T request) {
+        String artifactId = getClass().getPackage().getImplementationTitle();
+        String version = getClass().getPackage().getImplementationVersion();
+        request.addHeader(HttpHeaders.USER_AGENT, artifactId + "/" + version);
+        return request;
     }
 }

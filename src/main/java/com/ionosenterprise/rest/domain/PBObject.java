@@ -30,10 +30,6 @@
 
 package com.ionosenterprise.rest.domain;
 
-/**
- *
- * @author jasmin@stackpointcloud.com
- */
 public class PBObject {
 
    private String id;

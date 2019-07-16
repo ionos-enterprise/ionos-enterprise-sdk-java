@@ -26,7 +26,7 @@ public abstract class BaseTest {
 
         int counter = 120;
         for (int i = 0; i < counter; i++) {
-            RequestStatus request = ionosEnterpriseApi.getRequest().getRequestStatus(requestId);
+            RequestStatus request = ionosEnterpriseApi.getRequestApi().getRequestStatus(requestId);
             TimeUnit.SECONDS.sleep(1);
             if (request.getMetadata().getStatus().equals("DONE")) {
                 break;
@@ -39,7 +39,7 @@ public abstract class BaseTest {
     }
 
     protected static String getImageId() throws RestClientException, IOException {
-        Images images = ionosEnterpriseApi.getImage().getAllImages();
+        Images images = ionosEnterpriseApi.getImageApi().getAllImages();
         for (Image image : images.getItems()) {
             if (image.getProperties().getName().toLowerCase().contains("ubuntu".toLowerCase()) && image.getProperties().getLocation().equals("us/las")
                     && image.getProperties().getIsPublic() && image.getProperties().getImageType().equals("HDD")) {

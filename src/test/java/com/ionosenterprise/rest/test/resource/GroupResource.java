@@ -31,10 +31,6 @@ package com.ionosenterprise.rest.test.resource;
 
 import com.ionosenterprise.rest.domain.Group;
 
-/**
- *
- * @author denis@stackpointcloud.com
- */
 public class GroupResource {
     private static Group group;
     private static Group badGroup;

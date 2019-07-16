@@ -18,10 +18,6 @@ package com.ionosenterprise.rest.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author jasmin@stackpointcloud.com
- */
 public class DataCenters extends BaseResource {
 
    private List<DataCenter> items =  new ArrayList<DataCenter>();

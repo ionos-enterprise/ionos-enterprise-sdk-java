@@ -31,10 +31,6 @@ package com.ionosenterprise.rest.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-/**
- *
- * @author jasmin@stackpointcloud.com
- */
 public class DataCenter extends BaseResource {
 
     private Properties properties = new Properties();

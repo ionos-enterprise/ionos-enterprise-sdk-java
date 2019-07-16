@@ -33,10 +33,6 @@ package com.ionosenterprise.rest.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author jasmin@stackpointcloud.com
- */
 public class LoadBalancers extends BaseResource {
 
    private List<LoadBalancer> items = new ArrayList<LoadBalancer>();

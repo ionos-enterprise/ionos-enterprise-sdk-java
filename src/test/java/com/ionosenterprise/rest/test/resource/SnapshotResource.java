@@ -32,10 +32,6 @@ package com.ionosenterprise.rest.test.resource;
 import com.ionosenterprise.rest.domain.LicenceType;
 import com.ionosenterprise.rest.domain.Snapshot;
 
-/**
- *
- * @author denis@stackpointcloud.com
- */
 public class SnapshotResource {
     private static Snapshot snapshot;
     private static Snapshot editSnapshot;

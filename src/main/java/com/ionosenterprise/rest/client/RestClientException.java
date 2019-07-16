@@ -30,9 +30,7 @@
 package com.ionosenterprise.rest.client;
 
 import org.apache.http.HttpResponse;
-/**
- * @author jasmin@stackpointcloud.com
- */
+
 public class RestClientException extends Exception {
 
    private static final long serialVersionUID = -785745983831601722L;

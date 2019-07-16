@@ -29,10 +29,6 @@
  */
 package com.ionosenterprise.rest.domain;
 
-/**
- *
- * @author jasmin@stackpointcloud.com
- */
 public class FirewallRule extends BaseResource {
 
    /**

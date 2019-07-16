@@ -34,10 +34,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Date;
 
-/**
- *
- * @author jasmin@stackpointcloud.com
- */
 public class BaseResource {
 
    private String id;

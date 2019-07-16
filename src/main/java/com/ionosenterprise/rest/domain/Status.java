@@ -30,10 +30,6 @@
 
 package com.ionosenterprise.rest.domain;
 
-/**
- *
- * @author jasmin@stackpointcloud.com
- */
 public enum Status {
 
       NOSTATE, RUNNING, BLOCKED, PAUSED, SHUTDOWN, SHUTOFF, CRASHED, UNRECOGNIZED;

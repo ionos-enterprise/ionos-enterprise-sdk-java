@@ -31,10 +31,6 @@ package com.ionosenterprise.rest.test.resource;
 
 import com.ionosenterprise.rest.domain.Lan;
 
-/**
- *
- * @author denis@stackpointcloud.com
- */
 public class LanResource {
     private static Lan lan;
     private static Lan editLan;

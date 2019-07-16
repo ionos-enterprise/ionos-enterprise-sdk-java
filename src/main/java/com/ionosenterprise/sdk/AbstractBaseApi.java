@@ -33,9 +33,6 @@ package com.ionosenterprise.sdk;
 import com.ionosenterprise.rest.client.ResourcePathBuilder;
 import com.ionosenterprise.rest.client.RestClient;
 
-/**
- * @author jasmin@stackpointcloud.com
- */
 public abstract class AbstractBaseApi {
 
     protected RestClient client;

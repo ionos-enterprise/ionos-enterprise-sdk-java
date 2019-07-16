@@ -120,7 +120,7 @@ If you have set the `IONOS_ENTERPRISE_USERNAME` and `IONOS_ENTERPRISE_PASSWORD` 
 
 List all data centers:
 
-    DataCenters datacenters = ionosEnterpriseApi.getDataCenter().getAllDataCenters();
+    DataCenters datacenters = ionosEnterpriseApi.getDataCenterApi().getAllDataCenters();
 
 This will list all data centers you have under your account.
 
@@ -138,7 +138,7 @@ This code example shows how to programmatically create a data center:
     datacenter.getProperties().setLocation("us/las");
     datacenter.getProperties().setDescription("SDK test data center description");
 
-    DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(datacenter);
+    DataCenter newDatacenter = ionosEnterpriseApi.getDataCenterApi().createDataCenter(datacenter);
 
 ### How to: Delete a Data Center
 
@@ -146,7 +146,7 @@ Use caution when deleting a data center. Deleting a data center will **destroy**
 
 This example deletes the data center created above:
 
-    ionosEnterpriseApi.getDataCenter().deleteDataCenter(dataCenterId);
+    ionosEnterpriseApi.getDataCenterApi().deleteDataCenter(dataCenterId);
 
 ### How To: Create Data Center with Multiple Resources
 
@@ -201,7 +201,7 @@ This example will create a composite data center with an associated server, NIC,
     servers.setItems(serversList);
     datacenter.getEntities().setServers(servers);
 
-    DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(datacenter);
+    DataCenter newDatacenter = ionosEnterpriseApi.getDataCenterApi().createDataCenter(datacenter);
 
 ### How to: Create a Server
 
@@ -213,7 +213,7 @@ This example creates a server and assigns it an OS, cores, and memory. We urge y
     server.getProperties().setCores(2);
     server.getProperties().setCpuFamily("AMD_OPTERON");
 
-    Server newServer = ionosEnterpriseApi.getServer().createServer(dataCenterId, server);
+    Server newServer = ionosEnterpriseApi.getServerApi().createServer(dataCenterId, server);
 
 One of the unique features of the 1&1 IONOS Enterprise platform is that it allows you to define your own settings for cores, memory, and disk size without being tied to a particular instance size.  
 
@@ -228,7 +228,7 @@ This example updates cores and memory:
     object.setRam(1024);
     object.setCores(4);
 
-    Server updatedServer = ionosEnterpriseApi.getServer().updateServer(dataCenterId, serverId, object);
+    Server updatedServer = ionosEnterpriseApi.getServerApi().updateServer(dataCenterId, serverId, object);
 
 ### How to: Attach and Detach a Volume
 
@@ -243,13 +243,13 @@ This example attaches a volume, then detaches it from a server:
     volume.getProperties().setLicenceType("LINUX");
     volume.getProperties().setType("HDD");
 
-    Volume newVolume = ionosEnterpriseApi.getVolume().createVolume(dataCenterId, volume);
+    Volume newVolume = ionosEnterpriseApi.getVolumeApi().createVolume(dataCenterId, volume);
 
     // Then we are going to attach the new volume to a server.
-    Volume attachedVolume = ionosEnterpriseApi.getVolume().attachVolume(dataCenterId, serverId, volumeId);
+    Volume attachedVolume = ionosEnterpriseApi.getVolumeApi().attachVolume(dataCenterId, serverId, volumeId);
 
     // Here we are going to detach it from the server.
-    ionosEnterpriseApi.getVolume().detachVolume(dataCenterId, serverId, volumeId);
+    ionosEnterpriseApi.getVolumeApi().detachVolume(dataCenterId, serverId, volumeId);
 
 ### How to: List Data Centers, Servers, and Volumes
 
@@ -257,11 +257,11 @@ You can pull various resource lists from your data centers using the SDK for Jav
 
 This example retrieves these three list types:
 
-    DataCenters datacenters = ionosEnterpriseApi.getDataCenter().getAllDataCenters();
+    DataCenters datacenters = ionosEnterpriseApi.getDataCenterApi().getAllDataCenters();
 
-    Servers servers = ionosEnterpriseApi.getServer().getAllServers(dataCenterId);
+    Servers servers = ionosEnterpriseApi.getServerApi().getAllServers(dataCenterId);
 
-    Volumes volumes = ionosEnterpriseApi.getVolume().getAllVolumes(dataCenterId);
+    Volumes volumes = ionosEnterpriseApi.getVolumeApi().getAllVolumes(dataCenterId);
 
 ### How to: Create Network Interfaces
 
@@ -276,7 +276,7 @@ This example adds a second NIC to an existing server:
 
     nic.getEntities().setFirewallrules(null);
 
-    Nic newNic = ionosEnterpriseApi.getNic().createNic(dataCenterId, serverId, nic);
+    Nic newNic = ionosEnterpriseApi.getNicApi().createNic(dataCenterId, serverId, nic);
 
 Note: This function will result in the server being restarted.
 
@@ -2239,7 +2239,7 @@ This is an example of a `waitTillProvisioned` method which can be used between d
 
             int counter = 120;
             for (int i = 0; i < counter; i++) {
-                RequestStatus request = ionosEnterpriseApi.getRequest().getRequestStatus(requestId);
+                RequestStatus request = ionosEnterpriseApi.getRequestApi().getRequestStatus(requestId);
                 TimeUnit.SECONDS.sleep(1);
                 if (request.getMetadata().getStatus().equals("DONE")) {
                     break;
@@ -2279,7 +2279,7 @@ Using the above `waitTillProvisioned` method and individual components, a fully 
             datacenter.getProperties().setName("Java SDK Data Center");
             datacenter.getProperties().setLocation("us/las");
             datacenter.getProperties().setDescription("Java SDK data center");
-            DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(datacenter);
+            DataCenter newDatacenter = ionosEnterpriseApi.getDataCenterApi().createDataCenter(datacenter);
 
             waitTillProvisioned(newDatacenter.getRequestId());
             String dataCenterId = newDatacenter.getId();
@@ -2288,7 +2288,7 @@ Using the above `waitTillProvisioned` method and individual components, a fully 
             Lan lan = new Lan();
             lan.getProperties().setName("Public LAN");
             lan.getProperties().setIsPublic(Boolean.TRUE);
-            Lan newLan = ionosEnterpriseApi.getLan().createLan(dataCenterId, lan);
+            Lan newLan = ionosEnterpriseApi.getLanApi().createLan(dataCenterId, lan);
 
             waitTillProvisioned(newLan.getRequestId());
             String lanId = newLan.getId();
@@ -2298,7 +2298,7 @@ Using the above `waitTillProvisioned` method and individual components, a fully 
             server.getProperties().setName("Java SDK Server");
             server.getProperties().setCores(2);
             server.getProperties().setRam(4096);
-            Server newServer = ionosEnterpriseApi.getServer().createServer(dataCenterId, server);
+            Server newServer = ionosEnterpriseApi.getServerApi().createServer(dataCenterId, server);
 
             waitTillProvisioned(newServer.getRequestId());
             String serverId = newServer.getId();
@@ -2308,7 +2308,7 @@ Using the above `waitTillProvisioned` method and individual components, a fully 
             nic.getProperties().setName("Public NIC");
             nic.getProperties().setLan(lanId);
             nic.getProperties().setNat(Boolean.FALSE);
-            Nic newNic = ionosEnterpriseApi.getNic().createNic(dataCenterId, serverId, nic);
+            Nic newNic = ionosEnterpriseApi.getNicApi().createNic(dataCenterId, serverId, nic);
 
             waitTillProvisioned(newNic.getRequestId());
 
@@ -2322,13 +2322,13 @@ Using the above `waitTillProvisioned` method and individual components, a fully 
             volume.getProperties().setImage("0d4f97f0-1689-11e7-97ce-525400f64d8d");
             volume.getProperties().setType("HDD");
             volume.getProperties().setSshKeys(sshkeys);
-            Volume newVolume = ionosEnterpriseApi.getVolume().createVolume(dataCenterId, volume);
+            Volume newVolume = ionosEnterpriseApi.getVolumeApi().createVolume(dataCenterId, volume);
 
             waitTillProvisioned(newVolume.getRequestId());
             String volumeId = newVolume.getId();
 
             // Attach volume
-            Volume attachedVolume = ionosEnterpriseApi.getVolume().attachVolume(dataCenterId, serverId, volumeId);
+            Volume attachedVolume = ionosEnterpriseApi.getVolumeApi().attachVolume(dataCenterId, serverId, volumeId);
             waitTillProvisioned(attachedVolume.getRequestId());
 
             System.out.println(newDatacenter.getId());
@@ -2409,11 +2409,11 @@ Using the above `waitTillProvisioned` method and individual components, a fully 
             servers.setItems(serversList);
             datacenter.getEntities().setServers(servers);
 
-            DataCenter newDatacenter = ionosEnterpriseApi.getDataCenter().createDataCenter(datacenter);
+            DataCenter newDatacenter = ionosEnterpriseApi.getDataCenterApi().createDataCenter(datacenter);
             waitTillProvisioned(newDatacenter.getRequestId());
             String dataCenterId = newDatacenter.getId();
 
-            Lan updatedLan = ionosEnterpriseApi.getLan().updateLan(dataCenterId, "1", Boolean.TRUE);
+            Lan updatedLan = ionosEnterpriseApi.getLanApi().updateLan(dataCenterId, "1", Boolean.TRUE);
             waitTillProvisioned(updatedLan.getRequestId());
 
             System.out.println(newDatacenter.getId());

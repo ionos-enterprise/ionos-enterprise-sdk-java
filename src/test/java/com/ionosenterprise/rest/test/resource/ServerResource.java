@@ -31,10 +31,6 @@ package com.ionosenterprise.rest.test.resource;
 
 import com.ionosenterprise.rest.domain.Server;
 
-/**
- *
- * @author denis@stackpointcloud.com
- */
 public class ServerResource {
     private static Server server;
     private static Server editServer;

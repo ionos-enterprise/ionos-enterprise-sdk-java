@@ -32,9 +32,6 @@ package com.ionosenterprise.rest.test.resource;
 import com.ionosenterprise.rest.domain.FirewallRule;
 import com.ionosenterprise.rest.domain.Protocol;
 
-/**
- * @author denis@stackpointcloud.com
- */
 public class FirewallRuleResource {
     private static FirewallRule firewallRule;
     private static FirewallRule badFirewallRule;

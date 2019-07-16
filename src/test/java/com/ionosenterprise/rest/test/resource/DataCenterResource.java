@@ -31,10 +31,6 @@ package com.ionosenterprise.rest.test.resource;
 
 import com.ionosenterprise.rest.domain.*;
 
-/**
- *
- * @author denis@stackpointcloud.com
- */
 public class DataCenterResource {
 
     private static DataCenter dataCenter;
