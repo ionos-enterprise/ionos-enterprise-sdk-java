@@ -20,7 +20,7 @@ import java.util.List;
 
 public class DataCenters extends BaseResource {
 
-   private List<DataCenter> items =  new ArrayList<DataCenter>();
+   private List<DataCenter> items =  new ArrayList<>();
 
    /**
     * @return the items

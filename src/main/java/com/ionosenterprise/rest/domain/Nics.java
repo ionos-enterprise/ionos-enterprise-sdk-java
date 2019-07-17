@@ -35,7 +35,7 @@ import java.util.List;
 
 public class Nics extends BaseResource {
 
-    private List<Nic> items = new ArrayList<Nic>();
+    private List<Nic> items = new ArrayList<>();
 
     /**
      * @return the items

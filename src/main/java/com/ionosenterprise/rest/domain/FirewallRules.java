@@ -34,7 +34,7 @@ import java.util.List;
 
 public class FirewallRules extends BaseResource {
 
-   private List<FirewallRule> items = new ArrayList<FirewallRule>();
+   private List<FirewallRule> items = new ArrayList<>();
 
    /**
     * @return the items

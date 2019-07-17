@@ -33,6 +33,7 @@ package com.ionosenterprise.sdk;
 import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.IPBlocks;
+import com.ionosenterprise.util.Constant;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class IPBlockApi extends AbstractLabelApi {
    }
 
    protected String getPathFormat() {
-      return "ipblocks";
+      return Constant.IPBLOCKS_RESOURCE_PATH_TEMPLATE;
    }
 
    /**

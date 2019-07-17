@@ -35,6 +35,7 @@ import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.PBObject;
 import com.ionosenterprise.rest.domain.SingleSignOnUrl;
 import com.ionosenterprise.rest.domain.Users;
+import com.ionosenterprise.util.Constant;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
@@ -48,7 +49,7 @@ public class UserApi extends AbstractBaseApi {
     }
 
     protected String getPathFormat() {
-        return "um/users";
+        return Constant.USERS_RESOURCE_PATH_TEMPLATE;
     }
 
     /**

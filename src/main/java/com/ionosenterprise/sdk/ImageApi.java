@@ -33,6 +33,7 @@ package com.ionosenterprise.sdk;
 import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Images;
+import com.ionosenterprise.util.Constant;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
@@ -41,12 +42,14 @@ import java.util.Collections;
 
 public class ImageApi extends AbstractBaseApi {
 
+
+
     public ImageApi(RestClient client) {
         super(client);
     }
 
     protected String getPathFormat() {
-        return "images";
+        return Constant.IMAGES_RESOURCE_PATH_TEMPLATE;
     }
 
     /**

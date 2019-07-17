@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Shares extends BaseResource {
-    private List<Share> items = new ArrayList<Share>();
+    private List<Share> items = new ArrayList<>();
 
     /**
      * @return the items

@@ -160,7 +160,7 @@ public class Volume extends BaseResource {
         public void setSshKeys(List<String> sshKeys) {
 
             if (this.sshKeys == null) {
-                this.sshKeys = new ArrayList<String>();
+                this.sshKeys = new ArrayList<>();
             }
             this.sshKeys = sshKeys;
         }

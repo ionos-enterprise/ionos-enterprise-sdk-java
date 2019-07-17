@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Groups extends BaseResource {
-    private List<Group> items =  new ArrayList<Group>();
+    private List<Group> items =  new ArrayList<>();
 
     public List<Group> getItems() {
         return items;

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class S3Keys extends BaseResource {
 
-    private List<S3Key> items = new ArrayList<S3Key>();
+    private List<S3Key> items = new ArrayList<>();
 
     /**
      * @return the items

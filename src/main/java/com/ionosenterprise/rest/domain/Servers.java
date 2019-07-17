@@ -35,7 +35,7 @@ import java.util.List;
 
 public class Servers extends BaseResource {
 
-    public List<Server> items = new ArrayList<Server>();
+    public List<Server> items = new ArrayList<>();
 
     /**
      * @return the items

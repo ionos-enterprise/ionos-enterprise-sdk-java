@@ -34,6 +34,7 @@ import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.RequestStatus;
 import com.ionosenterprise.rest.domain.Requests;
+import com.ionosenterprise.util.Constant;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -45,7 +46,7 @@ public class RequestApi extends AbstractBaseApi {
     }
 
     protected String getPathFormat() {
-        return "requests";
+        return Constant.REQUESTS_RESOURCE_PATH_TEMPLATE;
     }
 
     /**

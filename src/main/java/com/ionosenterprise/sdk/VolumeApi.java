@@ -34,6 +34,7 @@ import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.PBObject;
 import com.ionosenterprise.rest.domain.Volumes;
+import com.ionosenterprise.util.Constant;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
@@ -47,7 +48,7 @@ public class VolumeApi extends AbstractLabelApi {
    }
 
    protected String getPathFormat() {
-      return "datacenters/%s/volumes";
+      return Constant.VOLUMES_RESOURCE_PATH_TEMPLATE;
    }
 
    /**

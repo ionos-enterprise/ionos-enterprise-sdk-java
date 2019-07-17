@@ -3,6 +3,7 @@ package com.ionosenterprise.sdk;
 import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Labels;
+import com.ionosenterprise.util.Constant;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -14,7 +15,7 @@ public class LabelApi extends AbstractBaseApi {
     }
 
     protected String getPathFormat() {
-        return "labels";
+        return Constant.LABELS_RESOURCE_PATH_TEMPLATE;
     }
 
     /**

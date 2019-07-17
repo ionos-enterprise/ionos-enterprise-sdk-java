@@ -35,7 +35,7 @@ import java.util.List;
 
 public class Snapshots extends BaseResource {
    
-      private List<Snapshot> items = new ArrayList<Snapshot>();
+      private List<Snapshot> items = new ArrayList<>();
 
    /**
     * @return the items

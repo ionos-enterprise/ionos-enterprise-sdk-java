@@ -35,7 +35,7 @@ import java.util.List;
 
 public class Requests extends BaseResource {
 
-   public List<Request> items = new ArrayList<Request>();
+   public List<Request> items = new ArrayList<>();
 
    /**
     * @return the items

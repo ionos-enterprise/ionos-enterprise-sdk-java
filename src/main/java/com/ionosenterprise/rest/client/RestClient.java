@@ -32,6 +32,7 @@ package com.ionosenterprise.rest.client;
 import com.ionosenterprise.rest.domain.PBObject;
 import org.apache.commons.io.Charsets;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.*;
@@ -128,8 +129,8 @@ public class RestClient {
         HttpDelete delete = restClientUtil.newHttpDelete(path);
         HttpResponse response = restClientUtil.execute(delete, expectedStatus);
         consume(response);
-        return response.getFirstHeader("Location") != null
-                ? response.getFirstHeader("Location").getValue() : null;
+        return response.getFirstHeader(HttpHeaders.LOCATION) != null
+                ? response.getFirstHeader(HttpHeaders.LOCATION).getValue() : null;
     }
 
     public <T> T update(String path, Object object, Class<T> entityClass, int expectedStatus)

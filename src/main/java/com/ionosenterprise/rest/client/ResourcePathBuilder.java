@@ -1,9 +1,11 @@
 package com.ionosenterprise.rest.client;
 
-public class ResourcePathBuilder {
+import com.ionosenterprise.util.Constant;
 
-    private static final String IONOS_ENTERPRISE_API_URL = "https://api.ionos.com/cloudapi/v5/";
-    private static final String DEPTH_10 = "?depth=10";
+import static com.ionosenterprise.util.Constant.DEPTH_10;
+import static com.ionosenterprise.util.Constant.IONOS_ENTERPRISE_API_URL;
+
+public class ResourcePathBuilder {
 
     private String resourcePath;
     private String pathSegment = "";
@@ -45,13 +47,13 @@ public class ResourcePathBuilder {
 
     private String getUrlBase() {
         String urlBase;
-        if (System.getenv("IONOS_ENTERPRISE_API_URL") != null) {
-            urlBase = System.getenv("IONOS_ENTERPRISE_API_URL");
+        if (System.getenv(IONOS_ENTERPRISE_API_URL) != null) {
+            urlBase = System.getenv(IONOS_ENTERPRISE_API_URL);
             if (!urlBase.endsWith("/")) {
                 urlBase += ("/");
             }
         } else {
-            urlBase = IONOS_ENTERPRISE_API_URL;
+            urlBase = Constant.IONOS_ENTERPRISE_API_URL_DEFAULT_VALUE;
         }
 
         return urlBase;

@@ -75,7 +75,7 @@ import java.util.List;
           */
          public void setIps(List<String> ips) {
              if (ips == null) {
-                 ips = new ArrayList<String>();
+                 ips = new ArrayList<>();
              }
              this.ips = ips;
          }

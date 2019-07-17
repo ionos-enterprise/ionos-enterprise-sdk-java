@@ -48,34 +48,36 @@ import java.util.Map;
 
 public class RestClientUtil {
 
-   private HttpClient httpClient;
-   private ObjectMapper mapper;
-   private RequestInterceptor interceptor;
+    private static final String SET_REQUEST_ID_METHOD_NAME = "setRequestId";
 
-   public RestClientUtil(HttpClient httpClient, RequestInterceptor interceptor, ObjectMapper mapper){
-       this.httpClient = httpClient;
-       this.interceptor = interceptor;
-       this.mapper = mapper;
-   }
+    private HttpClient httpClient;
+    private ObjectMapper mapper;
+    private RequestInterceptor interceptor;
 
-   public <T> T bindObject(HttpResponse response, Class<T> entityClass) throws IOException, NoSuchMethodException,
-           IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public RestClientUtil(HttpClient httpClient, RequestInterceptor interceptor, ObjectMapper mapper){
+        this.httpClient = httpClient;
+        this.interceptor = interceptor;
+        this.mapper = mapper;
+    }
 
-       String source = contentAsString(response);
-       if (source == null) {
-          return null;
-       }
+    public <T> T bindObject(HttpResponse response, Class<T> entityClass) throws IOException, NoSuchMethodException,
+            IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-       T toReturn = mapper.readValue(source, entityClass);
-       String location = response.getFirstHeader("Location") != null
-               ? response.getFirstHeader("Location").getValue() : null;
-       Method m = toReturn.getClass().getMethod("setRequestId", String.class);
-       if (m != null) {
-          m.invoke(toReturn, location);
-       }
+        String source = contentAsString(response);
+        if (source == null) {
+           return null;
+        }
 
-       return toReturn;
-   }
+        T toReturn = mapper.readValue(source, entityClass);
+        String location = response.getFirstHeader(HttpHeaders.LOCATION) != null
+                ? response.getFirstHeader(HttpHeaders.LOCATION).getValue() : null;
+        Method m = toReturn.getClass().getMethod(SET_REQUEST_ID_METHOD_NAME, String.class);
+        if (m != null) {
+           m.invoke(toReturn, location);
+        }
+
+        return toReturn;
+    }
 
     public <T> T bindObject(String source, Class<T> entityClass) throws IOException {
         return mapper.readValue(source, entityClass);

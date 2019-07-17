@@ -35,7 +35,7 @@ import java.util.List;
 
 public class Locations extends BaseResource {
 
-    private List<Location> items = new ArrayList<Location>();
+    private List<Location> items = new ArrayList<>();
 
     /**
      * @return the items

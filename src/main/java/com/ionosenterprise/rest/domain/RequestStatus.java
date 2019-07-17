@@ -101,7 +101,7 @@ public class RequestStatus {
       private String status;
       private String message;
       private String etag;
-      private List<Data> targets = new ArrayList<Data>();
+      private List<Data> targets = new ArrayList<>();
 
       /**
        * @return the status

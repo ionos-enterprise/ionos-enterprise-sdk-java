@@ -35,7 +35,7 @@ import java.util.List;
 
 public class IPBlocks extends BaseResource {
 
-   private List<IPBlock> items = new ArrayList<IPBlock>();
+   private List<IPBlock> items = new ArrayList<>();
 
    /**
     * @return the items

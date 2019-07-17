@@ -33,6 +33,7 @@ package com.ionosenterprise.sdk;
 import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.FirewallRules;
+import com.ionosenterprise.util.Constant;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class FirewallRuleApi extends AbstractBaseApi {
     }
 
     protected String getPathFormat() {
-        return "datacenters/%s/servers/%s/nics/%s/firewallrules";
+        return Constant.FIREWALLRULES_RESOURCE_PATH_TEMPLATE;
     }
 
     /**

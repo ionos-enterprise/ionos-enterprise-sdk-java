@@ -35,7 +35,7 @@ import java.util.List;
 
 public class LoadBalancers extends BaseResource {
 
-   private List<LoadBalancer> items = new ArrayList<LoadBalancer>();
+   private List<LoadBalancer> items = new ArrayList<>();
 
    /**
     * @return the items

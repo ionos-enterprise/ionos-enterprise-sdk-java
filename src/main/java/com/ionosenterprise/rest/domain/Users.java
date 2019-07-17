@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Users extends BaseResource {
-    private List<User> items =  new ArrayList<User>();
+    private List<User> items =  new ArrayList<>();
 
     public List<User> getItems() {
         return items;

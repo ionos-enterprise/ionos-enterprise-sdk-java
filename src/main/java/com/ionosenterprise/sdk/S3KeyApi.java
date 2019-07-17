@@ -3,6 +3,7 @@ package com.ionosenterprise.sdk;
 import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.S3Keys;
+import com.ionosenterprise.util.Constant;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class S3KeyApi extends AbstractBaseApi {
     }
 
     protected String getPathFormat() {
-        return "um/users/%s/s3keys";
+        return Constant.S3KEY_RESOURCE_PATH_TEMPLATE;
     }
 
     /**

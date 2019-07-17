@@ -34,6 +34,7 @@ import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Nics;
 import com.ionosenterprise.rest.domain.PBObject;
+import com.ionosenterprise.util.Constant;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
@@ -47,7 +48,7 @@ public class NicApi extends AbstractBaseApi {
     }
 
     protected String getPathFormat() {
-        return "datacenters/%s/servers/%s/nics";
+        return Constant.NICS_RESOURCE_PATH_TEMPLATE;
     }
 
     /**

@@ -36,6 +36,7 @@ import com.ionosenterprise.rest.domain.CDRom;
 import com.ionosenterprise.rest.domain.CDRoms;
 import com.ionosenterprise.rest.domain.PBObject;
 import com.ionosenterprise.rest.domain.Servers;
+import com.ionosenterprise.util.Constant;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
@@ -49,7 +50,7 @@ public class ServerApi extends AbstractLabelApi {
     }
 
     protected String getPathFormat() {
-        return "datacenters/%s/servers";
+        return Constant.SERVERS_RESOURCE_PATH_TEMPLATE;
     }
 
     /**

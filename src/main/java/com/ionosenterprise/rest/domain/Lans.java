@@ -35,7 +35,7 @@ import java.util.List;
 
 public class Lans extends BaseResource {
 
-   private List<Lan> items = new ArrayList<Lan>();
+   private List<Lan> items = new ArrayList<>();
 
    /**
     * @return the items

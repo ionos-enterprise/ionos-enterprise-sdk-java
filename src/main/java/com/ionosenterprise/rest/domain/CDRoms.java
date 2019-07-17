@@ -34,7 +34,7 @@ import java.util.List;
 
 public class CDRoms extends BaseResource {
 
-   private List<CDRom> items = new ArrayList<CDRom>();
+   private List<CDRom> items = new ArrayList<>();
 
    /**
     * @return the items

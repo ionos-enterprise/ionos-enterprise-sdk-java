@@ -33,6 +33,7 @@ package com.ionosenterprise.sdk;
 import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Snapshots;
+import com.ionosenterprise.util.Constant;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
@@ -48,7 +49,7 @@ public class SnapshotApi extends AbstractLabelApi {
     }
 
     protected String getPathFormat() {
-        return "snapshots";
+        return Constant.SNAPSHOTS_RESOURCE_PATH_TEMPLATE;
     }
 
     /**

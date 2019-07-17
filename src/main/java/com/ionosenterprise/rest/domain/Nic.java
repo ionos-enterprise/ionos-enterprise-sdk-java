@@ -67,7 +67,7 @@ public class Nic extends BaseResource {
 
       private String name;
       private String mac;
-      private List<String> ips = new ArrayList<String>();
+      private List<String> ips = new ArrayList<>();
       private boolean dhcp;
       private String lan;
       private Boolean nat;

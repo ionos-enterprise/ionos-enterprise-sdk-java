@@ -35,12 +35,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ionosenterprise.rest.client.RequestInterceptor;
 import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientUtil;
+import com.ionosenterprise.util.Constant;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 public class IonosEnterpriseApi {
+
+    private static final String BASIC_AUTHORIZATION_HEADER_PREFIX = "Basic ";
 
     private RestClient client;
 
@@ -259,10 +263,10 @@ public class IonosEnterpriseApi {
             public void intercept(HttpRequestBase request) {
                 String authorizationCredentials = credentials;
                 if (authorizationCredentials == null) {
-                    if (System.getenv("IONOS_ENTERPRISE_USERNAME") != null
-                            && System.getenv("IONOS_ENTERPRISE_PASSWORD") != null) {
-                        byte[] bytesEncoded = Base64.encodeBase64((System.getenv("IONOS_ENTERPRISE_USERNAME")
-                                + ":" + System.getenv("IONOS_ENTERPRISE_PASSWORD")).getBytes());
+                    if (System.getenv(Constant.IONOS_ENTERPRISE_USERNAME) != null
+                            && System.getenv(Constant.IONOS_ENTERPRISE_PASSWORD) != null) {
+                        byte[] bytesEncoded = Base64.encodeBase64((System.getenv(Constant.IONOS_ENTERPRISE_USERNAME)
+                                + ":" + System.getenv(Constant.IONOS_ENTERPRISE_PASSWORD)).getBytes());
                         authorizationCredentials = new String(bytesEncoded);
                     }
                 }
@@ -275,7 +279,7 @@ public class IonosEnterpriseApi {
                     }
                 }
 
-                request.addHeader("Authorization", "Basic ".concat(authorizationCredentials));
+                request.addHeader(HttpHeaders.AUTHORIZATION, BASIC_AUTHORIZATION_HEADER_PREFIX.concat(authorizationCredentials));
             }
         };
     }

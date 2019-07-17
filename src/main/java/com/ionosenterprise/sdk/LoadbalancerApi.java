@@ -34,6 +34,7 @@ import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.LoadBalancer;
 import com.ionosenterprise.rest.domain.LoadBalancers;
+import com.ionosenterprise.util.Constant;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
@@ -42,12 +43,14 @@ import java.util.Collections;
 
 public class LoadbalancerApi extends AbstractBaseApi {
 
+
+
     public LoadbalancerApi(RestClient client) {
         super(client);
     }
 
     protected String getPathFormat() {
-        return "datacenters/%s/loadbalancers";
+        return Constant.LOADBALANCERS_RESOURCE_PATH_TEMPLATE;
     }
 
     /**

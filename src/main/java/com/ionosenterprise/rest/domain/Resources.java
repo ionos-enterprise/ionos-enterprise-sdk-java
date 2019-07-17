@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Resources extends BaseResource {
-    private List<Resource> items =  new ArrayList<Resource>();
+    private List<Resource> items =  new ArrayList<>();
 
     public List<Resource> getItems() {
         return items;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Labels extends BaseResource {
-    private List<Label> items =  new ArrayList<Label>();
+    private List<Label> items =  new ArrayList<>();
 
     public List<Label> getItems() {
         return items;

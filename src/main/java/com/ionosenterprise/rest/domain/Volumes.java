@@ -40,7 +40,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Volumes extends BaseResource {
 
-   private List<Volume> items = new ArrayList<Volume>();
+   private List<Volume> items = new ArrayList<>();
 
    /**
     * @return the items

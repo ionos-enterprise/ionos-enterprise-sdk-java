@@ -34,7 +34,7 @@ import java.util.List;
 
 public class Images extends BaseResource {
 
-   private List<Image> items = new ArrayList<Image>();
+   private List<Image> items = new ArrayList<>();
 
    /**
     * @return the items

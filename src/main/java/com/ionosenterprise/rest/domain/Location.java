@@ -62,7 +62,7 @@ public class Location extends BaseResource {
 
         public List<String> getFeatures() {
             if (features == null) {
-                features = new ArrayList<String>();
+                features = new ArrayList<>();
             }
             return features;
         }

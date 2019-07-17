@@ -5,6 +5,7 @@ import com.ionosenterprise.rest.domain.Image;
 import com.ionosenterprise.rest.domain.Images;
 import com.ionosenterprise.rest.domain.RequestStatus;
 import com.ionosenterprise.sdk.IonosEnterpriseApi;
+import com.ionosenterprise.util.Constant;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -16,8 +17,8 @@ public abstract class BaseTest {
     static {
         ionosEnterpriseApi = new IonosEnterpriseApi();
         ionosEnterpriseApi.setCredentials(
-                System.getenv("IONOS_ENTERPRISE_USERNAME"),
-                System.getenv("IONOS_ENTERPRISE_PASSWORD"));
+                System.getenv(Constant.IONOS_ENTERPRISE_USERNAME),
+                System.getenv(Constant.IONOS_ENTERPRISE_PASSWORD));
 
     }
 
@@ -61,7 +62,7 @@ public abstract class BaseTest {
             ionosEnterpriseApi = new IonosEnterpriseApi();
         }
         ionosEnterpriseApi.setCredentials(
-                System.getenv("IONOS_ENTERPRISE_USERNAME"),
-                System.getenv("IONOS_ENTERPRISE_PASSWORD"));
+                System.getenv(Constant.IONOS_ENTERPRISE_USERNAME),
+                System.getenv(Constant.IONOS_ENTERPRISE_PASSWORD));
     }
 }

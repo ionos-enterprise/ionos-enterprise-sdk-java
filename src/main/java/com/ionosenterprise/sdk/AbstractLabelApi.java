@@ -10,9 +10,9 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 
-public abstract class AbstractLabelApi extends AbstractBaseApi {
+import static com.ionosenterprise.util.Constant.LABELS_PATH_SEGMENT;
 
-    private static final String LABELS_PATH_SEGMENT = "/labels";
+public abstract class AbstractLabelApi extends AbstractBaseApi {
 
     public AbstractLabelApi(RestClient client) {
         super(client);

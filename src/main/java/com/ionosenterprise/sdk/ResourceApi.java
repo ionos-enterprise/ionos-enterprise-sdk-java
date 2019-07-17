@@ -33,6 +33,7 @@ package com.ionosenterprise.sdk;
 import com.ionosenterprise.rest.client.RestClient;
 import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Resources;
+import com.ionosenterprise.util.Constant;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -44,7 +45,7 @@ public class ResourceApi extends AbstractBaseApi {
     }
 
     protected String getPathFormat() {
-        return "um/resources";
+        return Constant.RESOURCES_RESOURCE_PATH_TEMPLATE;
     }
 
     /**
