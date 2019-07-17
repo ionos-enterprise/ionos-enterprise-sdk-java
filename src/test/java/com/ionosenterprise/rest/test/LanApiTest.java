@@ -134,9 +134,9 @@ public class LanApiTest extends BaseTest {
         String server1Id = newServer1.getId();
 
         IPBlock ipb = IpBlockResource.getIpBlock();
-        ipb.getProperties().setSize(1);
         IPBlock iPBlock = ionosEnterpriseApi.getIpBlockApi().createIPBlock(ipb);
         assertNotNull(iPBlock);
+        waitTillProvisioned(iPBlock.getRequestId());
         ipBlockId = iPBlock.getId();
 
         Nic nic = NicResource.getNicForLanIdAndIPBlock(lanId, iPBlock);
