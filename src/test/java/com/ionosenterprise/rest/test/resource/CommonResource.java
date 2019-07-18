@@ -30,9 +30,14 @@
 package com.ionosenterprise.rest.test.resource;
 
 public class CommonResource {
-    private  static String badId = "00000000-0000-0000-0000-000000000000";
+    private static String badId = "00000000-0000-0000-0000-000000000000";
+    private static String badLocation = "00/00";
 
     public static String getBadId(){
-        return  badId;
+        return badId;
+    }
+
+    public static String getBadLocation() {
+        return badLocation;
     }
 }
