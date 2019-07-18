@@ -42,11 +42,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-import java.util.logging.Logger;
-
 public class IonosEnterpriseApi {
-
-    private static final Logger LOGGER = Logger.getLogger(IonosEnterpriseApi.class.getName());
 
     private static final String BASIC_AUTHORIZATION_HEADER_PREFIX = "Basic ";
 
@@ -248,7 +244,7 @@ public class IonosEnterpriseApi {
         byte[] bytesEncoded = Base64.encodeBase64((username + ":" + password).getBytes());
 
         String credentials = new String(bytesEncoded);
-        LOGGER.info("!!!!!!! CREDENTIALS !!!!!!!!!!!" + credentials);
+
         RequestInterceptor authorize = getAuthorizeRequestInterceptor(credentials);
         client.setHttpClientInterceptor(authorize);
     }

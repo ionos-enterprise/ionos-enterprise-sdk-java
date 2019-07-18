@@ -37,15 +37,12 @@ import org.apache.http.HttpStatus;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class LocationApiTest extends BaseTest {
-
-    private static final Logger LOGGER = Logger.getLogger(LocationApiTest.class.getName());
 
     @Test
     public void listLocations() throws RestClientException, IOException {
@@ -73,8 +70,6 @@ public class LocationApiTest extends BaseTest {
         try {
             ionosEnterpriseApi.getLocationApi().getLocation(CommonResource.getBadLocation());
         } catch (RestClientException ex) {
-            LOGGER.info(ex.getLocalizedMessage());
-            LOGGER.info(ex.getMessage());
             assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
     }
