@@ -4,7 +4,7 @@
     <groupId>com.ionosenterprise.rest.client</groupId>
     <artifactId>ionos-enterprise-sdk-java</artifactId>
     <packaging>jar</packaging>
-    <version>5.0.0-SNAPSHOT</version>
+    <version>5.0.0</version>
     <name>ionos-enterprise-sdk-java</name>
     <url>https://github.com/ionos-enterprise/ionos-enterprise-sdk-java</url>
 
