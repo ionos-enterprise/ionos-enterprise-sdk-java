@@ -244,6 +244,7 @@ public class IonosEnterpriseApi {
         byte[] bytesEncoded = Base64.encodeBase64((username + ":" + password).getBytes());
 
         String credentials = new String(bytesEncoded);
+
         RequestInterceptor authorize = getAuthorizeRequestInterceptor(credentials);
         client.setHttpClientInterceptor(authorize);
     }

@@ -68,7 +68,7 @@ public class LocationApiTest extends BaseTest {
     @Test
     public void getLocationFail() throws IOException {
         try {
-            ionosEnterpriseApi.getLocationApi().getLocation(CommonResource.getBadId());
+            ionosEnterpriseApi.getLocationApi().getLocation(CommonResource.getBadLocation());
         } catch (RestClientException ex) {
             assertEquals(ex.response().getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
         }
