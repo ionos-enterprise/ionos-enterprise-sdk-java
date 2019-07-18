@@ -33,16 +33,20 @@ import com.ionosenterprise.rest.client.RestClientException;
 import com.ionosenterprise.rest.domain.Location;
 import com.ionosenterprise.rest.domain.Locations;
 import com.ionosenterprise.rest.test.resource.CommonResource;
+import com.ionosenterprise.util.Constant;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class LocationApiTest extends BaseTest {
+
+    private static final Logger LOGGER = Logger.getLogger(LocationApiTest.class.getName());
 
     @Test
     public void listLocations() throws RestClientException, IOException {
@@ -67,6 +71,8 @@ public class LocationApiTest extends BaseTest {
 
     @Test
     public void getLocationFail() throws IOException {
+        LOGGER.info(System.getenv(Constant.IONOS_ENTERPRISE_USERNAME));
+        LOGGER.info(System.getenv(Constant.IONOS_ENTERPRISE_PASSWORD));
         try {
             ionosEnterpriseApi.getLocationApi().getLocation(CommonResource.getBadLocation());
         } catch (RestClientException ex) {
