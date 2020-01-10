@@ -1,7 +1,7 @@
 # SDK for Java
 
-Version: **ionos-enterprise-sdk-java v5.0.0**
-Legacy: **v4.1.0 v4.0.0**
+Version: **ionos-enterprise-sdk-java v5.1.0**
+Legacy: **v5.0.0 v4.1.0 v4.0.0**
 
 ## Table of Contents
 
