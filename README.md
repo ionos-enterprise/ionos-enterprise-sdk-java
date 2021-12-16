@@ -1,3 +1,8 @@
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+# DEPRECATED
+
+This is no longer supported, please consider using [IONOS Cloud SDK Java](https://github.com/ionos-cloud/sdk-java) instead.
+
 # SDK for Java
 
 Version: **ionos-enterprise-sdk-java v5.1.0**
